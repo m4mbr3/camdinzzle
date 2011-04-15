@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="Gruppo3" size="747,656" id="" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D3130303020554D4C63616D64696E7A7A6C652F555345525F443332">
-  <children xsi:type="editmodel:ClassEditModel" name="Dinosauro" location="125,133" size="106,29" id="/Dinosauro" runTimeClassModel="">
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+  <children xsi:type="editmodel:ClassEditModel" name="Dinosaur" location="202,205" size="98,175" id="/Dinosaur" runTimeClassModel="newEgg(),eat(),growUp(),move(),age,fight(),dead()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="54,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="age" id="/Dinosaur#age"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="70,108">
+      <children xsi:type="editmodel:MethodEditModel" name="dead" id="/Dinosaur#dead()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="eat" id="/Dinosaur#eat()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fight" id="/Dinosaur#fight()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="growUp" id="/Dinosaur#growUp()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="move" id="/Dinosaur#move()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="newEgg" id="/Dinosaur#newEgg()"/>
+    </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
