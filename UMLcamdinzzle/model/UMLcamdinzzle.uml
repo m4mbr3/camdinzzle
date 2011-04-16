@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:JavaProfile="http:///schemas/JavaProfile/2" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///schemas/JavaProfile/2 platform:/plugin/com.soyatec.core/profiles/Java.profile.uml#_I0dq8PscEdqYc77HqxgcqA">
+  <uml:Model xmi:id="_aABlYGgAEeCcduHGRrhsfw" name="UMLcamdinzzle">
+    <packageImport xmi:id="_aAvXEGgAEeCcduHGRrhsfw">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_aEfOpGgAEeCcduHGRrhsfw" name="">
+      <packagedElement xmi:type="uml:Class" xmi:id="_aElVQGgAEeCcduHGRrhsfw" name="Vegetarian">
+        <generalization xmi:id="_aVmMwWgAEeCcduHGRrhsfw" general="_aVmMwGgAEeCcduHGRrhsfw"/>
+        <ownedOperation xmi:id="_aVoB8GgAEeCcduHGRrhsfw" name="eat" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aVopAGgAEeCcduHGRrhsfw" name="Vegetarian" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aVopAWgAEeCcduHGRrhsfw" name="move" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aVopAmgAEeCcduHGRrhsfw" name="fight" visibility="public" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aVmMwGgAEeCcduHGRrhsfw" name="Dinosaur" isAbstract="true">
+        <ownedAttribute xmi:id="_aV2EY2gAEeCcduHGRrhsfw" name="age" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aV5HsWgAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aV2rcWgAEeCcduHGRrhsfw"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_aV5HsGgAEeCcduHGRrhsfw" value="0"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aWHxMWgAEeCcduHGRrhsfw" name="species" type="_aV2EYGgAEeCcduHGRrhsfw" association="_aWHxMGgAEeCcduHGRrhsfw">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWHxMmgAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWHxM2gAEeCcduHGRrhsfw" value="1"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_aWIYQGgAEeCcduHGRrhsfw" value="new Species()"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_aV2rcmgAEeCcduHGRrhsfw" name="Dinosaur" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aV2rc2gAEeCcduHGRrhsfw" name="move" visibility="public" isAbstract="true" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aV3SgGgAEeCcduHGRrhsfw" name="dead" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aV3SgWgAEeCcduHGRrhsfw" name="growUp" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aV3SgmgAEeCcduHGRrhsfw" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_aV3Sg2gAEeCcduHGRrhsfw" name="eat" visibility="public" isAbstract="true" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aV35kGgAEeCcduHGRrhsfw" name="newEgg" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aV35kWgAEeCcduHGRrhsfw" name="fight" visibility="public" isAbstract="true" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aVpQEGgAEeCcduHGRrhsfw" name="Vegetation">
+        <generalization xmi:id="_aVqeMGgAEeCcduHGRrhsfw" general="_aVp3IGgAEeCcduHGRrhsfw"/>
+        <ownedOperation xmi:id="_aVrsUGgAEeCcduHGRrhsfw" name="getPower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aVsTYGgAEeCcduHGRrhsfw" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_aVsTYWgAEeCcduHGRrhsfw" name="setMaxpower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aVsTYmgAEeCcduHGRrhsfw" name="maxpower">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_aVsTY2gAEeCcduHGRrhsfw" name="rebirth" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aVs6cGgAEeCcduHGRrhsfw" name="setPower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aVs6cWgAEeCcduHGRrhsfw" name="power">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_aVs6cmgAEeCcduHGRrhsfw" name="getMaxpower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aVs6c2gAEeCcduHGRrhsfw" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_aVp3IGgAEeCcduHGRrhsfw" name="Food">
+        <ownedAttribute xmi:id="_aWPtAGgAEeCcduHGRrhsfw" name="power" visibility="public">
+          <ownedComment xmi:id="_aWQUE2gAEeCcduHGRrhsfw">
+            <body>@return  Returns the power.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWPtAWgAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWQ7IGgAEeCcduHGRrhsfw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aWQUEGgAEeCcduHGRrhsfw" name="maxpower" visibility="public">
+          <ownedComment xmi:id="_aWQ7IWgAEeCcduHGRrhsfw">
+            <body>@return  Returns the maxpower.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWQUEWgAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWQ7ImgAEeCcduHGRrhsfw"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_aWQUEmgAEeCcduHGRrhsfw" name="rebirth" visibility="public" isAbstract="true" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_aVuIkGgAEeCcduHGRrhsfw" name="Visual">
+        <ownedOperation xmi:id="_aVvWsGgAEeCcduHGRrhsfw" name="draw" visibility="public" isAbstract="true" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aV2EYGgAEeCcduHGRrhsfw" name="Species">
+        <ownedAttribute xmi:id="_aWC4sGgAEeCcduHGRrhsfw" name="timeoflive" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWF8AmgAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWF8AWgAEeCcduHGRrhsfw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aWC4sWgAEeCcduHGRrhsfw" name="dinosaur" visibility="public" type="_aVmMwGgAEeCcduHGRrhsfw">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWGjEWgAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWGjEGgAEeCcduHGRrhsfw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aWDfwGgAEeCcduHGRrhsfw" name="dinosaur1" visibility="public" type="_aVmMwGgAEeCcduHGRrhsfw" association="_aWHxMGgAEeCcduHGRrhsfw">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWGjE2gAEeCcduHGRrhsfw" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWEt42gAEeCcduHGRrhsfw" value="1"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_aWGjEmgAEeCcduHGRrhsfw" value="new java.util.ArrayList()"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aWEt5GgAEeCcduHGRrhsfw" name="name" visibility="public" type="_aWFU8GgAEeCcduHGRrhsfw">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWHKIWgAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWHKIGgAEeCcduHGRrhsfw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_aWFU8WgAEeCcduHGRrhsfw" name="type" visibility="public" type="_aWFU8GgAEeCcduHGRrhsfw">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aWHKI2gAEeCcduHGRrhsfw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aWHKImgAEeCcduHGRrhsfw"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_aWFU8mgAEeCcduHGRrhsfw" name="Species" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aWF8AGgAEeCcduHGRrhsfw" name="addDinosaur" visibility="public" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_aWHxMGgAEeCcduHGRrhsfw" name="make of" memberEnd="_aWDfwGgAEeCcduHGRrhsfw _aWHxMWgAEeCcduHGRrhsfw"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aWIYQWgAEeCcduHGRrhsfw" name="Textual">
+        <generalization xmi:id="_aWJmYGgAEeCcduHGRrhsfw" general="_aVuIkGgAEeCcduHGRrhsfw"/>
+        <ownedOperation xmi:id="_aWK0gGgAEeCcduHGRrhsfw" name="draw" visibility="public" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aWK0gWgAEeCcduHGRrhsfw" name="Graphical">
+        <generalization xmi:id="_aWLbkGgAEeCcduHGRrhsfw" general="_aVuIkGgAEeCcduHGRrhsfw"/>
+        <ownedOperation xmi:id="_aWMpsGgAEeCcduHGRrhsfw" name="draw" visibility="public" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aWRiMGgAEeCcduHGRrhsfw" name="Carnivorous">
+        <generalization xmi:id="_aWSJQGgAEeCcduHGRrhsfw" general="_aVmMwGgAEeCcduHGRrhsfw"/>
+        <ownedOperation xmi:id="_aWT-cGgAEeCcduHGRrhsfw" name="fight" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aWUlgGgAEeCcduHGRrhsfw" name="move" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aWUlgWgAEeCcduHGRrhsfw" name="eat" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aWUlgmgAEeCcduHGRrhsfw" name="Carnivorous" visibility="public" concurrency="concurrent"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_aWVMkGgAEeCcduHGRrhsfw" name="Carrion">
+        <generalization xmi:id="_aWVzoGgAEeCcduHGRrhsfw" general="_aVp3IGgAEeCcduHGRrhsfw"/>
+        <ownedOperation xmi:id="_aWXo0GgAEeCcduHGRrhsfw" name="rebirth" visibility="public" concurrency="concurrent"/>
+        <ownedOperation xmi:id="_aWXo0WgAEeCcduHGRrhsfw" name="getPower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aWYP4GgAEeCcduHGRrhsfw" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_aWYP4WgAEeCcduHGRrhsfw" name="setMaxpower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aWYP4mgAEeCcduHGRrhsfw" name="maxpower">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_aWYP42gAEeCcduHGRrhsfw" name="setPower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aWY28GgAEeCcduHGRrhsfw" name="power">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_aWY28WgAEeCcduHGRrhsfw" name="getMaxpower" visibility="public" concurrency="concurrent">
+          <ownedParameter xmi:id="_aWY28mgAEeCcduHGRrhsfw" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_aWDfwWgAEeCcduHGRrhsfw" name="java.util">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_aWEG0GgAEeCcduHGRrhsfw" name="Collection" isAbstract="true">
+        <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_aWEG0WgAEeCcduHGRrhsfw" parameter="_aWEG0mgAEeCcduHGRrhsfw">
+          <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_aWEG0mgAEeCcduHGRrhsfw" parameteredElement="_aWEG02gAEeCcduHGRrhsfw">
+            <ownedParameteredElement xmi:type="uml:DataType" xmi:id="_aWEG02gAEeCcduHGRrhsfw" name="E" templateParameter="_aWEG0mgAEeCcduHGRrhsfw"/>
+          </ownedParameter>
+        </ownedTemplateSignature>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_aWEG1GgAEeCcduHGRrhsfw" name="Collection">
+        <templateBinding xmi:id="_aWEG1WgAEeCcduHGRrhsfw" signature="_aWEG0WgAEeCcduHGRrhsfw">
+          <parameterSubstitution xmi:id="_aWEt4GgAEeCcduHGRrhsfw" formal="_aWEG0mgAEeCcduHGRrhsfw" actual="_aWEt4WgAEeCcduHGRrhsfw">
+            <ownedActual xmi:type="uml:LiteralString" xmi:id="_aWEt4WgAEeCcduHGRrhsfw" value="?"/>
+          </parameterSubstitution>
+        </templateBinding>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_aWEt5WgAEeCcduHGRrhsfw" name="java.lang">
+      <packagedElement xmi:type="uml:Class" xmi:id="_aWFU8GgAEeCcduHGRrhsfw" name="String" isLeaf="true"/>
+    </packagedElement>
+    <profileApplication xmi:id="_aEenkGgAEeCcduHGRrhsfw">
+      <eAnnotations xmi:id="_aEenkWgAEeCcduHGRrhsfw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.soyatec.core/profiles/Soyatec.profile.uml#_LBLaIPscEdqYc77HqxgcqA"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.soyatec.core/profiles/Soyatec.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+    </profileApplication>
+    <profileApplication xmi:id="_aEenkmgAEeCcduHGRrhsfw">
+      <eAnnotations xmi:id="_aEenk2gAEeCcduHGRrhsfw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.soyatec.core/profiles/Archetype.profile.uml#_D-NGoPscEdqYc77HqxgcqA"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.soyatec.core/profiles/Archetype.profile.uml#_14txEWVxEdmLjaVkDjVh5g"/>
+    </profileApplication>
+    <profileApplication xmi:id="_aEfOoGgAEeCcduHGRrhsfw">
+      <eAnnotations xmi:id="_aEfOoWgAEeCcduHGRrhsfw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_aEfOomgAEeCcduHGRrhsfw">
+      <eAnnotations xmi:id="_aEfOo2gAEeCcduHGRrhsfw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/com.soyatec.core/profiles/Java.profile.uml#_I0dq8PscEdqYc77HqxgcqA"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/com.soyatec.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+    </profileApplication>
+  </uml:Model>
+  <JavaProfile:JavaType xmi:id="_aWGjFGgAEeCcduHGRrhsfw" value="java.util.Collection" base_Property="_aWDfwGgAEeCcduHGRrhsfw"/>
+</xmi:XMI>
