@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="Gruppo3" size="1100,519" id="" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D3130303020554D4C63616D64696E7A7A6C652F5554454E5445">
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="Gruppo3" size="1100,509" id="" metadata="uml2-1.0" initialized="true" scrolledX="4" scrolledY="41" tag="1000" key="32303037303533312D3130303020554D4C63616D64696E7A7A6C652F5574656E7465">
   <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.2/@sourceConnections.0 //@children.3/@sourceConnections.0 //@children.1/@sourceConnections.0" name="Dinosaur" location="585,31" size="98,193" id="/Dinosaur" runTimeClassModel="newEgg(),eat(),growUp(),move(),age,Dinosaur(),fight(),dead()">
     <children xsi:type="editmodel:CompartmentEditModel" size="54,18">
       <children xsi:type="editmodel:AttributeEditModel" name="age" id="/Dinosaur#age"/>
@@ -29,7 +29,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:AssociationEditModel" name="make of" autoLocated="true" id="/Dinosaur@dinosaur1+/Species@species" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" label="//@children.1/@sourceConnections.0/@children.2" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
       <children xsi:type="editmodel:AssociationEndEditModel" name="species" location="114,69" id="/Dinosaur@dinosaur1+/Species@species|/Species#species" attachSource="true" multiplicityLabel="//@children.1/@sourceConnections.0/@children.0/@children.1" roleLabel="//@children.1/@sourceConnections.0/@children.0/@children.0" navigable="true">
-        <children xsi:type="editmodel:LabelEditModel" name=" - species" location="361,79" size="48,14" anchorKind="FirstPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name=" + species" location="361,79" size="50,14" anchorKind="FirstPart"/>
         <children xsi:type="editmodel:LabelEditModel" name="1" location="361,107" size="6,14" anchorKind="FirstPart"/>
       </children>
       <children xsi:type="editmodel:AssociationEndEditModel" name="dinosaur1" location="0,69" id="/Dinosaur@dinosaur1+/Species@species|/Dinosaur#dinosaur1" multiplicityLabel="//@children.1/@sourceConnections.0/@children.1/@children.1" roleLabel="//@children.1/@sourceConnections.0/@children.1/@children.0" navigable="true">
@@ -40,7 +40,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="Carnivorous" location="495,330" size="118,121" id="/Carnivorous" runTimeClassModel="eat(),move(),Carnivorous(),fight()">
+  <children xsi:type="editmodel:ClassEditModel" name="Carnivorous" location="495,330" size="118,121" id="/Carnivorous" runTimeClassModel="eat(),move(),fight(),Carnivorous()">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="89,72">
       <children xsi:type="editmodel:MethodEditModel" name="Carnivorous" id="/Carnivorous#Carnivorous()"/>
@@ -143,6 +143,12 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="10,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="70,81"/>
     </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Prova" location="330,270" size="79,29" id="/Prova" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
   <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
