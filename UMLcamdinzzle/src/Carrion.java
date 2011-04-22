@@ -27,4 +27,10 @@ public class Carrion implements Food {
 		
 	}
 
+		
+		/**
+		 */
+		public Carrion(){
+		}
+
 }

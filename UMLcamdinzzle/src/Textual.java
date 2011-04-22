@@ -49,4 +49,11 @@ public class Textual implements Visual {
 			
 		}
 
+
+			
+			/**
+			 */
+			public Textual(){
+			}
+
 }

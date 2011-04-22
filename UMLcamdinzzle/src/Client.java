@@ -42,4 +42,11 @@ public class Client {
 				this.visual = visual;
 			}
 
+
+				
+				/**
+				 */
+				public Client(){
+				}
+
 }

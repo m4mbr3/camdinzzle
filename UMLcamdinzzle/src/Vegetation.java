@@ -27,4 +27,10 @@ public class Vegetation implements Food {
 		
 	}
 
+		
+		/**
+		 */
+		public Vegetation(){
+		}
+
 }

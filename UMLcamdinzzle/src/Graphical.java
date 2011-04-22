@@ -49,4 +49,11 @@ public class Graphical implements Visual {
 			
 		}
 
+
+			
+			/**
+			 */
+			public Graphical(){
+			}
+
 }
