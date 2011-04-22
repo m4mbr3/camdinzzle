@@ -90,6 +90,78 @@ public abstract class Dinosaur {
 								public void setSpecies(Species species) {
 									this.species = species;
 								}
+
+
+								/**
+								 * @uml.property  name="energy"
+								 */
+								private int energy;
+
+								/**
+								 * Getter of the property <tt>energy</tt>
+								 * @return  Returns the energy.
+								 * @uml.property  name="energy"
+								 */
+								public int getEnergy() {
+									return energy;
+								}
+
+								/**
+								 * Setter of the property <tt>energy</tt>
+								 * @param energy  The energy to set.
+								 * @uml.property  name="energy"
+								 */
+								public void setEnergy(int energy) {
+									this.energy = energy;
+								}
+
+
+								/**
+								 * @uml.property  name="dimension"
+								 */
+								private int dimension;
+
+								/**
+								 * Getter of the property <tt>dimension</tt>
+								 * @return  Returns the dimension.
+								 * @uml.property  name="dimension"
+								 */
+								public int getDimension() {
+									return dimension;
+								}
+
+								/**
+								 * Setter of the property <tt>dimension</tt>
+								 * @param dimension  The dimension to set.
+								 * @uml.property  name="dimension"
+								 */
+								public void setDimension(int dimension) {
+									this.dimension = dimension;
+								}
+
+
+								/**
+								 * @uml.property  name="dinoId"
+								 */
+								private int dinoId;
+
+								/**
+								 * Getter of the property <tt>dinoId</tt>
+								 * @return  Returns the dinoId.
+								 * @uml.property  name="dinoId"
+								 */
+								public int getDinoId() {
+									return dinoId;
+								}
+
+								/**
+								 * Setter of the property <tt>dinoId</tt>
+								 * @param dinoId  The dinoId to set.
+								 * @uml.property  name="dinoId"
+								 */
+								public void setDinoId(int dinoId) {
+									this.dinoId = dinoId;
+								}
 							
 						
 					

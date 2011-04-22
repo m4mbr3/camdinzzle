@@ -134,4 +134,29 @@ public class Species {
 				this.dinosaur1 = dinosaur1;
 			}
 
+			/** 
+			 * @uml.property name="player"
+			 * @uml.associationEnd inverse="species:Player"
+			 * @uml.association name="manage"
+			 */
+			private Player player;
+
+			/** 
+			 * Getter of the property <tt>player</tt>
+			 * @return  Returns the player.
+			 * @uml.property  name="player"
+			 */
+			public Player getPlayer() {
+				return player;
+			}
+
+			/** 
+			 * Setter of the property <tt>player</tt>
+			 * @param player  The player to set.
+			 * @uml.property  name="player"
+			 */
+			public void setPlayer(Player player) {
+				this.player = player;
+			}
+
 }
