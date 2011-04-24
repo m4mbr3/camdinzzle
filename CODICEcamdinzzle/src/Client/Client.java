@@ -6,14 +6,24 @@
  * @author Andrea
  *
  */
-public class Server {
+public class Client {
 
 	/**
 	 * 
 	 */
-	public Server() {
+	
+	public Client() {
 		// TODO Auto-generated constructor stub
 	}
+	public void createCommand()
+	{
+		
+	}
+	public void sendCommand()
+	{
+		
+	}
+	
 
 	/**
 	 * @param args
