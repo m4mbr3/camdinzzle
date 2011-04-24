@@ -5,11 +5,14 @@ package Server;
  */
 public abstract class Dinosaur 
 {
+	private String dinoId;
 	private int age;
 	private int energy;
 	private int dimension;
 	private int energyMax;
 	private static int eEgg = 1500;
+	private int posX; //coordinate X of dinosaur on the map
+	private int posY; //coordinate Y of dinosaur on the map
 	
 	public abstract int eat();
 	public abstract void fight();
@@ -18,18 +21,22 @@ public abstract class Dinosaur
 	/**
 	 * Create a new dinosaur with age = (30±20%), dimension = 1 and energy = 1000 
 	 */
-	public Dinosaur()
+	public Dinosaur(String dinoId, int posX, int posY)
 	{
 		age = (int) (Math.random() * 13 + 24);
 		dimension = 1;
 		energy = 1000;
 		energyMax = energy * dimension;
+		this.posX = posX;
+		this.posY = posY;
 	}
 	
 	/**
 	 * controlla che la dimensione non sia già massima (=5)
 	 * controlla che abbia abbanstanza energia per crescere e cresce
 	 * altrimenti muore
+	 * 
+	 * dove mette l'uovo??
 	 */
 	public boolean growUp()
 	{
@@ -68,8 +75,28 @@ public abstract class Dinosaur
 		}
 	}
 	
+	/**
+	 * incompleto
+	 */
 	public void dead()
 	{
 		
+	}
+	
+	/**
+	 * 
+	 * @return dinoId
+	 */
+	public String getDinoId()
+	{
+		return dinoId;
+	}
+	
+	/**
+	 * aggiorna stato dino
+	 */
+	public void updateDinosaurAge()
+	{
+		age -= 1;
 	}
 }

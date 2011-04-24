@@ -1,10 +1,11 @@
 package Server;
 
-public class Vegetarian extends Dinosaur{
+public class Vegetarian extends Dinosaur
+{
 
-	public Vegetarian()
+	public Vegetarian(String dinoId, int posX, int posY)
 	{
-		super();
+		super(dinoId, posX, posY);
 	}
 	
 	@Override
