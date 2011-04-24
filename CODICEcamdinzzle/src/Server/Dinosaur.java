@@ -1,4 +1,6 @@
-/*
+package Server;
+
+/**
  * 
  */
 public abstract class Dinosaur 
@@ -13,8 +15,8 @@ public abstract class Dinosaur
 	public abstract void fight();
 	public abstract boolean move();
 	
-	/*
-	 * Creats a new dinosaur with age = (30±20%), dimension = 1 and energy = 1000 
+	/**
+	 * Create a new dinosaur with age = (30±20%), dimension = 1 and energy = 1000 
 	 */
 	public Dinosaur()
 	{
@@ -24,7 +26,7 @@ public abstract class Dinosaur
 		energyMax = energy * dimension;
 	}
 	
-	/*
+	/**
 	 * controlla che la dimensione non sia già massima (=5)
 	 * controlla che abbia abbanstanza energia per crescere e cresce
 	 * altrimenti muore
@@ -48,7 +50,7 @@ public abstract class Dinosaur
 		}
 	}
 	
-	/*
+	/**
 	 * incompleto 
 	 */
 	public boolean newEgg()
