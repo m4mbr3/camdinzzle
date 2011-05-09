@@ -1,7 +1,7 @@
 /**
  * @author Forme
  * created 			06/05/2011
- * last modified	06/05/2011
+ * last modified	09/05/2011
  */ 
 
 package Server;
@@ -108,14 +108,14 @@ public class ServerMessageBroker
 	 * @param parameters contiene i parametri da concatenare nel messaggio
 	 * @return messaggio da mandare al Client
 	 */
-	public static String createStandardMessage(String[] parameters)
+	public static String createStandardMessage(ArrayList<String> parameters)
 	{
-		String returnMessage = new String();
+		String returnMessage = new String("");
 		
-		returnMessage = returnMessage + "@" + parameters[0];
-		for(int i = 0; i<parameters.length; i++)
+		returnMessage = returnMessage + "@" + parameters.get(0);
+		for(int i = 0; i<parameters.size(); i++)
 		{
-			returnMessage = returnMessage + "," + parameters[i];
+			returnMessage = returnMessage + "," + parameters.get(i);
 		}
 		
 		return returnMessage;
@@ -128,7 +128,7 @@ public class ServerMessageBroker
 	 */
 	public static String createRankingList(ArrayList<String> ranking)
 	{
-		String returnMessage = new String();
+		String returnMessage = new String("");
 		returnMessage += "@classifica,";
 		
 		for(int i = 0; i<ranking.size(); i+=4)
@@ -151,10 +151,9 @@ public class ServerMessageBroker
 	 */
 	public static String createGeneraleMap(ArrayList<String> map)
 	{
-		String returnMap = new String();
+		String returnMap = new String("");
 		returnMap += "@mappaGenerale,{" + map.get(0) + "," + map.get(1) + "},"; 
 		
-		int rows = Integer.parseInt(map.get(0));
 		int columns = Integer.parseInt(map.get(1));
 		int columnCount = 0;
 		
@@ -167,17 +166,57 @@ public class ServerMessageBroker
 			}
 			
 			returnMap += "[" + map.get(i) + "]";
+			columnCount++;
 		}
 		
 		return returnMap;
 	}
 	
+	/**
+	 * Crea il messaggio contenente la vista locale di un dinosauro
+	 * @param zoom vista locale del dinosauro
+	 * @return messaggio da mandare al Client
+	 */
 	public static String createDinoZoom(ArrayList<String> zoom)
 	{
-		String dinoZoom = new String();
-		dinoZoom += "@vistaLocale,";
+		String dinoZoom = new String("");
+		dinoZoom += "@vistaLocale,{" + zoom.get(0) + "," + zoom.get(1) + "},{" + zoom.get(2) + "," + zoom.get(3) + "},";
+		
+		int columns = Integer.parseInt(zoom.get(3));
+		int columnCount = 0;
+		
+		for(int i = 4; i<zoom.size(); i++)
+		{
+			if(columnCount == columns + 4)
+			{
+				dinoZoom += ";";
+				columnCount = 0;
+			}
+			
+			dinoZoom += "[" + zoom.get(i) + "]";
+			columnCount++;
+		}
 		
 		return dinoZoom;
+	}
+
+	/**
+	 * Crea il messaggio contenente lo statop di un dinosauro
+	 * @param state
+	 * @return messaggio da mandare al Client
+	 */
+	public static String createDinoState(ArrayList<String> state)
+	{
+		String dinoState = new String("");
+		dinoState += "@statoDinosauro," + state.get(0) + "," + state.get(1) + "," + state.get(2) + ",";
+		dinoState += "{" + state.get(3) + "," + state.get(4) + "}";
+		
+		for(int i = 5; i<state.size(); i++)
+		{
+			dinoState += "," + state.get(i);
+		}
+		
+		return dinoState;
 	}
 	
 	// End creazione messaggi in uscita
