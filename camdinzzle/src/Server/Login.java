@@ -17,22 +17,35 @@ public class Login implements Runnable{
 	 * 
 	 */
 	//Creation of a box for login
-	ServerSocket server_login;
-	Socket new_connection;
-	public Login(ServerSocket server_login) {
+	private ServerSocket server_login;
+	private Socket new_connection;
+	private Server server;
+	private boolean is_run;
+	public Login(ServerSocket server_login, Server server) {
 		// TODO Auto-generated constructor stub
 		this.server_login =  server_login;
+		this.server = server;
+		this.new_connection = null;
+		this.is_run = true;
+	}
+	public void stop()
+	{
+		is_run = false;
 	}
 	public void run()
 	{
-		//waiting for connection
-		try {
-			new_connection = server_login.accept();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		while(is_run)
+		{
+			try {
+				//waiting for connection
+				new_connection = server_login.accept();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
+		}
 		
 	}
 
