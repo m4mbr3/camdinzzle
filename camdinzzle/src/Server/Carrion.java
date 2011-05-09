@@ -17,7 +17,7 @@ public class Carrion implements Food
 	public Carrion(int maxPower)
 	{
 		this.maxPower = maxPower;
-		this.power = 0;
+		this.power = maxPower;
 	}
 
 	/**

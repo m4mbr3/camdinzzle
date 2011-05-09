@@ -1,5 +1,10 @@
 package Server;
 import java.util.ArrayList;
+/**
+ * 
+ * @author Marco
+ *
+ */
 
 /**
  * gruppo di dinosauri appartenenti a un giocatore
@@ -18,15 +23,15 @@ public class Species
 	 */
 	public Species(String name, type speciesType)
 	{
-		int posX, posY;
+		int posRig, posCol;
 		myDinosaurs = new ArrayList<Dinosaur>();
 		this.name = name;
 		this.speciesType = speciesType;
 		timeOfLive = 120;
-		posX = (int) (Math.random() * 40);
-		posY = (int) (Math.random() * 40);
+		posRig = (int) (Math.random() * 40);
+		posCol = (int) (Math.random() * 40);
 		//check mappa vuota!!!
-		addDinosaur(getDinoNumber(), posX, posY);
+		addDinosaur(getDinoNumber(), posRig, posCol);
 		return;
 	}
 	
@@ -51,7 +56,7 @@ public class Species
 	 * add a new dinosaur the same type of my species
 	 * at my array of dinosaurs
 	 */
-	public void addDinosaur(int dinoNumber, int posX, int posY)
+	public void addDinosaur(int dinoNumber, int posRig, int posCol)
 	{
 		Dinosaur dino;
 		addDinoNumber();
@@ -59,12 +64,12 @@ public class Species
 		
 		if(speciesType == type.Carnivorous) //Control the type of species
 		{
-			dino = new Carnivorous(dinoId, posX, posY);
+			dino = new Carnivorous(dinoId, posRig, posCol);
 
 		}
 		else
 		{
-			dino = new Vegetarian(dinoId, posX, posY);
+			dino = new Vegetarian(dinoId, posRig, posCol);
 		}
 
 		myDinosaurs.add(dino);

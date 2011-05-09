@@ -1,5 +1,11 @@
 package Server;
 
+/**
+ * 
+ * @author Marco
+ *
+ */
+
 public class Carnivorous extends Dinosaur
 {
 
