@@ -1,4 +1,7 @@
+package Server;
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * 
@@ -23,7 +26,12 @@ public class Login implements Runnable{
 	public void run()
 	{
 		//waiting for connection
-		new_connection = server_login.accept();
+		try {
+			new_connection = server_login.accept();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}

@@ -1,6 +1,11 @@
+package Server;
+
+import java.io.IOException;
+import java.net.ServerSocket;
 /**
  * 
  */
+import java.net.Socket;
 
 /**
  * @author Andrea
@@ -22,7 +27,12 @@ public class Server {
 		//Definition of a default port login
 		port_login = 4567;
 		//Definition of new Server login for passing it to startLogin 
-		deal_login = new ServerSocket(port_login);
+		try {
+			deal_login = new ServerSocket(port_login);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void controlAction()
 	{
