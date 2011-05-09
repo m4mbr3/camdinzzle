@@ -6,6 +6,9 @@
 
 package Server;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 /**
  * classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal client. I metodi che iniziano con 
  * "manage" gestiscono le stringhe dei messaggi proveniente dal Client; i metodi che iniziano con "create" 
@@ -13,14 +16,14 @@ package Server;
  */
 public class ServerMessageBroker 
 {
-	// Creazione messaggi in uscita
+	// Gestione messaggi in entrata
 	
 	/**
 	 * Divide il messaggio in parametri
 	 * @param msg
 	 * @return array contenente il messaggio diviso per parametri
 	 */
-	public static String[] splitMessage(String msg)
+	private static String[] splitMessage(String msg)
 	{
 		String[] splittedMessage = msg.split(",");
 		
@@ -42,7 +45,7 @@ public class ServerMessageBroker
 	/**
 	 * Gestisce la divisione del messaggio in parametri
 	 * @param msg
-	 * @return array contenente il messaggio diviso per parametri
+	 * @return array contenente il messaggio diviso per parametri tranne il nome del comando
 	 */
 	public static String[] manageReceiveMessageSplit(String msg)
 	{
@@ -84,6 +87,97 @@ public class ServerMessageBroker
 		}
 		
 		return str;
+	}
+	
+	// End gestione messaggi in entrata
+	
+	// Creazione messaggi in uscita
+	
+	/**
+	 * Crea il messaggio di errore da mandare al Client
+	 * @param errorType stringa contenente il messaggio di errore
+	 * @return messaggio da mandare al Client
+	 */
+	public static String createErroMessage(String errorType)
+	{
+		return "@no,@" + errorType;
+	}
+	
+	/**
+	 * Crea il messaggio standard con: chiocNomeComando,parametro1,parametro2...
+	 * @param parameters contiene i parametri da concatenare nel messaggio
+	 * @return messaggio da mandare al Client
+	 */
+	public static String createStandardMessage(String[] parameters)
+	{
+		String returnMessage = new String();
+		
+		returnMessage = returnMessage + "@" + parameters[0];
+		for(int i = 0; i<parameters.length; i++)
+		{
+			returnMessage = returnMessage + "," + parameters[i];
+		}
+		
+		return returnMessage;
+	}
+	
+	/**
+	 * Crea il messaggio contenente la classifica generale della partita
+	 * @param ranking contiene i parametri da concatenare nel messaggio
+	 * @return messaggio da mandare al Client
+	 */
+	public static String createRankingList(ArrayList<String> ranking)
+	{
+		String returnMessage = new String();
+		returnMessage += "@classifica,";
+		
+		for(int i = 0; i<ranking.size(); i+=4)
+		{
+			returnMessage += "{";
+			for(int j = 0; j<4; j++)
+			{
+				returnMessage += ranking.get(i+j) + ",";
+			}
+			returnMessage += "}";
+		}
+		
+		return returnMessage;
+	}
+
+	/**
+	 * Crea il messaggio contenente la mappa generale
+	 * @param map contiene i parametri da concatenare nel messaggio
+	 * @return messaggio da mandare al Client
+	 */
+	public static String createGeneraleMap(ArrayList<String> map)
+	{
+		String returnMap = new String();
+		returnMap += "@mappaGenerale,{" + map.get(0) + "," + map.get(1) + "},"; 
+		
+		int rows = Integer.parseInt(map.get(0));
+		int columns = Integer.parseInt(map.get(1));
+		int columnCount = 0;
+		
+		for(int i = 2; i<map.size(); i++)
+		{
+			if(columnCount == columns + 2)
+			{
+				returnMap += ";";
+				columnCount = 0;
+			}
+			
+			returnMap += "[" + map.get(i) + "]";
+		}
+		
+		return returnMap;
+	}
+	
+	public static String createDinoZoom(ArrayList<String> zoom)
+	{
+		String dinoZoom = new String();
+		dinoZoom += "@vistaLocale,";
+		
+		return dinoZoom;
 	}
 	
 	// End creazione messaggi in uscita
