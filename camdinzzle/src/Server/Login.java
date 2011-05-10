@@ -21,12 +21,14 @@ public class Login implements Runnable{
 	private Socket new_connection;
 	private Server server;
 	private boolean is_run;
+	private ExecutionLogin ex_login;
 	public Login(ServerSocket server_login, Server server) {
 		// TODO Auto-generated constructor stub
 		this.server_login =  server_login;
 		this.server = server;
 		this.new_connection = null;
 		this.is_run = true;
+		this.ex_login = null;
 	}
 	public void stop()
 	{
@@ -44,6 +46,8 @@ public class Login implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			ex_login = new ExecutionLogin(new_connection, server);
+			ex_login.run();
 		
 		}
 		

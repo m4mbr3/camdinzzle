@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * 
@@ -29,6 +30,7 @@ public class ExecutionLogin implements Runnable
 	private String[] splitted_message;
 	private boolean is_an_exist_user;
 	private Server server;
+	private ArrayList<String> list_of_commands;
 	//Creation of a box for connection with client passed by Login
 	Socket connection_with_client;
 	
@@ -54,6 +56,7 @@ public class ExecutionLogin implements Runnable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		list_of_commands = new ArrayList<String>();
 	}
 	public void run()
 	{
@@ -75,11 +78,22 @@ public class ExecutionLogin implements Runnable
 		
 		if(is_an_exist_user) 
 		{
-			
+			list_of_commands.add("ok");
+			list_of_commands.add("T");
+			writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
+			//at this point the client is official logged into Server Game and here starts the client connection
+			//manager
+			server.startClientConnectionManager(connection_with_client);
 		}
 		else 
 		{
-			writer_on_socket.print()
+			writer_on_socket.print(ServerMessageBroker.createErroMessage("autenticazioneFallita"));
+			//close the connection with client because is occurred an error during authentication
+			try {
+				connection_with_client.close();
+			} catch (IOException e) {
+						e.printStackTrace();
+			}
 		}
 	}
 
