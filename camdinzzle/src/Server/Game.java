@@ -1,5 +1,7 @@
 package Server;
 
+import org.omg.CosNaming.IstringHelper;
+
 /**
  * 
  */
@@ -20,6 +22,7 @@ public class Game {
 	private int Water=164;
 	private int Carrion=20;
 	private int Vegetation=512;
+	private boolean permise=false;
 	
 	
 	public Game() {
@@ -29,19 +32,64 @@ public class Game {
 	{
 		
 	}
-	private void square(int number, int row, int col)
+	
+	/**
+	 * controlla che ci sia spazio e crea una pozza rettangolare
+	 * @param size
+	 * @param row
+	 * @param col
+	 */
+	private void rectangle(int size, int row, int col)
 	{
-		for(int i=row; i<)
-		map[row][col] =  new String("t");
+		//controllo contorno ???
+		int controllo=0;
+		for(int i=row-1; i<= row+3; i++)
+		{
+			for(int j=col-1; j<=size/3; j++)
+			{
+				controllo++;
+				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("t")))
+				{
+					controllo--;
+				}
+			}
+		}
+		if(controllo==0) permise=true;
+		if(permise==true)
+		{
+			for(int i=row; i<row+3; i++)
+			{
+				for(int j=col; j<size/3; j++)
+				{
+					map[i][j] =  new String("a");
+					Water -= 1;
+				}
+			
+			}
+		}
+		
 		
 	}
 	private void horseshoe(int number)
 	{
 		
 	}
-	private void aaaaaa (int number)
+	private void star(int size, int row, int col)
 	{
-	
+		//controllo contorno ???
+		int controllo=0;
+		for(int i=row-1; i<= row+3; i++)
+		{
+			for(int j=col-1; j<=size/3; j++)
+			{
+				controllo++;
+				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("t")))
+				{
+					controllo--;
+				}
+			}
+		}
+		if(controllo==0) permise=true;
 	}
 	public void createMap()
 	{
@@ -67,6 +115,8 @@ public class Game {
 		/**
 		 * inizializzazione mappa casuale
 		 */
+		
+		/*
 		for(int row=1; row<maxRow-1; row++)
 		{
 			for(int col=1; col<maxCol-1; col++)
@@ -78,10 +128,10 @@ public class Game {
 					
 						/**
 						 * creazione pozza d'acqua con dim comprese tra 5 e 20
-						 */
+						 *//*
 						case 0:
 						{
-							int number = (int) (Math.random() * 16 + 5);
+							int number = (int) (Math.random() * 11 + 5);
 							if(Water>=number)
 							{
 								//map[row][col] = new String("a");
@@ -92,7 +142,7 @@ public class Game {
 						}
 						/**
 						 * casella di vegetazione se si pu˜ inerirne ancora
-						 */
+						 *//*
 						case 1:
 						{
 							if(Vegetation>0)
@@ -104,7 +154,7 @@ public class Game {
 						}
 						/**
 						 * casella di carogana se si pu˜ inerirne ancora
-						 */
+						 *//*
 						case 2:
 						{
 							if(Carrion>0)
@@ -116,7 +166,7 @@ public class Game {
 						}
 						/**
 						 * casella di terra vuota
-						 */
+						 *//*
 						case 3:
 						{
 							map[row][col] = new String("t");
@@ -126,6 +176,79 @@ public class Game {
 				}
 			}
 		}
+		*/
+		
+		/*
+		 * inizializza la mappa con tutta terra
+		 */
+		for(int row=1; row<maxRow-1; row++)
+		{
+			for(int col=1; col<maxCol-1; col++)
+			{
+				map[row][col] = new String("t");
+			}
+		}
+		
+		/*
+		 * creaione pozze d'acqua
+		 */
+		do
+		{
+			int row = (int)(Math.random() * 37 + 2); // random da 2 a 38
+			int col = (int)(Math.random() * 37 + 2);
+			int size = (int)(Math.random() * 11 + 5);
+			if(Water >= size)
+			{
+				switch (size) // random da 5 a 15
+				{
+					case 5:
+					{
+						//figura fiume
+					}
+					case 6:
+					{
+						rectangle(size,row,col);
+					}
+					case 7:
+					{
+						//figuara fiume
+					}
+					case 8:
+					{
+						//figura ferro cavallo
+					}
+					case 9:
+					{
+						rectangle(size,row,col);
+					}
+					case 10:
+					{
+						//figura stella
+					}
+					case 11:
+					{
+						//figura fiume
+					}
+					case 12:
+					{	
+						rectangle(size,row,col);
+					}
+					case 13:
+					{
+						//figura stella
+					}
+					case 14:
+					{
+						//figura ferro cavallo
+					}
+					case 15:
+					{
+						//figuara ferro cavallo
+					}
+				}
+			}
+		}while(Water>=5);
+		
 		
 	}
 
