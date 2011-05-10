@@ -154,6 +154,7 @@ public class Textual implements Visual
 		
 		try
 		{
+			System.out.println("Login");
 			System.out.println("Username:");
 			returnValues[0] = dataInput.readLine();
 			System.out.println("Password:");
@@ -167,4 +168,62 @@ public class Textual implements Visual
 		
 		return returnValues;
 	}
+	
+	public String[] drawUserCreation()
+	{
+		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
+		String[] returnValues = new String[2];
+		
+		try
+		{
+			System.out.println("Creazione nuovo utente");
+			System.out.println("Username:");
+			returnValues[0] = dataInput.readLine();
+			System.out.println("Password:");
+			returnValues[1] = dataInput.readLine();
+		}
+		catch(IOException ex)
+		{
+			System.out.println("Errore nella ricezione dell'input.");
+			ex.printStackTrace();
+		}
+		
+		return returnValues;
+	}
+	
+	public String drawRaceCreation()
+	{
+		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
+		String race = null;
+		
+		try
+		{
+			System.out.println("Inserire il nome della razza dei dinosauri:\n");
+			race = dataInput.readLine();
+		}
+		catch(IOException ex)
+		{
+			System.out.println("Errore nella ricezione dell'input.");
+			ex.printStackTrace();
+		}
+		
+		return race;
+	}
+	
+	public void drawPlayerList(String msg)
+	{		
+		if(ClientMessageBroker.checkMessage(msg))
+		{
+			String[] playerList = ClientMessageBroker.managePlayerList(msg);
+			System.out.println("Giocatori in partita:");
+			
+			for(int i = 0; i<playerList.length; i++) 
+			{
+				System.out.println("	" + playerList[i]);
+			}
+		}
+		else
+			drawError(msg);
+	}
+	
 }
