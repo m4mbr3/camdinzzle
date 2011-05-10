@@ -1,7 +1,6 @@
 package Server;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -69,11 +68,11 @@ public class ExecutionLogin implements Runnable
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}while(!read_socket.isEmpty());
+		}while(read_socket.isEmpty());
 		
 		//in this point there is a call to another static method for split and check a new string
 		splitted_message = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
-		//control of login parameters 
+		//control of login parameters splitted_message[0] is user_name, splitted_message[1] is password
 		is_an_exist_user = server.is_registered_player(splitted_message[0],splitted_message[1]);
 		
 		if(is_an_exist_user) 
@@ -83,7 +82,7 @@ public class ExecutionLogin implements Runnable
 			writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
 			//at this point the client is official logged into Server Game and here starts the client connection
 			//manager
-			server.startClientConnectionManager(connection_with_client);
+			server.startClientConnectionManagerDaemon(connection_with_client,splitted_message[0]);
 		}
 		else 
 		{

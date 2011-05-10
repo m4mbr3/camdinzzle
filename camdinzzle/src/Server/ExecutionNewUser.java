@@ -29,10 +29,12 @@ public class ExecutionNewUser implements Runnable{
 	private boolean is_an_free_username;
 	private ArrayList<String> list_of_commands;
 	
+	
 	public ExecutionNewUser(Socket connection_with_client, Server server ) {
 		// TODO Auto-generated constructor stub
 		this.server = server;
 		this.connection_with_client = connection_with_client;
+		this.read_socket = null;
 		try {
 			_on_socket = new BufferedOutputStream(this.connection_with_client.getOutputStream());
 		} catch (IOException e) {
@@ -59,7 +61,7 @@ public class ExecutionNewUser implements Runnable{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}while(!read_socket.isEmpty());
+				}while(read_socket.isEmpty());
 				
 				
 				//in this point there is a call to another static method for split and check a new string
@@ -73,7 +75,7 @@ public class ExecutionNewUser implements Runnable{
 					writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
 					//at this point the client is official registered into Server Game and here starts the client connection
 					//manager
-					server.startClientConnectionManager(connection_with_client);
+					server.startClientConnectionManagerDaemon(connection_with_client, splitted_message[0]);
 				}
 				else 
 				{

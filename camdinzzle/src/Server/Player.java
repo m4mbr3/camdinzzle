@@ -14,7 +14,7 @@ public class Player {
 	 */
 	private String password;
 	private String userName;
-	private String state;
+	private String specie;
 	/*
 	 * default is offline
 	 * can be playing, offline, logged
@@ -24,7 +24,8 @@ public class Player {
 		// TODO Auto-generated constructor stub
 		this.userName = userName;
 		this.password = password;
-		this.state = "offline";
+		this.specie =  null;
+		
 	}
 
 	public String getPassword() {
@@ -42,6 +43,13 @@ public class Player {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+	public void setSpecie(String specie)
+	{
+		this.specie = specie;
+	}
+	public String getSpecie()
+	{
+		return this.specie;
+	}
 
 }

@@ -13,9 +13,7 @@ import java.net.Socket;
  */
 public class Login implements Runnable{
 
-	/**
-	 * 
-	 */
+
 	//Creation of a box for login
 	private ServerSocket server_login;
 	private Socket new_connection;

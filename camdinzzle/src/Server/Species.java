@@ -102,4 +102,26 @@ public class Species
 			timeOfLive -= 1;
 		}
 	}
+	/*
+	 * tornano il tipo enum
+	 */
+	public static type getCarnType()
+	{
+		return type.Carnivorous;
+	}
+	
+	public static type getVegType()
+	{
+		return type.Vegetarian;
+	}
+
+	
+	
+	 public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
 }
