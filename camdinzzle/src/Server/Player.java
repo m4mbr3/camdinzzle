@@ -15,6 +15,7 @@ public class Player {
 	private String password;
 	private String userName;
 	private String specie;
+	private String token;
 	/*
 	 * default is offline
 	 * can be playing, offline, logged

@@ -75,7 +75,6 @@ public class ExecutionNewUser implements Runnable{
 					writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
 					//at this point the client is official registered into Server Game and here starts the client connection
 					//manager
-					server.startClientConnectionManagerDaemon(connection_with_client, splitted_message[0]);
 				}
 				else 
 				{

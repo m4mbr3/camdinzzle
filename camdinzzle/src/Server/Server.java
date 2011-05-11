@@ -19,15 +19,22 @@ public class Server {
 	 * @author Andrea
 	 * 
 	 */
+	//oggetti per sincronizzare i metodi sugli arraylist
 	private Object lock_players;
 	private Object lock_logged_player;
 	private Object lock_species;
+	//serversocket che aprono le connessioni con i socket del client
 	private ServerSocket deal_server;
 	private ServerSocket deal_login;
 	private ServerSocket deal_newuser;
 	private Socket deal_socket;
+	//oggetto che identifica la partita corrente
 	private Game currentSession;
+	//all players registered to "camdinzzle", tutti gli utenti registrati
 	private ArrayList<Player> players;
+	//ArrayList of [1-8] player that playing into game
+	private ArrayList<ClientManager> players_in_game; 
+	//Arraylist degli utenti loggati ma che non stanno giocando
 	private ArrayList<ClientManager> logged_players;
 	private ArrayList<Species> species;
 	private int port_login;
@@ -107,6 +114,16 @@ public class Server {
 		newuser.run();
 	}
 	
+	public void logout(String username)
+	{
+		for(int i = 0 ; i < logged_players.size(); i++)
+		{
+			if (logged_players.get(i).getUsername().compareTo(username) == 0)
+			{
+				logged_players.remove(i);
+			}
+		}
+	}
 	
 	public boolean addNewSpecies(String[] splitted_message, String username)
 	{
