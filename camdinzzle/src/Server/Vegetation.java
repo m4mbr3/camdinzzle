@@ -49,4 +49,8 @@ public class Vegetation implements Food
 	public void setMaxPower(int maxPower) {
 		this.maxPower = maxPower;
 	}
+	public String toString()
+	{
+		return "v";
+	}
 }

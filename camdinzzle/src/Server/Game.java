@@ -1,8 +1,5 @@
 package Server;
 
-import java.io.Console;
-
-import org.omg.CosNaming.IstringHelper;
 
 /**
  * 
@@ -202,6 +199,92 @@ public class Game {
 		}
 
 	}
+	
+	/**
+	 * 
+	 * @param size
+	 * @param row
+	 * @param col
+	 * @param map
+	 */
+	private void river(int size, int row, int col, Object[][] map)
+	{
+		//controllo contorno
+		permise=true;
+		int ctrlOffsetRow, ctrlOffsetCol;
+		if(size==7)
+		{
+			ctrlOffsetRow = 4;
+			ctrlOffsetCol = 0;
+		}
+		else
+		{
+			if(size==10)
+				{
+					ctrlOffsetRow = 4;
+					ctrlOffsetCol = 3;
+				}
+			else
+			{
+				ctrlOffsetRow = 5;
+				ctrlOffsetCol = 3;
+			}
+		}
+		for(int i=row-1; i<=row+ctrlOffsetRow+1; i++)
+		{
+			for(int j=col-ctrlOffsetCol-1; j<=col+2; j++)
+			{
+				
+				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("a")))
+				{
+					permise=false;
+					break;
+				}
+			}
+			if(!permise) break;
+		}
+		if(permise==true)
+		{
+			for(int i=row; i<=row+ctrlOffsetRow; i++)
+			{
+				if((i==row)||(i==row+1)||(i==row+3)||(i==row+4))
+				{
+				map[i][col] ="a";
+				Water -= 1;
+				}
+				if((i==row+1)||(i==row+2)||(i==row+3))
+				{
+					map[i][col+1] ="a";
+					Water -= 1;
+				}
+				if((i==row+4)&&(size!=7))
+				{
+					int count = 0;
+					do
+						{
+						map[i][col-count] ="a";
+						Water -= 1;
+						count++;
+						}
+					while(count<4);	
+				}
+				else
+				{
+					if(i==row+4)
+					{	
+					map[i][col] ="a";
+					Water -= 1;
+					}
+				}
+				if(i==row+5)
+				{
+					map[i][col-3] ="a";
+					Water -= 1;
+				}
+			}
+		}
+	}
+	
 	/**
 	 * crea una nuova maooa random
 	 */
@@ -229,68 +312,7 @@ public class Game {
 		/**
 		 * inizializzazione mappa casuale
 		 */
-		
-		/*
-		for(int row=1; row<maxRow-1; row++)
-		{
-			for(int col=1; col<maxCol-1; col++)
-			{
-				if(map[row][col]==null)
-				{
-					switch ((int) (Math.random() * 4))
-					{
-					
-						/**
-						 * creazione pozza d'acqua con dim comprese tra 5 e 20
-						 *//*
-						case 0:
-						{
-							int number = (int) (Math.random() * 11 + 5);
-							if(Water>=number)
-							{
-								//map[row][col] = new String("a");
-								Water -= number;
-								//chiamare metodo che crea pozza
-								break;
-							}
-						}
-						/**
-						 * casella di vegetazione se si pu˜ inerirne ancora
-						 *//*
-						case 1:
-						{
-							if(Vegetation>0)
-							{
-								map[row][col] = new Vegetation((int) (Math.random() * 201 + 150));
-								Vegetation -= 1;
-								break;
-							}
-						}
-						/**
-						 * casella di carogana se si pu˜ inerirne ancora
-						 *//*
-						case 2:
-						{
-							if(Carrion>0)
-							{
-								map[row][col] = new Carrion((int) (Math.random() * 301 + 350));
-								Carrion -= 1;
-								break;
-							}
-						}
-						/**
-						 * casella di terra vuota
-						 *//*
-						case 3:
-						{
-							map[row][col] = new String("t");
-							break;
-						}
-					}
-				}
-			}
-		}
-		*/
+
 		
 		/*
 		 * inizializza la mappa con tutta terra
@@ -302,7 +324,6 @@ public class Game {
 				map[row][col] = new String("t");
 			}
 		}
-		stampa();
 		
 		/**
 		 * creaione pozze d'acqua
@@ -328,7 +349,7 @@ public class Game {
 					}
 					case 7:
 					{
-						//figuara fiume
+						river(size,row,col,map);
 						break;
 					}
 					case 8:
@@ -343,12 +364,12 @@ public class Game {
 					}
 					case 10:
 					{
-						//figura fiume
+						river(size,row,col,map);
 						break;
 					}
 					case 11:
 					{
-						//figura fiume
+						river(size,row,col,map);
 						break;
 					}
 					case 12:
@@ -375,8 +396,46 @@ public class Game {
 			}
 		}while(Water>=5);
 		
+			do
+			{
+				int row = (int)(Math.random() * (maxRow-1) + 1); // random da 1 a 38
+				int col = (int)(Math.random() * (maxCol-1) + 1); // random da 1 a 38
+				if((map[row][col] instanceof java.lang.String)&&(map[row][col].equals("t")))
+				{
+					switch ((int) (Math.random() * 2))
+					{
+						/**
+						 * casella di vegetazione se si pu˜ inerirne ancora
+						 */
+						case 0:
+						{
+							if(Vegetation>0)
+							{
+								map[row][col] = new Vegetation((int) (Math.random() * 201 + 150));
+								Vegetation -= 1;
+								break;
+							}
+						}
+						/**
+						 * casella di carogana se si pu˜ inerirne ancora
+						 */
+						case 1:
+						{
+							if(Carrion>0)
+							{
+								map[row][col] = new Carrion((int) (Math.random() * 301 + 350));
+								Carrion -= 1;
+								break;
+							}
+						}
+					}
+				}
+			}while(Vegetation>0 || Carrion>0);
+			
+		}
+
 		
-	}
+	
 	public void stampa()
 	{
 
@@ -384,7 +443,7 @@ public class Game {
 		{
 			for(int j=0; j<maxCol; j++)
 			{
-				System.out.print(map[i][j] +" ");
+				System.out.print(map[i][j] + " ");
 			}
 			System.out.print("\n");
 		}
