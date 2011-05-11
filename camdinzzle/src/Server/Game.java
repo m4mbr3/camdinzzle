@@ -1,5 +1,7 @@
 package Server;
 
+import java.io.Console;
+
 import org.omg.CosNaming.IstringHelper;
 
 /**
@@ -19,10 +21,10 @@ public class Game {
 	private Object[][] map;
 	private static final int maxRow=40;
 	private static final int maxCol=40;
-	private int Water=164;
+	private int Water = 164;
 	private int Carrion=20;
 	private int Vegetation=512;
-	private boolean permise=false;
+	private boolean permise=true;
 	
 	
 	public Game() {
@@ -39,29 +41,30 @@ public class Game {
 	 * @param row
 	 * @param col
 	 */
-	private void rectangle(int size, int row, int col)
+	private void rectangle(int size, int row, int col, Object[][] map)
 	{
-		//controllo contorno ???
-		int controllo=0;
+		//controllo contorno
+		permise=true;
 		for(int i=row-1; i<= row+3; i++)
 		{
-			for(int j=col-1; j<=size/3; j++)
+			for(int j=col-1; j<=col+size/3; j++)
 			{
-				controllo++;
-				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("t")))
+				
+				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("a")))
 				{
-					controllo--;
+					permise=false;
+					break;
 				}
 			}
+			if(!permise) break;
 		}
-		if(controllo==0) permise=true;
 		if(permise==true)
 		{
 			for(int i=row; i<row+3; i++)
 			{
-				for(int j=col; j<size/3; j++)
+				for(int j=col; j<col+size/3; j++)
 				{
-					map[i][j] =  new String("a");
+					map[i][j] ="a";
 					Water -= 1;
 				}
 			
@@ -70,33 +73,144 @@ public class Game {
 		
 		
 	}
-	private void horseshoe(int number)
+	
+	/**
+	 * 
+	 * @param size
+	 * @param row
+	 * @param col
+	 */
+	private void horseshoe(int size, int row, int col, Object[][] map)
 	{
-		
-	}
-	private void star(int size, int row, int col)
-	{
-		//controllo contorno ???
-		int controllo=0;
-		for(int i=row-1; i<= row+3; i++)
+		//controllo contorno
+		permise=true;
+		int ctrlOffsetRow, ctrlOffsetCol;
+		if(size==8)
 		{
-			for(int j=col-1; j<=size/3; j++)
-			{
-				controllo++;
-				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("t")))
+			ctrlOffsetRow = 2;
+			ctrlOffsetCol = 3;
+		}
+		else
+		{
+			if(size==14)
 				{
-					controllo--;
+					ctrlOffsetRow = 4;
+					ctrlOffsetCol = 5;
 				}
+			else
+			{
+				ctrlOffsetRow = 4;
+				ctrlOffsetCol = 6;
 			}
 		}
-		if(controllo==0) permise=true;
+		for(int i=row-1; i<=row+ctrlOffsetRow+1; i++)
+		{
+			for(int j=col-1; j<=col+ctrlOffsetCol+1; j++)
+			{
+				
+				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("a")))
+				{
+					permise=false;
+					break;
+				}
+			}
+			if(!permise) break;
+		}
+		if(permise==true)
+		{
+
+			for(int j=col; j<=col+ctrlOffsetCol; j++)
+			{
+				map[row][j] ="a";
+				Water -= 1;
+			}
+			for(int i=row+1; i<=row+ctrlOffsetRow; i++)
+			{
+				map[i][col] ="a";
+				map[i][col+ctrlOffsetCol] ="a";
+				Water -= 2;
+			}
+		}
 	}
+	/**
+	 * 
+	 * @param size
+	 * @param row
+	 * @param col
+	 * @param map
+	 */
+	private void star(int size, int row, int col, Object[][] map)
+	{
+		//controllo contorno
+		int ctrlOffset;	//differenzia la stella da 5 da quella da 8
+		if(size==5)
+		{
+			ctrlOffset=2;
+		}
+		else
+		{
+			ctrlOffset=3;
+		}
+		permise=true;
+		for(int i=row-ctrlOffset; i<= row+ctrlOffset; i++)
+		{
+			for(int j=col-ctrlOffset; j<=col + ctrlOffset; j++)
+			{
+				
+				if((map[i][j] instanceof java.lang.String)&&(map[i][j].equals("a")))
+				{
+					permise=false;
+					break;
+				}
+			}
+			if(!permise) break;
+		}
+		//fine controllo contorno
+		if(permise)
+		{
+			int ctrl=0;	//serve x aumentare e diminuire il numero di celle di acqua nella riga
+			boolean espansione=true, riduzione=true; //attiva e disattiva l'espansione e la riduzione delle celle stampate
+			for(int i=row-ctrlOffset+1; i<=row+ctrlOffset-1; i++)
+			{
+				if((ctrl<ctrlOffset)&&espansione)//entra se  sopra al punto centrale
+				{
+					for(int j=col-ctrl; j<=col+ctrl; j++)	//stampala parte sopra
+					{
+						map[i][j] ="a";
+						Water -= 1;
+					}
+					ctrl++;
+				}
+				else
+				{
+					if(riduzione)//entra solo la prima volta
+					{
+						ctrl--;
+						riduzione=false;
+					}
+					ctrl--;
+					espansione=false;
+					for(int j=col-ctrl; j<=col+ctrl; j++)	//stampa la parte sotto
+					{
+						map[i][j] ="a";
+						Water -= 1;
+					}
+				}
+				
+			}
+
+		}
+
+	}
+	/**
+	 * crea una nuova maooa random
+	 */
 	public void createMap()
 	{
 		/**
 		 * creazione bordo d'acqua
 		 */
-		map = new Object[40][40];
+		map = new Object[maxRow][maxCol];
 		for(int row=0; row<maxRow; row++)
 		{
 			if(row==0||row==(maxRow-1))
@@ -188,68 +302,92 @@ public class Game {
 				map[row][col] = new String("t");
 			}
 		}
+		stampa();
 		
-		/*
+		/**
 		 * creaione pozze d'acqua
 		 */
 		do
 		{
-			int row = (int)(Math.random() * 37 + 2); // random da 2 a 38
-			int col = (int)(Math.random() * 37 + 2);
-			int size = (int)(Math.random() * 11 + 5);
+			int row = (int)(Math.random() * (maxRow - 10) + 4); // random da 4 a 33
+			int col = (int)(Math.random() * (maxCol - 14) + 5); // random da 5 a 31
+			int size = (int)(Math.random() * 11 + 5); //random da 5 a 15
 			if(Water >= size)
 			{
-				switch (size) // random da 5 a 15
+				switch (size)
 				{
 					case 5:
 					{
-						//figura fiume
+						star(size,row,col, map);
+						break;
 					}
 					case 6:
 					{
-						rectangle(size,row,col);
+						rectangle(size,row,col, map);
+						break;
 					}
 					case 7:
 					{
 						//figuara fiume
+						break;
 					}
 					case 8:
 					{
-						//figura ferro cavallo
+						horseshoe(size, row, col, map);
+						break;
 					}
 					case 9:
 					{
-						rectangle(size,row,col);
+						rectangle(size,row,col, map);
+						break;
 					}
 					case 10:
 					{
-						//figura stella
+						//figura fiume
+						break;
 					}
 					case 11:
 					{
 						//figura fiume
+						break;
 					}
 					case 12:
 					{	
-						rectangle(size,row,col);
+						rectangle(size,row,col, map);
+						break;
 					}
 					case 13:
 					{
-						//figura stella
+						star(size,row,col, map);
+						break;
 					}
 					case 14:
 					{
-						//figura ferro cavallo
+						horseshoe(size, row, col, map);
+						break;
 					}
 					case 15:
 					{
-						//figuara ferro cavallo
+						horseshoe(size, row, col, map);
+						break;
 					}
 				}
 			}
 		}while(Water>=5);
 		
 		
+	}
+	public void stampa()
+	{
+
+		for(int i=0; i<maxRow; i++)
+		{
+			for(int j=0; j<maxCol; j++)
+			{
+				System.out.print(map[i][j] +" ");
+			}
+			System.out.print("\n");
+		}
 	}
 
 }
