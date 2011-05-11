@@ -1,10 +1,13 @@
 package Server;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 /**
  * 
  * @author Marco
  *
  */
+import java.util.HashMap;
 
 /**
  * gruppo di dinosauri appartenenti a un giocatore
@@ -13,7 +16,11 @@ public class Species
 {
 	private String name;
 	private int timeOfLive;
+	/*
 	private ArrayList<Dinosaur> myDinosaurs;
+	*/
+	private HashMap<String, Dinosaur> myDinosaurs;
+	
 	private enum type {Carnivorous, Vegetarian}
 	private type speciesType;
 	private int  dinoNumber = 1;
@@ -24,7 +31,11 @@ public class Species
 	public Species(String name, type speciesType)
 	{
 		int posRig, posCol;
+		/*
 		myDinosaurs = new ArrayList<Dinosaur>();
+		*/
+		myDinosaurs = new HashMap<String, Dinosaur>();
+		
 		this.name = name;
 		this.speciesType = speciesType;
 		timeOfLive = 120;
@@ -72,33 +83,33 @@ public class Species
 			dino = new Vegetarian(dinoId, posRig, posCol);
 		}
 
+		/*
 		myDinosaurs.add(dino);
+		*/
+		myDinosaurs.put(dinoId.toString(), dino);
+		
 		return;
 	}
 	
 	/**
 	 * riconosce l'id del dinosauro e restituisce l'oggetto
 	 */
-	public Dinosaur identifyDinosaur(String dinoId, ArrayList<Dinosaur> myDinosaur)
+	public Dinosaur identifyDinosaur(String dinoId)
 	{
-		for(Dinosaur dino : myDinosaur)
-		{
-			if(dinoId == dino.getDinoId())
-			{
-				return dino;
-			}
-		}
-		return null;
+		return myDinosaurs.get(dinoId);
 	}
 	
 	/**
 	 * aggiorna stato di ogni dinosauro alla fine del turno
 	 */
-	public void upDateDinosaurStatus(ArrayList<Dinosaur> myDinosaur)
+	public void upDateDinosaurStatus()
 	{
-		for(Dinosaur dino : myDinosaur)
+		Set set = myDinosaurs.keySet();
+		Iterator keys = set.iterator();
+		
+		while(keys.hasNext())
 		{
-			dino.updateDinosaurAge();
+			myDinosaurs.get(keys).updateDinosaurAge();
 			timeOfLive -= 1;
 		}
 	}
