@@ -19,6 +19,7 @@ public class Species
 	/*
 	private ArrayList<Dinosaur> myDinosaurs;
 	*/
+	// < dinoId, riferimento all'oggetto dinosauro >
 	private HashMap<String, Dinosaur> myDinosaurs;
 	
 	private enum type {Carnivorous, Vegetarian}
@@ -31,9 +32,7 @@ public class Species
 	public Species(String name, type speciesType)
 	{
 		int posRig, posCol;
-		/*
-		myDinosaurs = new ArrayList<Dinosaur>();
-		*/
+		
 		myDinosaurs = new HashMap<String, Dinosaur>();
 		
 		this.name = name;
@@ -65,7 +64,7 @@ public class Species
 	
 	/**
 	 * add a new dinosaur the same type of my species
-	 * at my array of dinosaurs
+	 * at my HashTable of dinosaurs
 	 */
 	public void addDinosaur(int dinoNumber, int posRig, int posCol)
 	{
@@ -83,9 +82,6 @@ public class Species
 			dino = new Vegetarian(dinoId, posRig, posCol);
 		}
 
-		/*
-		myDinosaurs.add(dino);
-		*/
 		myDinosaurs.put(dinoId.toString(), dino);
 		
 		return;
