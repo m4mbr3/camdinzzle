@@ -14,7 +14,7 @@ public class Player {
 	 */
 	private String password;
 	private String userName;
-	private String specie;
+	private Species specie;
 	private String token;
 	/*
 	 * default is offline
@@ -44,11 +44,11 @@ public class Player {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public void setSpecie(String specie)
+	public void setSpecie(Species specie)
 	{
 		this.specie = specie;
 	}
-	public String getSpecie()
+	public Species getSpecie()
 	{
 		return this.specie;
 	}
