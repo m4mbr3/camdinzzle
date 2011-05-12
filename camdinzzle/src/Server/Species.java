@@ -24,7 +24,7 @@ public class Species
 	
 	private enum type {Carnivorous, Vegetarian}
 	private type speciesType;
-	private int  dinoNumber = 1;
+	private int  dinoNumber;
 	
 	/**
 	 * Create a new species, set name, type, timeOfLive and add one dinosaur
@@ -38,10 +38,11 @@ public class Species
 		this.name = name;
 		this.speciesType = speciesType;
 		timeOfLive = 120;
+		dinoNumber = 0;
 		posRig = (int) (Math.random() * 40);
 		posCol = (int) (Math.random() * 40);
 		//check mappa vuota!!!
-		addDinosaur(getDinoNumber(), posRig, posCol);
+		addDinosaur(posRig, posCol);
 		return;
 	}
 	
@@ -66,11 +67,11 @@ public class Species
 	 * add a new dinosaur the same type of my species
 	 * at my HashTable of dinosaurs
 	 */
-	public void addDinosaur(int dinoNumber, int posRig, int posCol)
+	public void addDinosaur( int posRig, int posCol)
 	{
 		Dinosaur dino;
 		addDinoNumber();
-		String dinoId = name + " - " + dinoNumber;
+		String dinoId = name + " - " + getDinoNumber();
 		
 		if(speciesType == type.Carnivorous) //Control the type of species
 		{

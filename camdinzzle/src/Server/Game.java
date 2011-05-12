@@ -15,9 +15,9 @@ public class Game {
 	 * 
 	 */
 	private String gameid;
-	private Object[][] map;
-	private static final int maxRow=40;
-	private static final int maxCol=40;
+	private static Object[][] map;
+	public static final int maxRow=40;
+	public static final int maxCol=40;
 	private int Water = 164;
 	private int Carrion=20;
 	private int Vegetation=512;
@@ -447,6 +447,12 @@ public class Game {
 			}
 			System.out.print("\n");
 		}
+	}
+	
+	
+	public static Object getCell(int row, int col)
+	{
+		return map[row][col];
 	}
 
 }

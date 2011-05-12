@@ -10,14 +10,14 @@ public abstract class Dinosaur
 {
 	private String dinoId;
 	private int age;
-	private int energy;
+	protected int energy;
 	private int dimension;
-	private int energyMax;
+	protected int energyMax;
 	private static int eEgg = 1500;
-	private int posRig; //Row of dinosaur on the map
-	private int posCol; //Column of dinosaur on the map
+	protected int posRow; //Row of dinosaur on the map
+	protected int posCol; //Column of dinosaur on the map
 	
-	public abstract int eat();
+	public abstract boolean eat(Object[][] map);
 	public abstract void fight();
 	public abstract boolean move();
 	
@@ -29,18 +29,18 @@ public abstract class Dinosaur
 	 * @return null
 	 *  
 	 */
-	public Dinosaur(String dinoId, int posRig, int posCol)
+	public Dinosaur(String dinoId, int posRow, int posCol)
 	{
 		age = (int) (Math.random() * 13 + 24);
 		dimension = 1;
 		energy = 1000;
 		energyMax = energy * dimension;
-		this.posRig = posRig;
+		this.posRow = posRow;
 		this.posCol = posCol;
 	}
 	
 	/**
-	 * controlla che la dimensione non sia già massima (=5)
+	 * controlla che la dimensione non sia gia' massima (=5)
 	 * controlla che abbia abbanstanza energia per crescere e cresce
 	 * altrimenti muore
 	 * 
@@ -73,13 +73,34 @@ public abstract class Dinosaur
 		if(energy > eEgg)
 		{
 			energy = energy - eEgg;
+			int offSet = 1;
+			boolean positioned = false;
+			do
+			{
+				for(int i=posRow-offSet; i<=posRow+offSet; i++ )
+				{
+					for(int j=posCol-offSet; i<=posCol+offSet; j++)
+					{
+						if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
+						{					
+							if((Game.getCell(i, j) instanceof String)&&(Game.getCell(i, j)=="t"))
+							{
+								
+								positioned = true;
+								break;
+							}
+						}
+					}
+					if(positioned) break;
+				}
+				offSet++;
+			}while(!positioned);
 			
 			return true;
 		}
 		else 
 		{
-			dead();
-			return false;
+			return false;	//muore
 		}
 	}
 	

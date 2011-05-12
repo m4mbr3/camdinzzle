@@ -9,16 +9,27 @@ package Server;
 public class Carnivorous extends Dinosaur
 {
 
-	public Carnivorous(String dinoId, int posX, int posY) 
+	public Carnivorous(String dinoId, int posRow, int posCol) 
 	{
-		super(dinoId, posX, posY);
+		super(dinoId, posRow, posCol);
 	}
 	
 	@Override
-	public int eat() 
+	/**
+	 * @param map
+	 */
+	public boolean eat(Object [][] map)
 	{
-
-		return 0;
+		if(map[posRow][posCol] instanceof Carrion)
+		{
+			energy += ((Carrion)map[posRow][posCol]).getPower();
+			if(energy > energyMax)
+			{
+				energy = energyMax;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override

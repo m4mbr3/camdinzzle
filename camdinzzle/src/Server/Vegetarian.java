@@ -9,16 +9,24 @@ package Server;
 public class Vegetarian extends Dinosaur
 {
 
-	public Vegetarian(String dinoId, int posX, int posY)
+	public Vegetarian(String dinoId, int posRow, int posCol)
 	{
-		super(dinoId, posX, posY);
+		super(dinoId, posRow, posCol);
 	}
 	
 	@Override
-	public int eat() 
+	public boolean eat(Object [][] map)
 	{
-
-		return 0;
+		if(map[posRow][posCol] instanceof Vegetation)
+		{
+			energy += ((Vegetation)map[posRow][posCol]).getPower();
+			if(energy > energyMax)
+			{
+				energy = energyMax;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override
