@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -131,11 +132,12 @@ public class Server {
 			if(players.containsKey(username))
 			{
 				Set set = players.entrySet();
-				Iterator<String> iter = set.iterator();
+				Iterator iter = set.iterator();
 				
 				while(iter.hasNext())
 				{
-					if(players.get(iter).getSpecie().equals(splitted_message[1]))
+					Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
+					if(me.getValue().getSpecie().equals(splitted_message[1]))
 						return false;
 				}
 				
