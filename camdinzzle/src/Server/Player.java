@@ -52,5 +52,15 @@ public class Player {
 	{
 		return this.specie;
 	}
+	
+	public void setToken(String t)
+	{
+		token = t;
+	}
+	
+	public String getToken()
+	{
+		return token;
+	}
 
 }

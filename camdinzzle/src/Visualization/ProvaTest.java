@@ -92,7 +92,7 @@ public class ProvaTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ProvaTest a = new ProvaTest();
-		// p = new Player("carlos", "12345");
+		//ClientManager p = new ClientManager(connection_with_client, server, username)
 		
 		//a.findMin(a.generateKeyForToken());
 		//System.out.println(a.generateToken("carlos", p));

@@ -29,15 +29,17 @@ public class ClientManager implements Runnable {
 	private String read_socket;
 	private String[] splitted_message; 
 	private String username;
+	private String token;
 	private String command;
 	private boolean is_run;
 	
-	public ClientManager(Socket connection_with_client, Server server, String username) {
+	public ClientManager(Socket connection_with_client, Server server, String username, String token) {
 		// TODO Auto-generated constructor stub
 		this.is_run = true;
 		this.connection_with_client = connection_with_client;
 		this.server = server;
 		this.username = username;
+		this.token = token;
 		this.read_socket = null;
 		this.splitted_message = null;
 		try {

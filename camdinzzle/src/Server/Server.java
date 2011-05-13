@@ -40,6 +40,7 @@ public class Server {
 	
 	private int port_login;
 	private int port_newuser;
+	private String keyForToken;
 	private Login login;
 	private NewUser newuser;
 	
@@ -51,6 +52,8 @@ public class Server {
 		port_login = 4567;
 		//Definition of default port NewUser 
 		port_newuser = 4566;
+		// Inizializzazione chiave per generazione del token
+		keyForToken  = this.generateKeyForToken();
 		
 		//Definition of new Server login for passing it to startLogin and launch login daemon 
 		try {
@@ -100,11 +103,11 @@ public class Server {
 	
 	
 	
-	public void startClientConnectionManagerDaemon(Socket socket_with_client, String username)
+	public void startClientConnectionManagerDaemon(Socket socket_with_client, String token, String username)
 	{
-		ClientManager new_manager = new ClientManager(socket_with_client, this, username);
+		ClientManager new_manager = new ClientManager(socket_with_client, this, username, token);
 		new_manager.run();
-		logged_players.put(username, new_manager);
+		logged_players.put(token, new_manager);
 		new_manager = null;
 	}
 	
@@ -210,7 +213,52 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Chiave per generazione dei token generata in modo casuale ad ogni avvio del Server
+	 * @return Chiave generata
+	 */
+	private String generateKeyForToken()
+	{
+		// Lunghezza della chiave da 3 a 5
+		int keyLength = (int) (Math.random() * 3 + 3);
+		String key = new String("");
+		
+		// Contiene i numeri casuali da 0 a 7 presenti nella chiave univocamente
+		HashMap<String, String> registeredPositions = new HashMap<String, String>();
+		int i = 0;
+		
+		while(i<keyLength)
+		{
+			// Generazione casuale del numero da inserire nella chiave
+			int singleCasual = (int) (Math.random() * keyLength); 
+			
+			// Se non è già presente nella chiave, viene inserito
+			if(!registeredPositions.containsKey(String.valueOf(singleCasual)))
+			{
+				registeredPositions.put(String.valueOf(singleCasual), String.valueOf(singleCasual));
+				key += String.valueOf(singleCasual);
+				i++;
+			}
+		}
+		
+		return key;
+	}
 	
+	public String getKeyForToken()
+	{
+		return keyForToken;
+	}
+	
+	public void addTokenAtPlayer(String username, String token)
+	{
+		synchronized(lock_players)
+		{
+			if(players.containsKey(username))
+			{
+				players.get(username).setToken(token);
+			}
+		}
+	}
 	
 	
 	/**

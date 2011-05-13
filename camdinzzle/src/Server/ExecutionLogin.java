@@ -78,11 +78,13 @@ public class ExecutionLogin implements Runnable
 		if(is_an_exist_user) 
 		{
 			list_of_commands.add("ok");
-			list_of_commands.add("T");
+			String token = this.generateToken(splitted_message[0]);
+			server.addTokenAtPlayer(splitted_message[0], token);
+			list_of_commands.add(token);
 			writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
 			//at this point the client is official logged into Server Game and here starts the client connection
 			//manager
-			server.startClientConnectionManagerDaemon(connection_with_client,splitted_message[0]);
+			server.startClientConnectionManagerDaemon(connection_with_client,token, splitted_message[0]);
 		}
 		else 
 		{
@@ -96,5 +98,53 @@ public class ExecutionLogin implements Runnable
 		}
 	}
 
+	
+	/**
+	 * Ricerca il minimo all'interno della chiave e lo ritorna
+	 * @param key Chiave generata dal Server
+	 * @return Il minimo all'interno della chiave
+	 */
+	private int findMin(String key)
+	{
+		int min = key.length() + 1;
+		
+		for(int i = 0; i<key.length(); i++)
+		{
+			if(Integer.parseInt(String.valueOf(key.charAt(i))) < min)
+			{
+				min = Integer.parseInt(String.valueOf(key.charAt(i)));
+			}
+		}
+		
+		return min;
+	}
+	
+	/** Token generato tramite l'applicazione sulla concatenazione di username e hashcode(del riferimento 
+	 * a questo oggetto). Sulla concatenazione di applica un algoritmo di trasposizione.
+	 * @param username Username del giocatore
+	 * @return Token generato
+	 */
+	private String generateToken(String username)
+	{
+		String key = server.getKeyForToken();
+		int length = key.length();
+		String concatenateIdentifier = new String(username + this.hashCode());
+		String token = new String("");
+		
+		for(int j = 0; j<length; j++)
+		{
+			int min = findMin(key);
+			int positionMin = key.indexOf(String.valueOf(min));
+			
+			key = key.replaceFirst(String.valueOf(min), String.valueOf(key.length()));
+
+			for(int i = positionMin; i<concatenateIdentifier.length(); i += length)
+			{
+				token += concatenateIdentifier.charAt(i);
+			}
+		}
+		
+		return token;
+	}
 }
 
