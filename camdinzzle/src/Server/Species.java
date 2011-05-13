@@ -1,6 +1,7 @@
 package Server;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 /**
  * 
@@ -100,11 +101,12 @@ public class Species
 	public void upDateDinosaurStatus()
 	{
 		Set set = myDinosaurs.keySet();
-		Iterator keys = set.iterator();
+		Iterator iter = set.iterator();
 		
-		while(keys.hasNext())
+		while(iter.hasNext())
 		{
-			myDinosaurs.get(keys).updateDinosaurAge();
+			Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) iter.next();
+			me.getValue().updateDinosaurAge();
 			timeOfLive -= 1;
 		}
 	}
