@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import javax.annotation.Generated;
 import javax.xml.soap.Text;
 
-import Server.ClientManager;
+import Server.ClientManagerSocket;
 import Server.Player;
 
 public class ProvaTest {
@@ -32,7 +32,7 @@ public class ProvaTest {
 	/* Token generato tramite l'applicazione sulla concatenazione di username e hashcode(del 
 	 * riferimento all'oggetto Player) del player l'algoritmo di trasposizione con numeri come chiave
 	 */
-	public String generateToken(String username, ClientManager p)
+	public String generateToken(String username, ClientManagerSocket p)
 	{
 		String key = new String(generateKeyForToken());
 		int length = key.length();
@@ -73,7 +73,7 @@ public class ProvaTest {
 			// Generazione casuale del numero da inserire nella chiave
 			int singleCasual = (int) (Math.random() * keyLength); 
 			
-			// Se non è già presente nella chiave, viene inserito
+			// Se non ï¿½ giï¿½ presente nella chiave, viene inserito
 			if(!registeredPositions.containsKey(String.valueOf(singleCasual)))
 			{
 				registeredPositions.put(String.valueOf(singleCasual), String.valueOf(singleCasual));
@@ -92,7 +92,7 @@ public class ProvaTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ProvaTest a = new ProvaTest();
-		//ClientManager p = new ClientManager(connection_with_client, server, username)
+		//ClientManagerSocket p = new ClientManagerSocket(connection_with_client, server, username)
 		
 		//a.findMin(a.generateKeyForToken());
 		//System.out.println(a.generateToken("carlos", p));

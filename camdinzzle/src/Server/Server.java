@@ -24,23 +24,63 @@ public class Server {
 	 * 
 	 */
 	//oggetti per sincronizzare i metodi sugli arraylist
+	
+	/**
+	 * Object for managing the synchronization of operations on hashmap players
+	 */
 	private Object lock_players;
+	
+	/**
+	 * Object for managing the synchronization of operations on hashmap logged_player
+	 */
 	private Object lock_logged_player;
+	
+	/**
+	 * Object for managing the synchronization of operations on hashmap species
+	 */
 	private Object lock_species;
 	//serversocket che aprono le connessioni con i socket del client
-	private ServerSocket deal_server;
+	
+	/**
+	 * ServerSocket that listens into thread login at port 4567. 
+	 * It is used to connect with client 
+	 */
 	private ServerSocket deal_login;
+	/**
+	 * ServerSocket that listens into thread newUser at port 4566.
+	 * It is used to create a new user by client 
+	 */
 	private ServerSocket deal_newuser;
-	private Socket deal_socket;
-	//oggetto che identifica la partita corrente
+	
+	
+	/**
+	 *	Instance of CurrentSession of Game. It contains the info about the game and current maps used for gaming
+	 */
 	private Game currentSession;
+	
+	/**
+	 * Hashmap that contains players instances. All players registered are here from first start of server
+	 */
 	private HashMap<String, Player> players;
 	
-	//HashMap degli utenti loggati ma che non stanno giocando. Chiave token
-	private HashMap<String, ClientManager> logged_players;
+	/**
+	 * Hashmap that contains the instances of players current logged to server.
+	 */
+	private HashMap<String, ClientManagerSocket> logged_players;
 	
+	/**
+	 * Integer that contains the default port of login daemon
+	 */
 	private int port_login;
+	
+	/**
+	 * Integer that contains the default port of new user daemon
+	 */
 	private int port_newuser;
+	
+	/**
+	 * 
+	 */
 	private String keyForToken;
 	private Login login;
 	private NewUser newuser;
@@ -76,7 +116,7 @@ public class Server {
 		}
 		//Definition of new PlayerList empty 
 		players = new HashMap<String, Player>();
-		logged_players = new HashMap<String, ClientManager>();
+		logged_players = new HashMap<String, ClientManagerSocket>();
 		//species = new ArrayList<Species>();
 		login = null;
 		newuser = null;
@@ -106,7 +146,7 @@ public class Server {
 	
 	public void startClientConnectionManagerDaemon(Socket socket_with_client, String token, String username)
 	{
-		ClientManager new_manager = new ClientManager(socket_with_client, this, username, token);
+		ClientManagerSocket new_manager = new ClientManagerSocket(socket_with_client, this, username, token);
 		new_manager.run();
 		logged_players.put(token, new_manager);
 		new_manager = null;
@@ -234,7 +274,7 @@ public class Server {
 			// Generazione casuale del numero da inserire nella chiave
 			int singleCasual = (int) (Math.random() * keyLength); 
 			
-			// Se non è già presente nella chiave, viene inserito
+			// Se non ï¿½ giï¿½ presente nella chiave, viene inserito
 			if(!registeredPositions.containsKey(String.valueOf(singleCasual)))
 			{
 				registeredPositions.put(String.valueOf(singleCasual), String.valueOf(singleCasual));

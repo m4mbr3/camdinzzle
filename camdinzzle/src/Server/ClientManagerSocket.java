@@ -5,6 +5,7 @@ package Server;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -15,7 +16,7 @@ import java.util.HashMap;
  * @author Andrea
  *
  */
-public class ClientManager implements Runnable {
+public class ClientManagerSocket implements Runnable {
 
 	/**
 	 * 
@@ -32,9 +33,12 @@ public class ClientManager implements Runnable {
 	private String token;
 	private String command;
 	private boolean is_run;
+	private FileOutputStream f_out; 
 	
-	public ClientManager(Socket connection_with_client, Server server, String username, String token) {
+	
+	public ClientManagerSocket(Socket connection_with_client, Server server, String username, String token) {
 		// TODO Auto-generated constructor stub
+		
 		this.is_run = true;
 		this.connection_with_client = connection_with_client;
 		this.server = server;
