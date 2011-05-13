@@ -286,7 +286,7 @@ public class Game {
 	}
 	
 	/**
-	 * crea una nuova maooa random
+	 * crea una nuova mappa random
 	 */
 	public void createMap()
 	{
@@ -453,6 +453,39 @@ public class Game {
 	public static Object getCell(int row, int col)
 	{
 		return map[row][col];
+	}
+	
+	public static Object[][] getLocalMap(int row, int col, int dimension)
+	{
+		int size;
+		if(dimension==1)
+		{
+			size = 5;
+		}
+		else
+		{
+			if((dimension==2)||(dimension==3))
+			{
+				size = 7;
+			}
+			else
+			{
+				size = 9;
+			}
+		}
+		Object[][] localMap = new Object[size][size];
+		int k = row - size/2;
+		for(int i=0; i<size; i++)
+		{
+			int h = col - size/2;
+			for(int j=0; j<size; j++)
+			{
+				localMap[i][j] = map [k][h];
+				h++;
+			}
+			k++;
+		}
+		return localMap;
 	}
 
 }

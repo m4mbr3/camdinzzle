@@ -13,9 +13,10 @@ public abstract class Dinosaur
 	protected int energy;
 	private int dimension;
 	protected int energyMax;
-	private static int eEgg = 1500;
+	private final int eEgg = 1500;
 	protected int posRow; //Row of dinosaur on the map
 	protected int posCol; //Column of dinosaur on the map
+	private Object[][] localMap;
 	
 	public abstract boolean eat(Object[][] map);
 	public abstract void fight();
@@ -37,6 +38,7 @@ public abstract class Dinosaur
 		energyMax = energy * dimension;
 		this.posRow = posRow;
 		this.posCol = posCol;
+		startLocalMap();
 	}
 	
 	/**
@@ -127,6 +129,72 @@ public abstract class Dinosaur
 	public void updateDinosaurAge()
 	{
 		age -= 1;
+	}
+	
+	public int getDinoDimension()
+	{
+		return dimension;
+	}
+	
+	public int getPosRow()
+	{
+		return posRow;
+	}
+	
+	public int getPosCol()
+	{
+		return posCol;
+	}
+	
+	public int getSizeLocalMap()
+	{
+		if(dimension==1)
+		{
+			return 5;
+		}
+		else
+		{
+			if((dimension==2)||(dimension==3))
+			{
+				return 7;
+			}
+			else
+			{
+				return 9;
+			}
+		}
+	}
+	
+	private void startLocalMap()
+	{
+		int size;
+		if(dimension==1)
+		{
+			size = 5;
+		}
+		else
+		{
+			if((dimension==2)||(dimension==3))
+			{
+				size = 7;
+			}
+			else
+			{
+				size = 9;
+			}
+		}
+		localMap = new Object[size][size];
+		localMap = Game.getLocalMap(posRow, posCol, dimension);
+	}
+	
+	private void udateLocalMap()
+	{
+		localMap = Game.getLocalMap(posRow, posCol, dimension);
+	}
+	 
+	public Object[][] getLocalMap()
+	{
+		 return localMap;
 	}
 }
 

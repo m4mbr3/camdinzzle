@@ -22,6 +22,7 @@ public class Species
 	private enum type {Carnivorous, Vegetarian}
 	private type speciesType;
 	private int  dinoNumber;
+	private Object[][] map;
 	
 	/**
 	 * Create a new species, set name, type, timeOfLive and add one dinosaur
@@ -40,6 +41,7 @@ public class Species
 		posCol = (int) (Math.random() * 40);
 		//check mappa vuota!!!
 		addDinosaur(posRig, posCol);
+		startMap();
 		return;
 	}
 	
@@ -125,11 +127,65 @@ public class Species
 
 	
 	
-	 public String getName() {
-			return name;
-		}
+	public String getName() 
+	{
+		return name;
+	}
 
-		public void setName(String name) {
-			this.name = name;
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	/**
+	 * crea una mappa generale del giocatore tutta buia
+	 */
+	public void startMap()
+	{
+		for(int i=0; i<Game.maxRow; i++)
+		{
+			for(int j=0; j<Game.maxCol; j++)
+			{
+				map[i][j] = new String ("b");
+			}
+		}		
+	}
+	
+	/**
+	 * aggiorna la mappa generale del giocatore inserendo la vista dei dinosauri
+	 */
+	public void updateMap()
+	{
+		Set set = myDinosaurs.entrySet();
+		Iterator iter = set.iterator();
+		Dinosaur dino;
+		while(iter.hasNext())
+		{
+			Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) iter.next();
+			dino = me.getValue();
+			Object[][] localMap = dino.getLocalMap();
+			int size = dino.getSizeLocalMap();
+			int posRow = dino.getPosRow();
+			int posCol = dino.getPosCol();
+			int k=0;
+			for(int i=posRow-size/2; i<=posRow+size/2; i++)
+			{
+				int h=0;
+				for(int j=posCol-size/2; j<=posCol+size/2; j++)
+				{
+					map[i][j] = localMap[k][h].toString();
+					h++;
+				}
+				k++;
+			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @return map mappa generale del player con celle visibili solo quelle giˆ visitate.
+	 */
+	public Object[][] getPlayerMap()
+	{
+		return map;
+	}
 }

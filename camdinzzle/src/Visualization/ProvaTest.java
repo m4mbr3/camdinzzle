@@ -96,5 +96,31 @@ public class ProvaTest {
 		
 		//a.findMin(a.generateKeyForToken());
 		//System.out.println(a.generateToken("carlos", p));
+
+		/**
+		 * prova fuma!!!
+		 */
+//		Game g= new Game();
+//		g.createMap();
+//		g.stampa();
+/*		System.out.println((int)(Math.random() * 29 + 4));
+		System.out.println((int)(Math.random() * 29 + 4));
+		System.out.println((int)(Math.random() * 29 + 4));
+		System.out.println((int)(Math.random() * 29 + 4));
+		System.out.println("");
+		System.out.println((int)(Math.random() * 30 + 4));//ok(4 a 33)
+		System.out.println((int)(Math.random() * 30 + 4));
+		System.out.println((int)(Math.random() * 30 + 4));
+		System.out.println((int)(Math.random() * 30 + 4));
+		System.out.println("");
+		System.out.println((int)(Math.random() * 11 + 5));
+		System.out.println((int)(Math.random() * 11 + 5));
+		System.out.println((int)(Math.random() * 11 + 5));
+		System.out.println((int)(Math.random() * 11 + 5));
+		System.out.println((int)(Math.random() * 11 + 5));
+		System.out.println((int)(Math.random() * 11 + 5));
+		System.out.println((int)(Math.random() * 11 + 5));
+		System.out.println((int)(Math.random() * 11 + 5));
+*/	
 	}
 }
