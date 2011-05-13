@@ -16,11 +16,20 @@ public class Player {
 	private String userName;
 	private Species specie;
 	private String token;
+	private int punteggio;
 	/*
 	 * default is offline
 	 * can be playing, offline, logged
 	 */
 	
+	public int getPunteggio() {
+		return punteggio;
+	}
+
+	public void setPunteggio(int punteggio) {
+		this.punteggio = punteggio;
+	}
+
 	public Player(String userName, String password) {
 		// TODO Auto-generated constructor stub
 		this.userName = userName;
