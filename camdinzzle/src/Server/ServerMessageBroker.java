@@ -94,6 +94,14 @@ public class ServerMessageBroker
 	// Creazione messaggi in uscita
 	
 	/**
+	 * Crea il messaggio contenente solo ok
+	 * @return Il messaggio da inviare al Client
+	 */
+	public static String createOkMessage()
+	{
+		return "@ok";
+	}
+	/**
 	 * Crea il messaggio di errore da mandare al Client
 	 * @param errorType stringa contenente il messaggio di errore
 	 * @return messaggio da mandare al Client
