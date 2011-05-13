@@ -126,8 +126,23 @@ public class ClientManager implements Runnable {
 				}
 			}
 			
+			// Comandi in partita(Informazioni)
 			
+			else if(command.compareTo("mappaGenerale") == 0)
+			{
+				
+			}
 			
+			// End Comandi in partita(Informazioni)
+			
+			// Comandi in partita(Azioni)
+			
+			else if(command.compareTo("muoviDinosauro") == 0)
+			{
+				String[] dinoMovement = ServerMessageBroker.manageDinoMovement(command);
+			}
+			
+			// End Comandi in partita(Azioni)
 		}
 	}
 

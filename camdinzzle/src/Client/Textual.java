@@ -26,19 +26,21 @@ public class Textual implements Visual
 	
 	}
 
-	@Override
 	/**
-	 * @param msg: messaggio del Server
+	 * Stampa a video la vista locale del dinosaruro
+	 * @param dinoId Id del dinosaruo di cui stampare la vista locale
+	 * @param msg Messaggio del Server
 	 */
+	@Override
 	public void drawDinoZoom(String dinoId, String msg) 
 	{ 
 		if(ClientMessageBroker.checkMessage(msg))
 		{
 			ArrayList<String> dinoZoomList = ClientMessageBroker.manageDinoZoom(msg);
 			// Alla posizione 2 dell'arraylist c'è il numero delle righe della vista
-			int rowsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
+			int rowsNumber = Integer.parseInt(dinoZoomList.get(3).trim());
 			// Alla posizione 3 dell'arraylist c'è il numero delle colonne della vista
-			int columnsNumber = Integer.parseInt(dinoZoomList.get(3).trim());
+			int columnsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
 			System.out.print("Dinosaur's " + dinoId + " zoom:");
 			
 			for(int i = 4; i<dinoZoomList.size(); i++)
@@ -60,6 +62,10 @@ public class Textual implements Visual
 			drawError(msg);
 	}
 
+	/**
+	 * Stampa a video la lista dei dinosauri del giocatore
+	 * @param msg Messaggio del Server
+	 */
 	@Override
 	public void drawDinoList(String msg) 
 	{
@@ -77,6 +83,11 @@ public class Textual implements Visual
 			drawError(msg);
 	}
 	
+	/**
+	 * Stampa a video lo stato di un dinosauro
+	 * @param dinoId Id del dinosauro
+	 * @param msg Messaggio del Server
+	 */
 	public void drawDinoState(String dinoId, String msg)
 	{
 		if(ClientMessageBroker.checkMessage(msg))
@@ -111,6 +122,7 @@ public class Textual implements Visual
 	
 	}
 
+	// TODO
 	public void drawDinoMovement(String msg)
 	{
 		if(ClientMessageBroker.checkMessage(msg))
@@ -121,6 +133,10 @@ public class Textual implements Visual
 			drawError(msg);
 	}
 	
+	/**
+	 * Stampa a video la classifica dei giocatori
+	 * @param msg Messaggio del Server
+	 */
 	@Override
 	public void showRanking(String msg) 
 	{
@@ -141,12 +157,21 @@ public class Textual implements Visual
 			drawError(msg);
 	}
 	
+	/**
+	 * Stampa a video l'errore avvenuto durante la comunicazione con il Server. In particolare viene 
+	 * stampato il nome dell'errore ricevuto nella stringa ricevuta dal Server
+	 * @param msg Messaggio del Server
+	 */
 	public void drawError(String msg)
 	{
 		String[] errorString = ClientMessageBroker.splitMessage(msg);
 		System.out.println("Errore: " + errorString[1].substring(1));
 	}
 	
+	/**
+	 * Permette di inserire l'username e la password dell'utente
+	 * @return Un array contenente in ordine l'username e la password inseriti
+	 */
 	public String[] drawLogin()
 	{
 		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
@@ -169,6 +194,10 @@ public class Textual implements Visual
 		return returnValues;
 	}
 	
+	/**
+	 * Permette di inserire l'username e la password
+	 * @return Un array contenente in ordine l'username e la password inseriti
+	 */
 	public String[] drawUserCreation()
 	{
 		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
@@ -191,15 +220,25 @@ public class Textual implements Visual
 		return returnValues;
 	}
 	
-	public String drawRaceCreation()
+	/**
+	 * Permette di inserire il nome e il tipo della razza scelta 
+	 * @return Un array contenente in ordine in nome e il tipom della razza inseriti dall'utente
+	 */
+	public String[] drawRaceCreation()
 	{
 		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
-		String race = null;
+		String[] race = new String[2];
 		
 		try
 		{
 			System.out.println("Inserire il nome della razza dei dinosauri:\n");
-			race = dataInput.readLine();
+			race[0] = dataInput.readLine();
+			do
+			{
+				System.out.println("Inserire il tipo della razza dei dinosauri('c' o 'e':\n");
+				race[1] = dataInput.readLine();
+			}
+			while((!race[1].equals("c")) || (!race[1].equals("e")));
 		}
 		catch(IOException ex)
 		{
@@ -210,6 +249,10 @@ public class Textual implements Visual
 		return race;
 	}
 	
+	/**
+	 * Stampa a video la lista degli username dei giocatopri in partita
+	 * @param msg Messaggio del Server
+	 */
 	public void drawPlayerList(String msg)
 	{		
 		if(ClientMessageBroker.checkMessage(msg))

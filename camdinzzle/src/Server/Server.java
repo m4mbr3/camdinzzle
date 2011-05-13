@@ -7,6 +7,9 @@ import java.net.ServerSocket;
  */
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Andrea
@@ -30,13 +33,11 @@ public class Server {
 	private Socket deal_socket;
 	//oggetto che identifica la partita corrente
 	private Game currentSession;
-	//all players registered to "camdinzzle", tutti gli utenti registrati
-	private ArrayList<Player> players;
-	//ArrayList of [1-8] player that playing into game
-	private ArrayList<ClientManager> players_in_game; 
-	//Arraylist degli utenti loggati ma che non stanno giocando
-	private ArrayList<ClientManager> logged_players;
-	private ArrayList<Species> species;
+	private HashMap<String, Player> players;
+	
+	//HashMap degli utenti loggati ma che non stanno giocando. Chiave token
+	private HashMap<String, ClientManager> logged_players;
+	
 	private int port_login;
 	private int port_newuser;
 	private Login login;
@@ -70,9 +71,9 @@ public class Server {
 			e.printStackTrace();
 		}
 		//Definition of new PlayerList empty 
-		players = new ArrayList<Player>();
-		logged_players = new ArrayList<ClientManager>();
-		species = new ArrayList<Species>();
+		players = new HashMap<String, Player>();
+		logged_players = new HashMap<String, ClientManager>();
+		//species = new ArrayList<Species>();
 		login = null;
 		newuser = null;
 		this.lock_logged_player = new Object();
@@ -103,7 +104,7 @@ public class Server {
 	{
 		ClientManager new_manager = new ClientManager(socket_with_client, this, username);
 		new_manager.run();
-		logged_players.add(new_manager);
+		logged_players.put(username, new_manager);
 		new_manager = null;
 	}
 	
@@ -116,37 +117,27 @@ public class Server {
 	
 	public void logout(String username)
 	{
-		for(int i = 0 ; i < logged_players.size(); i++)
-		{
-			if (logged_players.get(i).getUsername().compareTo(username) == 0)
-			{
-				logged_players.remove(i);
-			}
-		}
+		if(logged_players.containsKey(username))
+			logged_players.remove(username);
 	}
 	
 	public boolean addNewSpecies(String[] splitted_message, String username)
 	{
-		//Species new_specie = new Species();
-		boolean to_be_present = false;
-		
 		synchronized(lock_species)
 		{
-			for(int i = 0; i< species.size(); i++)
+			if(players.containsKey(username))
 			{
-				if(species.get(i).getName().compareTo(splitted_message[1]) == 0)
+				Set set = players.entrySet();
+				Iterator<String> iter = set.iterator();
+				
+				while(iter.hasNext())
 				{
-					to_be_present = true;
+					if(players.get(iter).getSpecie().equals(splitted_message[1]))
+						return false;
 				}
-			}
-			if (to_be_present)
-			{
-				return false;
-			}
-			else
-			{
+				
 				Species new_specie;
-				if(splitted_message[2].compareTo("c") == 0)
+				if(splitted_message[2].equals("c"))
 				{
 					new_specie = new Species(splitted_message[1], Species.getCarnType());
 				}
@@ -154,17 +145,12 @@ public class Server {
 				{
 					new_specie = new Species(splitted_message[1], Species.getVegType());
 				}
-				species.add(new_specie);
-				for(int i = 0; i < players.size(); i++)
-				{
-					if (players.get(i).getUserName().compareTo(username) == 0)
-					{
-						players.get(i).setSpecie(splitted_message[1]);
-					}
-				}
+				
+				players.get(username).setSpecie(new_specie);
 				return true;
 			}
-			
+			else
+				return false;
 		}
 	}
 	
@@ -186,23 +172,23 @@ public class Server {
 	{
 		synchronized(lock_players)
 		{
-			boolean to_be_present = false;
-			for( int i = 0 ; i < players.size(); i++)
+			if(!players.containsKey(user))
 			{
-				if ((user.compareTo(players.get(i).getUserName())==0)&&(password.compareTo(players.get(i).getPassword())==0))
+				if((players.get(user).getUserName().equals(user)) && (players.get(user).getPassword().equals(password)))
 				{
-					to_be_present = true;
+					return false;
+				}
+				else
+				{
+					Player new_player = new Player(user,password);
+					players.put(user, new_player);
+					
+					return true;
 				}
 			}
-			if (to_be_present == true)
-				return false;
 			else
-			{
-				Player new_player = new Player(user,password);
-				players.add(new_player);
-				return true;
-			}
-		}	
+				return false;
+		}
 	}
 	
 	
@@ -214,16 +200,16 @@ public class Server {
 		//method for search in array of registered player if user is registered
 		synchronized(lock_players)
 		{
-			for(int i = 0 ; i < players.size(); i++)
+			if(players.containsKey(user))
 			{
-				if ((user.compareTo(players.get(i).getUserName())==0)&&(password.compareTo(players.get(i).getPassword())==0))
-				{
+				if(players.get(user).getUserName().equals(user))
 					return true;
-				}
+				return false;
 			}
 			return false;
 		}
 	}
+	
 	
 	
 	

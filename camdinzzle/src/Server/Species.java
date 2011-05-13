@@ -16,10 +16,6 @@ public class Species
 {
 	private String name;
 	private int timeOfLive;
-	/*
-	private ArrayList<Dinosaur> myDinosaurs;
-	*/
-	// < dinoId, riferimento all'oggetto dinosauro >
 	private HashMap<String, Dinosaur> myDinosaurs;
 	
 	private enum type {Carnivorous, Vegetarian}
@@ -93,7 +89,9 @@ public class Species
 	 */
 	public Dinosaur identifyDinosaur(String dinoId)
 	{
-		return myDinosaurs.get(dinoId);
+		if(myDinosaurs.containsKey(dinoId))
+			return myDinosaurs.get(dinoId);
+		return null;
 	}
 	
 	/**
