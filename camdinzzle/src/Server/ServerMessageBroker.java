@@ -112,6 +112,15 @@ public class ServerMessageBroker
 	}
 	
 	/**
+	 * Crea il messaggio di errore tokenNonValido
+	 * @return Il messaggio da mandare al Client
+	 */
+	public static String createTokenNonValidoErrorMessage()
+	{
+		return "@no,@tokenNonValido";
+	}
+	
+	/**
 	 * Crea il messaggio standard con: chiocNomeComando,parametro1,parametro2...
 	 * @param parameters contiene i parametri da concatenare nel messaggio
 	 * @return messaggio da mandare al Client
@@ -127,6 +136,16 @@ public class ServerMessageBroker
 		}
 		
 		return returnMessage;
+	}
+	
+	/**
+	 * Crea il messaggio di ok con un parametro in coda: @ok,nomeParametro
+	 * @param parameter : Parametro da mandare al Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public static String createOkMessageWithOneParameter(String parameter)
+	{
+		return "@ok," + parameter;
 	}
 	
 	/**
