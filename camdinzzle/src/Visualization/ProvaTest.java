@@ -1,7 +1,12 @@
 package Visualization;
 
+import Server.*;
+import java.security.KeyStore.Entry;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Generated;
 import javax.xml.soap.Text;
@@ -91,12 +96,27 @@ public class ProvaTest {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ProvaTest a = new ProvaTest();
-		//ClientManagerSocket p = new ClientManagerSocket(connection_with_client, server, username)
+		ProvaTest a1 = new ProvaTest();
+		System.out.println(a1.generateToken("formenti", new Player("aznors", "kihidui")));
 		
+		//ClientManagerSocket p = new ClientManagerSocket(connection_with_client, server, username)
+		/*
+		HashMap<String, String> a = new HashMap<String, String>();
+		
+		a.put("carlo", "formenti");
+		a.put("carlo23441", "formenti3443");
+		
+		Set set = a.entrySet();
+		Iterator  iter = set.iterator();
+		
+		while(iter.hasNext())
+		{
+			Map.Entry me = (Map.Entry) iter.next();
+			System.out.println(me.getValue());
+		}
 		//a.findMin(a.generateKeyForToken());
 		System.out.println(a.generateToken("carlos", new Player("Carlo","Formenti")));
-
+*/
 		/**
 		 * prova fuma!!!
 		 */

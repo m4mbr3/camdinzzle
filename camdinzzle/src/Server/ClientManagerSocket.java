@@ -16,7 +16,7 @@ import java.util.HashMap;
  * @author Andrea
  *
  */
-public class ClientManagerSocket implements Runnable {
+public class ClientManagerSocket extends ClientManager implements Runnable {
 
 	/**
 	 * 

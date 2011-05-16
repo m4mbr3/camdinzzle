@@ -1,5 +1,8 @@
 package Server;
 
+import java.util.HashMap;
+import java.util.concurrent.SynchronousQueue;
+
 
 /**
  * 
@@ -22,14 +25,84 @@ public class Game {
 	private int Carrion=20;
 	private int Vegetation=512;
 	private boolean permise=true;
-	
+	private int maxPlayers;
+	// Chiave token
+	private HashMap<String, Player> playersInGame;
 	
 	public Game() {
 		// TODO Auto-generated constructor stub
+		playersInGame = new HashMap<String, Player>();
+		maxPlayers = 8;
 	}
-	public void addPlayer()
+	
+	public int getMaxPlayers() {
+		return maxPlayers;
+	}
+
+	public void setMaxPlayers(int maxPlayers) {
+		this.maxPlayers = maxPlayers;
+	}
+
+	/**
+	 * Aggiunge un nuovo giocatore alla HashMap dei giocatori gi√† in partita
+	 * @param token Token del giocatore da aggiungere
+	 * @param newPlayer Player da aggiungere alla HashMap
+	 * @return true se non esiste gi√† un valore referenziato da quel token, false altrimenti
+	 */
+	public boolean addPlayer(String token, Player newPlayer)
 	{
-		
+		synchronized (playersInGame) 
+		{
+			if(!playersInGame.containsKey(token))
+			{
+				playersInGame.put(token, newPlayer);
+				return true;
+			}
+			return false;
+		}
+	}
+	
+	/**
+	 * @param token Token del Player da tornare
+	 * @return Player referenziato dal token ricevuto come parametro. Se la chiave non referenzia nessun
+	 * valore viene ritornato null
+	 */
+	public Player getPlayer(String token)
+	{
+		synchronized (playersInGame)
+		{
+			return playersInGame.get(token);
+		}
+	}
+	
+	/**
+	 * Rimuove un giocatore dalla HashMap dei Player
+	 * @param token : token del giocatore
+	 * @return true se il giocatore era presente ed √® stato eliminato, false altrimenti
+	 */
+	public boolean removePlayer(String token)
+	{
+		synchronized (playersInGame) 
+		{
+			if(playersInGame.containsKey(token))
+			{
+				playersInGame.remove(token);
+				return true;
+			}
+			return false;
+		}
+	}
+	
+	/**
+	 * Numero di giocatoriin partita
+	 * @return Numero di giocatori in partita
+	 */
+	public int numberPlayersInGame()
+	{
+		synchronized (playersInGame)
+		{
+			return playersInGame.size();
+		}
 	}
 	
 	/**
@@ -169,7 +242,7 @@ public class Game {
 			boolean espansione=true, riduzione=true; //attiva e disattiva l'espansione e la riduzione delle celle stampate
 			for(int i=row-ctrlOffset+1; i<=row+ctrlOffset-1; i++)
 			{
-				if((ctrl<ctrlOffset)&&espansione)//entra se è sopra al punto centrale
+				if((ctrl<ctrlOffset)&&espansione)//entra se ÔøΩ sopra al punto centrale
 				{
 					for(int j=col-ctrl; j<=col+ctrl; j++)	//stampala parte sopra
 					{
@@ -405,7 +478,7 @@ public class Game {
 					switch ((int) (Math.random() * 2))
 					{
 						/**
-						 * casella di vegetazione se si può inerirne ancora
+						 * casella di vegetazione se si puÀú inerirne ancora
 						 */
 						case 0:
 						{
@@ -417,7 +490,7 @@ public class Game {
 							}
 						}
 						/**
-						 * casella di carogana se si può inerirne ancora
+						 * casella di carogana se si puÀú inerirne ancora
 						 */
 						case 1:
 						{
