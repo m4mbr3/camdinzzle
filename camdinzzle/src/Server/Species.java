@@ -19,8 +19,8 @@ public class Species
 	private int timeOfLive;
 	private HashMap<String, Dinosaur> myDinosaurs;
 	
-	private enum type {Carnivorous, Vegetarian}
-	private type speciesType;
+	protected static enum type {Carnivorous, Vegetarian}
+	private static type speciesType;
 	private int  dinoNumber;
 	private Object[][] map;
 	
@@ -34,7 +34,7 @@ public class Species
 		myDinosaurs = new HashMap<String, Dinosaur>();
 		
 		this.name = name;
-		this.speciesType = speciesType;
+		Species.speciesType = speciesType;
 		timeOfLive = 120;
 		dinoNumber = 0;
 		posRig = (int) (Math.random() * 40);
@@ -123,6 +123,11 @@ public class Species
 	public static type getVegType()
 	{
 		return type.Vegetarian;
+	}
+	
+	public static type getType()
+	{
+		return speciesType;
 	}
 
 	

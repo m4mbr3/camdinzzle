@@ -113,7 +113,10 @@ public abstract class Dinosaur
 	{
 		
 	}
-	
+	public Species.type getType()
+	{
+		return Species.getType();
+	}
 	/**
 	 * 
 	 * @return dinoId
