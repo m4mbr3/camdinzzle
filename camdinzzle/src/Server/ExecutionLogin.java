@@ -73,36 +73,11 @@ public class ExecutionLogin implements Runnable
 		//in this point there is a call to another static method for split and check a new string
 		splitted_message = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
 		//control of login parameters splitted_message[0] is user_name, splitted_message[1] is password
-		is_an_exist_user = server.is_registered_player(splitted_message[0],splitted_message[1]);
 		
-		if(is_an_exist_user) 
-		{
-			
-			list_of_commands.add("ok");
-<<<<<<< .mine
-			String token = server.generateToken(splitted_message[0], this);
-=======
-
-			String token = this.generateToken(splitted_message[0]);
->>>>>>> .r59
-			server.addTokenAtPlayer(splitted_message[0], token);
-			list_of_commands.add(token);
-			writer_on_socket.println(ServerMessageBroker.createStandardMessage(list_of_commands));
-			
-			//at this point the client is official logged into Server Game and here starts the client connection
-			//manager
-			server.startClientConnectionManagerDaemon(connection_with_client,token, splitted_message[0]);
-		}
-		else 
-		{
-			writer_on_socket.print(ServerMessageBroker.createErroMessage("autenticazioneFallita"));
-			//close the connection with client because is occurred an error during authentication
-			try {
-				connection_with_client.close();
-			} catch (IOException e) {
-						e.printStackTrace();
-			}
-		}
+		writer_on_socket.println(server.login(read_socket));
+		
+		//	server.startClientConnectionManagerDaemon(connection_with_client,token, splitted_message[0]);
+		
 	}
 }
 
