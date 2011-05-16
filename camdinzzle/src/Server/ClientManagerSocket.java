@@ -82,23 +82,12 @@ public class ClientManagerSocket implements Runnable {
 			}while(read_socket.isEmpty());
 			command = ServerMessageBroker.manageMessageType(read_socket);
 			//in this point there is a call to another static method for split and check a new string
-			splitted_message = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+			
 			//control of login parameters 
 			
 			if (command.compareTo("creaRazza") == 0)
 			{	
-				boolean result = server.addNewSpecies(splitted_message, username);
-				
-				if (result == true)
-				{
-					ArrayList<String> list_of_commands = new ArrayList<String>();
-					list_of_commands.add("ok");
-					writer_on_socket.println(ServerMessageBroker.createStandardMessage(list_of_commands));
-				}
-				else
-				{
-					writer_on_socket.println(ServerMessageBroker.createErroMessage("nomeRazzaOccupato"));
-				}
+				writer_on_socket.println(server.add_new_user(read_socket));
 			}
 			else if (command.compareTo("accessoPartita") == 0)
 			{
@@ -120,6 +109,7 @@ public class ClientManagerSocket implements Runnable {
 			{
 				if(splitted_message[0].compareTo("T") == 0)
 				{
+					
 					server.logout(username);
 					stop();
 					ArrayList<String> list_of_commands = new ArrayList<String>();

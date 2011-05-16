@@ -32,11 +32,11 @@ public class ProvaTest {
 	/* Token generato tramite l'applicazione sulla concatenazione di username e hashcode(del 
 	 * riferimento all'oggetto Player) del player l'algoritmo di trasposizione con numeri come chiave
 	 */
-	public String generateToken(String username, ClientManagerSocket p)
+	public String generateToken(String username, Player p)
 	{
 		String key = new String(generateKeyForToken());
 		int length = key.length();
-		String concatenateIdentifier = new String(username + p.hashCode());
+		String concatenateIdentifier = new String(username + p);
 		String token = new String("");
 		
 		for(int j = 0; j<length; j++)
@@ -95,7 +95,7 @@ public class ProvaTest {
 		//ClientManagerSocket p = new ClientManagerSocket(connection_with_client, server, username)
 		
 		//a.findMin(a.generateKeyForToken());
-		//System.out.println(a.generateToken("carlos", p));
+		System.out.println(a.generateToken("carlos", new Player("Carlo","Formenti")));
 
 		/**
 		 * prova fuma!!!

@@ -87,9 +87,18 @@ public class Server {
 	 * 
 	 */
 	private String keyForToken;
+	
+	/**	
+	 * Object of Login Module daemon
+	 */
 	private Login login;
+	
+	/**
+	 * Object of NewUser Module daemon
+	 */
 	private NewUser newuser;
 
+	
 	public Server() {
 		// TODO Auto-generated constructor stub
 
@@ -133,6 +142,9 @@ public class Server {
 	public void controlAction() {
 	}
 
+	/**
+	 * Method for starting 
+	 */
 	public void startLoginDaemon(ServerSocket server_socket) {
 
 		/* The connection for login must be at this port : 4567 */
@@ -212,7 +224,7 @@ public class Server {
 	}
 
 	/**
-	 * Aggiunge la nuova specie al Player se non esiste già
+	 * Aggiunge la nuova specie al Player se non esiste giï¿½
 	 * @param msg : messaggio del Client
 	 * @return Messaggio da mandare al Client
 	 */
@@ -260,9 +272,9 @@ public class Server {
 	}
 
 	/**
-	 * Controlla che il player possa accedere alla partita e se può lo fa accesere. Può accedere se c'è
-	 * ancora posto nella partita(non è stato raggiunto il numero massimo di
-	 * giocatori) e se il token è valido
+	 * Controlla che il player possa accedere alla partita e se puï¿½ lo fa accesere. Puï¿½ accedere se c'ï¿½
+	 * ancora posto nella partita(non ï¿½ stato raggiunto il numero massimo di
+	 * giocatori) e se il token ï¿½ valido
 	 * 
 	 * @param username: username del giocatore
 	 * @param token : token del giocatore
@@ -332,9 +344,9 @@ public class Server {
 	}
 	
 	/**
-	 * Controlla che un utente sia già loggato
+	 * Controlla che un utente sia giï¿½ loggato
 	 * @param token : token del giocatore
-	 * @return True se il giocatore è loggato, false altrimenti
+	 * @return True se il giocatore ï¿½ loggato, false altrimenti
 	 */
 	private boolean isLoggedUser(String token)
 	{
