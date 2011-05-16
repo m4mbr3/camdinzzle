@@ -77,11 +77,14 @@ public class ExecutionLogin implements Runnable
 		
 		if(is_an_exist_user) 
 		{
+			
 			list_of_commands.add("ok");
+
 			String token = this.generateToken(splitted_message[0]);
 			server.addTokenAtPlayer(splitted_message[0], token);
 			list_of_commands.add(token);
-			writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
+			writer_on_socket.println(ServerMessageBroker.createStandardMessage(list_of_commands));
+			
 			//at this point the client is official logged into Server Game and here starts the client connection
 			//manager
 			server.startClientConnectionManagerDaemon(connection_with_client,token, splitted_message[0]);
