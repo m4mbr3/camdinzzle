@@ -149,7 +149,7 @@ public class Server {
 
 		/* The connection for login must be at this port : 4567 */
 		login = new Login(server_socket, this);
-		login.run();
+		(new Thread(login)).start();
 
 	}
 
@@ -159,14 +159,14 @@ public class Server {
 				socket_with_client, this, username, token);
 		// TODO Da rivedere
 		loggedPlayers.put(token, players.get(username));
-		new_manager.run();
+		(new Thread(new_manager)).start();
 		loggedClientManager.put(token, new_manager);
 		new_manager = null;
 	}
 
 	public void startNewUserDaemon(ServerSocket server_socket) {
 		newuser = new NewUser(server_socket, this);
-		newuser.run();
+		(new Thread(newuser)).start();
 	}
 
 	/**
@@ -360,6 +360,8 @@ public class Server {
 	}
 	
 	/**
+	 * 
+	 * 
 	 * Chiave per generazione dei token generata in modo casuale ad ogni avvio del Server
 	 * @return Chiave generata
 	 */

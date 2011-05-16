@@ -45,7 +45,7 @@ public class Login implements Runnable{
 				e.printStackTrace();
 			}
 			ex_login = new ExecutionLogin(new_connection, server);
-			ex_login.run();
+			(new Thread(ex_login)).start();
 			
 		}
 		

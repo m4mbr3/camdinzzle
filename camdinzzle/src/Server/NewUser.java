@@ -47,7 +47,7 @@ public class NewUser implements Runnable{
 				e.printStackTrace();
 			}
 			ex_newuser = new ExecutionNewUser(connection_with_client, server);
-			ex_newuser.run();
+			(new Thread(ex_newuser)).start();
 		}
 		
 	}

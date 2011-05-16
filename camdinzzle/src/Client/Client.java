@@ -1,4 +1,5 @@
 package Client;
+import javax.swing.JFrame;
 /**
  * 
  */
@@ -7,7 +8,7 @@ package Client;
  * @author Andrea
  *
  */
-public class Client {
+public class Client extends JFrame {
 
 	/**
 	 * 
@@ -31,7 +32,7 @@ public class Client {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }
