@@ -72,7 +72,7 @@ public class ExecutionNewUser implements Runnable{
 				if(is_an_free_username) 
 				{
 					list_of_commands.add("ok");
-					writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
+					writer_on_socket.println(ServerMessageBroker.createStandardMessage(list_of_commands));
 					//at this point the client is official registered into Server Game and here starts the client connection
 					//manager
 				}

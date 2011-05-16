@@ -93,11 +93,11 @@ public class ClientManagerSocket implements Runnable {
 				{
 					ArrayList<String> list_of_commands = new ArrayList<String>();
 					list_of_commands.add("ok");
-					writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
+					writer_on_socket.println(ServerMessageBroker.createStandardMessage(list_of_commands));
 				}
 				else
 				{
-					writer_on_socket.print(ServerMessageBroker.createErroMessage("nomeRazzaOccupato"));
+					writer_on_socket.println(ServerMessageBroker.createErroMessage("nomeRazzaOccupato"));
 				}
 			}
 			else if (command.compareTo("accessoPartita") == 0)
@@ -124,11 +124,11 @@ public class ClientManagerSocket implements Runnable {
 					stop();
 					ArrayList<String> list_of_commands = new ArrayList<String>();
 					list_of_commands.add("ok");
-					writer_on_socket.print(ServerMessageBroker.createStandardMessage(list_of_commands));
+					writer_on_socket.println(ServerMessageBroker.createStandardMessage(list_of_commands));
 				}
 				else
 				{
-					writer_on_socket.print(ServerMessageBroker.createErroMessage("tokenNonValido"));
+					writer_on_socket.println(ServerMessageBroker.createErroMessage("tokenNonValido"));
 				}
 			}
 			

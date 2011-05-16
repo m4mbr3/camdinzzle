@@ -1,0 +1,18 @@
+Metodi della Logica sul server:
+	
+		-add_new_user per creare un nuovo utente (javadoc da fare)
+		-is_registered_player per controllare se il player è registrato (javadoc da fare)
+		-addNewSpecies per creare una nuova specie su un player (javadoc da fare)
+		-metodo per gestire l'accesso alla partita da parte di un giocatore controlla numero giocatori <=8 e se
+		 	è possibile sposta i clientmanager legati alla connessione cn gli utenti dall'hashmap logged_players all'hashmap
+		 	in game degli 8 giocatori in partita.
+		-metodo per l'uscita dalla partita rimuove l'istanza del clientmanager legata all'utente che l'ha invocato dall'hashmap
+			all'interno del Game e copiato all'interno dei logged_player
+			
+		-metodo per la lista dei giocatore cicla i giocatori presenti in game e li invia tramite socket
+			dell'utente che li ha invocati
+		-metodo per la classifica che genera la classifica dall'hashmap dei player in base al loro punteggio
+		-metodo per il logout che cancella il client manager dal logged_player e chiude la connessione
+		-metodo che torna la mappa aggiornata sotto forma di arraylist da convertire in messaggio
+		-metodo per la lista dei dinosauri torna l'arraylist con la lista dei dinosauri
+		-metodo 
