@@ -43,11 +43,12 @@ public class Textual implements Visual
 			int rowsNumber = Integer.parseInt(dinoZoomList.get(3).trim());
 			// Alla posizione 3 dell'arraylist c'è il numero delle colonne della vista
 			int columnsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
+			int columnsCount = 0;
 			System.out.print("Dinosaur's " + dinoId + " zoom:");
 			
 			for(int i = 4; i<dinoZoomList.size(); i++)
 			{
-				if(((i-1)%columnsNumber) == 0)
+				if(columnsCount == columnsNumber)
 				{
 					System.out.print("\n _______ _______ _______");
 					System.out.print("\n|");
@@ -58,6 +59,8 @@ public class Textual implements Visual
 				else
 					// Numero riferente all'energia o al dinoId con 3 cifre sempre
 					System.out.print(" " + dinoZoomList.get(i) + " |");
+				
+				columnsCount++;
 			}
 		}
 		else

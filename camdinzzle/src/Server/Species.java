@@ -80,7 +80,7 @@ public class Species
 	{
 		Dinosaur dino;
 		addDinoNumber();
-		String dinoId = name + " - " + getDinoNumber();
+		String dinoId = "name - " + getDinoNumber();
 		
 		if(speciesType == type.Carnivorous) //Control the type of species
 		{

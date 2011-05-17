@@ -115,6 +115,9 @@ public class ClientMessageBroker
 	 */
 	public static ArrayList<String> manageDinoZoom(String msg)
 	{
+		//@vistaLocale,{27,8},{1,1},[c,0][c,0][c,0][a][t];[c,0][c,0][a][a][a];[c,0][a][a][a][a];[c,0][t][a][a][a];[t][c,0][t][a][c,0]
+		
+		
 		ArrayList<String> dinoZoomList = new ArrayList<String>();
 		String validMessage = msg.substring(msg.indexOf(',')+1);
 		String[] dotAndCommaSeparator = validMessage.split(";");

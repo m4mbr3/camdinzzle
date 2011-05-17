@@ -219,6 +219,15 @@ public class ProvaTest {
 					}
 					else if(scelta.equals("VL"))
 					{
+						/*
+						msg = ClientMessageBroker.createDinoZoom(token, "name - 1");
+						System.out.println("Client: " + msg);
+						msg = server.dinoZoom(msg);
+						System.out.println("Server: " + msg);
+						
+						if(ClientMessageBroker.checkMessage(msg))
+							text.drawDinoZoom("001", msg);
+						*/
 						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
 					}
 					else if(scelta.equals("SD"))

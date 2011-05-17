@@ -532,7 +532,12 @@ public class Server {
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 	}
-	/*
+	
+	/**
+	 * Crea la vista di un dinosauro dal suo id
+	 * @param msg : messaggio ricevuto dal Client
+	 * @return Messaggio da mandare al Client
+	 */
 	public String dinoZoom(String msg)
 	{
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
@@ -554,7 +559,23 @@ public class Server {
 						zoom.add(String.valueOf(dino.getDinoDimension()));
 						zoom.add(String.valueOf(dino.getDinoDimension()));
 						
+						Object[][] localMap = dino.getLocalMap();
 						
+						for(int i = 0; i<localMap.length; i++)
+						{
+							for(int j = 0; j<localMap[i].length; j++)
+							{
+								if(localMap[i][j] instanceof Dinosaur )
+									zoom.add("d," + ((Dinosaur)localMap[i][j]).getDinoId());
+								else if(localMap[i][j] instanceof Carrion)
+									zoom.add("c," + ((Carrion)localMap[i][j]).getPower());
+								else if(localMap[i][j] instanceof Vegetation)
+									zoom.add("c," + ((Vegetation)localMap[i][j]).getPower());
+								else
+									zoom.add((String)localMap[i][j]);
+							}
+						}
+						return ServerMessageBroker.createDinoZoom(zoom);
 					}
 					else
 						return ServerMessageBroker.createErroMessage("idNonValido");
@@ -565,7 +586,7 @@ public class Server {
 			else
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
-	}*/
+	}
 	
 	/**
 	 * Esegue la conferma del turno
