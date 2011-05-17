@@ -8,6 +8,7 @@ package Server;
 
 public class Carnivorous extends Dinosaur
 {
+	private static final int distMax = 3;
 
 	public Carnivorous(String dinoId, int posRow, int posCol) 
 	{
@@ -18,11 +19,11 @@ public class Carnivorous extends Dinosaur
 	/**
 	 * @param map
 	 */
-	public boolean eat(Object [][] map)
+	public boolean eat(Object cell)
 	{
-		if(map[posRow][posCol] instanceof Carrion)
+		if(cell instanceof Carrion)
 		{
-			energy += ((Carrion)map[posRow][posCol]).getPower();
+			energy += ((Carrion)cell).getPower();
 			if(energy > energyMax)
 			{
 				energy = energyMax;
@@ -66,9 +67,35 @@ public class Carnivorous extends Dinosaur
 	}
 
 	@Override
-	public boolean move() 
+	public boolean move(int rowDest, int colDest)
 	{
-
+		int posRow = this.posRow;
+		int posCol = this.posCol;
+		
+		if(Game.checkReachCell(posRow, posCol, rowDest, colDest, distMax))	//se è raggiungiblie allora posso spostarmi
+		{
+			
+			if((Game.getCell(rowDest, colDest) instanceof Carnivorous)||(Game.getCell(rowDest, colDest) instanceof Vegetarian))		//se c'è un carnivoro o vegetariano combatto
+			{
+				if(fight(Game.getCell(rowDest, colDest)))
+				{
+					this.posRow=rowDest;
+					this.posCol=colDest;
+				}
+				else
+				{
+					//muore dinosauro
+					return false;
+				}
+			}
+			if(Game.getCell(rowDest, colDest) instanceof Carrion)
+			{
+				eat(Game.getCell(rowDest, colDest));
+				this.posRow=rowDest;
+				this.posCol=colDest;
+			}
+			
+		}
 		return false;
 	}
 

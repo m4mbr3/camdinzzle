@@ -18,9 +18,9 @@ public abstract class Dinosaur
 	protected int posCol; //Column of dinosaur on the map
 	private Object[][] localMap;
 	
-	public abstract boolean eat(Object[][] map);
+	public abstract boolean eat(Object cell);
 	public abstract boolean fight(Object dino);
-	public abstract boolean move();
+	public abstract boolean move(int rowDest, int colDest);
 	
 	/**
 	 * Create a new dinosaur with age = (30±20%), dimension = 1 and energy = 1000

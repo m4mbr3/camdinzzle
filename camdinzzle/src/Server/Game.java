@@ -24,6 +24,8 @@ public class Game {
 	private static Object[][] map;
 	public static final int maxRow=40;
 	public static final int maxCol=40;
+	public static final int maxReach=7;
+	public static final int maxDist=3;
 	private int Water = 164;
 	private int Carrion=20;
 	private int Vegetation=512;
@@ -31,6 +33,9 @@ public class Game {
 	private int maxPlayers;
 	// Chiave token
 	private HashMap<String, Player> playersInGame;
+	//matrice di raggiungibilita' delle celle
+	private static int[][][][] mapReach;
+
 	
 	public Game() {
 		// TODO Auto-generated constructor stub
@@ -610,6 +615,77 @@ public class Game {
 			k++;
 		}
 		return localMap;
+	}
+	
+	public void startMapReach()
+	{
+		mapReach = new int [maxRow][maxCol][maxReach][maxReach];
+		int rowRel = maxReach/2;
+		int colRel = maxReach/2;
+		for(int i=0; i<maxRow; i++)
+		{
+			for(int j=0; j<maxCol; j++)
+			{
+				boolean[][] view = new boolean [maxReach][maxReach];
+				int[][] dist = new int [maxReach][maxReach];
+				dist[maxReach/2][maxReach/2] = 0;
+				reachAbleCell(i, j, rowRel, colRel, view, dist, -1);
+				//inserire for
+				mapReach[i][j] = dist;
+			}
+		}
+		
+	}
+	
+	public void reachAbleCell(int rowStart, int colStart, int rowRel, int colRel, boolean[][] view, int[][] dist, int d)
+	{
+		int i=rowRel;
+		int j=colRel;
+		if(d+1 > distMax)
+		{
+			return;
+		}
+		if((i<0)||(i>maxReach)||(j<0)||(i>maxReach))
+		{
+			return;
+		}
+		if((map[rowStart][colStart] instanceof String)&&(map[rowStart][colStart] == "a"))
+		{
+			return;
+		}
+		int distRel = dist[i][j];
+		if((view[i][j]==true) && (distRel!=0) && (distRel <= (d+1)))
+		{
+			return;
+		}
+		view[i][j] = true;
+		if((distRel>(d+1)) || (distRel==0))
+		{
+			dist[i][j] = d+1;
+		}
+		
+		reachAbleCell(rowStart+1, colStart-1, rowRel+1, colRel-1, view, dist, d+1);
+		reachAbleCell(rowStart+1, colStart, rowRel+1, colRel, view, dist, d+1);
+		reachAbleCell(rowStart+1, colStart+1, rowRel+1, colRel+1, view, dist, d+1);
+		reachAbleCell(rowStart, colStart-1, rowRel, colRel-1, view, dist, d+1);
+		reachAbleCell(rowStart, colStart+1, rowRel, colRel+1, view, dist, d+1);
+		reachAbleCell(rowStart-1, colStart-1, rowRel-1, colRel-1, view, dist, d+1);
+		reachAbleCell(rowStart-1, colStart, rowRel-1, colRel, view, dist, d+1);
+		reachAbleCell(rowStart-1, colStart+1, rowRel-1, colRel+1, view, dist, d+1);
+	}
+	
+	public static boolean checkReachCell(int startRow, int startCol, int destRow, int destCol, int distMax)
+	{
+		int destRelRow = maxReach/2 + (startRow - destRow);
+		int destRelCol = maxReach/2 + (startCol - destCol);
+		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxCol)&&(destRelRow>=0)&&(destRelRow<maxReach)&&(destRelCol>=0)&&(destRelCol<maxReach))
+		{
+			if(mapReach[startRow][startCol][destRelRow][destRelCol]<=distMax)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
