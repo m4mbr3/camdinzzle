@@ -24,10 +24,16 @@ public class ClientMessageBroker
 	 */
 	public static boolean checkMessage(String msg)
 	{
-		String[] splittedMessage = msg.split(",");
+		String[] splittedMessage;
 		
-		if(splittedMessage[0].equals("@no"))
-			return false;
+		if(msg.contains(","))
+		{
+			splittedMessage = msg.split(",");
+			
+			if(splittedMessage[0].equals("@no"))
+				return false;
+			return true;
+		}
 		return true;
 	}
 	
@@ -73,14 +79,20 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce la divisione del messaggio in parametri
 	 * @param msg
-	 * @return array contenente il messaggio diviso per parametri
+	 * @return array contenente il messaggio diviso per parametri. Se il messaggio non contiene parametri
+	 * viene restituito null
 	 */
 	public static String[] splitMessage(String msg)
 	{
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		String[] splittedMessage = validMessage.split(",");
+		if(msg.contains(","))
+		{
+			String validMessage = msg.substring(msg.indexOf(',')+1);
+			String[] splittedMessage = validMessage.split(",");
+			
+			return splittedMessage;
+		}
 		
-		return splittedMessage;
+		return null;
 	}
 	
 	/**

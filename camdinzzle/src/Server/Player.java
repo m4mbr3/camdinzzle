@@ -35,7 +35,7 @@ public class Player {
 		this.userName = userName;
 		this.password = password;
 		this.specie =  null;
-		
+		this.punteggio = 0;
 	}
 
 	public String getPassword() {

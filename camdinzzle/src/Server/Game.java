@@ -1,6 +1,8 @@
 package Server;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
 
 
@@ -102,6 +104,20 @@ public class Game {
 		synchronized (playersInGame)
 		{
 			return playersInGame.size();
+		}
+	}
+	
+	/**
+	 * Lista dei giocatori in partita
+	 * @return Iterator con la lista dei giocatori in partita
+	 */
+	public Iterator getPlayersList()
+	{
+		synchronized (playersInGame) 
+		{
+			Set set = playersInGame.entrySet();
+			
+			return set.iterator();
 		}
 	}
 	

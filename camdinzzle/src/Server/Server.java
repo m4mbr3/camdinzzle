@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -331,8 +332,134 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Esegue la creazione della lista di giocatori in partita.
+	 * @param msg : messaggio del Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public String playerList(String msg)
+	{
+		ArrayList<String> parameters = new ArrayList<String>();
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		
+		synchronized (loggedPlayers) 
+		{
+			if(isLoggedUser(token))
+			{
+				if(loggedPlayers.get(token) != null)
+				{
+					Iterator iter = currentSession.getPlayersList();
+					
+					while(iter.hasNext())
+					{
+						Map.Entry me = (Map.Entry) iter.next();
+						parameters.add(((Player)me.getValue()).getUserName());
+					}
+					
+					return ServerMessageBroker.createStandardMessage(parameters);
+				}
+			}
+			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}
+	
+	/**
+	 * Genera la classifica di tutti gli utenti registrati
+	 * @param msg : messaggio del Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public String ranking(String msg)
+	{
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		ArrayList<String> parameters = new ArrayList<String>();
+		
+		synchronized (loggedPlayers) 
+		{
+			HashMap<String, String> alreadyPlayerRead = new HashMap<String, String>();
+			ArrayList<String> ranking = new ArrayList<String>();
+			int maxScore;
+			String usernameMaxScore = "";
+			
+			if(isLoggedUser(token))
+			{
+				for(int i = 0; i<players.size(); i++)
+				{
+					Set set = players.entrySet();
+					Iterator  iter = set.iterator();
+					
+					while(iter.hasNext())
+					{
+						maxScore = -10;
+						Map.Entry me = (Map.Entry) iter.next();
+						
+						if(((Player)me.getValue()).getPunteggio() > maxScore)
+						{
+							if(!alreadyPlayerRead.containsKey(((Player)me.getValue()).getUserName()))
+							{
+								maxScore = ((Player)me.getValue()).getPunteggio();
+								usernameMaxScore = ((Player)me.getValue()).getUserName();
+							}
+						}
+					}
+					
+					alreadyPlayerRead.put(usernameMaxScore, usernameMaxScore);
+					
+					ranking.add(usernameMaxScore);
+					ranking.add(players.get(usernameMaxScore).getSpecie().getName());
+					ranking.add(String.valueOf(players.get(usernameMaxScore).getPunteggio()));
+					if(currentSession.getPlayer(token) != null)
+						ranking.add("s");
+					else
+						ranking.add("n");
+					
+				}
+				
+				return ServerMessageBroker.createRankingList(ranking);
+			}
+			
+			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}
+	
+	/**
+	 * Esegue il logout di un giocatore loggato
+	 * @param msg : messaggio ricevuto dal Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public String logout(String msg)
+	{
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		
+		synchronized (loggedPlayers) 
+		{
+			if(loggedPlayers.containsKey(token))
+			{
+				if(currentSession.getPlayer(token) != null)
+				{
+					currentSession.removePlayer(token);
+				}
+				
+				loggedPlayers.remove(token);
+				
+				return ServerMessageBroker.createOkMessage();
+			}
+			else
+				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}
 	
 	
+	public String generalMap(String msg)
+	{
+		ArrayList<String> map = new ArrayList<String>();
+		
+		synchronized (loggedPlayers) 
+		{
+			
+		}
+		
+		return ServerMessageBroker.createGeneraleMap(map);
+	}
 	
 	
 	public void sendCommand() {

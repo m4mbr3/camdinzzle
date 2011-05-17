@@ -37,9 +37,15 @@ public class ServerMessageBroker
 	 */
 	public static String manageMessageType(String msg)
 	{
-		String[] splittedMessage = msg.split(",");
+		String[] splittedMessage;
 		
-		return splittedMessage[0].substring(1);
+		if(msg.contains(","))
+		{
+			splittedMessage = msg.split(",");
+			return splittedMessage[0].substring(1);
+		}
+		else
+			return msg.substring(1);
 	}
 	
 	/**
