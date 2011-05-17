@@ -40,7 +40,7 @@ public class Species
 		posRig = (int) (Math.random() * 40);
 		posCol = (int) (Math.random() * 40);
 		//check mappa vuota!!!
-		// TODO addDinosaur e startMap da sistemare che non funzionano
+		// TODO Game.getLocalMap da sistemare che non funzionano
 		addDinosaur(posRig, posCol);
 		startMap();
 		return;
@@ -147,6 +147,8 @@ public class Species
 	 */
 	public void startMap()
 	{
+		map = new Object[Game.maxRow][Game.maxCol];
+		
 		for(int i=0; i<Game.maxRow; i++)
 		{
 			for(int j=0; j<Game.maxCol; j++)
@@ -178,8 +180,11 @@ public class Species
 				int h=0;
 				for(int j=posCol-size/2; j<=posCol+size/2; j++)
 				{
-					map[i][j] = localMap[k][h].toString();
-					h++;
+					if((k>=0)&&(k<Game.maxRow)&&(h>=0)&&(h<Game.maxCol))
+					{
+						map[i][j] = localMap[k][h].toString();
+						h++;
+					}
 				}
 				k++;
 			}

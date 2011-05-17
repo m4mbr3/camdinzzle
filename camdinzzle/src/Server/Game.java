@@ -601,8 +601,11 @@ public class Game {
 			int h = col - size/2;
 			for(int j=0; j<size; j++)
 			{
-				localMap[i][j] = map [k][h];
-				h++;
+				if((k>=0)&&(k<Game.maxRow)&&(h>=0)&&(h<Game.maxCol))
+				{
+					localMap[i][j] = map [k][h];
+					h++;
+				}
 			}
 			k++;
 		}

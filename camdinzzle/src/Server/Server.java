@@ -486,17 +486,44 @@ public class Server {
 		}
 	}
 	
-	
+	/**
+	 * Crea la mappa generale da mandare a giocatori in partita
+	 * @param msg : messaggio ricevuto dal Client
+	 * @return Messaggio da mandare al Client
+	 */
 	public String generalMap(String msg)
 	{
 		ArrayList<String> map = new ArrayList<String>();
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		
 		synchronized (loggedPlayers) 
 		{
-			Object[][] map = currentSession.getGeneralMap();
+			if(isLoggedUser(token))
+			{
+				if(currentSession.getPlayer(token) != null)
+				{
+					loggedPlayers.get(token).getSpecie().updateMap();
+					Object[][] matrixMap = loggedPlayers.get(token).getSpecie().getPlayerMap();
+					
+					map.add(String.valueOf(Game.maxRow));
+					map.add( String.valueOf(Game.maxCol));
+					
+					for(int i=0; i<Game.maxRow; i++)
+					{
+						for(int j=0; j<Game.maxCol; j++)
+						{
+							map.add((String)matrixMap[i][j]);
+						}
+					}
+					
+					return ServerMessageBroker.createGeneraleMap(map);
+				}
+				else
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+			}
+			else
+				return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
-		
-		return ServerMessageBroker.createGeneraleMap(map);
 	}
 	
 	/**

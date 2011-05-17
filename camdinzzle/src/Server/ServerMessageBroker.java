@@ -199,7 +199,7 @@ public class ServerMessageBroker
 		
 		for(int i = 2; i<map.size(); i++)
 		{
-			if(columnCount == columns + 2)
+			if(columnCount == columns)
 			{
 				returnMap += ";";
 				columnCount = 0;

@@ -9,6 +9,8 @@ package Client;
 import java.io.*;
 import java.util.ArrayList;
 
+import Server.Game;
+
 
 
 public class Textual implements Visual 
@@ -281,14 +283,23 @@ public class Textual implements Visual
 	public void drawGeneralMap(String msg)
 	{
 		ArrayList<String> map = new ArrayList<String>();
+		int columnsCount = 0;
 		
-		for(int i=0; i<1600; i++)
-		{
-			System.out.print(map.get(i) + " ");
-			
-			if((i%40) == 0)
+		map = ClientMessageBroker.manageGeneralMap(msg);
+		
+		for(int i=2; i<Game.maxRow*Game.maxCol+2; i++)
+		{			
+			if(columnsCount == Game.maxCol)
+			{
 				System.out.print("\n");
+				columnsCount = 0;
+			}
+			
+			System.out.print(map.get(i) + " ");
+			columnsCount++;
 		}
+		
+		System.out.print("\n");
 	}
 	
 }

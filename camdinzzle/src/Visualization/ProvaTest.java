@@ -120,7 +120,7 @@ public class ProvaTest {
 			System.out.println("LG per vedere la lista dei giocatori attualment in partita");
 			System.out.println("CG per vedere la classifica generale");
 			System.out.println("LOGOUT per eseguire il logout");
-			System.out.println("MG per vedere la mappa generale");
+			System.out.println("GM per vedere la mappa generale");
 			System.out.println("LD per vedere la lista dei dinosauri");
 			System.out.println("VL per vedere la vista locale di un dinosauro");
 			System.out.println("SD per vedere lo stato di un dinosauro");
@@ -203,9 +203,15 @@ public class ProvaTest {
 						msg = server.logout(msg);
 						System.out.println("Server: " + msg);
 					}
-					else if(scelta.equals("MG"))
+					else if(scelta.equals("GM"))
 					{
-						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+						msg = ClientMessageBroker.createGeneralMap(token);
+						System.out.println("Client: " + msg);
+						msg = server.generalMap(msg);
+						System.out.println("Server: " + msg);
+						
+						if(ClientMessageBroker.checkMessage(msg))
+							text.drawGeneralMap(msg);
 					}
 					else if(scelta.equals("LD"))
 					{
@@ -258,7 +264,7 @@ public class ProvaTest {
 				}
 			}
 			while((!scelta.equals("CU")) && (!scelta.equals("LOGIN")) && (!scelta.equals("CR"))&& (!scelta.equals("AP")) && (!scelta.equals("UP"))
-				&& (!scelta.equals("LG")) && (!scelta.equals("CG")) && (!scelta.equals("LOGOUT")) && (!scelta.equals("MG")) 
+				&& (!scelta.equals("LG")) && (!scelta.equals("CG")) && (!scelta.equals("LOGOUT")) && (!scelta.equals("GM")) 
 				&& (!scelta.equals("LD")) && (!scelta.equals("VL")) && (!scelta.equals("SD")) && (!scelta.equals("MD"))
 				&& (!scelta.equals("CD")) && (!scelta.equals("DU")) && (!scelta.equals("CT")) && (!scelta.equals("PT"))
 				&& (!scelta.equals("E	")));
