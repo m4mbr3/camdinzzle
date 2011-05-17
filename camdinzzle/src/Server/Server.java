@@ -296,9 +296,10 @@ public class Server {
 	}
 
 	/**
-	 * Controlla che il player possa accedere alla partita e se pu� lo fa accesere. Pu� accedere se c'�
+	 * Controlla che il player possa accedere alla partita e se puo lo fa accedere. Pu� accedere se c'�
 	 * ancora posto nella partita(non � stato raggiunto il numero massimo di
-	 * giocatori) e se il token � valido
+	 * giocatori) e se il token � valido. Se il giocatore non ha ancora creato una propria specie, viene creata una specie di
+	 * default che ha come nome l'username del player e come razza e.
 	 * 
 	 * @param username: username del giocatore
 	 * @param token : token del giocatore
@@ -312,6 +313,10 @@ public class Server {
 		{
 			if(this.isLoggedUser(token))
 			{
+				if(loggedPlayers.get(token).getSpecie() == null)
+				{
+					loggedPlayers.get(token).setSpecie(new Species(loggedPlayers.get(token).getUserName(), Species.getVegType()));
+				}
 				if (currentSession.numberPlayersInGame() < currentSession.getMaxPlayers()) 
 				{
 					if (currentSession.getPlayer(token) == null)
@@ -470,7 +475,7 @@ public class Server {
 		
 		synchronized (loggedPlayers) 
 		{
-			if(loggedPlayers.containsKey(token))
+			if(isLoggedUser(token))
 			{
 				loggedPlayers.remove(token);
 				
@@ -488,7 +493,7 @@ public class Server {
 		
 		synchronized (loggedPlayers) 
 		{
-			// TODO
+			Object[][] map = currentSession.getGeneralMap();
 		}
 		
 		return ServerMessageBroker.createGeneraleMap(map);

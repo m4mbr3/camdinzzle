@@ -244,6 +244,8 @@ public class ProvaTest {
 						System.out.println("Client: " + msg);
 						msg = server.playerRoundSwitch(msg);
 						System.out.println("Server: " + msg);
+						
+						System.out.println("Turno del giocatore: " + server.serverRoundSwitch());
 					}
 					else if(scelta.equals("E"))
 						System.out.println("Uscita dal gioco");

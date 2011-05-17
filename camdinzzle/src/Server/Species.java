@@ -41,8 +41,8 @@ public class Species
 		posCol = (int) (Math.random() * 40);
 		//check mappa vuota!!!
 		// TODO addDinosaur e startMap da sistemare che non funzionano
-		//addDinosaur(posRig, posCol);
-		//startMap();
+		addDinosaur(posRig, posCol);
+		startMap();
 		return;
 	}
 	

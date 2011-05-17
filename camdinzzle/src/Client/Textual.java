@@ -275,4 +275,20 @@ public class Textual implements Visual
 			drawError(msg);
 	}
 	
+	/**
+	 * Stampa a video la mappa generale del giocatore
+	 */
+	public void drawGeneralMap(String msg)
+	{
+		ArrayList<String> map = new ArrayList<String>();
+		
+		for(int i=0; i<1600; i++)
+		{
+			System.out.print(map.get(i) + " ");
+			
+			if((i%40) == 0)
+				System.out.print("\n");
+		}
+	}
+	
 }
