@@ -140,7 +140,7 @@ public class Server {
 		players = new HashMap<String, Player>();
 		loggedClientManager = new HashMap<String, ClientManager>();
 		loggedPlayers = new HashMap<String, Player>();
-		// species = new ArrayList<Species>();
+		currentSession = new Game();
 		login = null;
 		newuser = null;
 		isTheFirstAccess = true;
@@ -377,6 +377,7 @@ public class Server {
 	{
 		ArrayList<String> parameters = new ArrayList<String>();
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		parameters.add("listaGiocatori");
 		
 		synchronized (loggedPlayers) 
 		{

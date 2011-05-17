@@ -245,7 +245,7 @@ public class ProvaTest {
 						msg = server.playerRoundSwitch(msg);
 						System.out.println("Server: " + msg);
 					}
-					else
+					else if(scelta.equals("E"))
 						System.out.println("Uscita dal gioco");
 					
 					System.out.println("*****FINE INTERAZIONE*****\n");

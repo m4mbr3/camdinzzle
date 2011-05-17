@@ -77,10 +77,9 @@ public class ClientMessageBroker
 	}
 	
 	/**
-	 * Gestisce la divisione del messaggio in parametri
+	 * Gestisce la divisione del messaggio in parametri. Se il messaggio non contiene parametri viene tornato null
 	 * @param msg
-	 * @return array contenente il messaggio diviso per parametri. Se il messaggio non contiene parametri
-	 * viene restituito null
+	 * @return array contenente il messaggio diviso per parametri
 	 */
 	public static String[] splitMessage(String msg)
 	{

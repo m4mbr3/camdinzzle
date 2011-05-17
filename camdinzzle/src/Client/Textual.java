@@ -258,11 +258,17 @@ public class Textual implements Visual
 		if(ClientMessageBroker.checkMessage(msg))
 		{
 			String[] playerList = ClientMessageBroker.managePlayerList(msg);
-			System.out.println("Giocatori in partita:");
 			
-			for(int i = 0; i<playerList.length; i++) 
+			if(playerList == null)
+				System.out.println("Non ci sono giocatori in partita.");
+			else
 			{
-				System.out.println("	" + playerList[i]);
+				System.out.println("Giocatori in partita:");
+				
+				for(int i = 0; i<playerList.length; i++) 
+				{
+					System.out.println("	" + playerList[i]);
+				}
 			}
 		}
 		else

@@ -134,13 +134,20 @@ public class ServerMessageBroker
 	public static String createStandardMessage(ArrayList<String> parameters)
 	{
 		String returnMessage = new String("");
+		boolean isFor = false;
 		
-		returnMessage = returnMessage + "@" + parameters.get(0);
-		for(int i = 0; i<parameters.size(); i++)
+		if(parameters.size() > 0)
 		{
-			returnMessage = returnMessage + "," + parameters.get(i);
+			returnMessage = returnMessage + "@" + parameters.get(0);
+			for(int i = 1; i<parameters.size(); i++)
+			{
+				returnMessage = returnMessage + "," + parameters.get(i);
+				isFor = true;
+			}
+			
+			if(!isFor)
+				returnMessage += ",";
 		}
-		
 		return returnMessage;
 	}
 	

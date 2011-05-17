@@ -36,7 +36,7 @@ public class Game {
 		// TODO Auto-generated constructor stub
 		playersInGame = new HashMap<String, Player>();
 		maxPlayers = 8;
-		//this.createMap();
+		this.createMap();
 	}
 	
 	public Object[][] getGeneralMap()
