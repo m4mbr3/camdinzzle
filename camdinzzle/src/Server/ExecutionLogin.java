@@ -59,6 +59,7 @@ public class ExecutionLogin implements Runnable
 	public void run()
 	{
 		//Read from socket the client string for login example : @login,user=U,pass=P
+		String message_from_server;
 		System.out.println("<<Ex LOGIN>>--InListening");
 		
 		try {
@@ -77,14 +78,35 @@ public class ExecutionLogin implements Runnable
 
 		//System.out.println("<<Ex LOGIN> >--"+read_socket);
 
-		ServerMessageBroker.manageReceiveMessageSplit(read_socket);
-		server.login(read_socket);
-		try {
-			this.writer_on_socket.write(server.login(read_socket));
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		
+		message_from_server = server.login(read_socket);
+		if ( ServerMessageBroker.manageMessageType(message_from_server).compareTo("ok")==0 )
+		{
+			try {
+				this.writer_on_socket.write(message_from_server);
+			}catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//dal message devo tirare fuori il token e avviare la tiritera del client manager
+			String[] for_token = ServerMessageBroker.manageReceiveMessageSplit(message_from_server);
+			String[] for_username = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+			System.out.println(for_token[0] +" "+ for_username[0]);
+			//server.startClientConnectionManagerDaemon(connection_with_client, for_token[0], for_username[0]);
 		}
+		else
+		{
+			try{
+				this.writer_on_socket.write(message_from_server);
+				this.connection_with_client.close();
+			}catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+			
+		
 		
 		//	server.startClientConnectionManagerDaemon(connection_with_client,token, splitted_message[0]);
 		

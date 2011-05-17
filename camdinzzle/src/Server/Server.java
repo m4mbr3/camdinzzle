@@ -156,6 +156,7 @@ public class Server {
 		this.lock_logged_player = new Object();
 		this.lock_players = new Object();
 		this.lock_species = new Object();
+		this.add_new_user("@login,user=alkjasladjfld,pass=dkfkkdfkkkdk");
 	}
 
 	public void controlAction() {

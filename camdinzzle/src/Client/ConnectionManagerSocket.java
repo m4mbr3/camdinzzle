@@ -3,13 +3,11 @@
  */
 package Client;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -23,17 +21,23 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	 * Socket for Managing the connection by socket with server
 	 */
 	Socket connection_with_server;
-	private BufferedOutputStream _on_socket;
+	
 	private BufferedWriter writer_on_socket;
 	private BufferedReader reader_on_socket;
-	
-	public ConnectionManagerSocket(int port, String address) 
+	String address;
+	String username;
+	String password;
+	int port;
+	public ConnectionManagerSocket(int port, String address, String username, String password)
 	{
 		// TODO Auto-generated constructor stub
-		
+		this.address = address;
+		this.username = username;
+		this.password = password;
+		this.port = port;
 		try {
 			System.out.println("<<CONN MANAGER>>--OPENING SOCKET WITH SERVER AT ADD "+address+" AND PORT " + port );
-			connection_with_server = new Socket(address, port);
+			connection_with_server = new Socket(this.address, this.port);
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -63,16 +67,13 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		int i = 0 ;
 		String read_socket=null;
-		while(true)
-		{	
+			
 			
 			try {
-				this.writer_on_socket.write("@login,user=F,pass=N");
+				this.writer_on_socket.write(ClientMessageBroker.createLogin(username, password));
 				this.writer_on_socket.newLine();				
 				this.writer_on_socket.flush();
-				System.out.println("@login,user=F,pass=N");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,8 +84,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			if((read_socket != null)&&(ClientMessageBroker.checkMessage(read_socket)))
+			{
+				System.out.println("<<CONN MANAGER>>-- LOGIN ACCEPTED!!!");
+			}
+			else
+			{
+				System.out.println("<<CONN MANAGER>>-- LOGIN FAILD!!!");
+			}
 		
-		}
+		
 	}
 	
 

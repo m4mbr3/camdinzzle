@@ -23,7 +23,7 @@ public class Client extends JFrame {
 		this.port = port;
 		this.address = address;
 		System.out.println("<<CLIENT>>--STARTING CONNECTION MANAGER SOCKET");
-		n = new ConnectionManagerSocket(port,address);
+		n = new ConnectionManagerSocket(port,address, "alkjasladjfld","dkfkkdfkkkdk");
 	}
 	public void createCommand()
 	{
@@ -40,7 +40,7 @@ public class Client extends JFrame {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Client s = new Client(4567, "192.168.1.130");
+		Client s = new Client(4567, "localhost");
 	}
 
 }
