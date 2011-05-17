@@ -110,7 +110,7 @@ public class Server {
 	public Server() {
 		// TODO Auto-generated constructor stub
 
-		/*
+		System.out.println("<<SERVER>>--INIT");
 		// Definition of default port login
 		port_login = 4567;
 		// Definition of default port NewUser
@@ -118,6 +118,7 @@ public class Server {
 		
 		// Definition of new Server login for passing it to startLogin and
 		// launch login daemon
+		System.out.println("<<SERVER>>--STARTING LOGIN DAEMON ");
 		try {
 			deal_login = new ServerSocket(port_login);
 			startLoginDaemon(deal_login);
@@ -125,17 +126,20 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("<<SERVER>>--LOGIN DAEMON STARTED");
 
 		// Definition of new Server NewUser for passing it to startNewUser and
 		// launch newuser daemon
+		System.out.println("<<SERVER>>--STARTING NEWUSER DAEMON ");
 		try {
 			deal_newuser = new ServerSocket(port_newuser);
 			startNewUserDaemon(deal_newuser);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		*/
+		System.out.println("<<SERVER>>--NEWUSER DAEMON STARTED");
 		
+		System.out.println("<<SERVER>>--DEFINITION OF ENVIROMENT VARIABLES");
 		// Definition of new PlayerList empty
 		players = new HashMap<String, Player>();
 		loggedClientManager = new HashMap<String, ClientManager>();
@@ -146,6 +150,7 @@ public class Server {
 		isTheFirstAccess = true;
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
+		System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
 
 		
 		this.lock_logged_player = new Object();
@@ -466,7 +471,7 @@ public class Server {
 	}
 	
 	/**
-	 * Esegue il logout di un giocatore loggato. Se il giocatore è in partita, prima di eseguire il 
+	 * Esegue il logout di un giocatore loggato. Se il giocatore ï¿½ in partita, prima di eseguire il 
 	 * logout deve uscire dalla partita
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
@@ -641,7 +646,7 @@ public class Server {
 	
 	/**
 	 * Esegue il cambio del turno(notifica in partita)
-	 * @return Messaggio da mandare in broadcast ai Client per notificare che è cambiato il turno. Il 
+	 * @return Messaggio da mandare in broadcast ai Client per notificare che ï¿½ cambiato il turno. Il 
 	 * messaggio contiene il comando e l'username del giocatore abilitato a fare le proprie mosse
 	 */
 	public String serverRoundSwitch()
@@ -781,7 +786,7 @@ public class Server {
 		}
 
 		if(token.contains("@"))
-			token = token.replaceAll("@", "§");
+			token = token.replaceAll("@", "ï¿½");
 			
 		return token;
 	}
@@ -791,7 +796,7 @@ public class Server {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		Server server = new Server();
 	}
 
 }

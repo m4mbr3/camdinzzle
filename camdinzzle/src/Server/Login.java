@@ -34,18 +34,22 @@ public class Login implements Runnable{
 	}
 	public void run()
 	{
-
+		System.out.println("<<LOGIN DAEMON>>--STARTED");
 		while(is_run)
 		{
 			try {
 				//waiting for connection
+				System.out.println("<<LOGIN DAEMON>>--WAITING FOR CONNECTIONS at "+ server_login.getLocalPort());
 				new_connection = server_login.accept();
+				System.out.println("<<LOGIN DAEMON>>--CONNECTION INTERCEPTED");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			ex_login = new ExecutionLogin(new_connection, server);
+			System.out.println("<<LOGIN DAEMON>>--STARTING EXECUTION LOGIN");
 			(new Thread(ex_login)).start();
+			System.out.println("<<LOGIN DAEMON>>--EXECUTION LOGIN STARTED");
 			
 		}
 		

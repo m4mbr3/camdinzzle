@@ -14,8 +14,16 @@ public class Client extends JFrame {
 	 * 
 	 */
 	
-	public Client() {
+	int port;
+	String address;
+	ConnectionManagerSocket n;
+	public Client(int port, String address) {
 		// TODO Auto-generated constructor stub
+		System.out.println("<<CLIENT>>--INITIALIZATION OF EVIROMENT VARIABLES");
+		this.port = port;
+		this.address = address;
+		System.out.println("<<CLIENT>>--STARTING CONNECTION MANAGER SOCKET");
+		n = new ConnectionManagerSocket(port,address);
 	}
 	public void createCommand()
 	{
@@ -32,7 +40,7 @@ public class Client extends JFrame {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		Client s = new Client(4567, "192.168.1.130");
 	}
 
 }
