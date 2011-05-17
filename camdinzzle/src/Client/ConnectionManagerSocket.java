@@ -71,6 +71,7 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			
 			
 			try {
+				System.out.println("<<CONN MANAGER>>--SENDING USERNAME: "+username+" PASSWORD "+password);
 				this.writer_on_socket.write(ClientMessageBroker.createLogin(username, password));
 				this.writer_on_socket.newLine();				
 				this.writer_on_socket.flush();
@@ -91,6 +92,7 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			else
 			{
 				System.out.println("<<CONN MANAGER>>-- LOGIN FAILD!!!");
+			
 			}
 		
 		

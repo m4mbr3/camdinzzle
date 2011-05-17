@@ -8,7 +8,7 @@ import javax.swing.JFrame;
  * @author Andrea
  *
  */
-public class Client extends JFrame {
+public class Client  {
 
 	/**
 	 * 
@@ -23,7 +23,7 @@ public class Client extends JFrame {
 		this.port = port;
 		this.address = address;
 		System.out.println("<<CLIENT>>--STARTING CONNECTION MANAGER SOCKET");
-		n = new ConnectionManagerSocket(port,address, "alkjasladjfld","dkfkkdfkkkdk");
+		//n = new ConnectionManagerSocket(port,address, "alkjasladjfld","dkfkkdfkkkdk");
 	}
 	public void createCommand()
 	{
@@ -40,7 +40,8 @@ public class Client extends JFrame {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Client s = new Client(4567, "localhost");
+		FrameLogin login = new FrameLogin("Login");
+		
 	}
 
 }
