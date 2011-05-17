@@ -41,5 +41,5 @@ public interface Visual
 	/**
 	 * Metodo che disegna la classifica attuale della partitas
 	 */
-	public void showRanking(String msg);
+	public void drawRanking(String msg);
 }

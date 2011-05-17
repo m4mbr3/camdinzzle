@@ -252,5 +252,16 @@ public class ServerMessageBroker
 		return dinoState;
 	}
 	
+	/**
+	 * Crea il messaggio di cambio del turno da parte del Server(notifica in partita)
+	 * @param username : username del giocatore che è abilitato a fare le proprie mosse
+	 * @return Messaggio da mandare ai Client
+	 */
+	public static String createServerRoundSwitch(String username)
+	{
+		return "@cambioTurno," + username; 
+	}
+	
+	
 	// End creazione messaggi in uscita
 }

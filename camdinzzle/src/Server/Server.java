@@ -74,6 +74,13 @@ public class Server {
 	 * HashMap che contiene delle istanze dei Player loggati. Chiave il token
 	 */
 	private HashMap<String, Player> loggedPlayers;
+	
+	/**
+	 * Stringa che contiene il token del giocatore che deve effettuare il turno
+	 */
+	private String tokenOfCurrentPlayer;
+	
+	private boolean isTheFirstAccess;
 	/**
 	 * Integer that contains the default port of login daemon
 	 */
@@ -103,13 +110,12 @@ public class Server {
 	public Server() {
 		// TODO Auto-generated constructor stub
 
+		/*
 		// Definition of default port login
 		port_login = 4567;
 		// Definition of default port NewUser
 		port_newuser = 4566;
-		// Inizializzazione chiave per generazione del token
-		keyForToken = this.generateKeyForToken();
-
+		
 		// Definition of new Server login for passing it to startLogin and
 		// launch login daemon
 		try {
@@ -128,6 +134,8 @@ public class Server {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
+		
 		// Definition of new PlayerList empty
 		players = new HashMap<String, Player>();
 		loggedClientManager = new HashMap<String, ClientManager>();
@@ -135,6 +143,11 @@ public class Server {
 		// species = new ArrayList<Species>();
 		login = null;
 		newuser = null;
+		isTheFirstAccess = true;
+		// Inizializzazione chiave per generazione del token
+		keyForToken = this.generateKeyForToken();
+
+		
 		this.lock_logged_player = new Object();
 		this.lock_players = new Object();
 		this.lock_species = new Object();
@@ -208,13 +221,16 @@ public class Server {
 			{
 				synchronized (loggedPlayers)
 				{
-					if(!loggedPlayers.containsValue(players.get(parameters[0])))
+					if(players.get(parameters[0]) != null)
 					{
-						String token = this.generateToken(parameters[0], new Player("aznors", "kihidui"));
-						if(!this.isLoggedUser(token))
+						if((((Player)players.get(parameters[0])).getUserName().equals(parameters[0])) && (((Player)players.get(parameters[0])).getPassword().equals(parameters[1])))
 						{
-							loggedPlayers.put(token, players.get(parameters[0]));
-							return ServerMessageBroker.createOkMessageWithOneParameter(token);
+							String token = this.generateToken(parameters[0], new Player("aznors", "kihidui"));
+							if(!this.isLoggedUser(token))
+							{
+								loggedPlayers.put(token, players.get(parameters[0]));
+								return ServerMessageBroker.createOkMessageWithOneParameter(token);
+							}
 						}
 					}
 				}
@@ -235,20 +251,27 @@ public class Server {
 		
 		synchronized (loggedPlayers) 
 		{
-			if ((this.isLoggedUser(parameters[0]))
-					&& (currentSession.getPlayer(parameters[0]) != null)) 
+			if (this.isLoggedUser(parameters[0])) 
 			{
-				Set set = loggedPlayers.entrySet();
-				Iterator iter = set.iterator();
 				boolean isRacePresent = false;
-
-				while (iter.hasNext()) 
+				
+				synchronized(players)
 				{
-					Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
-					if (me.getValue().getSpecie().equals(parameters[1]))
-						isRacePresent = true;
+					Set set = players.entrySet();
+					Iterator iter = set.iterator();
+					isRacePresent = false;
+	
+					while (iter.hasNext()) 
+					{
+						Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
+						
+						if(me.getValue().getSpecie() != null)
+						{
+							if (me.getValue().getSpecie().getName().equals(parameters[1]))
+								isRacePresent = true;
+						}
+					}
 				}
-
 				if (!isRacePresent) 
 				{
 					Species new_specie;
@@ -294,6 +317,12 @@ public class Server {
 					if (currentSession.getPlayer(token) == null)
 					{
 						currentSession.addPlayer(token, loggedPlayers.get(token));
+						if(isTheFirstAccess)
+						{
+							tokenOfCurrentPlayer = token;
+							isTheFirstAccess = false;
+						}
+								
 						return ServerMessageBroker.createOkMessage();
 					} 
 					else 
@@ -325,8 +354,15 @@ public class Server {
 				if(currentSession.getPlayer(token) != null)
 				{
 					if(currentSession.removePlayer(token))
+					{
+						if(currentSession.numberPlayersInGame() == 0)
+							isTheFirstAccess = true;
 						return ServerMessageBroker.createOkMessage();
+					}
 				}
+				
+				if(currentSession.numberPlayersInGame() == 0)
+					isTheFirstAccess = true;
 			}
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
@@ -422,7 +458,8 @@ public class Server {
 	}
 	
 	/**
-	 * Esegue il logout di un giocatore loggato
+	 * Esegue il logout di un giocatore loggato. Se il giocatore è in partita, prima di eseguire il 
+	 * logout deve uscire dalla partita
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
@@ -434,11 +471,6 @@ public class Server {
 		{
 			if(loggedPlayers.containsKey(token))
 			{
-				if(currentSession.getPlayer(token) != null)
-				{
-					currentSession.removePlayer(token);
-				}
-				
 				loggedPlayers.remove(token);
 				
 				return ServerMessageBroker.createOkMessage();
@@ -455,10 +487,124 @@ public class Server {
 		
 		synchronized (loggedPlayers) 
 		{
-			
+			// TODO
 		}
 		
 		return ServerMessageBroker.createGeneraleMap(map);
+	}
+	
+	/**
+	 * Esegue la conferma del turno
+	 * @param msg : messaggio ricevuto dal Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public String roundConfirm(String msg)
+	{
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		
+		synchronized (loggedPlayers) 
+		{
+			if(isLoggedUser(token))
+			{
+				if(currentSession.getPlayer(token) != null)
+				{
+					if(tokenOfCurrentPlayer == token)
+						return ServerMessageBroker.createOkMessage();
+					else
+						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
+				}
+				else
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+			}
+			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}
+	
+	/**
+	 * Esegue il passa turno da parte di un giocatore
+	 * @param msg : messaggio ricevuto dal Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public String playerRoundSwitch(String msg)
+	{
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		
+		synchronized (loggedPlayers) 
+		{
+			if(isLoggedUser(token))
+			{
+				if(currentSession.getPlayer(token) != null)
+				{
+					if(tokenOfCurrentPlayer == token)
+					{
+						Iterator iter = currentSession.getPlayersList();
+						Map.Entry me;
+						int tableSize = 0;
+						
+						while(iter.hasNext())
+						{
+							tableSize++;
+							me = (Map.Entry) iter.next();
+							
+							if((((String) me.getKey()).equals(token)) && (tableSize < currentSession.numberPlayersInGame()))
+							{
+								me = (Map.Entry) iter.next();
+								tokenOfCurrentPlayer = (String)me.getKey();
+								return ServerMessageBroker.createOkMessage();
+							}
+							else if((((String) me.getKey()).equals(token)) && (tableSize == currentSession.numberPlayersInGame()))
+							{
+								// TODO : gestione del null ritornato
+								tokenOfCurrentPlayer = currentSession.getFirstPlayer();
+								return ServerMessageBroker.createOkMessage();
+							}
+						}
+					}
+					else
+						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
+				}
+				else
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+			}
+			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}
+	
+	/**
+	 * Esegue il cambio del turno(notifica in partita)
+	 * @return Messaggio da mandare in broadcast ai Client per notificare che è cambiato il turno. Il 
+	 * messaggio contiene il comando e l'username del giocatore abilitato a fare le proprie mosse
+	 */
+	public String serverRoundSwitch()
+	{
+		Iterator iter = currentSession.getPlayersList();
+		Map.Entry me;
+		int tableSize = 0;
+		
+		while(iter.hasNext())
+		{
+			tableSize++;
+			me = (Map.Entry) iter.next();
+			
+			if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame()))
+			{
+				me = (Map.Entry) iter.next();
+				tokenOfCurrentPlayer = (String)me.getKey();
+				break;
+			}
+			else if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
+			{
+				// TODO : gestione del null ritornato
+				tokenOfCurrentPlayer = currentSession.getFirstPlayer();
+				break;
+			}
+		}
+		
+		synchronized(loggedPlayers)
+		{
+			String username = loggedPlayers.get(tokenOfCurrentPlayer).getUserName();
+			return ServerMessageBroker.createServerRoundSwitch(username);
+		}
 	}
 	
 	
@@ -565,6 +711,9 @@ public class Server {
 			}
 		}
 
+		if(token.contains("@"))
+			token = token.replaceAll("@", "§");
+			
 		return token;
 	}
 

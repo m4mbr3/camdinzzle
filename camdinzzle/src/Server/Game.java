@@ -2,6 +2,7 @@ package Server;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
 
@@ -35,6 +36,12 @@ public class Game {
 		// TODO Auto-generated constructor stub
 		playersInGame = new HashMap<String, Player>();
 		maxPlayers = 8;
+		//this.createMap();
+	}
+	
+	public Object[][] getGeneralMap()
+	{
+		return map;
 	}
 	
 	public int getMaxPlayers() {
@@ -73,7 +80,10 @@ public class Game {
 	{
 		synchronized (playersInGame)
 		{
-			return playersInGame.get(token);
+			if(playersInGame.containsKey(token))
+				return playersInGame.get(token);
+			else
+				return null;
 		}
 	}
 	
@@ -118,6 +128,27 @@ public class Game {
 			Set set = playersInGame.entrySet();
 			
 			return set.iterator();
+		}
+	}
+	
+	/**
+	 * Ritorna il token del primo giocatore che ha il diritto del primo turno(il primo giocatore della
+	 * HashMap dei giocatori)
+	 * @return Token del giocatore
+	 */
+	public String getFirstPlayer()
+	{
+		synchronized (playersInGame) 
+		{
+			if(!playersInGame.isEmpty())
+			{
+				Set set = playersInGame.entrySet();
+				Iterator  iter = set.iterator();
+				Map.Entry me = (Map.Entry) iter.next();
+				
+				return me.getKey().toString();
+			}
+			return null;
 		}
 	}
 	

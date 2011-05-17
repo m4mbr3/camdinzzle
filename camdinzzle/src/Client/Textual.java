@@ -138,7 +138,7 @@ public class Textual implements Visual
 	 * @param msg Messaggio del Server
 	 */
 	@Override
-	public void showRanking(String msg) 
+	public void drawRanking(String msg) 
 	{
 		if(ClientMessageBroker.checkMessage(msg))
 		{
@@ -165,7 +165,7 @@ public class Textual implements Visual
 	public void drawError(String msg)
 	{
 		String[] errorString = ClientMessageBroker.splitMessage(msg);
-		System.out.println("Errore: " + errorString[1].substring(1));
+		System.out.println("Errore: " + errorString[0].substring(1));
 	}
 	
 	/**
@@ -222,7 +222,7 @@ public class Textual implements Visual
 	
 	/**
 	 * Permette di inserire il nome e il tipo della razza scelta 
-	 * @return Un array contenente in ordine in nome e il tipom della razza inseriti dall'utente
+	 * @return Un array contenente in ordine in nome e il tipo della razza inseriti dall'utente
 	 */
 	public String[] drawRaceCreation()
 	{
@@ -235,10 +235,10 @@ public class Textual implements Visual
 			race[0] = dataInput.readLine();
 			do
 			{
-				System.out.println("Inserire il tipo della razza dei dinosauri('c' o 'e':\n");
+				System.out.println("Inserire il tipo della razza dei dinosauri('c' o 'e'):\n");
 				race[1] = dataInput.readLine();
 			}
-			while((!race[1].equals("c")) || (!race[1].equals("e")));
+			while((!race[1].equals("c")) && (!race[1].equals("e")));
 		}
 		catch(IOException ex)
 		{

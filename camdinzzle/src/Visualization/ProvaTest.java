@@ -1,6 +1,11 @@
 package Visualization;
 
 import Server.*;
+import Client.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.KeyStore.Entry;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -96,8 +101,173 @@ public class ProvaTest {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ProvaTest a1 = new ProvaTest();
-		System.out.println(a1.generateToken("formenti", new Player("aznors", "kihidui")));
+		Server server = new Server();
+		Textual text = new Textual();
+		
+		String [] arr;
+		String msg, scelta = "";
+		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
+		String token = "";
+		
+		do
+		{
+			System.out.println("Possibilità di azioni:\n");
+			System.out.println("CU per creare un utente");
+			System.out.println("LOGIN per eseguire il login");
+			System.out.println("CR per creare una razza di dinosauri");
+			System.out.println("AP per accesso partita");
+			System.out.println("UP per uscita partita");
+			System.out.println("LG per vedere la lista dei giocatori attualment in partita");
+			System.out.println("CG per vedere la classifica generale");
+			System.out.println("LOGOUT per eseguire il logout");
+			System.out.println("MG per vedere la mappa generale");
+			System.out.println("LD per vedere la lista dei dinosauri");
+			System.out.println("VL per vedere la vista locale di un dinosauro");
+			System.out.println("SD per vedere lo stato di un dinosauro");
+			System.out.println("MD per muovere un dinosauro");
+			System.out.println("CD per far crescere un dinosauro");
+			System.out.println("DU per far deporre un uovo ad un dinosauro");
+			System.out.println("CT per donfermare il turno");
+			System.out.println("PT per passare il turno");
+			System.out.println("E per uscire");
+			System.out.print("\n");
+			do
+			{
+				try
+				{
+					scelta = dataInput.readLine().toUpperCase();
+					
+					if(scelta.equals("CU"))
+					{
+						arr = text.drawUserCreation();
+						msg = ClientMessageBroker.createUser(arr[0], arr[1]);
+						
+						System.out.println("Client: " + msg);
+						System.out.println("Server: " + server.add_new_user(msg));
+					}
+					else if(scelta.equals("LOGIN"))
+					{
+						arr = text.drawLogin();
+						msg = ClientMessageBroker.createLogin(arr[0], arr[1]);
+						
+						System.out.println("Client: " + msg);
+						msg = server.login(msg);
+						System.out.println("Server: " + msg);
+						
+						token = ClientMessageBroker.manageLogin(msg)[0];
+					}
+					else if(scelta.equals("CR"))
+					{
+						arr = text.drawRaceCreation();
+						msg = ClientMessageBroker.createRace(token, arr[0], arr[1]);
+						
+						System.out.println("Client: " + msg);
+						System.out.println("Server: " + server.addNewSpecies(msg));
+					}
+					else if(scelta.equals("AP"))
+					{
+						msg = ClientMessageBroker.createGameAccess(token);
+						
+						System.out.println("Client: " + msg);
+						System.out.println("Server: " + server.gameAccess(msg));
+					}
+					else if(scelta.equals("UP"))
+					{
+						msg = ClientMessageBroker.createGameExit(token);
+						
+						System.out.println("Client: " + msg);
+						System.out.println("Server: " + server.gameExit(msg));
+					}
+					else if(scelta.equals("LG"))
+					{
+						msg = ClientMessageBroker.createPlayerList(token);
+						System.out.println("Client: " + msg);
+						msg = server.playerList(msg);
+						System.out.println("Server: " + msg);
+						
+						text.drawPlayerList(msg);
+					}
+					else if(scelta.equals("CG"))
+					{
+						msg = ClientMessageBroker.createRanking(token);
+						System.out.println("Client: " + msg);
+						msg = server.ranking(msg);
+						System.out.println("Server: " + msg);
+						
+						text.drawRanking(msg);
+					}
+					else if(scelta.equals("LOGOUT"))
+					{
+						msg = ClientMessageBroker.createLogout(token);
+						System.out.println("Client: " + msg);
+						msg = server.logout(msg);
+						System.out.println("Server: " + msg);
+					}
+					else if(scelta.equals("MG"))
+					{
+						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+					}
+					else if(scelta.equals("LD"))
+					{
+						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+					}
+					else if(scelta.equals("VL"))
+					{
+						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+					}
+					else if(scelta.equals("SD"))
+					{
+						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+					}
+					else if(scelta.equals("MD"))
+					{
+						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+					}
+					else if(scelta.equals("CD"))
+					{
+						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+					}
+					else if(scelta.equals("DU"))
+					{
+						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+					}
+					else if(scelta.equals("CT"))
+					{
+						msg = ClientMessageBroker.createRoundConfirmation(token);
+						System.out.println("Client: " + msg);
+						msg = server.roundConfirm(msg);
+						System.out.println("Server: " + msg);
+					}
+					else if(scelta.equals("PT"))
+					{
+						msg = ClientMessageBroker.createPassOffRound(token);
+						System.out.println("Client: " + msg);
+						msg = server.playerRoundSwitch(msg);
+						System.out.println("Server: " + msg);
+					}
+					else
+						System.out.println("Uscita dal gioco");
+					
+					System.out.println("*****FINE INTERAZIONE*****\n");
+				}
+				catch(IOException ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+			while((!scelta.equals("CU")) && (!scelta.equals("LOGIN")) && (!scelta.equals("CR"))&& (!scelta.equals("AP")) && (!scelta.equals("UP"))
+				&& (!scelta.equals("LG")) && (!scelta.equals("CG")) && (!scelta.equals("LOGOUT")) && (!scelta.equals("MG")) 
+				&& (!scelta.equals("LD")) && (!scelta.equals("VL")) && (!scelta.equals("SD")) && (!scelta.equals("MD"))
+				&& (!scelta.equals("CD")) && (!scelta.equals("DU")) && (!scelta.equals("CT")) && (!scelta.equals("PT"))
+				&& (!scelta.equals("E	")));
+		}
+		while(!scelta.equals("e"));
+		
+		
+		
+		
+		/*ProvaTest a1 = new ProvaTest();
+		System.out.println(a1.generateToken("formenti", new Player("aznors", "kihidui")));*/
 		
 		//ClientManagerSocket p = new ClientManagerSocket(connection_with_client, server, username)
 		/*
