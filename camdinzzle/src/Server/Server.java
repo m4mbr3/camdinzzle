@@ -226,6 +226,8 @@ public class Server {
 						if((((Player)players.get(parameters[0])).getUserName().equals(parameters[0])) && (((Player)players.get(parameters[0])).getPassword().equals(parameters[1])))
 						{
 							String token = this.generateToken(parameters[0], new Player("aznors", "kihidui"));
+							players.get(parameters[0]).setToken(token);
+							
 							if(!this.isLoggedUser(token))
 							{
 								loggedPlayers.put(token, players.get(parameters[0]));
@@ -525,6 +527,40 @@ public class Server {
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 	}
+	/*
+	public String dinoZoom(String msg)
+	{
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
+		
+		ArrayList<String> zoom = new ArrayList<String>();
+		
+		synchronized(loggedPlayers)
+		{
+			if(isLoggedUser(token))
+			{
+				if(currentSession.getPlayer(token) != null)
+				{
+					Dinosaur dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
+					if( dino != null)
+					{
+						zoom.add(String.valueOf(dino.getPosRow()));
+						zoom.add(String.valueOf(dino.getPosCol()));
+						zoom.add(String.valueOf(dino.getDinoDimension()));
+						zoom.add(String.valueOf(dino.getDinoDimension()));
+						
+						
+					}
+					else
+						return ServerMessageBroker.createErroMessage("idNonValido");
+				}
+				else
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+			}
+			else
+				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}*/
 	
 	/**
 	 * Esegue la conferma del turno

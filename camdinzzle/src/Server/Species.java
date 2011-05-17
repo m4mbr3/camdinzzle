@@ -64,6 +64,15 @@ public class Species
 	}
 	
 	/**
+	 * @param dinoId : ID del dinosauro
+	 * @return Il riferimento al dinosauro se esiste un dinosauro avente come id dinoId, null altrimenti
+	 */
+	public Dinosaur getDino(String dinoId)
+	{
+		return myDinosaurs.get(dinoId);
+	}
+	
+	/**
 	 * add a new dinosaur the same type of my species
 	 * at my HashTable of dinosaurs
 	 */
