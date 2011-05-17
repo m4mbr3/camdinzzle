@@ -19,7 +19,7 @@ public abstract class Dinosaur
 	private Object[][] localMap;
 	
 	public abstract boolean eat(Object[][] map);
-	public abstract void fight();
+	public abstract boolean fight(Object dino);
 	public abstract boolean move();
 	
 	/**
@@ -149,6 +149,11 @@ public abstract class Dinosaur
 		return posCol;
 	}
 	
+	public int getEnergy()
+	{
+		return energy;
+	}
+	
 	public int getSizeLocalMap()
 	{
 		if(dimension==1)
@@ -198,7 +203,7 @@ public abstract class Dinosaur
 	public Object[][] getLocalMap()
 	{
 		 return localMap;
-	}
+	}		
 }
 
 

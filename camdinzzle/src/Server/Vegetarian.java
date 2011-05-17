@@ -30,9 +30,30 @@ public class Vegetarian extends Dinosaur
 	}
 
 	@Override
-	public void fight() 
+	public boolean fight(Object dino) 
 	{
-
+		int powerAttack;
+		int powerDefense;
+		
+		powerAttack = energy * this.getDinoDimension();		//calcola la forza del dinosauro che attacca
+		
+		if(dino instanceof Carnivorous)						//calcola la forza del dinosauro in difesa
+		{
+			powerDefense = 2 * ((Carnivorous) dino).energy * ((Dinosaur) dino).getDinoDimension();
+		}
+		else
+		{
+			powerDefense = ((Vegetarian) dino).energy * ((Dinosaur) dino).getDinoDimension();
+		}
+		
+		if(powerAttack >= powerDefense)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 		
 	}
 

@@ -575,6 +575,7 @@ public class Game {
 		return map[row][col];
 	}
 	
+	
 	public static Object[][] getLocalMap(int row, int col, int dimension)
 	{
 		int size;
