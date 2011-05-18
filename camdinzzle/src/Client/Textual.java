@@ -29,6 +29,26 @@ public class Textual implements Visual
 	}
 
 	/**
+	 * Stampa a video la richista di id del dinosauro e lo legge
+	 * @return Id del dinosauro(inserito dall'utente)
+	 */
+	public String getDinoId()
+	{
+		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
+		try
+		{
+			System.out.println("Inserisci l'id del dinosauro:\n");
+			return dataInput.readLine();
+		}
+		catch(IOException ex)
+		{
+			System.out.println("Errore nella ricezione dell'input.");
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * Stampa a video la vista locale del dinosaruro
 	 * @param dinoId Id del dinosaruo di cui stampare la vista locale
 	 * @param msg Messaggio del Server
@@ -127,16 +147,32 @@ public class Textual implements Visual
 	{
 	
 	}
-
-	// TODO
-	public void drawDinoMovement(String msg)
+	
+	/**
+	 * Stampa a video i messaggi per fare introdurre al giocatore l'id del dinosauro e le coordinate della
+	 * nuova posizione
+	 */
+	public String[] drawDinoMovement()
 	{
-		if(ClientMessageBroker.checkMessage(msg))
+		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
+		String[] returnValues = new String[3];
+		
+		try
 		{
-			String dinoMovement = ClientMessageBroker.manageDinoMove(msg);
+			System.out.println("Inserisci l'id del dinosauro da spostare: \n");
+			returnValues[0] = dataInput.readLine();
+			System.out.println("Inserisci le riga su cui spostare il dinosauro: \n");
+			returnValues[1] = dataInput.readLine();
+			System.out.println("Inserisci le riga su cui spostare il dinosauro: \n");
+			returnValues[2] = dataInput.readLine();
 		}
-		else
-			drawError(msg);
+		catch(IOException ex)
+		{
+			System.out.println("Errore nella ricezione dell'input.");
+			ex.printStackTrace();
+		}
+		
+		return returnValues;
 	}
 	
 	/**
@@ -286,24 +322,29 @@ public class Textual implements Visual
 	 */
 	public void drawGeneralMap(String msg)
 	{
-		ArrayList<String> map = new ArrayList<String>();
-		int columnsCount = 0;
-		
-		map = ClientMessageBroker.manageGeneralMap(msg);
-		
-		for(int i=2; i<Game.maxRow*Game.maxCol+2; i++)
-		{			
-			if(columnsCount == Game.maxCol)
-			{
-				System.out.print("\n");
-				columnsCount = 0;
+		if(ClientMessageBroker.checkMessage(msg))
+		{
+			ArrayList<String> map = new ArrayList<String>();
+			int columnsCount = 0;
+			
+			map = ClientMessageBroker.manageGeneralMap(msg);
+			
+			for(int i=2; i<Game.maxRow*Game.maxCol+2; i++)
+			{			
+				if(columnsCount == Game.maxCol)
+				{
+					System.out.print("\n");
+					columnsCount = 0;
+				}
+				
+				System.out.print(map.get(i) + " ");
+				columnsCount++;
 			}
 			
-			System.out.print(map.get(i) + " ");
-			columnsCount++;
+			System.out.print("\n");
 		}
-		
-		System.out.print("\n");
+		else
+			drawError(msg);
 	}
 	
 }

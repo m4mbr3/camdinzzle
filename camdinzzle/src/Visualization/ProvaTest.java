@@ -210,8 +210,7 @@ public class ProvaTest {
 						msg = server.generalMap(msg);
 						System.out.println("Server: " + msg);
 						
-						if(ClientMessageBroker.checkMessage(msg))
-							text.drawGeneralMap(msg);
+						text.drawGeneralMap(msg);
 					}
 					else if(scelta.equals("LD"))
 					{
@@ -219,28 +218,31 @@ public class ProvaTest {
 					}
 					else if(scelta.equals("VL"))
 					{
+						String dinoId = text.getDinoId();
 						
-						msg = ClientMessageBroker.createDinoZoom(token,"carlo - 1");
-						System.out.println("Client: " + msg);
-						msg = server.dinoZoom(msg);
-						System.out.println("Server: " + msg);
+						if(dinoId != null)
+						{
+							msg = ClientMessageBroker.createDinoZoom(token, dinoId);
+							System.out.println("Client: " + msg);
+							msg = server.dinoZoom(msg);
+							System.out.println("Server: " + msg);
+							text.drawDinoZoom(dinoId, msg);
+						}
 						
-						if(ClientMessageBroker.checkMessage(msg))
-							text.drawDinoZoom("001", msg);
-						
-						//System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
 					}
 					else if(scelta.equals("SD"))
 					{
-						msg = ClientMessageBroker.createDinoState(token, "carlo - 1");
-						System.out.println("Client: " + msg);
-						msg = server.dinoState(msg);
-						System.out.println("Server: " + msg);
+						String dinoId = text.getDinoId();
 						
-						if(ClientMessageBroker.checkMessage(msg))
-							text.drawDinoState("001", msg);
+						if(dinoId != null)
+						{
+							msg = ClientMessageBroker.createDinoState(token, dinoId);
+							System.out.println("Client: " + msg);
+							msg = server.dinoState(msg);
+							System.out.println("Server: " + msg);
+							text.drawDinoState(dinoId, msg);
+						}
 						
-						//System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
 					}
 					else if(scelta.equals("MD"))
 					{

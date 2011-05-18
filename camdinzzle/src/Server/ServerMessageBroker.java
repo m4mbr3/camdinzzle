@@ -241,7 +241,7 @@ public class ServerMessageBroker
 	}
 
 	/**
-	 * Crea il messaggio contenente lo statop di un dinosauro
+	 * Crea il messaggio contenente lo stato di un dinosauro
 	 * @param state
 	 * @return messaggio da mandare al Client
 	 */
@@ -257,6 +257,16 @@ public class ServerMessageBroker
 		}
 		
 		return dinoState;
+	}
+	
+	/**
+	 * Crea il messaggio contenente l'esito positivo di un movimento
+	 * @param battleResult : esito della battaglia(v | p)
+	 * @return Messaggio da mandare al Client
+	 */
+	public static String createDinoMovementWithBattle(String battleResult)
+	{
+		return "@ok,@combattimento," + battleResult;
 	}
 	
 	/**
