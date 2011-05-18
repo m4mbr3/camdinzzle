@@ -25,7 +25,7 @@ public class Game {
 	public static final int maxRow=40;
 	public static final int maxCol=40;
 	public static final int maxReach=7;
-	public static final int maxDist=3;
+	public static final int distMax=3;
 	private int Water = 164;
 	private int Carrion=20;
 	private int Vegetation=512;
@@ -42,6 +42,7 @@ public class Game {
 		playersInGame = new HashMap<String, Player>();
 		maxPlayers = 8;
 		this.createMap();
+		this.startMapReach();
 	}
 	
 	public Object[][] getGeneralMap()
@@ -557,7 +558,7 @@ public class Game {
 				}
 			}while(Vegetation>0 || Carrion>0);
 			
-		}
+	}
 
 		
 	
@@ -630,7 +631,6 @@ public class Game {
 				int[][] dist = new int [maxReach][maxReach];
 				dist[maxReach/2][maxReach/2] = 0;
 				reachAbleCell(i, j, rowRel, colRel, view, dist, -1);
-				//inserire for
 				mapReach[i][j] = dist;
 			}
 		}
@@ -641,6 +641,10 @@ public class Game {
 	{
 		int i=rowRel;
 		int j=colRel;
+		if((rowStart<0)||(rowStart>=maxRow)||(colStart<0)||(colStart>=maxCol))
+		{
+			return;
+		}
 		if(d+1 > distMax)
 		{
 			return;
@@ -654,7 +658,7 @@ public class Game {
 			return;
 		}
 		int distRel = dist[i][j];
-		if((view[i][j]==true) && (distRel!=0) && (distRel <= (d+1)))
+		if((view[i][j]==true) && /*(distRel!=0) &&*/ (distRel <= (d+1)))
 		{
 			return;
 		}
@@ -686,6 +690,20 @@ public class Game {
 			}
 		}
 		return false;
+	}
+	
+	public void stampaReachAble()
+	{
+		
+
+		for(int i=0; i<maxReach; i++)
+		{
+			for(int j=0; j<maxReach; j++)
+			{
+				System.out.print(mapReach[10][10][i][j] + " ");
+			}
+			System.out.print("\n");
+		}
 	}
 
 }
