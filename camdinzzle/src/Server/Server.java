@@ -7,6 +7,7 @@ import java.net.ServerSocket;
  */
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -110,6 +111,7 @@ public class Server {
 	public Server() {
 		// TODO Auto-generated constructor stub
 
+		/*
 		System.out.println("<<SERVER>>--INIT");
 		// Definition of default port login
 		port_login = 4567;
@@ -140,6 +142,8 @@ public class Server {
 		System.out.println("<<SERVER>>--NEWUSER DAEMON STARTED");
 		
 		System.out.println("<<SERVER>>--DEFINITION OF ENVIROMENT VARIABLES");
+		*/
+		
 		// Definition of new PlayerList empty
 		players = new HashMap<String, Player>();
 		loggedClientManager = new HashMap<String, ClientManager>();
@@ -219,6 +223,8 @@ public class Server {
 	 */
 	public String login(String msg)
 	{
+		// TODO : gestione token perso
+		
 		String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(msg);
 		
 		synchronized (players) 
@@ -231,7 +237,7 @@ public class Server {
 					{
 						if((((Player)players.get(parameters[0])).getUserName().equals(parameters[0])) && (((Player)players.get(parameters[0])).getPassword().equals(parameters[1])))
 						{
-							String token = this.generateToken(parameters[0], new Player("aznors", "kihidui"));
+							String token = this.generateToken(parameters[0], System.nanoTime());
 							players.get(parameters[0]).setToken(token);
 							
 							if(!this.isLoggedUser(token))
@@ -265,10 +271,13 @@ public class Server {
 				
 				synchronized(players)
 				{
+					/* Collection<Player> c = players.values(); 
+					 * Iterator<Player> iter = c.iterator();
+					 */
 					Set set = players.entrySet();
-					Iterator iter = set.iterator();
+					Iterator<Player> iter = set.iterator();
 					isRacePresent = false;
-	
+					
 					while (iter.hasNext()) 
 					{
 						Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
@@ -541,6 +550,8 @@ public class Server {
 	 */
 	public String dinoZoom(String msg)
 	{
+		// {13,4},{1,1},[t][t][c,0][c,0][t];[c,0][t][t][c,0][t];[c,0][c,0][t][t][t];[c,0][c,0][c,0][c,0][c,0];[c,0][t][t][c,0][t]
+		
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
 		
@@ -580,6 +591,72 @@ public class Server {
 					}
 					else
 						return ServerMessageBroker.createErroMessage("idNonValido");
+				}
+				else
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+			}
+			else
+				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}
+	
+	/**
+	 * Crea lo stato di un dinosauro
+	 * @param msg : messaggio ricevuto dal Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public String dinoState(String msg)
+	{
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
+		
+		ArrayList<String> state = new ArrayList<String>();
+		
+		synchronized(loggedPlayers)
+		{
+			if(isLoggedUser(token))
+			{
+				if(currentSession.getPlayer(token) != null)
+				{
+					Dinosaur dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
+					if( dino != null)
+					{
+						state.add(currentSession.getPlayer(token).getUserName());
+						state.add(currentSession.getPlayer(token).getSpecie().getName());
+						state.add(currentSession.getPlayer(token).getSpecie().getType().toString());
+						state.add(String.valueOf(dino.getPosRow()));
+						state.add(String.valueOf(dino.getPosCol()));
+						state.add(String.valueOf(dino.getDinoDimension()));
+						state.add(String.valueOf(dino.getEnergy()));
+						state.add(String.valueOf(dino.getTurniVissuti()));
+						
+						return ServerMessageBroker.createDinoState(state);
+					}
+					else
+					{
+						// cercare il dinosauro nei dinosauri di tutti gli altri utenti
+						Iterator<Player> iter = currentSession.getPlayersList();
+						
+						while (iter.hasNext()) 
+						{
+							Player current = iter.next();
+							dino = current.getSpecie().getDino(dinoId);
+							
+							if(dino != null)
+							{
+								 state.add(current.getUserName());
+								 state.add(current.getSpecie().getName());
+								 state.add(current.getSpecie().getType().toString());
+								 state.add(String.valueOf(dino.getPosRow()));
+								 state.add(String.valueOf(dino.getPosCol()));
+								 state.add(String.valueOf(dino.getDinoDimension()));
+								 
+								 return ServerMessageBroker.createDinoState(state);
+							}
+						}
+						
+						return ServerMessageBroker.createErroMessage("idNonValido");
+					}
 				}
 				else
 					return ServerMessageBroker.createErroMessage("nonInPartita");
@@ -789,7 +866,7 @@ public class Server {
 	 * @param username : username del giocatore
 	 * @return Token generato
 	 */
-	private String generateToken(String username, Player el) {
+	private String generateToken(String username, long el) {
 		String key = this.keyForToken;
 		int length = key.length();
 		String concatenateIdentifier = new String(username + el);
@@ -808,7 +885,7 @@ public class Server {
 		}
 
 		if(token.contains("@"))
-			token = token.replaceAll("@", "�");
+			token = token.replaceAll("@", "#");
 			
 		return token;
 	}

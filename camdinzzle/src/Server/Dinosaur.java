@@ -17,6 +17,7 @@ public abstract class Dinosaur
 	protected int posRow; //Row of dinosaur on the map
 	protected int posCol; //Column of dinosaur on the map
 	private Object[][] localMap;
+	private int turniVissuti;
 	
 	public abstract boolean eat(Object cell);
 	public abstract boolean fight(Object dino);
@@ -38,6 +39,7 @@ public abstract class Dinosaur
 		energyMax = energy * dimension;
 		this.posRow = posRow;
 		this.posCol = posCol;
+		turniVissuti = 0;
 		startLocalMap();
 	}
 	
@@ -152,6 +154,16 @@ public abstract class Dinosaur
 	public int getEnergy()
 	{
 		return energy;
+	}
+	
+	public int getTurniVissuti()
+	{
+		return turniVissuti;
+	}
+	
+	public void setTurniVissuti(int t)
+	{
+		turniVissuti = t;
 	}
 	
 	public int getSizeLocalMap()

@@ -135,7 +135,7 @@ public class ClientMessageBroker
 		 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
 		 * poter iniziare il ciclo di gestione delle singole righe
 		 */
-		dotAndCommaSeparator[0] = commaSeparator[4];
+		dotAndCommaSeparator[0] = dotAndCommaSeparator[0].substring(dotAndCommaSeparator[0].lastIndexOf("\\}") + 2);
 		String[] bracketSquareSeparator;
 		
 		for (String row : dotAndCommaSeparator) 

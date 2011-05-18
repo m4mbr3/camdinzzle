@@ -1,5 +1,6 @@
 package Server;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -127,13 +128,13 @@ public class Game {
 	 * Lista dei giocatori in partita
 	 * @return Iterator con la lista dei giocatori in partita
 	 */
-	public Iterator getPlayersList()
+	public Iterator<Player> getPlayersList()
 	{
 		synchronized (playersInGame) 
 		{
-			Set set = playersInGame.entrySet();
+			Collection<Player> c = playersInGame.values();
 			
-			return set.iterator();
+			return c.iterator();
 		}
 	}
 	
