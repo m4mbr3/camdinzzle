@@ -40,9 +40,9 @@ public class Textual implements Visual
 		{
 			ArrayList<String> dinoZoomList = ClientMessageBroker.manageDinoZoom(msg);
 			// Alla posizione 2 dell'arraylist c'è il numero delle righe della vista
-			int rowsNumber = Integer.parseInt(dinoZoomList.get(3).trim());
+			int rowsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
 			// Alla posizione 3 dell'arraylist c'è il numero delle colonne della vista
-			int columnsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
+			int columnsNumber = Integer.parseInt(dinoZoomList.get(3).trim());
 			int columnsCount = 0;
 			System.out.print("Dinosaur's " + dinoId + " zoom:");
 			
@@ -52,6 +52,7 @@ public class Textual implements Visual
 				{
 					System.out.print("\n _______ _______ _______");
 					System.out.print("\n|");
+					columnsCount = 0;
 				}
 				// Se non è un elemento che ha energia o un ID come parametro lo metto al centro della cella di out
 				if(dinoZoomList.get(i).indexOf(',') == -1)

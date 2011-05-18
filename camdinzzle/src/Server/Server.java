@@ -160,7 +160,7 @@ public class Server {
 		this.lock_logged_player = new Object();
 		this.lock_players = new Object();
 		this.lock_species = new Object();
-		this.add_new_user("@login,user=andrea,pass=andrea");
+		//this.add_new_user("@login,user=andrea,pass=andrea");
 	}
 
 	public void controlAction() {
@@ -407,7 +407,7 @@ public class Server {
 			{
 				if(loggedPlayers.get(token) != null)
 				{
-					Iterator iter = currentSession.getPlayersList();
+					Iterator<Player> iter = currentSession.getPlayersList();
 					
 					while(iter.hasNext())
 					{
@@ -429,6 +429,7 @@ public class Server {
 	 */
 	public String ranking(String msg)
 	{
+		// TODO : da sistemare quando viene messa nell'arraylist il nome della specie
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		ArrayList<String> parameters = new ArrayList<String>();
 		
@@ -445,10 +446,10 @@ public class Server {
 				{
 					Set set = players.entrySet();
 					Iterator  iter = set.iterator();
+					maxScore = -10;
 					
 					while(iter.hasNext())
 					{
-						maxScore = -10;
 						Map.Entry me = (Map.Entry) iter.next();
 						
 						if(((Player)me.getValue()).getPunteggio() > maxScore)
@@ -466,7 +467,7 @@ public class Server {
 					ranking.add(usernameMaxScore);
 					ranking.add(players.get(usernameMaxScore).getSpecie().getName());
 					ranking.add(String.valueOf(players.get(usernameMaxScore).getPunteggio()));
-					if(currentSession.getPlayer(token) != null)
+					if(currentSession.getPlayer(players.get(usernameMaxScore).getToken()) != null)
 						ranking.add("s");
 					else
 						ranking.add("n");
@@ -559,6 +560,7 @@ public class Server {
 		
 		synchronized(loggedPlayers)
 		{
+			// TODO : sistemare creazione del messaggio della vista locale del CLientMessageBroker
 			if(isLoggedUser(token))
 			{
 				if(currentSession.getPlayer(token) != null)
@@ -568,8 +570,8 @@ public class Server {
 					{
 						zoom.add(String.valueOf(dino.getPosRow()));
 						zoom.add(String.valueOf(dino.getPosCol()));
-						zoom.add(String.valueOf(dino.getDinoDimension()));
-						zoom.add(String.valueOf(dino.getDinoDimension()));
+						zoom.add(String.valueOf(dino.getSizeLocalMap()));
+						zoom.add(String.valueOf(dino.getSizeLocalMap()));
 						
 						Object[][] localMap = dino.getLocalMap();
 						
@@ -582,9 +584,9 @@ public class Server {
 								else if(localMap[i][j] instanceof Carrion)
 									zoom.add("c," + ((Carrion)localMap[i][j]).getPower());
 								else if(localMap[i][j] instanceof Vegetation)
-									zoom.add("c," + ((Vegetation)localMap[i][j]).getPower());
+									zoom.add("v," + ((Vegetation)localMap[i][j]).getPower());
 								else
-									zoom.add((String)localMap[i][j]);
+									zoom.add(localMap[i][j].toString());
 							}
 						}
 						return ServerMessageBroker.createDinoZoom(zoom);
@@ -638,14 +640,14 @@ public class Server {
 						
 						while (iter.hasNext()) 
 						{
-							Player current = iter.next();
-							dino = current.getSpecie().getDino(dinoId);
+							Map.Entry me = (Map.Entry) iter.next();
+							dino = ((Player)me.getValue()).getSpecie().getDino(dinoId);
 							
 							if(dino != null)
 							{
-								 state.add(current.getUserName());
-								 state.add(current.getSpecie().getName());
-								 state.add(current.getSpecie().getType().toString());
+								 state.add(((Player)me.getValue()).getUserName());
+								 state.add(((Player)me.getValue()).getSpecie().getName());
+								 state.add(((Player)me.getValue()).getSpecie().getType().toString());
 								 state.add(String.valueOf(dino.getPosRow()));
 								 state.add(String.valueOf(dino.getPosCol()));
 								 state.add(String.valueOf(dino.getDinoDimension()));

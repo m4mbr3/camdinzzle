@@ -227,7 +227,7 @@ public class ServerMessageBroker
 		
 		for(int i = 4; i<zoom.size(); i++)
 		{
-			if(columnCount == columns + 4)
+			if(columnCount == columns)
 			{
 				dinoZoom += ";";
 				columnCount = 0;

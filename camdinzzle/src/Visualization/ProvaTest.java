@@ -220,7 +220,7 @@ public class ProvaTest {
 					else if(scelta.equals("VL"))
 					{
 						
-						msg = ClientMessageBroker.createDinoZoom(token, "name - 1");
+						msg = ClientMessageBroker.createDinoZoom(token,"carlo - 1");
 						System.out.println("Client: " + msg);
 						msg = server.dinoZoom(msg);
 						System.out.println("Server: " + msg);
@@ -232,7 +232,7 @@ public class ProvaTest {
 					}
 					else if(scelta.equals("SD"))
 					{
-						msg = ClientMessageBroker.createDinoState(token, "name - 1");
+						msg = ClientMessageBroker.createDinoState(token, "carlo - 1");
 						System.out.println("Client: " + msg);
 						msg = server.dinoState(msg);
 						System.out.println("Server: " + msg);

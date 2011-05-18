@@ -132,9 +132,9 @@ public class Game {
 	{
 		synchronized (playersInGame) 
 		{
-			Collection<Player> c = playersInGame.values();
+			Set set = playersInGame.entrySet();
 			
-			return c.iterator();
+			return set.iterator();
 		}
 	}
 	
