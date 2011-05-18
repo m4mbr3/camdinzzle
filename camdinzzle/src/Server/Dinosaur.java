@@ -36,6 +36,7 @@ public abstract class Dinosaur
 		age = (int) (Math.random() * 13 + 24);
 		dimension = 1;
 		energy = 1000;
+		this.dinoId = dinoId;
 		energyMax = energy * dimension;
 		this.posRow = posRow;
 		this.posCol = posCol;
