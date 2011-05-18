@@ -123,9 +123,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener{
 		// TODO Auto-generated method stub
 		if ( arg0.getSource() instanceof JButton)
 		{
-			System.out.println("Find It!!!");
 			this.setVisible(false);
-			char[] passwd = password.getPassword();
 			new ConnectionManagerSocket(4567, "localhost", username.getText(), password.getText());
 			System.exit(0);
 		}
