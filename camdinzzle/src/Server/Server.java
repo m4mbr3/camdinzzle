@@ -429,7 +429,6 @@ public class Server {
 	 */
 	public String ranking(String msg)
 	{
-		// TODO : da sistemare quando viene messa nell'arraylist il nome della specie
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		ArrayList<String> parameters = new ArrayList<String>();
 		
@@ -456,21 +455,27 @@ public class Server {
 						{
 							if(!alreadyPlayerRead.containsKey(((Player)me.getValue()).getUserName()))
 							{
-								maxScore = ((Player)me.getValue()).getPunteggio();
-								usernameMaxScore = ((Player)me.getValue()).getUserName();
+								if(((Player)me.getValue()).getSpecie() != null)
+								{
+									maxScore = ((Player)me.getValue()).getPunteggio();
+									usernameMaxScore = ((Player)me.getValue()).getUserName();
+								}
 							}
 						}
 					}
 					
-					alreadyPlayerRead.put(usernameMaxScore, usernameMaxScore);
-					
-					ranking.add(usernameMaxScore);
-					ranking.add(players.get(usernameMaxScore).getSpecie().getName());
-					ranking.add(String.valueOf(players.get(usernameMaxScore).getPunteggio()));
-					if(currentSession.getPlayer(players.get(usernameMaxScore).getToken()) != null)
-						ranking.add("s");
-					else
-						ranking.add("n");
+					if(!usernameMaxScore.equals(""))
+					{
+						alreadyPlayerRead.put(usernameMaxScore, usernameMaxScore);
+						
+						ranking.add(usernameMaxScore);
+						ranking.add(players.get(usernameMaxScore).getSpecie().getName());
+						ranking.add(String.valueOf(players.get(usernameMaxScore).getPunteggio()));
+						if(currentSession.getPlayer(players.get(usernameMaxScore).getToken()) != null)
+							ranking.add("s");
+						else
+							ranking.add("n");
+					}
 					
 				}
 				
@@ -560,7 +565,6 @@ public class Server {
 		
 		synchronized(loggedPlayers)
 		{
-			// TODO : sistemare creazione del messaggio della vista locale del CLientMessageBroker
 			if(isLoggedUser(token))
 			{
 				if(currentSession.getPlayer(token) != null)
