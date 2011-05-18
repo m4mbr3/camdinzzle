@@ -609,7 +609,6 @@ public class Server {
 	{
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
-		
 		ArrayList<String> state = new ArrayList<String>();
 		
 		synchronized(loggedPlayers)

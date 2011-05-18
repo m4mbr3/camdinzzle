@@ -43,6 +43,7 @@ public class Species
 		// TODO Game.getLocalMap da sistemare che non funzionano
 		addDinosaur(posRig, posCol);
 		startMap();
+		updateMap();
 		return;
 	}
 	
@@ -80,7 +81,7 @@ public class Species
 	{
 		Dinosaur dino;
 		addDinoNumber();
-		String dinoId = "name - " + getDinoNumber();
+		String dinoId = this.name + " - " + getDinoNumber();
 		
 		if(speciesType == type.Carnivorous) //Control the type of species
 		{
@@ -207,5 +208,18 @@ public class Species
 	public Object[][] getPlayerMap()
 	{
 		return map;
+	}
+	
+	public void stampa()
+	{
+
+		for(int i=0; i<Game.maxRow; i++)
+		{
+			for(int j=0; j<Game.maxCol; j++)
+			{
+				System.out.print(map[i][j] + " ");
+			}
+			System.out.print("\n");
+		}
 	}
 }

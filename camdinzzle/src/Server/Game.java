@@ -522,7 +522,9 @@ public class Game {
 				}
 			}
 		}while(Water>=5);
-		
+		/*
+		 * crea vegetazione e carogne
+		 */
 			do
 			{
 				int row = (int)(Math.random() * (maxRow-1) + 1); // random da 1 a 38
@@ -704,6 +706,15 @@ public class Game {
 				System.out.print(mapReach[10][10][i][j] + " ");
 			}
 			System.out.print("\n");
+		}
+	}
+	
+	public static void setCellMap(Dinosaur dino, int row, int col)
+	{
+		if((row>=0)&&(row<maxRow)&&(col>=0)&&(col<maxCol))
+		{
+		map[row][col] = null;
+		map[row][col] = dino;
 		}
 	}
 

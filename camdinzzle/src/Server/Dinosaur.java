@@ -204,7 +204,9 @@ public abstract class Dinosaur
 			}
 		}
 		localMap = new Object[size][size];
+		Game.setCellMap(this, posRow, posCol);
 		localMap = Game.getLocalMap(posRow, posCol, dimension);
+		
 	}
 	
 	private void udateLocalMap()
@@ -215,7 +217,12 @@ public abstract class Dinosaur
 	public Object[][] getLocalMap()
 	{
 		 return localMap;
-	}		
+	}
+	
+	public String toString()
+	{
+		return "d";
+	}
 }
 
 
