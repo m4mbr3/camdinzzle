@@ -75,7 +75,10 @@ public class Server {
 	 * HashMap che contiene delle istanze dei Player loggati. Chiave il token
 	 */
 	private HashMap<String, Player> loggedPlayers;
-	
+	/**
+	 * HashMap che contiene le specie estinte
+	 */
+	private HashMap<String, Species> rank;
 	/**
 	 * Stringa che contiene il token del giocatore che deve effettuare il turno
 	 */
@@ -148,6 +151,7 @@ public class Server {
 		players = new HashMap<String, Player>();
 		loggedClientManager = new HashMap<String, ClientManager>();
 		loggedPlayers = new HashMap<String, Player>();
+		rank = new HashMap<String, Species>();
 		currentSession = new Game();
 		login = null;
 		newuser = null;
@@ -262,6 +266,7 @@ public class Server {
 	public String addNewSpecies(String msg) 
 	{
 		String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(msg);
+		String token = parameters[0];
 		
 		synchronized (loggedPlayers) 
 		{
@@ -274,6 +279,22 @@ public class Server {
 					/* Collection<Player> c = players.values(); 
 					 * Iterator<Player> iter = c.iterator();
 					 */
+					/* Se il giocatore ha già una specie ed è uguale a quella richiesta
+					 * significa che il giocatore entra in partita con una specie già avviata ed è
+					 * obbligato ad utilizzarla
+					 */
+					if(loggedPlayers.get(token).getSpecie() != null)
+					{
+						if(loggedPlayers.get(token).getSpecie().getName().equals(parameters[1]))
+						{
+							return ServerMessageBroker.createOkMessage();
+						}
+						/* Dal Client non bisogna permettere di creare una specie se ce ne è già
+						 * una avviata nella partita
+						 */
+						return ServerMessageBroker.createErroMessage("nomeRazzaOccupato");
+					}
+						
 					Set set = players.entrySet();
 					Iterator<Player> iter = set.iterator();
 					isRacePresent = false;
@@ -285,7 +306,10 @@ public class Server {
 						if(me.getValue().getSpecie() != null)
 						{
 							if (me.getValue().getSpecie().getName().equals(parameters[1]))
+							{
 								isRacePresent = true;
+								break;
+							}
 						}
 					}
 				}
@@ -294,13 +318,14 @@ public class Server {
 					Species new_specie;
 					if (parameters[2].equals("c")) 
 					{
-						new_specie = new Species(parameters[1], Species.getCarnType());
+						new_specie = new Species(parameters[1], Species.getCarnType(), loggedPlayers.get(parameters[0]).getUserName());
 					} 
 					else 
 					{
-						new_specie = new Species(parameters[1], Species.getVegType());
+						new_specie = new Species(parameters[1], Species.getVegType(), loggedPlayers.get(parameters[0]).getUserName());
 					}
 
+					rank.put(new_specie.getName(), new_specie);
 					loggedPlayers.get(parameters[0]).setSpecie(new_specie);
 					return ServerMessageBroker.createOkMessage();
 				} 
@@ -433,49 +458,46 @@ public class Server {
 	{
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		ArrayList<String> parameters = new ArrayList<String>();
-		
+		// TODO: gestione specie estinte e cambio punteggio nel player
 		synchronized (loggedPlayers) 
 		{
-			HashMap<String, String> alreadyPlayerRead = new HashMap<String, String>();
+			HashMap<String, String> alreadySpeciesRead = new HashMap<String, String>();
 			ArrayList<String> ranking = new ArrayList<String>();
 			int maxScore;
+			String speciesMaxScore = "";
 			String usernameMaxScore = "";
+			Map.Entry me = null;
 			
 			if(isLoggedUser(token))
 			{
-				for(int i = 0; i<players.size(); i++)
+				for(int i = 0; i<rank.size(); i++)
 				{
-					Set set = players.entrySet();
+					Set set = rank.entrySet();
 					Iterator  iter = set.iterator();
 					maxScore = -10;
 					
 					while(iter.hasNext())
 					{
-						Map.Entry me = (Map.Entry) iter.next();
+						me = (Map.Entry) iter.next();
 						
-						if(((Player)me.getValue()).getSpecie() != null)
+						if(((Species)me.getValue()).getPunteggio() > maxScore)
 						{
-							if(((Player)me.getValue()).getPunteggio() > maxScore)
+							if(!alreadySpeciesRead.containsKey(((Species)me.getValue()).getName()))
 							{
-								if(!alreadyPlayerRead.containsKey(((Player)me.getValue()).getUserName()))
-								{
-									if(((Player)me.getValue()).getSpecie() != null)
-									{
-										maxScore = ((Player)me.getValue()).getPunteggio();
-										usernameMaxScore = ((Player)me.getValue()).getUserName();
-									}
-								}
+								maxScore = ((Species)me.getValue()).getPunteggio();
+								speciesMaxScore = ((Species)me.getValue()).getName();
+								usernameMaxScore = ((Species)me.getValue()).getPlayerUsername();
 							}
 						}
 					}
 					
-					if(!usernameMaxScore.equals(""))
+					if(!speciesMaxScore.equals(""))
 					{
-						alreadyPlayerRead.put(usernameMaxScore, usernameMaxScore);
+						alreadySpeciesRead.put(speciesMaxScore, speciesMaxScore);
 						
 						ranking.add(usernameMaxScore);
-						ranking.add(players.get(usernameMaxScore).getSpecie().getName());
-						ranking.add(String.valueOf(players.get(usernameMaxScore).getPunteggio()));
+						ranking.add(speciesMaxScore);
+						ranking.add(String.valueOf(maxScore));
 						if(currentSession.getPlayer(players.get(usernameMaxScore).getToken()) != null)
 							ranking.add("s");
 						else

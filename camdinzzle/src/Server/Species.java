@@ -23,11 +23,13 @@ public class Species
 	private static type speciesType;
 	private int  dinoNumber;
 	private Object[][] map;
+	private int punteggio;
+	private String playerUsername;
 	
 	/**
 	 * Create a new species, set name, type, timeOfLive and add one dinosaur
 	 */
-	public Species(String name, type speciesType)
+	public Species(String name, type speciesType, String username)
 	{
 		int posRig, posCol;
 		
@@ -37,6 +39,8 @@ public class Species
 		Species.speciesType = speciesType;
 		timeOfLive = 120;
 		dinoNumber = 0;
+		punteggio = 0;
+		playerUsername = username;
 		do
 		{
 			posRig = (int) (Math.random() * 40);
@@ -51,6 +55,22 @@ public class Species
 		return;
 	}
 	
+	public int getPunteggio() {
+		return punteggio;
+	}
+
+	public void setPunteggio(int punteggio) {
+		this.punteggio = punteggio;
+	}
+	
+	public String getPlayerUsername() {
+		return playerUsername;
+	}
+
+	public void setPlayerUsername(String playerUsername) {
+		this.playerUsername = playerUsername;
+	}
+
 	/**
 	 * add one at number of dinosaurs of species
 	 */
