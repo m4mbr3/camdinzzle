@@ -157,8 +157,8 @@ public class Species
 		{
 			Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) iter.next();
 			me.getValue().updateDinosaurAge();
-			timeOfLive -= 1;
 		}
+		timeOfLive -= 1;
 	}
 	/*
 	 * tornano il tipo enum
@@ -258,5 +258,32 @@ public class Species
 			}
 			System.out.print("\n");
 		}
+	}
+	
+	public void killDino(Dinosaur dinoId)
+	{
+		if(speciesType==type.Carnivorous)
+		{
+			if(((Carnivorous)dinoId).getVegetation()!=null)
+			{
+				Game.setCellMap(((Carnivorous)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
+			}
+			else
+			{
+				Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
+			}
+		}
+		else
+		{
+			if(((Vegetarian)dinoId).getCarrion()!=null)
+			{
+				Game.setCellMap(((Vegetarian)dinoId).getCarrion(), dinoId.getPosRow(), dinoId.getPosCol());
+			}
+			else
+			{
+				Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
+			}
+		}
+		myDinosaurs.remove(dinoId.toString());
 	}
 }

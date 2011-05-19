@@ -8,12 +8,12 @@ package Server;
 
 public class Vegetarian extends Dinosaur
 {
-	private final int distMax = 2;
 	private Carrion carrion=null;
 
 	public Vegetarian(String dinoId, int posRow, int posCol)
 	{
 		super(dinoId, posRow, posCol);
+		setDistMax(2);
 	}
 	
 	@Override
@@ -26,12 +26,16 @@ public class Vegetarian extends Dinosaur
 			{
 				energy = energyMax;
 			}
+			this.setActionTake(true);
 			return true;
 		}
 		return false;
 	}
 
 	@Override
+	/**
+	 * @param 
+	 */
 	public boolean fight(Object dino) 
 	{
 		int powerAttack;
@@ -60,17 +64,27 @@ public class Vegetarian extends Dinosaur
 	@Override
 	public boolean move(int rowDest, int colDest)
 	{
+
 		if(carrion!=null)
 		{
 			Game.setCellMap(carrion, this.getPosRow(), this.getPosCol());
 			carrion=null;
+		}
+		else
+		{
+			Game.setCellMap("t", this.getPosRow(), this.getPosCol());
 		}
 		energy -= 10 * Math.pow(2, Game.getDistCell(this.getPosRow(), this.getPosCol(), rowDest, colDest));
 		if(energy<=0)
 		{
 			return false;
 		}
-		else
+
+		this.posRow=rowDest;
+		this.posCol=colDest;
+		this.setMoveTake(true);
+		return true;
+/*		else
 		{
 			
 			if(Game.getCell(rowDest, colDest) instanceof Carnivorous)		//se c' un carnivoro  combatto
@@ -91,9 +105,21 @@ public class Vegetarian extends Dinosaur
 			}
 			this.posRow=rowDest;
 			this.posCol=colDest;
+			this.setMoveTake(true);
 			return true;
 		
 		}
+*/
+	}
+	
+	public Carrion getCarrion()
+	{
+		return carrion;
+	}
+	
+	public void setCarrion(Carrion carrion)
+	{
+		this.carrion=carrion;
 	}
 
 }

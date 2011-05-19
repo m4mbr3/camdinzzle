@@ -8,12 +8,13 @@ package Server;
 
 public class Carnivorous extends Dinosaur
 {
-	private static final int distMax = 3;
+	
 	private Vegetation vegetation=null;
 
 	public Carnivorous(String dinoId, int posRow, int posCol) 
 	{
 		super(dinoId, posRow, posCol);
+		setDistMax(3);
 	}
 	
 	@Override
@@ -115,6 +116,11 @@ public class Carnivorous extends Dinosaur
 	public Vegetation getVegetation()
 	{
 		return vegetation;
+	}
+	
+	public void setVegetation(Vegetation vegetation)
+	{
+		this.vegetation=vegetation;
 	}
 
 }

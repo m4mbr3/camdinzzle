@@ -18,6 +18,9 @@ public abstract class Dinosaur
 	protected int posCol; //Column of dinosaur on the map
 	private Object[][] localMap;
 	private int turniVissuti;
+	private int distMax;
+	private boolean moveTake=false;
+	private boolean actionTake=false;
 	
 	public abstract boolean eat(Object cell);
 	public abstract boolean fight(Object dino);
@@ -41,6 +44,7 @@ public abstract class Dinosaur
 		this.posRow = posRow;
 		this.posCol = posCol;
 		turniVissuti = 0;
+		distMax=0;
 		startLocalMap();
 	}
 	
@@ -59,6 +63,7 @@ public abstract class Dinosaur
 			{
 				energy = energy - energyMax;
 				dimension = dimension + 1;
+				setActionTake(true);
 				return true;
 			}
 			else 
@@ -90,7 +95,7 @@ public abstract class Dinosaur
 						{					
 							if((Game.getCell(i, j) instanceof String)&&(Game.getCell(i, j)=="t"))
 							{
-								
+		//nuovo dinosauro
 								positioned = true;
 								break;
 							}
@@ -100,7 +105,7 @@ public abstract class Dinosaur
 				}
 				offSet++;
 			}while(!positioned);
-			
+			setActionTake(true);
 			return true;
 		}
 		else 
@@ -135,6 +140,9 @@ public abstract class Dinosaur
 	public void updateDinosaurAge()
 	{
 		age -= 1;
+		turniVissuti += 1;
+		setMoveTake(false);
+		setActionTake(false);
 	}
 	
 	public int getDinoDimension()
@@ -224,6 +232,32 @@ public abstract class Dinosaur
 	{
 		return "d";
 	}
+	public void setDistMax(int distMax)
+	{
+		this.distMax = distMax;
+	}
+	
+	public int getDistMax()
+	{
+		return distMax;
+	}
+	public void setMoveTake(boolean moveTake) 
+	{
+		this.moveTake = moveTake;
+	}
+	public boolean getMoveTake() 
+	{
+		return moveTake;
+	}
+	public void setActionTake(boolean actionTake) 
+	{
+		this.actionTake = actionTake;
+	}
+	public boolean getActionTake() 
+	{
+		return actionTake;
+	}
+	
 }
 
 

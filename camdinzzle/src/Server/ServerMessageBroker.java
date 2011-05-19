@@ -162,6 +162,16 @@ public class ServerMessageBroker
 	}
 	
 	/**
+	 * Crea il messaggio di ok con due parametro in coda: @ok,nomeParametro
+	 * @param parameter : Parametro da mandare al Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public static String createOkMessageWithTwoParameter(String parameter1, String parameter2)
+	{
+		return "@ok," + parameter1 + parameter2;
+	}
+	
+	/**
 	 * Crea il messaggio contenente la classifica generale della partita
 	 * @param ranking contiene i parametri da concatenare nel messaggio
 	 * @return messaggio da mandare al Client
