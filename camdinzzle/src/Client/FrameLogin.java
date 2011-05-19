@@ -28,15 +28,15 @@ import javax.swing.JButton;
  */
 public class FrameLogin extends JFrame implements ActionListener,WindowListener{
 
-	JLabel username_label;
-	JLabel password_label;
-	JLabel camdinzzle;
-	JTextField username;
-	JPasswordField password;
-	JPanel panel;
-	JButton send;
-	Dimension screenSize;
-	
+	private JLabel username_label;
+	private JLabel password_label;
+	private JLabel camdinzzle;
+	private JTextField username;
+	private JPasswordField password;
+	private JPanel panel;
+	private JButton send;
+	private Dimension screenSize;
+	private Client client;
 	/**
 	 * @throws HeadlessException
 	 */
@@ -56,14 +56,15 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener{
 	 * @param title
 	 * @throws HeadlessException
 	 */
-	public FrameLogin(String title) throws HeadlessException {
+	public FrameLogin(String title, Client client) throws HeadlessException {
 		super(title);
 		// TODO Auto-generated constructor stub
+		this.client = client;
 		this.setVisible(true);
 		this.setSize(300,300);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
-		camdinzzle = new JLabel("Camdinzzle");
+		camdinzzle = new JLabel("Camdinzzle on Socket");
 		username_label = new JLabel("Username :");
 		password_label = new JLabel("Password :");
 		username = new JTextField();
@@ -124,8 +125,8 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener{
 		if ( arg0.getSource() instanceof JButton)
 		{
 			this.setVisible(false);
-			new ConnectionManagerSocket(4567, "localhost", username.getText(), password.getText());
-			System.exit(0);
+			client.setConnMann(new ConnectionManagerSocket(4567, "localhost", username.getText(), password.getText()));
+			
 		}
 	}
 

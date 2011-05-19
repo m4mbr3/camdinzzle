@@ -116,7 +116,7 @@ public class Server {
 	public Server() {
 		// TODO Auto-generated constructor stub
 
-		/*
+		
 		System.out.println("<<SERVER>>--INIT");
 		// Definition of default port login
 		port_login = 4567;
@@ -147,7 +147,7 @@ public class Server {
 		System.out.println("<<SERVER>>--NEWUSER DAEMON STARTED");
 		
 		System.out.println("<<SERVER>>--DEFINITION OF ENVIROMENT VARIABLES");
-		*/
+		
 		
 		// Definition of new PlayerList empty
 		players = new HashMap<String, Player>();
@@ -166,7 +166,7 @@ public class Server {
 		this.lock_logged_player = new Object();
 		this.lock_players = new Object();
 		this.lock_species = new Object();
-		//this.add_new_user("@login,user=andrea,pass=andrea");
+		this.add_new_user("@login,user=andrea,pass=andrea");
 	}
 
 	public void controlAction() {
@@ -281,8 +281,8 @@ public class Server {
 					/* Collection<Player> c = players.values(); 
 					 * Iterator<Player> iter = c.iterator();
 					 */
-					/* Se il giocatore ha gi‡ una specie ed Ë uguale a quella richiesta
-					 * significa che il giocatore entra in partita con una specie gi‡ avviata ed Ë
+					/* Se il giocatore ha giÔøΩ una specie ed ÔøΩ uguale a quella richiesta
+					 * significa che il giocatore entra in partita con una specie giÔøΩ avviata ed ÔøΩ
 					 * obbligato ad utilizzarla
 					 */
 					if(loggedPlayers.get(token).getSpecie() != null)
@@ -291,7 +291,7 @@ public class Server {
 						{
 							return ServerMessageBroker.createOkMessage();
 						}
-						/* Dal Client non bisogna permettere di creare una specie se ce ne Ë gi‡
+						/* Dal Client non bisogna permettere di creare una specie se ce ne ÔøΩ giÔøΩ
 						 * una avviata nella partita
 						 */
 						return ServerMessageBroker.createErroMessage("nomeRazzaOccupato");
@@ -789,11 +789,11 @@ public class Server {
 		
 		synchronized(loggedPlayers)
 		{
-			if(isLoggedUser(token))						//controlla se è loggato
+			if(isLoggedUser(token))						//controlla se ÔøΩ loggato
 			{
 				if(currentSession.getPlayer(token) != null)			//controllo token valido
 				{
-		//manca non è il tuo turno
+		//manca non ÔøΩ il tuo turno
 					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
 						Dinosaur dino = currentSession.getPlayer(token).getSpecie().getDino(dinoId);
@@ -803,21 +803,21 @@ public class Server {
 							{
 								if(Game.checkReachCell(dino.getPosRow(), dino.getPosCol(), dinoRow, dinoCol, dino.getDistMax()))	//controllo che il dinosauro possa arrivare a destinazione
 								{
-									if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino è vegetariano controllo che nn ci sia un vegetariano a destinazione
+									if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino ÔøΩ vegetariano controllo che nn ci sia un vegetariano a destinazione
 									{
 										if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).move(dinoRow, dinoCol))		//controlla che abbia abbastanza energia x muoversi e cambia le coordinate in dino
 										{
-											if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'è un altro dinosauro nella cella di arrivo
+											if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'ÔøΩ un altro dinosauro nella cella di arrivo
 											{
 												if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).fight(Game.getCell(dinoRow, dinoCol)))		//combatte
 												{
 													//uccidere avversario.... scoprire specie avversario!!!
 													//currentSession.getPlayer(token).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino è vegetariano e se nella cella c'è carogna
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino ÔøΩ vegetariano e se nella cella c'ÔøΩ carogna
 													{
 														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 													}
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino è carnivoro e se nella cella c'è vegetazione
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino ÔøΩ carnivoro e se nella cella c'ÔøΩ vegetazione
 													{
 														((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 													}
@@ -832,11 +832,11 @@ public class Server {
 											}
 											else
 											{
-												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino è vegetariano e se nella cella c'è carogna
+												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino ÔøΩ vegetariano e se nella cella c'ÔøΩ carogna
 												{
 													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 												}
-												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino è carnivoro e se nella cella c'è vegetazione
+												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino ÔøΩ carnivoro e se nella cella c'ÔøΩ vegetazione
 												{
 													((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 												}
