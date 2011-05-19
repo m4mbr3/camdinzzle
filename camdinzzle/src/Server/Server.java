@@ -502,6 +502,9 @@ public class Server {
 			{
 				loggedPlayers.remove(token);
 				
+				if(currentSession.getPlayer(token) != null)
+					currentSession.removePlayer(token);
+				
 				return ServerMessageBroker.createOkMessage();
 			}
 			else
@@ -550,14 +553,46 @@ public class Server {
 	}
 	
 	/**
+	 * Crea la lista dei dinosauri di un giocatore
+	 * @param msg : messaggio ricevuto dal Client
+	 * @return Messaggio da mandare al Client
+	 */
+	public String dinosaursList(String msg)
+	{
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("listaDinosauri");
+		
+		synchronized(loggedPlayers)
+		{
+			if(isLoggedUser(token))
+			{
+				if(currentSession.getPlayer(token) != null)
+				{
+					Iterator<Dinosaur> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+					
+					while(dinos.hasNext())
+					{
+						Map.Entry me = (Map.Entry) dinos.next();
+						list.add(((Dinosaur)me.getValue()).getDinoId());
+					}
+					return ServerMessageBroker.createStandardMessage(list);
+				}
+				else
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+			}
+			else
+				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+		}
+	}
+	
+	/**
 	 * Crea la vista di un dinosauro dal suo id
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
 	public String dinoZoom(String msg)
 	{
-		// {13,4},{1,1},[t][t][c,0][c,0][t];[c,0][t][t][c,0][t];[c,0][c,0][t][t][t];[c,0][c,0][c,0][c,0][c,0];[c,0][t][t][c,0][t]
-		
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
 		
@@ -616,6 +651,8 @@ public class Server {
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
 		ArrayList<String> state = new ArrayList<String>();
+		boolean isPossibleDino = false;
+		Dinosaur possibleDino = null;
 		
 		synchronized(loggedPlayers)
 		{
@@ -639,28 +676,69 @@ public class Server {
 					}
 					else
 					{
-						// cercare il dinosauro nei dinosauri di tutti gli altri utenti
-						Iterator<Player> iter = currentSession.getPlayersList();
+						/* Controllo che il dinosauro richiesto appartiene alla vista di uno dei dinosauri
+						 * del giocatore
+						 */
 						
-						while (iter.hasNext()) 
+						Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
+						// Itera i dinosauri del giocatore
+						while (dinosaurs.hasNext()) 
 						{
-							Map.Entry me = (Map.Entry) iter.next();
-							dino = ((Player)me.getValue()).getSpecie().getDino(dinoId);
+							if(isPossibleDino)
+								break;
 							
-							if(dino != null)
+							Map.Entry me = (Map.Entry) dinosaurs.next();
+							/* TODO : da fare o no l'updateMap
+							loggedPlayers.get(token).getSpecie().updateMap();
+							*/
+							Object[][] matrixMap = ((Dinosaur)me.getValue()).getLocalMap();
+							// Cicla tutta la mappa e se trova un dinosauro con l'id richiesto esce dal ciclo
+							for(int i = 0; i<matrixMap.length; i++)
 							{
-								 state.add(((Player)me.getValue()).getUserName());
-								 state.add(((Player)me.getValue()).getSpecie().getName());
-								 state.add(((Player)me.getValue()).getSpecie().getType().toString());
-								 state.add(String.valueOf(dino.getPosRow()));
-								 state.add(String.valueOf(dino.getPosCol()));
-								 state.add(String.valueOf(dino.getDinoDimension()));
-								 
-								 return ServerMessageBroker.createDinoState(state);
+								if(isPossibleDino)
+									break;
+								
+								for(int j = 0; j<matrixMap[i].length; j++)
+								{
+									if(matrixMap[i][j] instanceof Dinosaur)
+									{
+										if(((Dinosaur)matrixMap[i][j]).getDinoId().equals(dinoId))
+										{
+											isPossibleDino = true;
+											possibleDino = (Dinosaur)matrixMap[i][j];
+											break;
+										}
+									}
+								}
 							}
 						}
-						
-						return ServerMessageBroker.createErroMessage("idNonValido");
+						if((isPossibleDino) &&(possibleDino != null))
+						{
+							// cercare il dinosauro nei dinosauri di tutti gli altri utenti
+							Iterator<Player> iter = currentSession.getPlayersList();
+							
+							while (iter.hasNext()) 
+							{
+								Map.Entry me = (Map.Entry) iter.next();
+								dino = ((Player)me.getValue()).getSpecie().getDino(dinoId);
+								
+								if((dino != null) && (dino.equals(possibleDino)))
+								{
+									 state.add(((Player)me.getValue()).getUserName());
+									 state.add(((Player)me.getValue()).getSpecie().getName());
+									 state.add(((Player)me.getValue()).getSpecie().getType().toString());
+									 state.add(String.valueOf(dino.getPosRow()));
+									 state.add(String.valueOf(dino.getPosCol()));
+									 state.add(String.valueOf(dino.getDinoDimension()));
+									 
+									 return ServerMessageBroker.createDinoState(state);
+								}
+							}
+							
+							return ServerMessageBroker.createErroMessage("idNonValido");
+						}
+						else
+							return ServerMessageBroker.createErroMessage("idNonValido");
 					}
 				}
 				else

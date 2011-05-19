@@ -214,7 +214,12 @@ public class ProvaTest {
 					}
 					else if(scelta.equals("LD"))
 					{
-						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+						msg = ClientMessageBroker.createGeneralMap(token);
+						System.out.println("Client: " + msg);
+						msg = server.dinosaursList(msg);
+						System.out.println("Server: " + msg);
+						
+						text.drawDinoList(msg);
 					}
 					else if(scelta.equals("VL"))
 					{

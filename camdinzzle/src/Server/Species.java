@@ -103,6 +103,19 @@ public class Species
 	}
 	
 	/**
+	 * @return Un iteratore contenente i dinosauri delle specie
+	 */
+	public Iterator<Dinosaur> getDinosaurs()
+	{
+		synchronized (myDinosaurs) 
+		{
+			Set set = myDinosaurs.entrySet();
+			
+			return set.iterator();
+		}
+	}
+	
+	/**
 	 * riconosce l'id del dinosauro e restituisce l'oggetto
 	 */
 	public Dinosaur identifyDinosaur(String dinoId)
