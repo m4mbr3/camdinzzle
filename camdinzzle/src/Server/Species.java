@@ -37,9 +37,13 @@ public class Species
 		Species.speciesType = speciesType;
 		timeOfLive = 120;
 		dinoNumber = 0;
-		posRig = (int) (Math.random() * 40);
-		posCol = (int) (Math.random() * 40);
-		//check mappa vuota!!!
+		do
+		{
+			posRig = (int) (Math.random() * 40);
+			posCol = (int) (Math.random() * 40);
+		}while(Game.getCell(posRig, posCol) == "t");
+		
+
 		// TODO Game.getLocalMap da sistemare che non funzionano
 		addDinosaur(posRig, posCol);
 		startMap();

@@ -709,12 +709,24 @@ public class Game {
 		}
 	}
 	
-	public static void setCellMap(Dinosaur dino, int row, int col)
+	public static void setCellMap(Object obj, int row, int col)
 	{
 		if((row>=0)&&(row<maxRow)&&(col>=0)&&(col<maxCol))
 		{
 		map[row][col] = null;
-		map[row][col] = dino;
+		map[row][col] = obj;
+		}
+	}
+	
+	public static int getDistCell(int startRow, int startCol, int destRow, int destCol)
+	{
+		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxCol))
+		{
+			return mapReach[startRow][startCol][destRow][destCol];
+		}
+		else
+		{
+			return -1;
 		}
 	}
 
