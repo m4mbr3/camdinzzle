@@ -166,6 +166,7 @@ public class ProvaTest {
 					}
 					else if(scelta.equals("AP"))
 					{
+						// TODO: prima di accedere all partia, imporre la creazione di una razza
 						msg = ClientMessageBroker.createGameAccess(token);
 						
 						System.out.println("Client: " + msg);

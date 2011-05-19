@@ -325,15 +325,17 @@ public class Server {
 	public String gameAccess(String msg) 
 	{
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		
+		// TODO: imposizione sul client di creare la specie prima di avere un accesso alla partita
 		synchronized (loggedPlayers) 
 		{
 			if(this.isLoggedUser(token))
 			{
+				/*
 				if(loggedPlayers.get(token).getSpecie() == null)
 				{
 					loggedPlayers.get(token).setSpecie(new Species(loggedPlayers.get(token).getUserName(), Species.getVegType()));
 				}
+				*/
 				if (currentSession.numberPlayersInGame() < currentSession.getMaxPlayers()) 
 				{
 					if (currentSession.getPlayer(token) == null)
@@ -451,14 +453,17 @@ public class Server {
 					{
 						Map.Entry me = (Map.Entry) iter.next();
 						
-						if(((Player)me.getValue()).getPunteggio() > maxScore)
+						if(((Player)me.getValue()).getSpecie() != null)
 						{
-							if(!alreadyPlayerRead.containsKey(((Player)me.getValue()).getUserName()))
+							if(((Player)me.getValue()).getPunteggio() > maxScore)
 							{
-								if(((Player)me.getValue()).getSpecie() != null)
+								if(!alreadyPlayerRead.containsKey(((Player)me.getValue()).getUserName()))
 								{
-									maxScore = ((Player)me.getValue()).getPunteggio();
-									usernameMaxScore = ((Player)me.getValue()).getUserName();
+									if(((Player)me.getValue()).getSpecie() != null)
+									{
+										maxScore = ((Player)me.getValue()).getPunteggio();
+										usernameMaxScore = ((Player)me.getValue()).getUserName();
+									}
 								}
 							}
 						}
