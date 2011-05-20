@@ -37,7 +37,8 @@ public class Client extends JFrame implements ActionListener, WindowListener, Ru
 	private ButtonGroup radiogroup;
 	private JButton next;
 	private ConnectionManager connManager;
-	private FrameGame login;
+	private FrameLogin login;
+	
 	
 	public Client(String Name) {
 		super (Name);
@@ -54,12 +55,14 @@ public class Client extends JFrame implements ActionListener, WindowListener, Ru
 		panel = new JPanel();
 		panel.setLayout(null);
 		this.setSize(400,400);
+		
 		panel.setSize(400,400);
 		choice.setSize(350,30);
 		camdinzzle.setSize(300,30);
 		local.setSize(300,30);
 		rmi.setSize(300,30);
 		socket.setSize(300,30);
+		
 		radiogroup.add(local);
 		radiogroup.add(rmi);
 		radiogroup.add(socket);

@@ -11,11 +11,13 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JFrame;
+
 /**
  * @author Andrea
  *
  */
-public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
+public class ConnectionManagerSocket extends JFrame implements ConnectionManager, Runnable  {
 	//Class for client logging
 	/**
 	 * Socket for Managing the connection by socket with server
@@ -70,32 +72,33 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	public void run() {
 		// TODO Auto-generated method stub
 		String read_socket=null;
-			
-			
-			try {
-				System.out.println("<<CONN MANAGER>>--SENDING USERNAME: "+username+" PASSWORD "+password);
-				this.writer_on_socket.write(ClientMessageBroker.createLogin(username, password));
-				this.writer_on_socket.newLine();				
-				this.writer_on_socket.flush();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				read_socket = reader_on_socket.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if((read_socket != null)&&(ClientMessageBroker.checkMessage(read_socket)))
-			{
-				System.out.println("<<CONN MANAGER>>-- LOGIN ACCEPTED!!!");
 				
 				while(true)
 				{
-					
 					//Implementazione di tutte le funzioni del client che può richiamare su server
-					if(command == "creaRazza")
+					if(command == "login")
+					{
+						try {
+							System.out.println("<<CONN MANAGER>>--SENDING USERNAME: "+username+" PASSWORD "+password);
+							this.writer_on_socket.write(ClientMessageBroker.createLogin(username, password));
+							this.writer_on_socket.newLine();				
+							this.writer_on_socket.flush();
+							} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							}
+							try {
+							read_socket = reader_on_socket.readLine();
+							} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							}
+					}
+					else if(command == "creaUtente")
+					{
+						
+					}
+					else if(command == "creaRazza")
 					{
 						
 					}
@@ -112,14 +115,8 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 				
 				}
 			}
-			else
-			{
-				System.out.println("<<CONN MANAGER>>-- LOGIN FAILD!!!");
-				System.exit(0);
-			}
+			
 		
 		
-	}
-	
-
 }
+	

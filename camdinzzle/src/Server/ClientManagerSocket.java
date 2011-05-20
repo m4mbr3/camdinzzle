@@ -62,6 +62,7 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 		//this is the daemon for one specify user that manage the processes "not in game" like "create Dinosaur "
 		while(is_run)
 		{
+			
 			do{
 				try {
 					read_socket = reader_on_socket.readLine();
@@ -69,42 +70,62 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}while(read_socket.isEmpty());
+			}while(read_socket == null);
+				System.out.println("read_socket->"+read_socket);
 			command = ServerMessageBroker.manageMessageType(read_socket);
+				System.out.println("command->"+command);
 			//in this point there is a call to another static method for split and check a new string
 		try{
 			//control of login parameters 
 			if(command.compareTo("creaUtente")==0)
 			{
 				writer_on_socket.write(serverLogic.add_new_user(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if (command.compareTo("login")==0)
 			{
-				writer_on_socket.write(serverLogic.login(read_socket));
+				String prova = serverLogic.login(read_socket);
+				System.out.println("prova->"+prova);
+				writer_on_socket.write(prova);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if (command.compareTo("creaRazza") == 0)
 			{	
 				writer_on_socket.write(serverLogic.add_new_user(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if (command.compareTo("accessoPartita") == 0)
 			{
 				writer_on_socket.write(serverLogic.gameAccess(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if (command.compareTo("uscitaPartita") == 0)
 			{
 				writer_on_socket.write(serverLogic.gameExit(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if (command.compareTo("listaGiocatori") == 0)
 			{
 				writer_on_socket.write(serverLogic.playerList(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if (command.compareTo("classifica") == 0)
 			{
 				writer_on_socket.write(serverLogic.ranking(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if (command.compareTo("logout") == 0)
 			{
 				writer_on_socket.write(serverLogic.logout(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			
 			// Comandi in partita(Informazioni)
@@ -112,18 +133,26 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			else if(command.compareTo("mappaGenerale") == 0)
 			{
 				writer_on_socket.write(serverLogic.generalMap(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if(command.compareTo("listaDinosauri") == 0)
 			{
 				writer_on_socket.write(serverLogic.dinosaursList(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if(command.compareTo("vistaLocale") == 0)
 			{
 				writer_on_socket.write(serverLogic.dinoZoom(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if(command.compareTo("statoDinosauro") == 0)
 			{
 				writer_on_socket.write(serverLogic.dinoState(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			
 			// End Comandi in partita(Informazioni)
@@ -133,6 +162,8 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			else if(command.compareTo("muoviDinosauro") == 0)
 			{
 				writer_on_socket.write(serverLogic.dinoMove(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if(command.compareTo("crescitaDinosauro") == 0)
 			{
@@ -148,10 +179,14 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			else if(command.compareTo("confermaTurno") == 0)
 			{
 				writer_on_socket.write(serverLogic.roundConfirm(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			else if(command.compareTo("passaTurno") == 0)
 			{
 				writer_on_socket.write(serverLogic.playerRoundSwitch(read_socket));
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
 			}
 			}
 		catch(IOException e)
