@@ -45,7 +45,7 @@ public class Species
 		{
 			posRig = (int) (Math.random() * 40);
 			posCol = (int) (Math.random() * 40);
-		}while(((Game.getCell(posRig, posCol) instanceof String)&&(Game.getCell(posRig, posCol) == "t")));
+		}while((Game.getCell(posRig, posCol) instanceof String)&&(((String)Game.getCell(posRig, posCol)).compareTo("t")==0));
 		
 
 		// TODO Game.getLocalMap da sistemare che non funzionano
@@ -228,11 +228,12 @@ public class Species
 				int h=0;
 				for(int j=posCol-size/2; j<=posCol+size/2; j++)
 				{
-					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
+					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol)&&(h>=0)&&(h<size)&&(k>=0)&&(k<size))
 					{
+						map[i][j] = null;
 						map[i][j] = localMap[k][h].toString();
-						h++;
 					}
+					h++;
 				}
 				k++;
 			}

@@ -13,7 +13,7 @@ public abstract class Dinosaur
 {
 	private String dinoId;
 	private int age;
-	private Species nameSpecie;
+	protected Species nameSpecie;
 	protected int energy;
 	private int dimension;
 	protected int energyMax;
@@ -97,7 +97,7 @@ public abstract class Dinosaur
 					{
 						if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
 						{					
-							if((Game.getCell(i, j) instanceof String)&&(Game.getCell(i, j)=="t"))
+							if((Game.getCell(i, j) instanceof String)&&(((String)Game.getCell(i, j)).compareTo("t")==0))
 							{
 								idDino=nameSpecie.addDinosaur(i, j);
 								positioned = true;
@@ -222,7 +222,7 @@ public abstract class Dinosaur
 		
 	}
 	
-	private void udateLocalMap()
+	public void udateLocalMap()
 	{
 		localMap = Game.getLocalMap(posRow, posCol, dimension);
 	}

@@ -90,6 +90,7 @@ public class Carnivorous extends Dinosaur
 		
 		this.posRow=rowDest;
 		this.posCol=colDest;
+		super.nameSpecie.updateMap();
 		this.setMoveTake(true);
 		return true;
 

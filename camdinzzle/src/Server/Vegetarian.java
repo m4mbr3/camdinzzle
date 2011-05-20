@@ -82,6 +82,8 @@ public class Vegetarian extends Dinosaur
 
 		this.posRow=rowDest;
 		this.posCol=colDest;
+		udateLocalMap();
+		super.nameSpecie.updateMap();
 		this.setMoveTake(true);
 		return true;
 
