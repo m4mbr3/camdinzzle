@@ -163,9 +163,8 @@ public class ClientMessageBroker
 		String[] dinoState = validMessage.split(",");
 		
 		//Eliminazione delle parentesi nelle coordinate di inizio
-		 
-		dinoState[3] = dinoState[3].substring(1, 2);
-		dinoState[4] = dinoState[4].substring(0, 1);
+		dinoState[3] = dinoState[3].substring(1);
+		dinoState[4] = dinoState[4].substring(0, dinoState[4].length() - 1);
 		
 		return dinoState;
 	}

@@ -91,42 +91,42 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			}
 			else if (command.compareTo("accessoPartita") == 0)
 			{
-				
+				writer_on_socket.println(serverLogic.gameAccess(read_socket));
 			}
 			else if (command.compareTo("uscitaPartita") == 0)
 			{
-				
+				writer_on_socket.println(serverLogic.gameExit(read_socket));
 			}
 			else if (command.compareTo("listaGiocatori") == 0)
 			{
-				
+				writer_on_socket.println(serverLogic.playerList(read_socket));
 			}
 			else if (command.compareTo("classifica") == 0)
 			{
-			
+				writer_on_socket.println(serverLogic.ranking(read_socket));
 			}
 			else if (command.compareTo("logout") == 0)
 			{
-				if(splitted_message[0].compareTo("T") == 0)
-				{
-					
-					serverLogic.logout(username);
-					stop();
-					ArrayList<String> list_of_commands = new ArrayList<String>();
-					list_of_commands.add("ok");
-					writer_on_socket.println(ServerMessageBroker.createStandardMessage(list_of_commands));
-				}
-				else
-				{
-					writer_on_socket.println(ServerMessageBroker.createErroMessage("tokenNonValido"));
-				}
+				writer_on_socket.println(serverLogic.logout(read_socket));
 			}
 			
 			// Comandi in partita(Informazioni)
 			
 			else if(command.compareTo("mappaGenerale") == 0)
 			{
-				
+				writer_on_socket.println(serverLogic.generalMap(read_socket));
+			}
+			else if(command.compareTo("listaDinosauri") == 0)
+			{
+				writer_on_socket.println(serverLogic.dinosaursList(read_socket));
+			}
+			else if(command.compareTo("vistaLocale") == 0)
+			{
+				writer_on_socket.println(serverLogic.dinoZoom(read_socket));
+			}
+			else if(command.compareTo("statoDinosauro") == 0)
+			{
+				writer_on_socket.println(serverLogic.dinoState(read_socket));
 			}
 			
 			// End Comandi in partita(Informazioni)
@@ -135,10 +135,27 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			
 			else if(command.compareTo("muoviDinosauro") == 0)
 			{
-				String[] dinoMovement = ServerMessageBroker.manageDinoMovement(command);
+				writer_on_socket.println(serverLogic.dinoMove(read_socket));
+			}
+			else if(command.compareTo("crescitaDinosauro") == 0)
+			{
+				// TODO
+			}
+			else if(command.compareTo("deponiUovo") == 0)
+			{
+				// TODO
 			}
 			
 			// End Comandi in partita(Azioni)
+			
+			else if(command.compareTo("confermaTurno") == 0)
+			{
+				writer_on_socket.println(serverLogic.roundConfirm(read_socket));
+			}
+			else if(command.compareTo("passaTurno") == 0)
+			{
+				writer_on_socket.println(serverLogic.playerRoundSwitch(read_socket));
+			}
 		}
 	}
 

@@ -37,7 +37,7 @@ public class Client extends JFrame implements ActionListener, WindowListener, Ru
 	private ButtonGroup radiogroup;
 	private JButton next;
 	private ConnectionManager connManager;
-	private FrameLogin login;
+	private FrameGame login;
 	
 	public Client(String Name) {
 		super (Name);

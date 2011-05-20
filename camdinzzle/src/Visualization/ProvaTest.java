@@ -171,6 +171,7 @@ public class ProvaTest {
 						
 						System.out.println("Client: " + msg);
 						System.out.println("ServerLogic: " + serverLogic.gameAccess(msg));
+						System.out.println("ServerLogic: " + serverLogic.getTokenOfCurrentPlayer());
 					}
 					else if(scelta.equals("UP"))
 					{
@@ -294,7 +295,7 @@ public class ProvaTest {
 				&& (!scelta.equals("CD")) && (!scelta.equals("DU")) && (!scelta.equals("CT")) && (!scelta.equals("PT"))
 				&& (!scelta.equals("E	")));
 		}
-		while(!scelta.equals("e"));
+		while(!scelta.equals("E"));
 		
 		
 		
