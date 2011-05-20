@@ -126,15 +126,10 @@ public class ServerLogic {
 		login = null;
 		newuser = null;
 		isTheFirstAccess = true;
+		tokenOfCurrentPlayer = "";
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
 		//System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
-
-		
-		this.lock_logged_player = new Object();
-		this.lock_players = new Object();
-		this.lock_species = new Object();
-		this.add_new_user("@login,user=andrea,pass=andrea");
 	}
 
 	public void controlAction() {
@@ -202,7 +197,7 @@ public class ServerLogic {
 	}
 
 	/**
-	 * Aggiunge la nuova specie al Player se non esiste gi�
+	 * Aggiunge la nuova specie al Player se non esiste giï¿½
 	 * @param msg : messaggio del Client
 	 * @return Messaggio da mandare al Client
 	 */
@@ -210,7 +205,7 @@ public class ServerLogic {
 	{
 		String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(msg);
 		String token = parameters[0];
-		
+		// TODO : gestione specie già avviata
 		synchronized (loggedPlayers) 
 		{
 			if (this.isLoggedUser(parameters[0])) 
@@ -222,20 +217,16 @@ public class ServerLogic {
 					/* Collection<Player> c = players.values(); 
 					 * Iterator<Player> iter = c.iterator();
 					 */
-					/* Se il giocatore ha gi� una specie ed � uguale a quella richiesta
-					 * significa che il giocatore entra in partita con una specie gi� avviata ed �
+					/* Se il giocatore ha giï¿½ una specie ed ï¿½ uguale a quella richiesta
+					 * significa che il giocatore entra in partita con una specie giï¿½ avviata ed ï¿½
 					 * obbligato ad utilizzarla
 					 */
 					if(loggedPlayers.get(token).getSpecie() != null)
 					{
-						if(loggedPlayers.get(token).getSpecie().getName().equals(parameters[1]))
-						{
-							return ServerMessageBroker.createOkMessage();
-						}
-						/* Dal Client non bisogna permettere di creare una specie se ce ne � gi�
+						/* Dal Client non bisogna permettere di creare una specie se ce ne ï¿½ giï¿½
 						 * una avviata nella partita
 						 */
-						return ServerMessageBroker.createErroMessage("nomeRazzaOccupato");
+						return ServerMessageBroker.createErroMessage("razzaGiaCreata");
 					}
 						
 					Set set = players.entrySet();
@@ -281,9 +272,9 @@ public class ServerLogic {
 	}
 
 	/**
-	 * Controlla che il player possa accedere alla partita e se puo lo fa accedere. Pu� accedere se c'�
-	 * ancora posto nella partita(non � stato raggiunto il numero massimo di
-	 * giocatori) e se il token � valido. Se il giocatore non ha ancora creato una propria specie, viene creata una specie di
+	 * Controlla che il player possa accedere alla partita e se puo lo fa accedere. Puï¿½ accedere se c'ï¿½
+	 * ancora posto nella partita(non ï¿½ stato raggiunto il numero massimo di
+	 * giocatori) e se il token ï¿½ valido. Se il giocatore non ha ancora creato una propria specie, viene creata una specie di
 	 * default che ha come nome l'username del player e come razza e.
 	 * 
 	 * @param username: username del giocatore
@@ -346,9 +337,32 @@ public class ServerLogic {
 				if(currentSession.getPlayer(token) != null)
 				{
 					if(currentSession.removePlayer(token))
-					{
+					{					
+						// Tolgo i dinosauri del giocatore dalla mappa
+						Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
+						while(dinosaurs.hasNext())
+						{
+							Map.Entry me = (Map.Entry) dinosaurs.next();
+							
+							if(me.getValue() instanceof Carnivorous)
+							{
+								if(((Carnivorous)me.getValue()).getVegetation() != null)
+									Game.setCellMap(((Carnivorous)me.getValue()).getVegetation(), ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
+								else
+									Game.setCellMap("t", ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
+							}
+							else
+							{
+								if(((Vegetarian)me.getValue()).getCarrion() != null)
+									Game.setCellMap(((Vegetarian)me.getValue()).getCarrion(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+								else
+									Game.setCellMap("t", ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+							}
+						}
+						
 						if(currentSession.numberPlayersInGame() == 0)
 							isTheFirstAccess = true;
+						
 						return ServerMessageBroker.createOkMessage();
 					}
 				}
@@ -457,7 +471,7 @@ public class ServerLogic {
 	}
 	
 	/**
-	 * Esegue il logout di un giocatore loggato. Se il giocatore � in partita, prima di eseguire il 
+	 * Esegue il logout di un giocatore loggato. Se il giocatore ï¿½ in partita, prima di eseguire il 
 	 * logout deve uscire dalla partita
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
@@ -728,11 +742,11 @@ public class ServerLogic {
 		
 		synchronized(loggedPlayers)
 		{
-			if(isLoggedUser(token))						//controlla se � loggato
+			if(isLoggedUser(token))						//controlla se � loggato
 			{
-				if(currentSession.getPlayer(token) != null)			//controllo se � in partita
+				if(currentSession.getPlayer(token) != null)			//controllo se � in partita
 				{
-		//manca non � il tuo turno
+		//manca non � il tuo turno
 					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
 						Dinosaur dino = currentSession.getPlayer(token).getSpecie().getDino(dinoId);
@@ -742,11 +756,11 @@ public class ServerLogic {
 							{
 								if(Game.checkReachCell(dino.getPosRow(), dino.getPosCol(), dinoRow, dinoCol, dino.getDistMax()))	//controllo che il dinosauro possa arrivare a destinazione
 								{
-									if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino � vegetariano controllo che nn ci sia un vegetariano a destinazione
+									if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino � vegetariano controllo che nn ci sia un vegetariano a destinazione
 									{
 										if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).move(dinoRow, dinoCol))		//controlla che abbia abbastanza energia x muoversi e cambia le coordinate in dino
 										{
-											if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'� un altro dinosauro nella cella di arrivo
+											if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'� un altro dinosauro nella cella di arrivo
 											{
 												if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).fight(Game.getCell(dinoRow, dinoCol)))		//combatte
 												{
@@ -768,11 +782,11 @@ public class ServerLogic {
 													
 													
 													
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
 													{
 														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 													}
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
 													{
 														((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 													}
@@ -788,11 +802,11 @@ public class ServerLogic {
 											}
 											else
 											{
-												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
+												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
 												{
 													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 												}
-												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
+												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
 												{
 													((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 												}
@@ -851,14 +865,14 @@ public class ServerLogic {
 		
 		synchronized(loggedPlayers)
 		{
-			if(isLoggedUser(token))						//controlla se � loggato
+			if(isLoggedUser(token))						//controlla se � loggato
 			{
 				if(currentSession.getPlayer(token) != null)			//controllo token valido
 				{
-		//manca non � il tuo turno
+		//manca non � il tuo turno
 					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
-						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
+						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
 						{
 							if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).growUp())		//non ha abbastanza energia
 							{
@@ -900,14 +914,14 @@ public class ServerLogic {
 		
 		synchronized(loggedPlayers)
 		{
-			if(isLoggedUser(token))						//controlla se � loggato
+			if(isLoggedUser(token))						//controlla se � loggato
 			{
 				if(currentSession.getPlayer(token) != null)			//controllo token valido
 				{
-		//manca non � il tuo turno
+		//manca non � il tuo turno
 					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
-						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
+						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
 						{
 							String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
 							if(idDino !=null)		//non ha abbastanza energia
@@ -985,8 +999,9 @@ public class ServerLogic {
 			{
 				if(currentSession.getPlayer(token) != null)
 				{
-					if(tokenOfCurrentPlayer == token)
+					if(tokenOfCurrentPlayer.equals(token))
 					{
+						/*
 						Iterator iter = currentSession.getPlayersList();
 						Map.Entry me;
 						int tableSize = 0;
@@ -1009,6 +1024,9 @@ public class ServerLogic {
 								return ServerMessageBroker.createOkMessage();
 							}
 						}
+						*/
+						//this.serverRoundSwitch();
+						return ServerMessageBroker.createOkMessage();
 					}
 					else
 						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
@@ -1022,7 +1040,7 @@ public class ServerLogic {
 	
 	/**
 	 * Esegue il cambio del turno(notifica in partita)
-	 * @return Messaggio da mandare in broadcast ai Client per notificare che � cambiato il turno. Il 
+	 * @return Messaggio da mandare in broadcast ai Client per notificare che ï¿½ cambiato il turno. Il 
 	 * messaggio contiene il comando e l'username del giocatore abilitato a fare le proprie mosse
 	 */
 	public String serverRoundSwitch()
@@ -1033,10 +1051,10 @@ public class ServerLogic {
 		
 		while(iter.hasNext())
 		{
-			tableSize++;
 			me = (Map.Entry) iter.next();
+			tableSize++;
 			
-			if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame()))
+			if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame() - 1))
 			{
 				me = (Map.Entry) iter.next();
 				tokenOfCurrentPlayer = (String)me.getKey();
@@ -1058,6 +1076,14 @@ public class ServerLogic {
 	}
 	
 	
+	public String getTokenOfCurrentPlayer() {
+		return tokenOfCurrentPlayer;
+	}
+
+	public void setTokenOfCurrentPlayer(String tokenOfCurrentPlayer) {
+		this.tokenOfCurrentPlayer = tokenOfCurrentPlayer;
+	}
+
 	public void sendCommand() {
 
 	}
@@ -1067,9 +1093,9 @@ public class ServerLogic {
 	}
 	
 	/**
-	 * Controlla che un utente sia gi� loggato
+	 * Controlla che un utente sia giï¿½ loggato
 	 * @param token : token del giocatore
-	 * @return True se il giocatore � loggato, false altrimenti
+	 * @return True se il giocatore ï¿½ loggato, false altrimenti
 	 */
 	private boolean isLoggedUser(String token)
 	{
@@ -1101,7 +1127,7 @@ public class ServerLogic {
 			// Generazione casuale del numero da inserire nella chiave
 			int singleCasual = (int) (Math.random() * keyLength);
 
-			// Se non � gi� presente nella chiave, viene inserito
+			// Se non ï¿½ giï¿½ presente nella chiave, viene inserito
 			if (!registeredPositions.containsKey(String.valueOf(singleCasual))) {
 				registeredPositions.put(String.valueOf(singleCasual),
 						String.valueOf(singleCasual));
