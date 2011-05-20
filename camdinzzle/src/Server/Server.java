@@ -4,80 +4,70 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable {
 
 	/**
 	 * @param args
 	 */
+	//Creation of a box for login
+	private ServerSocket server;
+	private Socket new_connection;
+	private ServerLogic serverLogic;
+	private boolean is_run;
+	private int port;
+	private ClientManagerSocket clientManagerSocket;
+		// TODO Auto-generated constructor stub
+		
+	public Server(int port, ServerLogic serverLogic)
+	{
+			this.port = port;
+			try {
+				this.server = new ServerSocket(this.port) ;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.serverLogic = serverLogic;
+			this.new_connection = null;
+			this.is_run = true;
+			this.clientManagerSocket=null;
+	}
+	
+	public void stop()
+		{
+			is_run = false;
+		}
+		public void run()
+		{
+			System.out.println("<<SERVER DAEMON>>--STARTED");
+			while(is_run)
+			{
+				try {
+					//waiting for connection
+					System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at "+ server.getLocalPort());
+					new_connection = server.accept();
+					System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic);
+				System.out.println("<<SERVER DAEMON>>--STARTING EXECUTION LOGIN");
+				(new Thread(clientManagerSocket)).start();
+				System.out.println("<<SERVER DAEMON>>--EXECUTION LOGIN STARTED");
+				
+			}
+			
+		}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ServerLogic serverLogic = new ServerLogic();
 		
-		ServerSocket deal_newuser;
-		ServerSocket deal_login;
+		int port = 4567;
+		(new Thread(new Server(port,serverLogic))).start();
 		
-		System.out.println("<<SERVER>>--INIT");
-		// Definition of default port login
-		int port_login = 4567;
-		// Definition of default port NewUser
-		int port_newuser = 4566;
-		
-		// Definition of new Server login for passing it to startLogin and
-		// launch login daemon
-		System.out.println("<<SERVER>>--STARTING LOGIN DAEMON ");
-		try {
-			deal_login = new ServerSocket(port_login);
-			startLoginDaemon(deal_login, serverLogic);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("<<SERVER>>--LOGIN DAEMON STARTED");
-
-		// Definition of new Server NewUser for passing it to startNewUser and
-		// launch newuser daemon
-		System.out.println("<<SERVER>>--STARTING NEWUSER DAEMON ");
-		try {
-			deal_newuser = new ServerSocket(port_newuser);
-			startNewUserDaemon(deal_newuser, serverLogic);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("<<SERVER>>--NEWUSER DAEMON STARTED");
-		
-		System.out.println("<<SERVER>>--DEFINITION OF ENVIROMENT VARIABLES");
-		
-		
-		// Definition of new PlayerList empty
 	}
 
 	
-	/**
-	 * Method for starting 
-	 */
-	public static void startLoginDaemon(ServerSocket server_socket, ServerLogic sl) {
-
-		/* The connection for login must be at this port : 4567 */
-		Login login = new Login(server_socket, sl);
-		(new Thread(login)).start();
-
-	}
-
-	public static void startClientConnectionManagerDaemon(Socket socket_with_client,
-			String token, String username, ServerLogic sl) {
-		ClientManagerSocket new_manager = new ClientManagerSocket(
-				socket_with_client, sl, username, token);
-		// TODO Da rivedere
-		/*
-		loggedPlayers.put(token, players.get(username));
-		(new Thread(new_manager)).start();
-		loggedClientManager.put(token, new_manager);
-		new_manager = null;
-		*/
-	}
-
-	public static void startNewUserDaemon(ServerSocket server_socket, ServerLogic sl) {
-		NewUser newuser = new NewUser(server_socket, sl);
-		(new Thread(newuser)).start();
-	}
 }
