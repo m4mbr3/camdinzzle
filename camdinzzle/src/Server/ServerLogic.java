@@ -1,15 +1,7 @@
 package Server;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-/**
- * 
- */
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -28,34 +20,7 @@ public class ServerLogic {
 	 */
 	// oggetti per sincronizzare i metodi sugli arraylist
 
-	/**
-	 * Object for managing the synchronization of operations on hashmap players
-	 */
-	private Object lock_players;
-
-	/**
-	 * Object for managing the synchronization of operations on hashmap
-	 * logged_player
-	 */
-	private Object lock_logged_player;
-
-	/**
-	 * Object for managing the synchronization of operations on hashmap species
-	 */
-	private Object lock_species;
-	// serversocket che aprono le connessioni con i socket del client
-
-	/**
-	 * ServerSocket that listens into thread login at port 4567. It is used to
-	 * connect with client
-	 */
-	private ServerSocket deal_login;
-	/**
-	 * ServerSocket that listens into thread newUser at port 4566. It is used to
-	 * create a new user by client
-	 */
-	private ServerSocket deal_newuser;
-
+	
 	/**
 	 * Instance of CurrentSession of Game. It contains the info about the game
 	 * and current maps used for gaming
@@ -102,16 +67,7 @@ public class ServerLogic {
 	 */
 	private String keyForToken;
 	
-	/**	
-	 * Object of Login Module daemon
-	 */
-	private Login login;
 	
-	/**
-	 * Object of NewUser Module daemon
-	 */
-	private NewUser newuser;
-
 	
 	public ServerLogic() {
 		// TODO Auto-generated constructor stub
@@ -123,8 +79,6 @@ public class ServerLogic {
 		loggedPlayers = new HashMap<String, Player>();
 		rank = new HashMap<String, Species>();
 		currentSession = new Game();
-		login = null;
-		newuser = null;
 		isTheFirstAccess = true;
 		tokenOfCurrentPlayer = "";
 		// Inizializzazione chiave per generazione del token
