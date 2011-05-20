@@ -23,7 +23,7 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 	 */
 	
 	private Socket connection_with_client;
-	private Server server;
+	private ServerLogic serverLogic;
 	private BufferedOutputStream _on_socket;
 	private PrintStream writer_on_socket;
 	private BufferedReader reader_on_socket;
@@ -36,12 +36,12 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 	private FileOutputStream f_out; 
 	
 	
-	public ClientManagerSocket(Socket connection_with_client, Server server, String username, String token) {
+	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic, String username, String token) {
 		// TODO Auto-generated constructor stub
 		
 		this.is_run = true;
 		this.connection_with_client = connection_with_client;
-		this.server = server;
+		this.serverLogic = serverLogic;
 		this.username = username;
 		this.token = token;
 		this.read_socket = null;
@@ -87,7 +87,7 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			
 			if (command.compareTo("creaRazza") == 0)
 			{	
-				writer_on_socket.println(server.add_new_user(read_socket));
+				writer_on_socket.println(serverLogic.add_new_user(read_socket));
 			}
 			else if (command.compareTo("accessoPartita") == 0)
 			{
@@ -110,7 +110,7 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 				if(splitted_message[0].compareTo("T") == 0)
 				{
 					
-					server.logout(username);
+					serverLogic.logout(username);
 					stop();
 					ArrayList<String> list_of_commands = new ArrayList<String>();
 					list_of_commands.add("ok");

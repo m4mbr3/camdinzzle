@@ -20,17 +20,17 @@ public class ExecutionLogin implements Runnable
 {
 	private BufferedWriter writer_on_socket;
 	private BufferedReader reader_on_socket;
-	private Server server;
+	private ServerLogic serverLogic;
 	//Creation of a box for connection with client passed by Login
 	Socket connection_with_client;
 	
 	//Variable for save the input from socket
 	String read_socket;
-	public ExecutionLogin(Socket connection_with_client, Server server) 
+	public ExecutionLogin(Socket connection_with_client, ServerLogic serverLogic) 
 	{
 		// TODO Auto-generated constructor stub
-		//Save an instance of server
-		this.server = server;
+		//Save an instance of serverLogic
+		this.serverLogic = serverLogic;
 		System.out.println("<<EX LOGIN>>--CREATING VARIABLES FOR SOCKET");
 
 		this.connection_with_client = connection_with_client;
@@ -80,7 +80,7 @@ public class ExecutionLogin implements Runnable
 
 		
 		
-		message_from_server = server.login(read_socket);
+		message_from_server = serverLogic.login(read_socket);
 		if ( ServerMessageBroker.manageMessageType(message_from_server).compareTo("ok")==0 )
 		{
 			try {
@@ -93,7 +93,7 @@ public class ExecutionLogin implements Runnable
 			String[] for_token = ServerMessageBroker.manageReceiveMessageSplit(message_from_server);
 			String[] for_username = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
 			System.out.println(for_token[0] +" "+ for_username[0]);
-			//server.startClientConnectionManagerDaemon(connection_with_client, for_token[0], for_username[0]);
+			//serverLogic.startClientConnectionManagerDaemon(connection_with_client, for_token[0], for_username[0]);
 		}
 		else
 		{
@@ -108,7 +108,7 @@ public class ExecutionLogin implements Runnable
 			
 		
 		
-		//	server.startClientConnectionManagerDaemon(connection_with_client,token, splitted_message[0]);
+		//	serverLogic.startClientConnectionManagerDaemon(connection_with_client,token, splitted_message[0]);
 		
 	}
 }

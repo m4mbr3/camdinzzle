@@ -66,7 +66,7 @@ public class ProvaTest {
 	}
 	
 	/*
-	 * Chiave per generazione dei token generata in modo casuale ad ogni avvio del Server
+	 * Chiave per generazione dei token generata in modo casuale ad ogni avvio del ServerLogic
 	 */
 	public String generateKeyForToken()
 	{
@@ -101,7 +101,7 @@ public class ProvaTest {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Server server = new Server(); 
+		ServerLogic serverLogic = new ServerLogic(); 
 		Textual text = new Textual();
 		
 		String [] arr;
@@ -143,7 +143,7 @@ public class ProvaTest {
 						msg = ClientMessageBroker.createUser(arr[0], arr[1]);
 						
 						System.out.println("Client: " + msg);
-						System.out.println("Server: " + server.add_new_user(msg));
+						System.out.println("ServerLogic: " + serverLogic.add_new_user(msg));
 					}
 					else if(scelta.equals("LOGIN"))
 					{
@@ -151,8 +151,8 @@ public class ProvaTest {
 						msg = ClientMessageBroker.createLogin(arr[0], arr[1]);
 						
 						System.out.println("Client: " + msg);
-						msg = server.login(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.login(msg);
+						System.out.println("ServerLogic: " + msg);
 						
 						token = ClientMessageBroker.manageLogin(msg)[0];
 					}
@@ -162,7 +162,7 @@ public class ProvaTest {
 						msg = ClientMessageBroker.createRace(token, arr[0], arr[1]);
 						
 						System.out.println("Client: " + msg);
-						System.out.println("Server: " + server.addNewSpecies(msg));
+						System.out.println("ServerLogic: " + serverLogic.addNewSpecies(msg));
 					}
 					else if(scelta.equals("AP"))
 					{
@@ -170,21 +170,21 @@ public class ProvaTest {
 						msg = ClientMessageBroker.createGameAccess(token);
 						
 						System.out.println("Client: " + msg);
-						System.out.println("Server: " + server.gameAccess(msg));
+						System.out.println("ServerLogic: " + serverLogic.gameAccess(msg));
 					}
 					else if(scelta.equals("UP"))
 					{
 						msg = ClientMessageBroker.createGameExit(token);
 						
 						System.out.println("Client: " + msg);
-						System.out.println("Server: " + server.gameExit(msg));
+						System.out.println("ServerLogic: " + serverLogic.gameExit(msg));
 					}
 					else if(scelta.equals("LG"))
 					{
 						msg = ClientMessageBroker.createPlayerList(token);
 						System.out.println("Client: " + msg);
-						msg = server.playerList(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.playerList(msg);
+						System.out.println("ServerLogic: " + msg);
 						
 						text.drawPlayerList(msg);
 					}
@@ -192,8 +192,8 @@ public class ProvaTest {
 					{
 						msg = ClientMessageBroker.createRanking(token);
 						System.out.println("Client: " + msg);
-						msg = server.ranking(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.ranking(msg);
+						System.out.println("ServerLogic: " + msg);
 						
 						text.drawRanking(msg);
 					}
@@ -201,15 +201,15 @@ public class ProvaTest {
 					{
 						msg = ClientMessageBroker.createLogout(token);
 						System.out.println("Client: " + msg);
-						msg = server.logout(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.logout(msg);
+						System.out.println("ServerLogic: " + msg);
 					}
 					else if(scelta.equals("GM"))
 					{
 						msg = ClientMessageBroker.createGeneralMap(token);
 						System.out.println("Client: " + msg);
-						msg = server.generalMap(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.generalMap(msg);
+						System.out.println("ServerLogic: " + msg);
 						
 						text.drawGeneralMap(msg);
 					}
@@ -217,8 +217,8 @@ public class ProvaTest {
 					{
 						msg = ClientMessageBroker.createGeneralMap(token);
 						System.out.println("Client: " + msg);
-						msg = server.dinosaursList(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.dinosaursList(msg);
+						System.out.println("ServerLogic: " + msg);
 						
 						text.drawDinoList(msg);
 					}
@@ -230,8 +230,8 @@ public class ProvaTest {
 						{
 							msg = ClientMessageBroker.createDinoZoom(token, dinoId);
 							System.out.println("Client: " + msg);
-							msg = server.dinoZoom(msg);
-							System.out.println("Server: " + msg);
+							msg = serverLogic.dinoZoom(msg);
+							System.out.println("ServerLogic: " + msg);
 							text.drawDinoZoom(dinoId, msg);
 						}
 						
@@ -244,8 +244,8 @@ public class ProvaTest {
 						{
 							msg = ClientMessageBroker.createDinoState(token, dinoId);
 							System.out.println("Client: " + msg);
-							msg = server.dinoState(msg);
-							System.out.println("Server: " + msg);
+							msg = serverLogic.dinoState(msg);
+							System.out.println("ServerLogic: " + msg);
 							text.drawDinoState(dinoId, msg);
 						}
 						
@@ -266,17 +266,17 @@ public class ProvaTest {
 					{
 						msg = ClientMessageBroker.createRoundConfirmation(token);
 						System.out.println("Client: " + msg);
-						msg = server.roundConfirm(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.roundConfirm(msg);
+						System.out.println("ServerLogic: " + msg);
 					}
 					else if(scelta.equals("PT"))
 					{
 						msg = ClientMessageBroker.createPassOffRound(token);
 						System.out.println("Client: " + msg);
-						msg = server.playerRoundSwitch(msg);
-						System.out.println("Server: " + msg);
+						msg = serverLogic.playerRoundSwitch(msg);
+						System.out.println("ServerLogic: " + msg);
 						
-						System.out.println("Turno del giocatore: " + server.serverRoundSwitch());
+						System.out.println("Turno del giocatore: " + serverLogic.serverRoundSwitch());
 					}
 					else if(scelta.equals("E"))
 						System.out.println("Uscita dal gioco");

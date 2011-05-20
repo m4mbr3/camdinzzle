@@ -280,7 +280,7 @@ public class ServerMessageBroker
 	}
 	
 	/**
-	 * Crea il messaggio di cambio del turno da parte del Server(notifica in partita)
+	 * Crea il messaggio di cambio del turno da parte del ServerLogic(notifica in partita)
 	 * @param username : username del giocatore che è abilitato a fare le proprie mosse
 	 * @return Messaggio da mandare ai Client
 	 */

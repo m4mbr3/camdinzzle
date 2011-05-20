@@ -17,15 +17,15 @@ public class NewUser implements Runnable{
 	private ServerSocket server_newuser;
 	private Socket connection_with_client;
 	private ExecutionNewUser ex_newuser;
-	private Server server;
+	private ServerLogic serverLogic;
 	private boolean is_run;
 	
 	
-	public NewUser(ServerSocket server_newuser,Server server) {
+	public NewUser(ServerSocket server_newuser,ServerLogic serverLogic) {
 		// TODO Auto-generated constructor stub
 	
 		this.server_newuser = server_newuser;
-		this.server = server;
+		this.serverLogic = serverLogic;
 		is_run = true;
 		connection_with_client = null;
 		ex_newuser = null;
@@ -46,7 +46,7 @@ public class NewUser implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			ex_newuser = new ExecutionNewUser(connection_with_client, server);
+			ex_newuser = new ExecutionNewUser(connection_with_client, serverLogic);
 			(new Thread(ex_newuser)).start();
 		}
 		

@@ -51,7 +51,7 @@ public class Textual implements Visual
 	/**
 	 * Stampa a video la vista locale del dinosaruro
 	 * @param dinoId Id del dinosaruo di cui stampare la vista locale
-	 * @param msg Messaggio del Server
+	 * @param msg Messaggio del ServerLogic
 	 */
 	@Override
 	public void drawDinoZoom(String dinoId, String msg) 
@@ -90,7 +90,7 @@ public class Textual implements Visual
 
 	/**
 	 * Stampa a video la lista dei dinosauri del giocatore
-	 * @param msg Messaggio del Server
+	 * @param msg Messaggio del ServerLogic
 	 */
 	@Override
 	public void drawDinoList(String msg) 
@@ -112,7 +112,7 @@ public class Textual implements Visual
 	/**
 	 * Stampa a video lo stato di un dinosauro
 	 * @param dinoId Id del dinosauro
-	 * @param msg Messaggio del Server
+	 * @param msg Messaggio del ServerLogic
 	 */
 	public void drawDinoState(String dinoId, String msg)
 	{
@@ -177,7 +177,7 @@ public class Textual implements Visual
 	
 	/**
 	 * Stampa a video la classifica dei giocatori
-	 * @param msg Messaggio del Server
+	 * @param msg Messaggio del ServerLogic
 	 */
 	@Override
 	public void drawRanking(String msg) 
@@ -200,9 +200,9 @@ public class Textual implements Visual
 	}
 	
 	/**
-	 * Stampa a video l'errore avvenuto durante la comunicazione con il Server. In particolare viene 
-	 * stampato il nome dell'errore ricevuto nella stringa ricevuta dal Server
-	 * @param msg Messaggio del Server
+	 * Stampa a video l'errore avvenuto durante la comunicazione con il ServerLogic. In particolare viene 
+	 * stampato il nome dell'errore ricevuto nella stringa ricevuta dal ServerLogic
+	 * @param msg Messaggio del ServerLogic
 	 */
 	public void drawError(String msg)
 	{
@@ -293,7 +293,7 @@ public class Textual implements Visual
 	
 	/**
 	 * Stampa a video la lista degli username dei giocatopri in partita
-	 * @param msg Messaggio del Server
+	 * @param msg Messaggio del ServerLogic
 	 */
 	public void drawPlayerList(String msg)
 	{		

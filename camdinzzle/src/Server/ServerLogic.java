@@ -20,7 +20,7 @@ import Server.Species.type;
  * @author Andrea
  * 
  */
-public class Server {
+public class ServerLogic {
 
 	/**
 	 * @author Andrea
@@ -113,43 +113,11 @@ public class Server {
 	private NewUser newuser;
 
 	
-	public Server() {
+	public ServerLogic() {
 		// TODO Auto-generated constructor stub
 
 		
-		System.out.println("<<SERVER>>--INIT");
-		// Definition of default port login
-		port_login = 4567;
-		// Definition of default port NewUser
-		port_newuser = 4566;
 		
-		// Definition of new Server login for passing it to startLogin and
-		// launch login daemon
-		System.out.println("<<SERVER>>--STARTING LOGIN DAEMON ");
-		try {
-			deal_login = new ServerSocket(port_login);
-			startLoginDaemon(deal_login);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("<<SERVER>>--LOGIN DAEMON STARTED");
-
-		// Definition of new Server NewUser for passing it to startNewUser and
-		// launch newuser daemon
-		System.out.println("<<SERVER>>--STARTING NEWUSER DAEMON ");
-		try {
-			deal_newuser = new ServerSocket(port_newuser);
-			startNewUserDaemon(deal_newuser);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("<<SERVER>>--NEWUSER DAEMON STARTED");
-		
-		System.out.println("<<SERVER>>--DEFINITION OF ENVIROMENT VARIABLES");
-		
-		
-		// Definition of new PlayerList empty
 		players = new HashMap<String, Player>();
 		loggedClientManager = new HashMap<String, ClientManager>();
 		loggedPlayers = new HashMap<String, Player>();
@@ -160,7 +128,7 @@ public class Server {
 		isTheFirstAccess = true;
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
-		System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
+		//System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
 
 		
 		this.lock_logged_player = new Object();
@@ -170,33 +138,6 @@ public class Server {
 	}
 
 	public void controlAction() {
-	}
-
-	/**
-	 * Method for starting 
-	 */
-	public void startLoginDaemon(ServerSocket server_socket) {
-
-		/* The connection for login must be at this port : 4567 */
-		login = new Login(server_socket, this);
-		(new Thread(login)).start();
-
-	}
-
-	public void startClientConnectionManagerDaemon(Socket socket_with_client,
-			String token, String username) {
-		ClientManagerSocket new_manager = new ClientManagerSocket(
-				socket_with_client, this, username, token);
-		// TODO Da rivedere
-		loggedPlayers.put(token, players.get(username));
-		(new Thread(new_manager)).start();
-		loggedClientManager.put(token, new_manager);
-		new_manager = null;
-	}
-
-	public void startNewUserDaemon(ServerSocket server_socket) {
-		newuser = new NewUser(server_socket, this);
-		(new Thread(newuser)).start();
 	}
 
 	/**
@@ -1030,7 +971,7 @@ public class Server {
 	/**
 	 * 
 	 * 
-	 * Chiave per generazione dei token generata in modo casuale ad ogni avvio del Server
+	 * Chiave per generazione dei token generata in modo casuale ad ogni avvio del ServerLogic
 	 * @return Chiave generata
 	 */
 	private String generateKeyForToken() {
@@ -1059,7 +1000,7 @@ public class Server {
 	}
 
 	/**
-	 * @return Chiave generata dal Server pe generare il token
+	 * @return Chiave generata dal ServerLogic pe generare il token
 	 */
 	public String getKeyForToken() {
 		return keyForToken;
@@ -1067,7 +1008,7 @@ public class Server {
 	
 	/**
 	 * Ricerca il minimo all'interno della chiave e lo ritorna 
-	 * @param key : chiave generata dal Server
+	 * @param key : chiave generata dal ServerLogic
 	 * @return Il minimo all'interno della chiave
 	 */
 	private int findMin(String key) {
@@ -1119,7 +1060,7 @@ public class Server {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Server server = new Server();
+		ServerLogic serverLogic = new ServerLogic();
 	}
 
 }

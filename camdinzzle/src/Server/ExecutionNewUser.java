@@ -22,15 +22,15 @@ public class ExecutionNewUser implements Runnable{
 	private BufferedOutputStream _on_socket;
 	private PrintStream writer_on_socket;
 	private BufferedReader reader_on_socket;
-	private Server server;
+	private ServerLogic serverLogic;
 	private Socket connection_with_client;
 	private String read_socket;
 	
 	
 	
-	public ExecutionNewUser(Socket connection_with_client, Server server ) {
+	public ExecutionNewUser(Socket connection_with_client, ServerLogic serverLogic ) {
 		// TODO Auto-generated constructor stub
-		this.server = server;
+		this.serverLogic = serverLogic;
 		this.connection_with_client = connection_with_client;
 		this.read_socket = null;
 		try {
@@ -62,7 +62,7 @@ public class ExecutionNewUser implements Runnable{
 				}while(read_socket.isEmpty());
 				
 			
-				writer_on_socket.println(server.add_new_user(read_socket));
+				writer_on_socket.println(serverLogic.add_new_user(read_socket));
 				
 	}
 

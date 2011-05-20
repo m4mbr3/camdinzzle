@@ -50,7 +50,7 @@ public class Client extends JFrame implements ActionListener, WindowListener{
 		rmi = new JRadioButton("rmi");
 		socket = new JRadioButton("socket");
 		camdinzzle = new JLabel("Camdinzzle Project v1.0");
-		choice = new JLabel("Select the method of connection to Server:");
+		choice = new JLabel("Select the method of connection to ServerLogic:");
 		panel = new JPanel();
 		panel.setLayout(null);
 		this.setSize(400,400);

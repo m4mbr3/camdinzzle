@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal server. Utilizzato in tutte e 
  * due i tipi di visualizzazione. I metodi che iniziano con "manage" gestiscono le stringhe dei messaggi 
- * proveniente dal Server; i metodi che iniziano con "create" creano le stringhe dei messaggi da mandare al Server
+ * proveniente dal ServerLogic; i metodi che iniziano con "create" creano le stringhe dei messaggi da mandare al ServerLogic
  */
 public class ClientMessageBroker 
 {
