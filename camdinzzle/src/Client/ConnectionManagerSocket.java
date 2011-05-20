@@ -28,6 +28,7 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	String username;
 	String password;
 	int port;
+	String command;
 	public ConnectionManagerSocket(int port, String address, String username, String password)
 	{
 		// TODO Auto-generated constructor stub
@@ -35,6 +36,7 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		this.username = username;
 		this.password = password;
 		this.port = port;
+		command = new String();
 		try {
 			System.out.println("<<CONN MANAGER>>--OPENING SOCKET WITH SERVER AT ADD "+address+" AND PORT " + port );
 			connection_with_server = new Socket(this.address, this.port);
@@ -88,12 +90,25 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			if((read_socket != null)&&(ClientMessageBroker.checkMessage(read_socket)))
 			{
 				System.out.println("<<CONN MANAGER>>-- LOGIN ACCEPTED!!!");
+				
 				while(true)
 				{
 					
 					//Implementazione di tutte le funzioni del client che può richiamare su server
+					if(command == "creaRazza")
+					{
+						
+					}
+					else if(command == "")
+					{
+						
+					}
+					else if(command == "")
+					{
+						
+					}
+						
 					
-				
 				
 				}
 			}
