@@ -11,9 +11,9 @@ public class Carnivorous extends Dinosaur
 	
 	private Vegetation vegetation=null;
 
-	public Carnivorous(String dinoId, int posRow, int posCol) 
+	public Carnivorous(String dinoId, int posRow, int posCol, String nameSpecie) 
 	{
-		super(dinoId, posRow, posCol);
+		super(dinoId, posRow, posCol, nameSpecie);
 		setDistMax(3);
 	}
 	
@@ -72,44 +72,27 @@ public class Carnivorous extends Dinosaur
 	public boolean move(int rowDest, int colDest)
 	{
 		
-//		if(Game.checkReachCell(posRow, posCol, rowDest, colDest, distMax))	//se è raggiungiblie allora posso spostarmi
 
-		
 		if(vegetation!=null)
 		{
 			Game.setCellMap(vegetation, this.getPosRow(), this.getPosCol());
 			vegetation=null;
+		}
+		else
+		{
+			Game.setCellMap("t", this.getPosRow(), this.getPosCol());
 		}
 		energy -= 10 * Math.pow(2, Game.getDistCell(this.getPosRow(), this.getPosCol(), rowDest, colDest));
 		if(energy<=0)
 		{
 			return false;
 		}
-		else
-		{
-			
-			if((Game.getCell(rowDest, colDest) instanceof Carnivorous)||(Game.getCell(rowDest, colDest) instanceof Vegetarian))		//se c'è un carnivoro o vegetariano combatto
-			{
-				if(!fight(Game.getCell(rowDest, colDest)))
-				{
-					return false;
-				}
+		
+		this.posRow=rowDest;
+		this.posCol=colDest;
+		this.setMoveTake(true);
+		return true;
 
-			}
-			if(Game.getCell(rowDest, colDest) instanceof Carrion)
-			{
-				eat(Game.getCell(rowDest, colDest));
-			}
-			if(Game.getCell(rowDest, colDest) instanceof Vegetation)
-			{
-				vegetation = (Vegetation)Game.getCell(rowDest, colDest);
-			}
-			this.posRow=rowDest;
-			this.posCol=colDest;
-			return true;
-		
-		}
-		
 	
 	}
 	

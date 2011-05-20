@@ -1,5 +1,8 @@
 package Server;
 
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * 
  * @author Marco
@@ -10,6 +13,7 @@ public abstract class Dinosaur
 {
 	private String dinoId;
 	private int age;
+	private Species nameSpecie;
 	protected int energy;
 	private int dimension;
 	protected int energyMax;
@@ -34,7 +38,7 @@ public abstract class Dinosaur
 	 * @return null
 	 *  
 	 */
-	public Dinosaur(String dinoId, int posRow, int posCol)
+	public Dinosaur(String dinoId, int posRow, int posCol, String nameSpecie)
 	{
 		age = (int) (Math.random() * 13 + 24);
 		dimension = 1;
@@ -68,7 +72,6 @@ public abstract class Dinosaur
 			}
 			else 
 			{
-				dead();
 				return false;
 			}
 		}
@@ -78,8 +81,9 @@ public abstract class Dinosaur
 	 * incompleto 
 	 * dove mette l'uovo??
 	 */
-	public boolean newEgg()
+	public String newEgg()
 	{
+		String idDino=null;
 		if(energy > eEgg)
 		{
 			energy = energy - eEgg;
@@ -95,7 +99,7 @@ public abstract class Dinosaur
 						{					
 							if((Game.getCell(i, j) instanceof String)&&(Game.getCell(i, j)=="t"))
 							{
-		//nuovo dinosauro
+								idDino=nameSpecie.addDinosaur(i, j);
 								positioned = true;
 								break;
 							}
@@ -106,11 +110,11 @@ public abstract class Dinosaur
 				offSet++;
 			}while(!positioned);
 			setActionTake(true);
-			return true;
+			return idDino;
 		}
 		else 
 		{
-			return false;	//muore
+			return idDino;
 		}
 	}
 	
@@ -256,6 +260,10 @@ public abstract class Dinosaur
 	public boolean getActionTake() 
 	{
 		return actionTake;
+	}
+	public Species getSpecie()
+	{
+		return nameSpecie;
 	}
 	
 }

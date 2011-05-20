@@ -101,7 +101,7 @@ public class Species
 	 * add a new dinosaur the same type of my species
 	 * at my HashTable of dinosaurs
 	 */
-	public void addDinosaur( int posRig, int posCol)
+	public String addDinosaur( int posRig, int posCol)
 	{
 		Dinosaur dino;
 		addDinoNumber();
@@ -109,17 +109,18 @@ public class Species
 		
 		if(speciesType == type.Carnivorous) //Control the type of species
 		{
-			dino = new Carnivorous(dinoId, posRig, posCol);
+			dino = new Carnivorous(dinoId, posRig, posCol, name);
 
 		}
 		else
 		{
-			dino = new Vegetarian(dinoId, posRig, posCol);
+			dino = new Vegetarian(dinoId, posRig, posCol, name);
 		}
 
 		myDinosaurs.put(dinoId.toString(), dino);
+		Game.setCellMap(dino, posRig, posCol);
 		
-		return;
+		return dinoId;
 	}
 	
 	/**
@@ -206,7 +207,7 @@ public class Species
 	}
 	
 	/**
-	 * aggiorna la mappa generale del giocatore inserendo la vista dei dinosauri
+	 * aggiorna la mappa generale del giocatore (buio) inserendo la vista dei dinosauri
 	 */
 	public void updateMap()
 	{
@@ -227,7 +228,7 @@ public class Species
 				int h=0;
 				for(int j=posCol-size/2; j<=posCol+size/2; j++)
 				{
-					if((k>=0)&&(k<Game.maxRow)&&(h>=0)&&(h<Game.maxCol))
+					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
 					{
 						map[i][j] = localMap[k][h].toString();
 						h++;

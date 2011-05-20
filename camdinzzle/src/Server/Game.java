@@ -565,7 +565,7 @@ public class Game {
 
 		
 	
-	public void stampa()
+	public static void stampa()
 	{
 
 		for(int i=0; i<maxRow; i++)
@@ -722,7 +722,9 @@ public class Game {
 	{
 		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxCol))
 		{
-			return mapReach[startRow][startCol][destRow][destCol];
+			int destRelRow = maxReach/2 + (startRow - destRow);
+			int destRelCol = maxReach/2 + (startCol - destCol);
+			return mapReach[startRow][startCol][destRelRow][destRelCol];
 		}
 		else
 		{

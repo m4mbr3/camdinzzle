@@ -10,9 +10,9 @@ public class Vegetarian extends Dinosaur
 {
 	private Carrion carrion=null;
 
-	public Vegetarian(String dinoId, int posRow, int posCol)
+	public Vegetarian(String dinoId, int posRow, int posCol, String nameSpecie)
 	{
-		super(dinoId, posRow, posCol);
+		super(dinoId, posRow, posCol, nameSpecie);
 		setDistMax(2);
 	}
 	
@@ -84,32 +84,7 @@ public class Vegetarian extends Dinosaur
 		this.posCol=colDest;
 		this.setMoveTake(true);
 		return true;
-/*		else
-		{
-			
-			if(Game.getCell(rowDest, colDest) instanceof Carnivorous)		//se c'è un carnivoro  combatto
-			{
-				if(!fight(Game.getCell(rowDest, colDest)))
-				{
-					return false;
-				}
 
-			}
-			if(Game.getCell(rowDest, colDest) instanceof Carrion)
-			{
-				carrion = (Carrion)Game.getCell(rowDest, colDest);
-			}
-			if(Game.getCell(rowDest, colDest) instanceof Vegetation)
-			{
-				eat(Game.getCell(rowDest, colDest));
-			}
-			this.posRow=rowDest;
-			this.posCol=colDest;
-			this.setMoveTake(true);
-			return true;
-		
-		}
-*/
 	}
 	
 	public Carrion getCarrion()

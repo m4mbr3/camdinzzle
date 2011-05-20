@@ -721,20 +721,18 @@ public class ServerLogic {
 	
 	public String dinoMove(String msg)
 	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
-		int	dinoRow = Integer.parseInt(ServerMessageBroker.manageReceiveMessageSplit(msg)[2]);
-		int	dinoCol = Integer.parseInt(ServerMessageBroker.manageReceiveMessageSplit(msg)[3]);
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("listaDinosauri");
+		String token = ServerMessageBroker.manageDinoMovement(msg)[0];
+		String dinoId = ServerMessageBroker.manageDinoMovement(msg)[1];
+		int	dinoRow = Integer.parseInt(ServerMessageBroker.manageDinoMovement(msg)[2]);
+		int	dinoCol = Integer.parseInt(ServerMessageBroker.manageDinoMovement(msg)[3]);
 		
 		synchronized(loggedPlayers)
 		{
-			if(isLoggedUser(token))						//controlla se ÔøΩ loggato
+			if(isLoggedUser(token))						//controlla se è loggato
 			{
-				if(currentSession.getPlayer(token) != null)			//controllo token valido
+				if(currentSession.getPlayer(token) != null)			//controllo se è in partita
 				{
-		//manca non ÔøΩ il tuo turno
+		//manca non è il tuo turno
 					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
 						Dinosaur dino = currentSession.getPlayer(token).getSpecie().getDino(dinoId);
@@ -744,24 +742,41 @@ public class ServerLogic {
 							{
 								if(Game.checkReachCell(dino.getPosRow(), dino.getPosCol(), dinoRow, dinoCol, dino.getDistMax()))	//controllo che il dinosauro possa arrivare a destinazione
 								{
-									if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino ÔøΩ vegetariano controllo che nn ci sia un vegetariano a destinazione
+									if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino è vegetariano controllo che nn ci sia un vegetariano a destinazione
 									{
 										if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).move(dinoRow, dinoCol))		//controlla che abbia abbastanza energia x muoversi e cambia le coordinate in dino
 										{
-											if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'ÔøΩ un altro dinosauro nella cella di arrivo
+											if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'è un altro dinosauro nella cella di arrivo
 											{
 												if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).fight(Game.getCell(dinoRow, dinoCol)))		//combatte
 												{
-													//uccidere avversario.... scoprire specie avversario!!!
-													//currentSession.getPlayer(token).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino ÔøΩ vegetariano e se nella cella c'ÔøΩ carogna
+													
+/*													String specie = ((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie();
+													boolean check=false;
+													Iterator iter = currentSession.getPlayersList();
+													Map.Entry me;	
+													do
+													{
+														me = (Map.Entry) iter.next();
+														if((specie.compareTo(((Player)me.getValue()).getSpecie().getName()))==0)
+														{
+															check=true;
+														}
+													}while(!check);
+*/													
+													((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
+													
+													
+													
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino è vegetariano e se nella cella c'è carogna
 													{
 														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 													}
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino ÔøΩ carnivoro e se nella cella c'ÔøΩ vegetazione
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino è carnivoro e se nella cella c'è vegetazione
 													{
 														((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 													}
+													
 													Game.setCellMap(currentSession.getPlayer(token).getSpecie().getDino(dinoId), dinoRow, dinoCol);
 													return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "v");
 												}
@@ -773,11 +788,11 @@ public class ServerLogic {
 											}
 											else
 											{
-												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino ÔøΩ vegetariano e se nella cella c'ÔøΩ carogna
+												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino è vegetariano e se nella cella c'è carogna
 												{
 													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 												}
-												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino ÔøΩ carnivoro e se nella cella c'ÔøΩ vegetazione
+												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino è carnivoro e se nella cella c'è vegetazione
 												{
 													((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 												}
@@ -804,6 +819,105 @@ public class ServerLogic {
 							else
 							{
 								return ServerMessageBroker.createErroMessage("destinazioneNonValida");
+							}
+						}
+						else
+						{
+							return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
+						}
+					}
+					else
+					{
+						return ServerMessageBroker.createErroMessage("idNonValido");
+					}
+				}
+				else
+				{
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
+			}
+			else
+			{
+				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
+		}
+	}
+	
+	public String dinoGrowUp(String msg)
+	{
+
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
+		
+		synchronized(loggedPlayers)
+		{
+			if(isLoggedUser(token))						//controlla se è loggato
+			{
+				if(currentSession.getPlayer(token) != null)			//controllo token valido
+				{
+		//manca non è il tuo turno
+					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
+					{
+						if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione è gia stata fatta
+						{
+							if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).growUp())		//non ha abbastanza energia
+							{
+								return ServerMessageBroker.createOkMessage();
+							}
+							else
+							{
+								currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+								return ServerMessageBroker.createErroMessage("mortePerInedia");
+							}
+						}
+						else
+						{
+							return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
+						}
+					}
+					else
+					{
+						return ServerMessageBroker.createErroMessage("idNonValido");
+					}
+				}
+				else
+				{
+					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
+			}
+			else
+			{
+				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
+		}
+	}
+	
+	public String dinoNewEgg(String msg)
+	{
+
+		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
+		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
+		
+		synchronized(loggedPlayers)
+		{
+			if(isLoggedUser(token))						//controlla se è loggato
+			{
+				if(currentSession.getPlayer(token) != null)			//controllo token valido
+				{
+		//manca non è il tuo turno
+					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
+					{
+						if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione è gia stata fatta
+						{
+							String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
+							if(idDino !=null)		//non ha abbastanza energia
+							{
+								return ServerMessageBroker.createOkMessageWithOneParameter(idDino);//id dino nuovo
+							}
+							else
+							{
+								currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+								return ServerMessageBroker.createErroMessage("mortePerInedia");
 							}
 						}
 						else
