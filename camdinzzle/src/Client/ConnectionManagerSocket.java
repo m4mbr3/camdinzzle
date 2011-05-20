@@ -88,11 +88,19 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			if((read_socket != null)&&(ClientMessageBroker.checkMessage(read_socket)))
 			{
 				System.out.println("<<CONN MANAGER>>-- LOGIN ACCEPTED!!!");
+				while(true)
+				{
+					
+					//Implementazione di tutte le funzioni del client che può richiamare su server
+					
+				
+				
+				}
 			}
 			else
 			{
 				System.out.println("<<CONN MANAGER>>-- LOGIN FAILD!!!");
-			
+				System.exit(0);
 			}
 		
 		

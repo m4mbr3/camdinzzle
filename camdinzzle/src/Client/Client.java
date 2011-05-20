@@ -21,7 +21,7 @@ import javax.swing.JRadioButton;
  * @author Andrea
  *
  */
-public class Client extends JFrame implements ActionListener, WindowListener{
+public class Client extends JFrame implements ActionListener, WindowListener, Runnable{
 
 	/**
 	 * 
@@ -171,6 +171,10 @@ public class Client extends JFrame implements ActionListener, WindowListener{
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+	public void run()
+	{
 		
 	}
 
