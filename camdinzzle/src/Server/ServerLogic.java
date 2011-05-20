@@ -858,7 +858,7 @@ public class ServerLogic {
 		//manca non è il tuo turno
 					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
-						if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione è gia stata fatta
+						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione è gia stata fatta
 						{
 							if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).growUp())		//non ha abbastanza energia
 							{
@@ -907,7 +907,7 @@ public class ServerLogic {
 		//manca non è il tuo turno
 					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
-						if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione è gia stata fatta
+						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione è gia stata fatta
 						{
 							String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
 							if(idDino !=null)		//non ha abbastanza energia

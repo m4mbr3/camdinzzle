@@ -45,7 +45,7 @@ public class Species
 		{
 			posRig = (int) (Math.random() * 40);
 			posCol = (int) (Math.random() * 40);
-		}while(Game.getCell(posRig, posCol) == "t");
+		}while(((Game.getCell(posRig, posCol) instanceof String)&&(Game.getCell(posRig, posCol) == "t")));
 		
 
 		// TODO Game.getLocalMap da sistemare che non funzionano
@@ -285,6 +285,6 @@ public class Species
 				Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
 			}
 		}
-		myDinosaurs.remove(dinoId.toString());
+		myDinosaurs.remove(dinoId.getDinoId());
 	}
 }
