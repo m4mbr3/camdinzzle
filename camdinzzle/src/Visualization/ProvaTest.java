@@ -129,6 +129,8 @@ public class ProvaTest {
 			System.out.println("DU per far deporre un uovo ad un dinosauro");
 			System.out.println("CT per donfermare il turno");
 			System.out.println("PT per passare il turno");
+			System.out.println("MC per stampare tutta la mappa senza buoio");
+			System.out.println("RM per stampare la mappa di raggiungibilita'");
 			System.out.println("E per uscire");
 			System.out.print("\n");
 			do
@@ -253,15 +255,32 @@ public class ProvaTest {
 					}
 					else if(scelta.equals("MD"))
 					{
-						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+						arr = text.drawDinoMovement();
+						msg = ClientMessageBroker.createDinoMove(token, arr[0], arr[1], arr[2]);
+						
+						System.out.println("Client: " + msg);
+						msg = serverLogic.dinoMove(msg);
+						System.out.println("ServerLogic: " + msg);
+					
 					}
 					else if(scelta.equals("CD"))
 					{
-						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+						String dinoId = text.getDinoId();
+						msg = ClientMessageBroker.createDinoGrowUp(token, dinoId);
+						
+						System.out.println("Client: " + msg);
+						msg = serverLogic.dinoGrowUp(msg);
+						System.out.println("ServerLogic: " + msg);
+
 					}
 					else if(scelta.equals("DU"))
 					{
-						System.out.println("NON ANCORA IMPLEMENTATO SUL SERVER!!");
+						String dinoId = text.getDinoId();
+						msg = ClientMessageBroker.createNewEgg(token, dinoId);
+						
+						System.out.println("Client: " + msg);
+						msg = serverLogic.dinoNewEgg(msg);
+						System.out.println("ServerLogic: " + msg);
 					}
 					else if(scelta.equals("CT"))
 					{
@@ -279,6 +298,21 @@ public class ProvaTest {
 						
 						System.out.println("Turno del giocatore: " + serverLogic.serverRoundSwitch());
 					}
+					else if(scelta.equals("MC"))
+						Game.stampa();
+					
+					else if(scelta.equals("RM"))
+					{
+						BufferedReader dataInput1 = new BufferedReader(new InputStreamReader(System.in));
+						int[] returnValues = new int[2];
+						System.out.println("Stampa mappa raggiungibilita'");
+						System.out.println("Riga:");
+						returnValues[0] = Integer.parseInt(dataInput.readLine());
+						System.out.println("Colonna:");
+						returnValues[1] = Integer.parseInt(dataInput.readLine());
+						Game.stampaReachAble(returnValues[0], returnValues[1]);
+					}
+					
 					else if(scelta.equals("E"))
 						System.out.println("Uscita dal gioco");
 					
@@ -292,8 +326,8 @@ public class ProvaTest {
 			while((!scelta.equals("CU")) && (!scelta.equals("LOGIN")) && (!scelta.equals("CR"))&& (!scelta.equals("AP")) && (!scelta.equals("UP"))
 				&& (!scelta.equals("LG")) && (!scelta.equals("CG")) && (!scelta.equals("LOGOUT")) && (!scelta.equals("GM")) 
 				&& (!scelta.equals("LD")) && (!scelta.equals("VL")) && (!scelta.equals("SD")) && (!scelta.equals("MD"))
-				&& (!scelta.equals("CD")) && (!scelta.equals("DU")) && (!scelta.equals("CT")) && (!scelta.equals("PT"))
-				&& (!scelta.equals("E	")));
+				&& (!scelta.equals("CD")) && (!scelta.equals("DU")) && (!scelta.equals("CT")) && (!scelta.equals("PT")) && (!scelta.equals("MC")) && (!scelta.equals("RM"))
+				&& (!scelta.equals("E")));
 		}
 		while(!scelta.equals("E"));
 		
