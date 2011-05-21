@@ -17,7 +17,7 @@ public class Vegetation implements Food
 	public Vegetation(int maxPower)
 	{
 		this.maxPower = maxPower;
-		this.power = 0;
+		this.power = 10;
 	}
 
 	/**

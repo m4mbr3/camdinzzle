@@ -45,10 +45,7 @@ public class Species
 		{
 			posRig = (int) (Math.random() * 40);
 			posCol = (int) (Math.random() * 40);
-		}while((Game.getCell(posRig, posCol) instanceof String)&&(((String)Game.getCell(posRig, posCol)).compareTo("t")==0));
-		
-
-		
+		}while(!((Game.getCell(posRig, posCol) instanceof String)&&(((String)Game.getCell(posRig, posCol)).compareTo("t")==0)));
 		addDinosaur(posRig, posCol);
 		startMap();
 		updateMap();
@@ -119,6 +116,7 @@ public class Species
 
 		myDinosaurs.put(dinoId.toString(), dino);
 		Game.setCellMap(dino, posRig, posCol);
+		dino.setLocalMap();
 		
 		return dinoId;
 	}

@@ -66,7 +66,7 @@ public abstract class Dinosaur
 		{
 			if(energy > (energyMax/2))
 			{
-				energy = energy - energyMax;
+				energy = energy - energyMax/2;
 				dimension = dimension + 1;
 				setActionTake(true);
 				return true;
