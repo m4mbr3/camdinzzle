@@ -199,7 +199,7 @@ public class Game {
 	}
 	
 	/**
-	 * 
+	 * controlla che ci sia spazio e crea una pozza a ferro di cavallo
 	 * @param size
 	 * @param row
 	 * @param col
@@ -257,7 +257,7 @@ public class Game {
 		}
 	}
 	/**
-	 * 
+	 * controlla che ci sia spazio e crea una pozza a stella
 	 * @param size
 	 * @param row
 	 * @param col
@@ -328,7 +328,7 @@ public class Game {
 	}
 	
 	/**
-	 * 
+	 * controlla che ci sia spazio e crea una pozza a fiume
 	 * @param size
 	 * @param row
 	 * @param col
@@ -436,7 +436,7 @@ public class Game {
 				map[row][maxRow-1] = new String("a");
 			}
 		}
-		/**
+		/*
 		 * inizializzazione mappa casuale
 		 */
 
@@ -452,7 +452,7 @@ public class Game {
 			}
 		}
 		
-		/**
+		/*
 		 * creaione pozze d'acqua
 		 */
 		do
@@ -564,7 +564,9 @@ public class Game {
 	}
 
 		
-	
+	/**
+	 * stampa la mappa generale del server senza buoio
+	 */
 	public static void stampa()
 	{
 
@@ -578,13 +580,24 @@ public class Game {
 		}
 	}
 	
-	
+	/**
+	 * 
+	 * @param row :riga della cella desiderata
+	 * @param col : colonna della cella desiderata
+	 * @return	oggetto contenuto nella cella
+	 */
 	public static Object getCell(int row, int col)
 	{
 		return map[row][col];
 	}
 	
-	
+	/**
+	 * Ritaglia una orzione di mappa intorno al dinosauro in base alle dimensioni
+	 * @param row : riga del dinosauro
+	 * @param col : colonna del dinosauro
+	 * @param dimension : dimensione del dinosauro
+	 * @return mappa locale del dinosauro
+	 */
 	public static Object[][] getLocalMap(int row, int col, int dimension)
 	{
 		int size;
@@ -613,14 +626,17 @@ public class Game {
 				if((k>=0)&&(k<Game.maxRow)&&(h>=0)&&(h<Game.maxCol))
 				{
 					localMap[i][j] = map [k][h];
-					h++;
 				}
+				h++;
 			}
 			k++;
 		}
 		return localMap;
 	}
 	
+	/**
+	 * inizializza la mappa di raggiungibilità
+	 */
 	public void startMapReach()
 	{
 		mapReach = new int [maxRow][maxCol][maxReach][maxReach];
@@ -640,6 +656,17 @@ public class Game {
 		
 	}
 	
+	/**
+	 * metodo ricorsivo per creare la mappa di raggiungibilita'
+	 * compila la matrice dist con i passi che servono per arrivare a una determinata cella partendo da quella centrale
+	 * @param rowStart
+	 * @param colStart
+	 * @param rowRel
+	 * @param colRel
+	 * @param view
+	 * @param dist
+	 * @param d
+	 */
 	public void reachAbleCell(int rowStart, int colStart, int rowRel, int colRel, boolean[][] view, int[][] dist, int d)
 	{
 		int i=rowRel;
@@ -681,13 +708,23 @@ public class Game {
 		reachAbleCell(rowStart-1, colStart+1, rowRel-1, colRel+1, view, dist, d+1);
 	}
 	
+	/**
+	 * controlla che una cella sia raggiungibile dal dinosauro interessato in base alla massima distanza che puo' percorrere
+	 * e alla presenza di un percorso continuo senza acqua in mezzo
+	 * @param startRow
+	 * @param startCol
+	 * @param destRow
+	 * @param destCol
+	 * @param distMax
+	 * @return
+	 */
 	public static boolean checkReachCell(int startRow, int startCol, int destRow, int destCol, int distMax)
 	{
 		int destRelRow = maxReach/2 + (startRow - destRow);
 		int destRelCol = maxReach/2 + (startCol - destCol);
 		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxCol)&&(destRelRow>=0)&&(destRelRow<maxReach)&&(destRelCol>=0)&&(destRelCol<maxReach))
 		{
-			if(mapReach[startRow][startCol][destRelRow][destRelCol]<=distMax)
+			if((mapReach[startRow][startCol][destRelRow][destRelCol]<=distMax)&&(mapReach[startRow][startCol][destRelRow][destRelCol]>0))
 			{
 				return true;
 			}
@@ -695,7 +732,12 @@ public class Game {
 		return false;
 	}
 	
-	public void stampaReachAble()
+	/**
+	 * stampa la mappa di raggiungibilita' di una cella specifica
+	 * @param row
+	 * @param col
+	 */
+	public static void stampaReachAble(int row, int col)
 	{
 		
 
@@ -703,28 +745,49 @@ public class Game {
 		{
 			for(int j=0; j<maxReach; j++)
 			{
-				System.out.print(mapReach[10][10][i][j] + " ");
+				System.out.print(mapReach[row][col][i][j] + " ");
 			}
 			System.out.print("\n");
 		}
 	}
 	
+	/**
+	 * inerisce nella mappa generale l'oggetto passato
+	 * @param obj
+	 * @param row
+	 * @param col
+	 */
 	public static void setCellMap(Object obj, int row, int col)
 	{
-		if((row>=0)&&(row<maxRow)&&(col>=0)&&(col<maxCol))
+		if((row>=0)&&(row<maxRow)&&(col>=0)&&(col<maxCol)&&(obj!=null))
 		{
 		map[row][col] = null;
 		map[row][col] = obj;
 		}
 	}
 	
+	/**
+	 * legge la mappa di raggiungibilità e sestituisce la distanza tra la cella di partenza e quella di arrivo
+	 * @param startRow
+	 * @param startCol
+	 * @param destRow
+	 * @param destCol
+	 * @return 
+	 */
 	public static int getDistCell(int startRow, int startCol, int destRow, int destCol)
 	{
-		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxCol))
+		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxCol)&&(destRow>=0)&&(destRow<maxRow)&&(destCol>=0)&&(destCol<maxCol))
 		{
 			int destRelRow = maxReach/2 + (startRow - destRow);
 			int destRelCol = maxReach/2 + (startCol - destCol);
-			return mapReach[startRow][startCol][destRelRow][destRelCol];
+			if((destRelRow>=0)&&(destRelRow<maxReach)&&(destRelCol>=0)&&(destRelCol<maxReach))
+			{
+				return mapReach[startRow][startCol][destRelRow][destRelCol];
+			}
+			else
+			{
+				return -1;
+			}
 		}
 		else
 		{

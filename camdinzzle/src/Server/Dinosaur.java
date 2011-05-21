@@ -38,7 +38,7 @@ public abstract class Dinosaur
 	 * @return null
 	 *  
 	 */
-	public Dinosaur(String dinoId, int posRow, int posCol, String nameSpecie)
+	public Dinosaur(String dinoId, int posRow, int posCol, Species nameSpecie)
 	{
 		age = (int) (Math.random() * 13 + 24);
 		dimension = 1;
@@ -49,7 +49,8 @@ public abstract class Dinosaur
 		this.posCol = posCol;
 		turniVissuti = 0;
 		distMax=0;
-		startLocalMap();
+		this.nameSpecie = nameSpecie;
+		setLocalMap();
 	}
 	
 	/**
@@ -78,8 +79,7 @@ public abstract class Dinosaur
 	}
 	
 	/**
-	 * incompleto 
-	 * dove mette l'uovo??
+	 * crea un nuovo dinosauro nella prima cella libera vicino al dinosauro
 	 */
 	public String newEgg()
 	{
@@ -119,12 +119,9 @@ public abstract class Dinosaur
 	}
 	
 	/**
-	 * incompleto
+	 * 
+	 * @return tipo della specie: carnivoro o vegetariano
 	 */
-	public void dead()
-	{
-		
-	}
 	public Species.type getType()
 	{
 		return Species.getType();
@@ -139,7 +136,10 @@ public abstract class Dinosaur
 	}
 	
 	/**
-	 * aggiorna stato dino
+	 * aggiorna stato dinosauro
+	 * sottrae un anno di vita a quelli rimanenti al dinosauro
+	 * aggiunge uno ai turni vissuti dal dinosauro
+	 * risetta a false moveTake e ActionTake
 	 */
 	public void updateDinosaurAge()
 	{
@@ -149,36 +149,64 @@ public abstract class Dinosaur
 		setActionTake(false);
 	}
 	
+	/**
+	 * dimensione dinosauro
+	 * @return int
+	 */
 	public int getDinoDimension()
 	{
 		return dimension;
 	}
 	
+	/**
+	 * riga della posizione del dinosauro
+	 * @return int
+	 */
 	public int getPosRow()
 	{
 		return posRow;
 	}
-	
+
+	/**
+	 * riga della posizione del dinosauro
+	 * @return int
+	 */
 	public int getPosCol()
 	{
 		return posCol;
 	}
 	
+	/**
+	 * energia dinosauro
+	 * @return int
+	 */
 	public int getEnergy()
 	{
 		return energy;
 	}
 	
+	/**
+	 * turni vissuti dal dinosauro
+	 * @return int
+	 */
 	public int getTurniVissuti()
 	{
 		return turniVissuti;
 	}
 	
+	/**
+	 * setta i turni vissuti dal dinosauro
+	 * @param t
+	 */
 	public void setTurniVissuti(int t)
 	{
 		turniVissuti = t;
 	}
 	
+	/**
+	 * restituisce la dimensione della mappa locale in base alla dimensione del dinosauro
+	 * @return
+	 */
 	public int getSizeLocalMap()
 	{
 		if(dimension==1)
@@ -198,33 +226,16 @@ public abstract class Dinosaur
 		}
 	}
 	
-	private void startLocalMap()
+	/**
+	 * inizializza la mappa locale del dinosauro
+	 */
+	public void setLocalMap()
 	{
-		int size;
-		if(dimension==1)
-		{
-			size = 5;
-		}
-		else
-		{
-			if((dimension==2)||(dimension==3))
-			{
-				size = 7;
-			}
-			else
-			{
-				size = 9;
-			}
-		}
+		int size = getSizeLocalMap();
+
 		localMap = new Object[size][size];
-		Game.setCellMap(this, posRow, posCol);
 		localMap = Game.getLocalMap(posRow, posCol, dimension);
 		
-	}
-	
-	public void udateLocalMap()
-	{
-		localMap = Game.getLocalMap(posRow, posCol, dimension);
 	}
 	 
 	public Object[][] getLocalMap()

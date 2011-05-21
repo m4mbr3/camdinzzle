@@ -10,9 +10,9 @@ public class Vegetarian extends Dinosaur
 {
 	private Carrion carrion=null;
 
-	public Vegetarian(String dinoId, int posRow, int posCol, String nameSpecie)
+	public Vegetarian(String dinoId, int posRow, int posCol, Species specie)
 	{
-		super(dinoId, posRow, posCol, nameSpecie);
+		super(dinoId, posRow, posCol, specie);
 		setDistMax(2);
 	}
 	
@@ -82,7 +82,7 @@ public class Vegetarian extends Dinosaur
 
 		this.posRow=rowDest;
 		this.posCol=colDest;
-		udateLocalMap();
+		setLocalMap();
 		super.nameSpecie.updateMap();
 		this.setMoveTake(true);
 		return true;

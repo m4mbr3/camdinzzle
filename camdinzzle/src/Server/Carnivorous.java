@@ -11,9 +11,9 @@ public class Carnivorous extends Dinosaur
 	
 	private Vegetation vegetation=null;
 
-	public Carnivorous(String dinoId, int posRow, int posCol, String nameSpecie) 
+	public Carnivorous(String dinoId, int posRow, int posCol, Species specie) 
 	{
-		super(dinoId, posRow, posCol, nameSpecie);
+		super(dinoId, posRow, posCol, specie);
 		setDistMax(3);
 	}
 	
@@ -90,6 +90,7 @@ public class Carnivorous extends Dinosaur
 		
 		this.posRow=rowDest;
 		this.posCol=colDest;
+		setLocalMap();
 		super.nameSpecie.updateMap();
 		this.setMoveTake(true);
 		return true;

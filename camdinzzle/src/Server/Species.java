@@ -48,7 +48,7 @@ public class Species
 		}while((Game.getCell(posRig, posCol) instanceof String)&&(((String)Game.getCell(posRig, posCol)).compareTo("t")==0));
 		
 
-		// TODO Game.getLocalMap da sistemare che non funzionano
+		
 		addDinosaur(posRig, posCol);
 		startMap();
 		updateMap();
@@ -109,12 +109,12 @@ public class Species
 		
 		if(speciesType == type.Carnivorous) //Control the type of species
 		{
-			dino = new Carnivorous(dinoId, posRig, posCol, name);
+			dino = new Carnivorous(dinoId, posRig, posCol, this);
 
 		}
 		else
 		{
-			dino = new Vegetarian(dinoId, posRig, posCol, name);
+			dino = new Vegetarian(dinoId, posRig, posCol, this);
 		}
 
 		myDinosaurs.put(dinoId.toString(), dino);
@@ -230,8 +230,11 @@ public class Species
 				{
 					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol)&&(h>=0)&&(h<size)&&(k>=0)&&(k<size))
 					{
-						map[i][j] = null;
-						map[i][j] = localMap[k][h].toString();
+						if(localMap[k][h]!=null)
+						{
+							map[i][j] = null;
+							map[i][j] = localMap[k][h].toString();
+						}
 					}
 					h++;
 				}
