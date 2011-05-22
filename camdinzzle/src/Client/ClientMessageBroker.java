@@ -38,6 +38,24 @@ public class ClientMessageBroker
 	}
 	
 	/**
+	 * Gestisce il nome del comando ricevuto
+	 * @param msg
+	 * @return nome del comando ricevuto
+	 */
+	public static String manageMessageType(String msg)
+	{
+		String[] splittedMessage;
+		
+		if(msg.contains(","))
+		{
+			splittedMessage = msg.split(",");
+			return splittedMessage[0].substring(1);
+		}
+		else
+			return msg.substring(1);
+	}
+	
+	/**
 	 * Gestisce il messaggio della mappa generale
 	 * @param msg Messaggio del server
 	 * @return ArrayList contenente(in ordine di posizione): x di partenza, y di partenza, numero di righe della

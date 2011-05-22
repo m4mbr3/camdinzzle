@@ -159,7 +159,7 @@ public class ServerLogic {
 	{
 		String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(msg);
 		String token = parameters[0];
-		// TODO : gestione specie già avviata
+		
 		synchronized (loggedPlayers) 
 		{
 			if (this.isLoggedUser(parameters[0])) 
@@ -253,6 +253,7 @@ public class ServerLogic {
 				{
 					if (currentSession.getPlayer(token) == null)
 					{
+						//TODO: gestione razza gia avviata
 						currentSession.addPlayer(token, loggedPlayers.get(token));
 						if(isTheFirstAccess)
 						{
@@ -1010,12 +1011,18 @@ public class ServerLogic {
 	}
 	
 	/**
-	 * Esegue il cambio del turno(notifica in partita)
+	 * Esegue il cambio del turno da un giocatore al prossimo(notifica in partita)
 	 * @return Messaggio da mandare in broadcast ai Client per notificare che ï¿½ cambiato il turno. Il 
 	 * messaggio contiene il comando e l'username del giocatore abilitato a fare le proprie mosse
 	 */
-	public String serverRoundSwitch()
+	public String playerSwitch()
 	{
+		/* TODO
+		 * - Aumento della age di un dinosauro: se arriva a 0 il dinosauro muore
+		 * - Creazione dinosauro da uovo(da vedere)
+		 * - 
+		 */
+		
 		Iterator iter = currentSession.getPlayersList();
 		Map.Entry me;
 		int tableSize = 0;
@@ -1035,6 +1042,10 @@ public class ServerLogic {
 			{
 				// TODO : gestione del null ritornato
 				tokenOfCurrentPlayer = currentSession.getFirstPlayer();
+				/* TODO : se arrivato qui significa che tutti i giocatori hanno giocato il server
+				 * deve eseguire il metodo updateGame()
+				 */
+				
 				break;
 			}
 		}
@@ -1044,6 +1055,20 @@ public class ServerLogic {
 			String username = loggedPlayers.get(tokenOfCurrentPlayer).getUserName();
 			return ServerMessageBroker.createServerRoundSwitch(username);
 		}
+	}
+	
+	/**
+	 * Esegue gli aggiornamenti sugli oggetti della mappa. Da chiamare dopo che tutti hanno giocato
+	 */
+	public void updateGame()
+	{
+		/*
+		 * - Aumento turni vissuti della specie: massimo 120 turni dopo i quali la specie muore.
+		 * 	 Nel caso di morte della specie, il riferimento della specie sul player deve essere 
+		 * 	 settato a null. Il Client deve fare sapere all'utente la morte della sua specie.
+		 * - Aumento energia vegetazione.
+		 * - Diminuzione energia carogne.
+		 */
 	}
 	
 	
