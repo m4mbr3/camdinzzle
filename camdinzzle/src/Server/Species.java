@@ -157,7 +157,7 @@ public class Species
 			Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) iter.next();
 			me.getValue().updateDinosaurAge();
 		}
-		timeOfLive -= 1;
+		
 	}
 	/*
 	 * tornano il tipo enum

@@ -768,10 +768,12 @@ public class ServerLogic {
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))		//controlla se il dino � vegetariano e se nella cella c'� vegetazione
 												{
 													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia
+													//inserire vegetazione che rinasce nello stesso posto
 												}
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))	//controlla se il dino � carnivoro e se nella cella c'� carogna
 												{
 													((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
+													//far rinascere la carogna altrove!!
 												}
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
 												{
@@ -1018,9 +1020,9 @@ public class ServerLogic {
 	public String playerSwitch()
 	{
 		/* TODO
-		 * - Aumento della age di un dinosauro: se arriva a 0 il dinosauro muore
-		 * - Creazione dinosauro da uovo(da vedere)
-		 * - 
+		 * - Chiamare upDateDinosaurStatus in specie(aggiorna dinosauri)
+		 * - Controllare age di dinosauro e se è a zero usare killDino in specie
+		 *
 		 */
 		
 		Iterator iter = currentSession.getPlayersList();
@@ -1063,7 +1065,7 @@ public class ServerLogic {
 	public void updateGame()
 	{
 		/*
-		 * - Aumento turni vissuti della specie: massimo 120 turni dopo i quali la specie muore.
+		 * - Diminuisco turni vissuti della specie: massimo 120 turni dopo i quali la specie muore(timeOfLive=0).
 		 * 	 Nel caso di morte della specie, il riferimento della specie sul player deve essere 
 		 * 	 settato a null. Il Client deve fare sapere all'utente la morte della sua specie.
 		 * - Aumento energia vegetazione.

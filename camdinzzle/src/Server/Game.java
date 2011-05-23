@@ -720,8 +720,8 @@ public class Game {
 	 */
 	public static boolean checkReachCell(int startRow, int startCol, int destRow, int destCol, int distMax)
 	{
-		int destRelRow = maxReach/2 + (startRow - destRow);
-		int destRelCol = maxReach/2 + (startCol - destCol);
+		int destRelRow = maxReach/2 + (destRow - startRow);
+		int destRelCol = maxReach/2 + (destCol - startCol);
 		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxCol)&&(destRelRow>=0)&&(destRelRow<maxReach)&&(destRelCol>=0)&&(destRelCol<maxReach))
 		{
 			if((mapReach[startRow][startCol][destRelRow][destRelCol]<=distMax)&&(mapReach[startRow][startCol][destRelRow][destRelCol]>0))

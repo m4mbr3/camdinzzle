@@ -30,6 +30,7 @@ public class Carnivorous extends Dinosaur
 			{
 				energy = energyMax;
 			}
+			
 			return true;
 		}
 		return false;
