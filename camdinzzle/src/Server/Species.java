@@ -221,6 +221,18 @@ public class Species
 			int size = dino.getSizeLocalMap();
 			int posRow = dino.getPosRow();
 			int posCol = dino.getPosCol();
+			if((dino instanceof Carnivorous)&&(((Carnivorous)dino).getVegetation()!=null))
+			{
+				map[posRow][posCol] = "v";
+			}
+			else if((dino instanceof Vegetarian)&&(((Vegetarian)dino).getVegetation()!=null))
+			{
+				map[posRow][posCol] = "v";
+			}
+			else if((dino instanceof Vegetarian)&&(((Vegetarian)dino).getCarrion()!=null))
+			{
+				map[posRow][posCol] = "c";
+			}
 			int k=0;
 			for(int i=posRow-size/2; i<=posRow+size/2; i++)
 			{

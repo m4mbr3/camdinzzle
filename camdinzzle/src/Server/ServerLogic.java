@@ -546,14 +546,14 @@ public class ServerLogic {
 					Dinosaur dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
 					if( dino != null)
 					{
-						zoom.add(String.valueOf(dino.getPosRow()));
-						zoom.add(String.valueOf(dino.getPosCol()));
+						zoom.add(String.valueOf(dino.getPosRow()+dino.getSizeLocalMap()/2));
+						zoom.add(String.valueOf(dino.getPosCol()-dino.getSizeLocalMap()/2));
 						zoom.add(String.valueOf(dino.getSizeLocalMap()));
 						zoom.add(String.valueOf(dino.getSizeLocalMap()));
 						
 						Object[][] localMap = dino.getLocalMap();
 						
-						for(int i = 0; i<localMap.length; i++)
+						for(int i = localMap.length-1; i>=0; i--)
 						{
 							for(int j = 0; j<localMap[i].length; j++)
 							{
@@ -563,8 +563,10 @@ public class ServerLogic {
 									zoom.add("c," + ((Carrion)localMap[i][j]).getPower());
 								else if(localMap[i][j] instanceof Vegetation)
 									zoom.add("v," + ((Vegetation)localMap[i][j]).getPower());
-								else
+								else if(localMap[i][j] != null)
 									zoom.add(localMap[i][j].toString());
+								else
+									zoom.add(null);
 							}
 						}
 						return ServerMessageBroker.createDinoZoom(zoom);

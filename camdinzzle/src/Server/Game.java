@@ -671,7 +671,7 @@ public class Game {
 	{
 		int i=rowRel;
 		int j=colRel;
-		if((rowStart<0)||(rowStart>=maxRow)||(colStart<0)||(colStart>=maxCol))
+		if((rowStart<=0)||(rowStart>=maxRow-1)||(colStart<=0)||(colStart>=maxCol-1))
 		{
 			return;
 		}
@@ -679,7 +679,7 @@ public class Game {
 		{
 			return;
 		}
-		if((i<0)||(i>maxReach)||(j<0)||(i>maxReach))
+		if((i<0)||(i>=maxReach)||(j<0)||(i>=maxReach))
 		{
 			return;
 		}

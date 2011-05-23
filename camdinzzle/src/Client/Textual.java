@@ -64,25 +64,37 @@ public class Textual implements Visual
 			// Alla posizione 3 dell'arraylist c'è il numero delle colonne della vista
 			int columnsNumber = Integer.parseInt(dinoZoomList.get(3).trim());
 			int columnsCount = 0;
-			System.out.print("Dinosaur's " + dinoId + " zoom:");
+			System.out.println("Dinosaur's " + dinoId + " zoom:");
+			System.out.print("|");
 			
-			for(int i = 4; i<dinoZoomList.size(); i++)
+			for(int i = dinoZoomList.size()-1; i>=4; i--)
 			{
-				if(columnsCount == columnsNumber)
+				if(dinoZoomList.get(i)!=null)
 				{
-					System.out.print("\n _______ _______ _______");
-					System.out.print("\n|");
-					columnsCount = 0;
+					if(columnsCount == columnsNumber)
+					{
+						System.out.print("\n|");
+						for(int k = 0; k<columnsCount; k++)
+						{
+						System.out.print("_______|");
+						}
+						System.out.print("\n|");
+						columnsCount = 0;
+					}
+					// Se non è un elemento che ha energia o un ID come parametro lo metto al centro della cella di out
+					if(dinoZoomList.get(i).indexOf(',') == -1)
+						System.out.print("   " + dinoZoomList.get(i) + "   |");
+					else
+						// Numero riferente all'energia o al dinoId con 3 cifre sempre
+						System.out.print("  " + dinoZoomList.get(i) + "  |");
 				}
-				// Se non è un elemento che ha energia o un ID come parametro lo metto al centro della cella di out
-				if(dinoZoomList.get(i).indexOf(',') == -1)
-					System.out.print("   " + dinoZoomList.get(i) + "   |");
 				else
-					// Numero riferente all'energia o al dinoId con 3 cifre sempre
-					System.out.print(" " + dinoZoomList.get(i) + " |");
-				
+				{
+					System.out.print("    b    |");
+				}
 				columnsCount++;
 			}
+			System.out.print("\n");
 		}
 		else
 			drawError(msg);

@@ -46,6 +46,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private ImageIcon iconDinoVege;
 	private ImageIcon iconDark;
 	private ImageIcon iconLand;
+	private final int widthControlPanel=200;
 	
 	/**
 	 * @param title
@@ -57,7 +58,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		buttons = new JButton[row][col];
 		iconVegetarian = new ImageIcon("Images/vege.jpg");
 		iconLand = new ImageIcon("Images/terra.jpg");
-		iconWater = new ImageIcon("Images/terra.jpg");
+		iconWater = new ImageIcon("Images/acqua.jpg");
 		this.setVisible(true);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0,0);
@@ -69,9 +70,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		panelControl = new JPanel();
 		panel.setVisible(true);
 		panelControl.setVisible(true);
-		panel.setPreferredSize(new Dimension((int)screenSize.getWidth()-100, (int)screenSize.getHeight()));
-		panelControl.setSize(100, (int)screenSize.getHeight());
-		panel.setLayout(new GridLayout(40,40));
+		panel.setPreferredSize(new Dimension((int)screenSize.getWidth()-widthControlPanel, (int)screenSize.getHeight()));
+		panelControl.setSize(widthControlPanel, (int)screenSize.getHeight());
+		panel.setLayout(new GridLayout(row,col));
 		panelControl.setLayout(null);
 		for (int i=0; i < row; i++)
 		{
@@ -80,7 +81,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				buttons[i][j] = new JButton();
 				buttons[i][j].setVisible(true);
 				//buttons[i][j].setBackground(Color.blue);
-				buttons[i][j].setSize(((int)screenSize.getWidth()-100)/col, ((int)screenSize.getHeight()/row));
+				buttons[i][j].setSize(((int)screenSize.getWidth()-widthControlPanel)/col, ((int)screenSize.getHeight()/row));
 				buttons[i][j].setName(i+"X"+j);
 				buttons[i][j].addActionListener(this);
 				buttons[i][j].addMouseListener(this);
@@ -225,7 +226,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			else if(mapList.get(i).compareTo("t")==0)
 				buttons[j][z].setIcon(iconLand);
 			else if(mapList.get(i).compareTo("a")==0)
-				buttons[i][z].setIcon(iconWater);
+				buttons[j][z].setIcon(iconWater);
+			else if(mapList.get(i).compareTo("d")==0)
+				buttons[j][z].setIcon(iconDark);
 			j++;
 		}
 	}
