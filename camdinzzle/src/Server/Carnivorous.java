@@ -77,10 +77,12 @@ public class Carnivorous extends Dinosaur
 		if(vegetation!=null)
 		{
 			Game.setCellMap(vegetation, this.getPosRow(), this.getPosCol());
+			nameSpecie.setCellMap(vegetation.toString(), this.getPosRow(), this.getPosCol());
 			vegetation=null;
 		}
 		else
 		{
+			nameSpecie.setCellMap("t", this.getPosRow(), this.getPosCol());
 			Game.setCellMap("t", this.getPosRow(), this.getPosCol());
 		}
 		energy -= 10 * Math.pow(2, Game.getDistCell(this.getPosRow(), this.getPosCol(), rowDest, colDest));

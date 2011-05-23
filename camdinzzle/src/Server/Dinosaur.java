@@ -246,6 +246,7 @@ public abstract class Dinosaur
 	 
 	public Object[][] getLocalMap()
 	{
+		setLocalMap();
 		 return localMap;
 	}
 	
