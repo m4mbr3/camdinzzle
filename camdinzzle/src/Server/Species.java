@@ -47,6 +47,7 @@ public class Species
 			posCol = (int) (Math.random() * 40);
 		}while(!((Game.getCell(posRig, posCol) instanceof String)&&(((String)Game.getCell(posRig, posCol)).compareTo("t")==0)));
 		addDinosaur(posRig, posCol);
+		
 		startMap();
 		updateMap();
 		return;
@@ -98,7 +99,7 @@ public class Species
 	 * add a new dinosaur the same type of my species
 	 * at my HashTable of dinosaurs
 	 */
-	public String addDinosaur( int posRig, int posCol)
+	public Dinosaur addDinosaur( int posRig, int posCol)
 	{
 		Dinosaur dino;
 		addDinoNumber();
@@ -118,7 +119,7 @@ public class Species
 		Game.setCellMap(dino, posRig, posCol);
 		dino.setLocalMap();
 		
-		return dinoId;
+		return dino;
 	}
 	
 	/**
@@ -281,6 +282,10 @@ public class Species
 			if(((Vegetarian)dinoId).getCarrion()!=null)
 			{
 				Game.setCellMap(((Vegetarian)dinoId).getCarrion(), dinoId.getPosRow(), dinoId.getPosCol());
+			}
+			else if(((Vegetarian)dinoId).getVegetation()!=null)
+			{
+				Game.setCellMap(((Vegetarian)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
 			}
 			else
 			{

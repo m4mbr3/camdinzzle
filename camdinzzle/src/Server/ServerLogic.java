@@ -767,13 +767,14 @@ public class ServerLogic {
 											{
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))		//controlla se il dino � vegetariano e se nella cella c'� vegetazione
 												{
-													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia
-													//inserire vegetazione che rinasce nello stesso posto
+													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia													
+													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+													
 												}
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))	//controlla se il dino � carnivoro e se nella cella c'� carogna
 												{
 													((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
-													//far rinascere la carogna altrove!!
+													currentSession.repositionCarrion(dinoRow, dinoCol);																					//riposiziona carogna
 												}
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
 												{

@@ -908,5 +908,22 @@ public class Game {
 			return false;
 		
 	}
+	/**
+	 * riposiziona nella mappa in modo casuale la carogna
+	 * @param row : podizione iniziale
+	 * @param col : posizione iniziale
+	 */
+	public void repositionCarrion(int row, int col)
+	{
+		int posRow,posCol;
+		do
+		{
+			posRow = (int) (Math.random() * 40);
+			posCol = (int) (Math.random() * 40);
+		}
+		while(!((Game.getCell(posRow, posCol) instanceof String)&&(((String)Game.getCell(posRow, posCol)).compareTo("t")==0)));
+		
+		setCellMap(getCell(row, col), posRow, posCol);
+	}
 
 }

@@ -9,6 +9,7 @@ package Server;
 public class Vegetarian extends Dinosaur
 {
 	private Carrion carrion=null;
+	private Vegetation vegetation=null;
 
 	public Vegetarian(String dinoId, int posRow, int posCol, Species specie)
 	{
@@ -70,6 +71,11 @@ public class Vegetarian extends Dinosaur
 			Game.setCellMap(carrion, this.getPosRow(), this.getPosCol());
 			carrion=null;
 		}
+		else if(vegetation!=null)
+		{
+			Game.setCellMap(vegetation, this.getPosRow(), this.getPosCol());
+			vegetation=null;
+		}
 		else
 		{
 			Game.setCellMap("t", this.getPosRow(), this.getPosCol());
@@ -97,6 +103,16 @@ public class Vegetarian extends Dinosaur
 	public void setCarrion(Carrion carrion)
 	{
 		this.carrion=carrion;
+	}
+
+	public void setVegetation(Vegetation vegetation) 
+	{
+		this.vegetation = vegetation;
+	}
+
+	public Vegetation getVegetation() 
+	{
+		return vegetation;
 	}
 
 }

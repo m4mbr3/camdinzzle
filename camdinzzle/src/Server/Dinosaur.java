@@ -50,6 +50,8 @@ public abstract class Dinosaur
 		turniVissuti = 0;
 		distMax=0;
 		this.nameSpecie = nameSpecie;
+		actionTake=false;
+		moveTake=false;
 		setLocalMap();
 	}
 	
@@ -84,6 +86,7 @@ public abstract class Dinosaur
 	public String newEgg()
 	{
 		String idDino=null;
+		Dinosaur newDino;
 		if(energy > eEgg)
 		{
 			energy = energy - eEgg;
@@ -99,8 +102,11 @@ public abstract class Dinosaur
 						{					
 							if((Game.getCell(i, j) instanceof String)&&(((String)Game.getCell(i, j)).compareTo("t")==0))
 							{
-								idDino=nameSpecie.addDinosaur(i, j);
+								newDino=nameSpecie.addDinosaur(i, j);
+								idDino=newDino.toString();
 								positioned = true;
+								newDino.setActionTake(true);
+								newDino.setMoveTake(true);
 								break;
 							}
 						}
