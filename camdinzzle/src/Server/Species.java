@@ -23,7 +23,7 @@ public class Species
 	private static type speciesType;
 	private int  dinoNumber;
 	private Object[][] map;
-	private int punteggio;
+	private int score;
 	private String playerUsername;
 	
 	/**
@@ -39,7 +39,7 @@ public class Species
 		Species.speciesType = speciesType;
 		timeOfLive = 120;
 		dinoNumber = 0;
-		punteggio = 0;
+		score = 0;
 		playerUsername = username;
 		do
 		{
@@ -53,12 +53,17 @@ public class Species
 		return;
 	}
 	
-	public int getPunteggio() {
-		return punteggio;
+	public int getScore() {
+		return score;
 	}
 
-	public void setPunteggio(int punteggio) {
-		this.punteggio = punteggio;
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	public void increaseScore(int raise)
+	{
+		// TODO: aumentare lo score dove ogni dinosauro vale 1+D punti dove D è la sua dimensione
 	}
 	
 	public String getPlayerUsername() {

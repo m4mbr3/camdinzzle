@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -392,11 +393,11 @@ public class ServerLogic {
 					{
 						me = (Map.Entry) iter.next();
 						
-						if(((Species)me.getValue()).getPunteggio() > maxScore)
+						if(((Species)me.getValue()).getScore() > maxScore)
 						{
 							if(!alreadySpeciesRead.containsKey(((Species)me.getValue()).getName()))
 							{
-								maxScore = ((Species)me.getValue()).getPunteggio();
+								maxScore = ((Species)me.getValue()).getScore();
 								speciesMaxScore = ((Species)me.getValue()).getName();
 								usernameMaxScore = ((Species)me.getValue()).getPlayerUsername();
 							}
@@ -978,7 +979,6 @@ public class ServerLogic {
 				{
 					if(tokenOfCurrentPlayer.equals(token))
 					{
-						/*
 						Iterator iter = currentSession.getPlayersList();
 						Map.Entry me;
 						int tableSize = 0;
@@ -1001,8 +1001,7 @@ public class ServerLogic {
 								return ServerMessageBroker.createOkMessage();
 							}
 						}
-						*/
-						//this.serverRoundSwitch();
+						this.playersSwitch();
 						return ServerMessageBroker.createOkMessage();
 					}
 					else
@@ -1020,12 +1019,18 @@ public class ServerLogic {
 	 * @return Messaggio da mandare in broadcast ai Client per notificare che ï¿½ cambiato il turno. Il 
 	 * messaggio contiene il comando e l'username del giocatore abilitato a fare le proprie mosse
 	 */
-	public String playerSwitch()
+	public String playersSwitch()
 	{
 		/* TODO
+<<<<<<< .mine
+		 * - Aumento della age di un dinosauro: se arriva a 0 il dinosauro muore
+		 * - Creazione dinosauro da uovo(da vedere)
+		 * - Aumento del punteggio della specie chiamando il metodo increaseScore() sulla specie
+=======
 		 * - Chiamare upDateDinosaurStatus in specie(aggiorna dinosauri)
 		 * - Controllare age di dinosauro e se è a zero usare killDino in specie
 		 *
+>>>>>>> .r116
 		 */
 		
 		Iterator iter = currentSession.getPlayersList();
@@ -1074,6 +1079,13 @@ public class ServerLogic {
 		 * - Aumento energia vegetazione.
 		 * - Diminuzione energia carogne.
 		 */
+		Collection<Species> c = rank.values();
+		Iterator<Species> iter = c.iterator();
+		
+		while(iter.hasNext())
+		{
+			iter.next();
+		}
 	}
 	
 	
