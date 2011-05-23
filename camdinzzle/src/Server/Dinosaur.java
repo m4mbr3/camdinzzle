@@ -21,7 +21,6 @@ public abstract class Dinosaur
 	protected int posRow; //Row of dinosaur on the map
 	protected int posCol; //Column of dinosaur on the map
 	private Object[][] localMap;
-	private int turniVissuti;
 	private int distMax;
 	private boolean moveTake=false;
 	private boolean actionTake=false;
@@ -47,7 +46,6 @@ public abstract class Dinosaur
 		energyMax = energy * dimension;
 		this.posRow = posRow;
 		this.posCol = posCol;
-		turniVissuti = 0;
 		distMax=0;
 		this.nameSpecie = nameSpecie;
 		actionTake=false;
@@ -150,7 +148,6 @@ public abstract class Dinosaur
 	public void updateDinosaurAge()
 	{
 		age -= 1;
-		turniVissuti += 1;
 		setMoveTake(false);
 		setActionTake(false);
 	}
@@ -195,18 +192,9 @@ public abstract class Dinosaur
 	 * turni vissuti dal dinosauro
 	 * @return int
 	 */
-	public int getTurniVissuti()
+	public int getAge()
 	{
-		return turniVissuti;
-	}
-	
-	/**
-	 * setta i turni vissuti dal dinosauro
-	 * @param t
-	 */
-	public void setTurniVissuti(int t)
-	{
-		turniVissuti = t;
+		return age;
 	}
 	
 	/**

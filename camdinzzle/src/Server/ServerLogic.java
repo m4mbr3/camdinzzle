@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.management.timer.Timer;
+import javax.management.timer.TimerNotification;
+
 import Server.Species.type;
 
 /**
@@ -21,7 +24,10 @@ public class ServerLogic {
 	 */
 	// oggetti per sincronizzare i metodi sugli arraylist
 
-	
+	Counter counter30s;
+	Counter counter2m;
+	private static int timeForConfirm = 30000;   // in millisecondi
+	private static int timeForPlay = 120000;
 	/**
 	 * Instance of CurrentSession of Game. It contains the info about the game
 	 * and current maps used for gaming
@@ -244,24 +250,48 @@ public class ServerLogic {
 		{
 			if(this.isLoggedUser(token))
 			{
-				/*
-				if(loggedPlayers.get(token).getSpecie() == null)
-				{
-					loggedPlayers.get(token).setSpecie(new Species(loggedPlayers.get(token).getUserName(), Species.getVegType()));
-				}
-				*/
 				if (currentSession.numberPlayersInGame() < currentSession.getMaxPlayers()) 
 				{
 					if (currentSession.getPlayer(token) == null)
 					{
-						//TODO: gestione razza gia avviata
 						currentSession.addPlayer(token, loggedPlayers.get(token));
 						if(isTheFirstAccess)
 						{
 							tokenOfCurrentPlayer = token;
 							isTheFirstAccess = false;
+							this.changeRound();
 						}
-								
+						
+						// Aggiungo i dinosauri del giocatore alla mappa
+						Iterator<Dinosaur> dinosaurs = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+						while(dinosaurs.hasNext())
+						{
+							Dinosaur current = dinosaurs.next();
+							
+							if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur) || (Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Food) || ((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof String) &&(Game.getCell(current.getPosRow(), current.getPosCol()).equals("a"))))
+							{
+								/* Se la cella in cui c'era il dinosauro è occupata allora viene messo in una posizione
+								 * libera partendo dall'inizio della sua vista in alto a sinistra. Viene assunto che 
+								 * sicuramente una casella libera nella sua vista c'è!!!!!!!
+								 */
+								for(int i = current.getPosRow() - current.getSizeLocalMap(); i<current.getPosRow() + current.getSizeLocalMap(); i++)
+								{
+									for(int j = current.getPosCol() - current.getSizeLocalMap(); j<current.getPosCol() + current.getSizeLocalMap(); j++)
+									{
+										if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur) == false)
+											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+										else if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Food) == false)
+											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+										else if(((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof String) &&(Game.getCell(current.getPosRow(), current.getPosCol()).equals("a"))) == false)
+											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+									}
+								}
+							}	
+							else
+								Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+						}
+						currentSession.getPlayer(token).getSpecie().updateMap();
+						
 						return ServerMessageBroker.createOkMessage();
 					} 
 					else 
@@ -318,7 +348,7 @@ public class ServerLogic {
 						
 						if(currentSession.numberPlayersInGame() == 0)
 							isTheFirstAccess = true;
-						
+						// TODO: cambiare il tokenOfCurrentPlayer
 						return ServerMessageBroker.createOkMessage();
 					}
 				}
@@ -444,7 +474,7 @@ public class ServerLogic {
 				
 				if(currentSession.getPlayer(token) != null)
 					currentSession.removePlayer(token);
-				
+				// TODO: cambio del tokenOfCurrentPlayer
 				return ServerMessageBroker.createOkMessage();
 			}
 			else
@@ -612,7 +642,7 @@ public class ServerLogic {
 						state.add(String.valueOf(dino.getPosCol()));
 						state.add(String.valueOf(dino.getDinoDimension()));
 						state.add(String.valueOf(dino.getEnergy()));
-						state.add(String.valueOf(dino.getTurniVissuti()));
+						state.add(String.valueOf(dino.getAge()));
 						
 						return ServerMessageBroker.createDinoState(state);
 					}
@@ -950,8 +980,20 @@ public class ServerLogic {
 			{
 				if(currentSession.getPlayer(token) != null)
 				{
-					if(tokenOfCurrentPlayer == token)
+					if(tokenOfCurrentPlayer.equals(token))
+					{
+						/* Fa in modo che il thread che contava i 30 secondi per dare la conferma non esegue nessuna 
+						 * azione
+						 */
+						counter30s.setIsJustUpdate(true);
+						/*
+						 * Starta il thread che conta i due minuti dopo i quali esegue il metodo updatePlayer e changeRound
+						 */
+						counter2m = new Counter(this, timeForPlay);
+						(new Thread(counter2m)).start();
+						
 						return ServerMessageBroker.createOkMessage();
+					}
 					else
 						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
 				}
@@ -967,6 +1009,9 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
+	/* La chiamata di questo metodo è seguita dalla chiamata al metodo chamngeRoundche crea il messaggio da mandare 
+	 * in broadcast
+	 */
 	public String playerRoundSwitch(String msg)
 	{
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
@@ -979,29 +1024,8 @@ public class ServerLogic {
 				{
 					if(tokenOfCurrentPlayer.equals(token))
 					{
-						Iterator iter = currentSession.getPlayersList();
-						Map.Entry me;
-						int tableSize = 0;
-						
-						while(iter.hasNext())
-						{
-							tableSize++;
-							me = (Map.Entry) iter.next();
-							
-							if((((String) me.getKey()).equals(token)) && (tableSize < currentSession.numberPlayersInGame()))
-							{
-								me = (Map.Entry) iter.next();
-								tokenOfCurrentPlayer = (String)me.getKey();
-								return ServerMessageBroker.createOkMessage();
-							}
-							else if((((String) me.getKey()).equals(token)) && (tableSize == currentSession.numberPlayersInGame()))
-							{
-								// TODO : gestione del null ritornato
-								tokenOfCurrentPlayer = currentSession.getFirstPlayer();
-								return ServerMessageBroker.createOkMessage();
-							}
-						}
-						this.playersSwitch();
+						this.updatePlayer(token);
+						counter2m.setIsJustUpdate(true);
 						return ServerMessageBroker.createOkMessage();
 					}
 					else
@@ -1015,60 +1039,78 @@ public class ServerLogic {
 	}
 	
 	/**
-	 * Esegue il cambio del turno da un giocatore al prossimo(notifica in partita)
-	 * @return Messaggio da mandare in broadcast ai Client per notificare che ï¿½ cambiato il turno. Il 
-	 * messaggio contiene il comando e l'username del giocatore abilitato a fare le proprie mosse
+	 * Crea il messaggio di cambio del turno da mandare in broadcast a tutti i giocatori come notifica di cambio turno
+	 * @return Messaggio da mandare ai client in broadcast
 	 */
-	public String playersSwitch()
+	public String changeRound()
+	{
+		counter30s = new Counter(this, timeForConfirm);
+		(new Thread(counter30s)).start();
+		
+		return ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName());
+	}
+	
+	/**
+	 * Esegue il cambio del turno da un giocatore al prossimo e esegue le update su un giocatore(notifica in partita)
+	 */
+	public void updatePlayer(String token)
 	{
 		/* TODO
-<<<<<<< .mine
-		 * - Aumento della age di un dinosauro: se arriva a 0 il dinosauro muore
-		 * - Creazione dinosauro da uovo(da vedere)
-		 * - Aumento del punteggio della specie chiamando il metodo increaseScore() sulla specie
-=======
-		 * - Chiamare upDateDinosaurStatus in specie(aggiorna dinosauri)
-		 * - Controllare age di dinosauro e se è a zero usare killDino in specie
-		 *
->>>>>>> .r116
+		 * - Fare l'update della mappa dei dinosauri coinvolti nei movimenti del giocatore in turno oppure se non 
+		 *   possibile saperlo fare l'update di tutte le mappe di tutti i giocatori
 		 */
-		
-		Iterator iter = currentSession.getPlayersList();
+		// Inizio aggiornamento stato giocatore
+		currentSession.getPlayer(token).getSpecie().upDateDinosaurStatus();
+		Iterator iter = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 		Map.Entry me;
-		int tableSize = 0;
 		
-		while(iter.hasNext())
+		synchronized(iter)
 		{
-			me = (Map.Entry) iter.next();
-			tableSize++;
-			
-			if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame() - 1))
+			// kill dei dinosauri con age = 0
+			while(iter.hasNext())
 			{
 				me = (Map.Entry) iter.next();
-				tokenOfCurrentPlayer = (String)me.getKey();
-				break;
-			}
-			else if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
-			{
-				// TODO : gestione del null ritornato
-				tokenOfCurrentPlayer = currentSession.getFirstPlayer();
-				/* TODO : se arrivato qui significa che tutti i giocatori hanno giocato il server
-				 * deve eseguire il metodo updateGame()
-				 */
 				
-				break;
+				if(((Dinosaur)me.getValue()).getAge() == 0)
+				{
+					currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me.getValue()));
+				}
 			}
-		}
-		
-		synchronized(loggedPlayers)
-		{
-			String username = loggedPlayers.get(tokenOfCurrentPlayer).getUserName();
-			return ServerMessageBroker.createServerRoundSwitch(username);
+			
+			currentSession.getPlayer(token).getSpecie().updateMap();
+			// End aggiornamento stato giocatore
+			
+			iter = currentSession.getPlayersList();
+			int tableSize = 0;
+			
+			while(iter.hasNext())
+			{
+				me = (Map.Entry) iter.next();
+				tableSize++;
+				
+				if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame()))
+				{
+					me = (Map.Entry) iter.next();
+					tokenOfCurrentPlayer = (String)me.getKey();
+					break;
+				}
+				else if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
+				{
+					// TODO : gestione del null ritornato
+					tokenOfCurrentPlayer = currentSession.getFirstPlayer();
+					/* TODO : se arrivato qui significa che tutti i giocatori hanno giocato il server
+					 * deve eseguire il metodo updateGame()
+					 */
+					this.updateGame();
+					break;
+				}
+			}
 		}
 	}
 	
 	/**
-	 * Esegue gli aggiornamenti sugli oggetti della mappa. Da chiamare dopo che tutti hanno giocato
+	 * Esegue gli aggiornamenti sugli oggetti della mappa e sulle specie in partita. Da chiamare dopo che tutti hanno 
+	 * giocato.
 	 */
 	public void updateGame()
 	{
@@ -1078,13 +1120,35 @@ public class ServerLogic {
 		 * 	 settato a null. Il Client deve fare sapere all'utente la morte della sua specie.
 		 * - Aumento energia vegetazione.
 		 * - Diminuzione energia carogne.
+		 * - Aggiornamento score dei tutte le specie in partita
 		 */
-		Collection<Species> c = rank.values();
-		Iterator<Species> iter = c.iterator();
+		Iterator<Player> iter = currentSession.getPlayersList();
 		
-		while(iter.hasNext())
+		synchronized (iter)
 		{
-			iter.next();
+			while(iter.hasNext())
+			{
+				Player currentPlayer = iter.next();
+				Species currentSpecie = currentPlayer.getSpecie();			
+				currentSpecie.updateTimeOfLive();
+				currentSpecie.increaseScore();
+				
+				if(currentSpecie.getTimeOfLive() == 0)
+				{
+					currentPlayer.setSpecie(null);
+				}
+			}
+			
+			for(int i = 0; i<Game.maxRow; i++)
+			{
+				for(int j = 0; j<Game.maxCol; j++)
+				{
+					Object current = Game.getCell(i, j);
+					
+					if((current instanceof Vegetation) || (current instanceof Carrion))
+						((Food)current).rebirth();
+				}
+			}
 		}
 	}
 	

@@ -61,9 +61,28 @@ public class Species
 		this.score = score;
 	}
 	
-	public void increaseScore(int raise)
+	public void updateTimeOfLive()
+	{
+		timeOfLive -= 1;
+	}
+	
+	public int getTimeOfLive()
+	{
+		return timeOfLive;
+	}
+	
+	public void increaseScore()
 	{
 		// TODO: aumentare lo score dove ogni dinosauro vale 1+D punti dove D è la sua dimensione
+		synchronized (myDinosaurs)
+		{
+			Iterator<Dinosaur> iter = this.getDinosaurs();
+			
+			while(iter.hasNext())
+			{
+				score = score + 1 + iter.next().getDinoDimension();
+			}
+		}
 	}
 	
 	public String getPlayerUsername() {
