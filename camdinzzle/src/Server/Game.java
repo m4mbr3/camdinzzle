@@ -417,7 +417,7 @@ public class Game {
 	 */
 	public void createMap()
 	{
-		/**
+		/*
 		 * creazione bordo d'acqua
 		 */
 		map = new Object[maxRow][maxCol];
@@ -793,6 +793,120 @@ public class Game {
 		{
 			return -1;
 		}
+	}
+	
+	public void newCreateMap()
+	{
+		/*
+		 * creazione bordo d'acqua
+		 */
+		map = new Object[maxRow][maxCol];
+		for(int row=0; row<maxRow; row++)
+		{
+			if(row==0||row==(maxRow-1))
+			{
+				for(int col=0; col<maxCol; col++)
+				{
+					map[row][col] = new String("a");
+				}
+			}
+			else
+			{
+				map[row][0] = new String("a");
+				map[row][maxRow-1] = new String("a");
+			}
+		}
+		/*
+		 * inizializzazione mappa casuale
+		 */
+
+		
+		/*
+		 * inizializza la mappa con tutta terra
+		 */
+		for(int row=1; row<maxRow-1; row++)
+		{
+			for(int col=1; col<maxCol-1; col++)
+			{
+				map[row][col] = new String("t");
+			}
+		}
+		
+		/*
+		 * creaione pozze d'acqua
+		 */
+		int posRow;
+		int posCol;
+		do
+		{
+			posRow = (int) (Math.random() * 36 + 2);
+			posCol = (int) (Math.random() * 36 + 2);
+		}while(!((Game.getCell(posRow, posCol) instanceof String)&&(((String)Game.getCell(posRow, posCol)).compareTo("t")==0)));
+		
+		
+	}
+	
+	private boolean controlWater(int startRow, int startCol, int destRow, int destCol)
+	{
+		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxRow)&&(destRow>=0)&&(destRow<maxRow)&&(destCol>=0)&&(destCol<maxRow))
+		{
+			if(((Game.getCell(destRow, destCol) instanceof String)&&(((String)Game.getCell(destRow,destCol)).compareTo("a")==0)))
+			{
+				return false;
+			}
+			else
+			{
+				if(!((destRow+1==startRow)&&(destCol==startCol)))
+				{
+					if((destRow+1<0)||(destRow+1>=maxRow))
+					{
+						return false;
+					}
+					if(((Game.getCell(destRow+1, destCol) instanceof String)&&(((String)Game.getCell(destRow+1, destCol)).compareTo("a")==0)))
+					{
+						return false;
+					}
+				}
+				if(!((destRow-1==startRow)&&(destCol==startCol)))
+				{
+					if((destRow-1<0)||(destRow-1>=maxRow))
+					{
+						return false;
+					}
+					if(((Game.getCell(destRow-1, destCol) instanceof String)&&(((String)Game.getCell(destRow-1, destCol)).compareTo("a")==0)))
+					{
+						return false;
+					}
+				}
+				if(!((destRow==startRow)&&(destCol+1==startCol)))
+				{
+					if((destCol+1<0)||(destCol+1>=maxRow))
+					{
+						return false;
+					}
+					if(((Game.getCell(destRow, destCol+1) instanceof String)&&(((String)Game.getCell(destRow, destCol+1)).compareTo("a")==0)))
+					{
+						return false;
+					}
+				}
+				if(!((destRow==startRow)&&(destCol-1==startCol)))
+				{
+					if((destCol-1<0)||(destCol-1>=maxRow))
+					{
+						return false;
+					}
+					if(((Game.getCell(destRow, destCol-1) instanceof String)&&(((String)Game.getCell(destRow, destCol-1)).compareTo("a")==0)))
+					{
+						return false;
+					}
+				}
+				return true;
+
+			}
+		}
+		else
+			return false;
+		
 	}
 
 }

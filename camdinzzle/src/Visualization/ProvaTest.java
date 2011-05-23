@@ -296,7 +296,7 @@ public class ProvaTest {
 						msg = serverLogic.playerRoundSwitch(msg);
 						System.out.println("ServerLogic: " + msg);
 						
-						System.out.println("Turno del giocatore: " + serverLogic.serverRoundSwitch());
+						System.out.println("Turno del giocatore: " + msg);
 					}
 					else if(scelta.equals("MC"))
 						Game.stampa();
