@@ -760,10 +760,13 @@ public class Game {
 	 */
 	public static void setCellMap(Object obj, int row, int col)
 	{
-		if((row>=0)&&(row<maxRow)&&(col>=0)&&(col<maxCol)&&(obj!=null))
+		synchronized(map)
 		{
-		map[row][col] = null;
-		map[row][col] = obj;
+			if((row>=0)&&(row<maxRow)&&(col>=0)&&(col<maxCol)&&(obj!=null))
+			{
+				map[row][col] = null;
+				map[row][col] = obj;
+			}
 		}
 	}
 	

@@ -3,6 +3,7 @@ package Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server implements Runnable {
 
@@ -16,6 +17,7 @@ public class Server implements Runnable {
 	private boolean is_run;
 	private int port;
 	private ClientManagerSocket clientManagerSocket;
+	private ArrayList<ClientManager> clientList;
 		// TODO Auto-generated constructor stub
 		
 	public Server(int port, ServerLogic serverLogic)
@@ -28,6 +30,7 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 			this.serverLogic = serverLogic;
+			clientList = new ArrayList<ClientManager>();
 			this.new_connection = null;
 			this.is_run = true;
 			this.clientManagerSocket=null;
@@ -53,17 +56,17 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 			clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic);
+			clientList.add(clientManagerSocket);
 			System.out.println("<<SERVER DAEMON>>--STARTING EXECUTION LOGIN");
 			(new Thread(clientManagerSocket)).start();
 			System.out.println("<<SERVER DAEMON>>--EXECUTION LOGIN STARTED");
-		
 		}
 		
 	}
 	
 	public static void sendBroadcastMessage(String msg)
 	{
-		
+		//TODO: ciclo che manda a tutti i Client connessi il messaggio di notifica del turno
 	}
 	
 	public static void main(String[] args) {
