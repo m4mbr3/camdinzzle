@@ -66,6 +66,10 @@ public class Textual implements Visual
 			int columnsCount = 0;
 			System.out.println("Dinosaur's " + dinoId + " zoom:");
 			System.out.print("|");
+			for(int k = 0; k<columnsCount; k++)
+			{
+			System.out.print("_______");
+			}
 			
 			for(int i = dinoZoomList.size()-1; i>=4; i--)
 			{
@@ -93,6 +97,11 @@ public class Textual implements Visual
 					System.out.print("    b    |");
 				}
 				columnsCount++;
+			}
+			System.out.print("\n");
+			for(int k = 0; k<columnsCount; k++)
+			{
+			System.out.print("_______|");
 			}
 			System.out.print("\n");
 		}

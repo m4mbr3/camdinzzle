@@ -174,13 +174,13 @@ public class Species
 	 */
 	public void upDateDinosaurStatus()
 	{
-		Set set = myDinosaurs.keySet();
+		Set set = myDinosaurs.entrySet();
 		Iterator iter = set.iterator();
 		
 		while(iter.hasNext())
 		{
-			Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) iter.next();
-			me.getValue().updateDinosaurAge();
+			Map.Entry me = (Map.Entry) iter.next();
+			((Dinosaur)me.getValue()).updateDinosaurAge();
 		}
 		
 	}

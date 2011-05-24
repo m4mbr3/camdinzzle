@@ -141,7 +141,7 @@ public class ClientMessageBroker
 		String[] dotAndCommaSeparator = validMessage.split(";");
 		
 		/**
-		 * gestione prima parte del messaggio contenente la posizione di partenza, la dimenzione della vista e
+		 * gestione prima parte del messaggio contenente la posizione di partenza(basso a sx), la dimenzione della vista e
 		 * la prima riga della vista
 		 */
 		String[] commaSeparator = dotAndCommaSeparator[0].split(",");
