@@ -976,7 +976,7 @@ public class ServerLogic {
 	public String roundConfirm(String msg)
 	{
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		
+		// Dopo questo metodo chiamare la changeRound
 		synchronized (loggedPlayers) 
 		{
 			if(isLoggedUser(token))

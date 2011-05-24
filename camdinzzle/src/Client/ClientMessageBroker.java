@@ -145,10 +145,10 @@ public class ClientMessageBroker
 		 * la prima riga della vista
 		 */
 		String[] commaSeparator = dotAndCommaSeparator[0].split(",");
-		dinoZoomList.add(commaSeparator[0].substring(1, 2));
-		dinoZoomList.add(commaSeparator[1].substring(0, 1));
-		dinoZoomList.add(commaSeparator[2].substring(1, 2));
-		dinoZoomList.add(commaSeparator[3].substring(0, 1));
+		dinoZoomList.add(commaSeparator[0].substring(1));
+		dinoZoomList.add(commaSeparator[1].substring(0, commaSeparator[1].indexOf("\\}")));
+		dinoZoomList.add(commaSeparator[2].substring(1));
+		dinoZoomList.add(commaSeparator[3].substring(0, commaSeparator[3].indexOf("\\}")));
 		/**
 		 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
 		 * poter iniziare il ciclo di gestione delle singole righe

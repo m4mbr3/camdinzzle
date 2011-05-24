@@ -37,28 +37,28 @@ public class Server implements Runnable {
 		{
 			is_run = false;
 		}
-		public void run()
+	public void run()
+	{
+		System.out.println("<<SERVER DAEMON>>--STARTED");
+		while(is_run)
 		{
-			System.out.println("<<SERVER DAEMON>>--STARTED");
-			while(is_run)
-			{
-				try {
-					//waiting for connection
-					System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at "+ server.getLocalPort());
-					new_connection = server.accept();
-					System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic);
-				System.out.println("<<SERVER DAEMON>>--STARTING EXECUTION LOGIN");
-				(new Thread(clientManagerSocket)).start();
-				System.out.println("<<SERVER DAEMON>>--EXECUTION LOGIN STARTED");
-				
+			try {
+				//waiting for connection
+				System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at "+ server.getLocalPort());
+				new_connection = server.accept();
+				System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic);
+			System.out.println("<<SERVER DAEMON>>--STARTING EXECUTION LOGIN");
+			(new Thread(clientManagerSocket)).start();
+			System.out.println("<<SERVER DAEMON>>--EXECUTION LOGIN STARTED");
 			
 		}
+		
+	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
