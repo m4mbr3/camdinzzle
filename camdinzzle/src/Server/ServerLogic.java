@@ -246,6 +246,7 @@ public class ServerLogic {
 	{
 		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		// TODO: imposizione sul client di creare la specie prima di avere un accesso alla partita
+		// CHiamat di questo metodo seguita dalla chiamata a changeRound
 		synchronized (loggedPlayers) 
 		{
 			if(this.isLoggedUser(token))
@@ -259,7 +260,7 @@ public class ServerLogic {
 						{
 							tokenOfCurrentPlayer = token;
 							isTheFirstAccess = false;
-							this.changeRound();
+							//this.changeRound();
 						}
 						
 						// Aggiungo i dinosauri del giocatore alla mappa

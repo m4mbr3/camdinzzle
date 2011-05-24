@@ -3,6 +3,7 @@ package Server;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.SynchronousQueue;
@@ -33,14 +34,14 @@ public class Game {
 	private boolean permise=true;
 	private int maxPlayers;
 	// Chiave token
-	private HashMap<String, Player> playersInGame;
+	private LinkedHashMap<String, Player> playersInGame;
 	//matrice di raggiungibilita' delle celle
 	private static int[][][][] mapReach;
 
 	
 	public Game() {
 		// TODO Auto-generated constructor stub
-		playersInGame = new HashMap<String, Player>();
+		playersInGame = new LinkedHashMap<String, Player>();
 		maxPlayers = 8;
 		this.createMap();
 		this.startMapReach();
