@@ -1061,7 +1061,7 @@ public class ServerLogic {
 	 */
 	public void updatePlayer(String token)
 	{
-		/* TODO
+		/* TODO forse
 		 * - Fare l'update della mappa dei dinosauri coinvolti nei movimenti del giocatore in turno oppure se non 
 		 *   possibile saperlo fare l'update di tutte le mappe di tutti i giocatori
 		 */
@@ -1128,13 +1128,13 @@ public class ServerLogic {
 		 * - Diminuzione energia carogne.
 		 * - Aggiornamento score dei tutte le specie in partita
 		 */
-		Iterator<Player> iter = currentSession.getPlayersList();
+		Iterator iter = currentSession.getPlayersList();
 		
 		synchronized (iter)
 		{
 			while(iter.hasNext())
 			{
-				Player currentPlayer = iter.next();
+				Player currentPlayer = (Player)iter.next();
 				Species currentSpecie = currentPlayer.getSpecie();			
 				currentSpecie.updateTimeOfLive();
 				currentSpecie.increaseScore();
@@ -1142,6 +1142,7 @@ public class ServerLogic {
 				if(currentSpecie.getTimeOfLive() == 0)
 				{
 					currentPlayer.setSpecie(null);
+					currentSession.removePlayer(currentPlayer.getToken());
 				}
 			}
 			

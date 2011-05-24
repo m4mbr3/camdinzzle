@@ -28,6 +28,7 @@ public class Counter implements Runnable {
 			*/
 			server.updatePlayer(server.getTokenOfCurrentPlayer());
 			String msg = server.changeRound();
+			// TODO: chiamata al metodo del server che manda il messaggio in broadcast
 		} 
 		catch (InterruptedException e) 
 		{

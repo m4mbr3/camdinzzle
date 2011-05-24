@@ -34,9 +34,10 @@ public class Server implements Runnable {
 	}
 	
 	public void stop()
-		{
-			is_run = false;
-		}
+	{
+		is_run = false;
+	}
+	
 	public void run()
 	{
 		System.out.println("<<SERVER DAEMON>>--STARTED");
@@ -55,8 +56,13 @@ public class Server implements Runnable {
 			System.out.println("<<SERVER DAEMON>>--STARTING EXECUTION LOGIN");
 			(new Thread(clientManagerSocket)).start();
 			System.out.println("<<SERVER DAEMON>>--EXECUTION LOGIN STARTED");
-			
+		
 		}
+		
+	}
+	
+	public static void sendBroadcastMessage(String msg)
+	{
 		
 	}
 	
