@@ -24,8 +24,8 @@ public class ServerLogic {
 	 */
 	// oggetti per sincronizzare i metodi sugli arraylist
 
-	Counter counter30s;
-	Counter counter2m;
+	Thread counter30s;
+	Thread counter2m;
 	private static int timeForConfirm = 30000;   // in millisecondi
 	private static int timeForPlay = 120000;
 	/**
@@ -263,10 +263,12 @@ public class ServerLogic {
 						}
 						
 						// Aggiungo i dinosauri del giocatore alla mappa
-						Iterator<Dinosaur> dinosaurs = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+						Iterator dinosaurs = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 						while(dinosaurs.hasNext())
 						{
-							Dinosaur current = dinosaurs.next();
+							Map.Entry me = (Map.Entry)dinosaurs.next();
+							
+							Dinosaur current = ((Dinosaur)me.getValue());
 							
 							if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur) || (Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Food) || ((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof String) &&(Game.getCell(current.getPosRow(), current.getPosCol()).equals("a"))))
 							{
@@ -985,12 +987,14 @@ public class ServerLogic {
 						/* Fa in modo che il thread che contava i 30 secondi per dare la conferma non esegue nessuna 
 						 * azione
 						 */
-						counter30s.setIsJustUpdate(true);
+						//counter30s.setIsJustUpdate(true);
 						/*
 						 * Starta il thread che conta i due minuti dopo i quali esegue il metodo updatePlayer e changeRound
 						 */
-						counter2m = new Counter(this, timeForPlay);
-						(new Thread(counter2m)).start();
+						counter30s.interrupt();
+						Counter counter = new Counter(this, timeForPlay);
+						counter2m = new Thread(counter);
+						counter2m.start();
 						
 						return ServerMessageBroker.createOkMessage();
 					}
@@ -1025,7 +1029,7 @@ public class ServerLogic {
 					if(tokenOfCurrentPlayer.equals(token))
 					{
 						this.updatePlayer(token);
-						counter2m.setIsJustUpdate(true);
+						counter2m.interrupt();
 						return ServerMessageBroker.createOkMessage();
 					}
 					else
@@ -1044,8 +1048,9 @@ public class ServerLogic {
 	 */
 	public String changeRound()
 	{
-		counter30s = new Counter(this, timeForConfirm);
-		(new Thread(counter30s)).start();
+		Counter counter = new Counter(this, timeForConfirm);
+		counter30s = new Thread(counter);
+		counter30s.start();
 		
 		return ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName());
 	}

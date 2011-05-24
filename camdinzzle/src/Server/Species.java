@@ -76,11 +76,11 @@ public class Species
 		// TODO: aumentare lo score dove ogni dinosauro vale 1+D punti dove D è la sua dimensione
 		synchronized (myDinosaurs)
 		{
-			Iterator<Dinosaur> iter = this.getDinosaurs();
+			Iterator iter = this.getDinosaurs();
 			
 			while(iter.hasNext())
 			{
-				score = score + 1 + iter.next().getDinoDimension();
+				score = score + 1 + ((Dinosaur)iter.next()).getDinoDimension();
 			}
 		}
 	}
@@ -149,7 +149,7 @@ public class Species
 	/**
 	 * @return Un iteratore contenente i dinosauri delle specie
 	 */
-	public Iterator<Dinosaur> getDinosaurs()
+	public Iterator getDinosaurs()
 	{
 		synchronized (myDinosaurs) 
 		{
