@@ -76,9 +76,9 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 					e.printStackTrace();
 				}
 			}while(read_socket == null);
-			System.out.println("read_socket->"+read_socket);
+			System.out.println("MESSAGGIO CLIENT ->" + read_socket);
 			command = ServerMessageBroker.manageMessageType(read_socket);
-			System.out.println("command->"+command);
+			System.out.println("COMMAND ->" + command);
 			//in this point there is a call to another static method for split and check a new string
 			
 			try

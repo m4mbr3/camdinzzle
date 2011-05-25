@@ -54,9 +54,9 @@ public class Server implements Runnable {
 				System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
 				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic);
 				clientList.add(clientManagerSocket);
-				System.out.println("<<SERVER DAEMON>>--STARTING EXECUTION LOGIN");
+				System.out.println("<<SERVER DAEMON>>--STARTING CLIENTMANAGER");
 				(new Thread(clientManagerSocket)).start();
-				System.out.println("<<SERVER DAEMON>>--EXECUTION LOGIN STARTED");
+				System.out.println("<<SERVER DAEMON>>--EXECUTION CLIENTMANAGER STARTED");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -90,7 +90,7 @@ public class Server implements Runnable {
 		// TODO Auto-generated method stub
 		ServerLogic serverLogic = new ServerLogic();
 		
-		int port = 4567;
+		int port = 34567;
 		(new Thread(new Server(port,serverLogic))).start();
 		
 	}
