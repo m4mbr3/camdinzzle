@@ -28,6 +28,7 @@ public class ProvaTest1 {
 		//cms cms = new cms(); 
 		Textual text = new Textual();
 		ConnectionManagerSocket cms = null;
+		ClientListener pl = null;
 		
 		String [] arr;
 		String msg, scelta = "";
@@ -70,6 +71,7 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createUser(arr[0], arr[1]);
 						
 						cms = new ConnectionManagerSocket(34567, "localhost", arr[0], arr[1]);
+						pl = new ClientListener(34567, "localhost", arr[0], arr[1]);
 						
 						System.out.println("Client: " + msg);
 						System.out.println("cms: " + cms.creaUtente(msg));

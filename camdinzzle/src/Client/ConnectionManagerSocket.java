@@ -79,19 +79,17 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 		String read_socket=null;
 				
 		while(true)
-		{
-			do
+		{ 
+			/*
+			try 
 			{
-				try 
-				{
-					read_socket = reader_on_socket.readLine();
-				} 
-				catch (IOException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}while(read_socket == null);
+				read_socket = reader_on_socket.readLine();
+			} 
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			if(read_socket != null)
 			{
@@ -102,6 +100,7 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			}
 			
 			read_socket = null;
+			*/
 		}
 	}
 	
@@ -140,22 +139,18 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 				{
 					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
 					readSocket = null;
-		
-					do
+					// Ciclo che rimane in ascolto sul socket
+					try 
 					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
+						readSocket = reader_on_socket.readLine();
+					} 
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
 					
-				}while(!(readSocket.equals("@ok")) || 
-						!(readSocket.equals("@no,@usernameOccupato")) || 
+				}while(!(readSocket.equals("@ok")) && 
+						!(readSocket.equals("@no,@usernameOccupato")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -208,9 +203,9 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@ok")) || 
-						!(readSocket.equals("@no,@autenticazioneFallita")) || 
-						!((readSocket.contains("@ok")) && (readSocket.length() > 4)) ||
+				}while(!(readSocket.contains("@ok")) && 
+						!(readSocket.equals("@no,@autenticazioneFallita")) && 
+						!((readSocket.contains("@ok")) && (readSocket.length() > 4)) &&
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -266,10 +261,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.equals("@ok")) || 
-						!(readSocket.equals("@no,@nomeRazzaOccupato")) || 
-						!(readSocket.equals("@no,@tokenNonValido")) ||
-						!(readSocket.equals("@no,@razzaGiaCreata")) ||
+				}while(!(readSocket.equals("@ok")) && 
+						!(readSocket.equals("@no,@nomeRazzaOccupato")) && 
+						!(readSocket.equals("@no,@tokenNonValido")) &&
+						!(readSocket.equals("@no,@razzaGiaCreata")) &&
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -322,9 +317,9 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.equals("@ok")) || 
-						!(readSocket.equals("@no,@troppiGiocatori")) || 
-						!(readSocket.equals("@no,@tokenNonValido")) || 
+				}while(!(readSocket.equals("@ok")) && 
+						!(readSocket.equals("@no,@troppiGiocatori")) && 
+						!(readSocket.equals("@no,@tokenNonValido")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -377,8 +372,8 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.equals("@ok")) || 
-						!(readSocket.equals("@no,@tokenNonValido")) || 
+				}while(!(readSocket.equals("@ok")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -432,8 +427,8 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@listagiocatori,")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
+				}while(!(readSocket.contains("@listagiocatori,")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -487,8 +482,8 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@classifica,")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
+				}while(!(readSocket.contains("@classifica,")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -542,8 +537,8 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.equals("@ok,")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
+				}while(!(readSocket.equals("@ok,")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -597,9 +592,9 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@mappaGenerale,")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
-						!(readSocket.equals("@no,@nonInPartita")) || 
+				}while(!(readSocket.contains("@mappaGenerale,")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
+						!(readSocket.equals("@no,@nonInPartita")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -653,9 +648,9 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@listaDinosauri,")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
-						!(readSocket.equals("@no,@nonInPartita")) || 
+				}while(!(readSocket.contains("@listaDinosauri,")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
+						!(readSocket.equals("@no,@nonInPartita")) &&
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -709,10 +704,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@vistaLocale,")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
-						!(readSocket.equals("@no,@nonInPartita")) || 
-						!(readSocket.equals("@no,@idNonValido")) || 
+				}while(!(readSocket.contains("@vistaLocale,")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
+						!(readSocket.equals("@no,@nonInPartita")) && 
+						!(readSocket.equals("@no,@idNonValido")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -766,10 +761,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@statoDinosauro,")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
-						!(readSocket.equals("@no,@nonInPartita")) || 
-						!(readSocket.equals("@no,@idNonValido")) || 
+				}while(!(readSocket.contains("@statoDinosauro,")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
+						!(readSocket.equals("@no,@nonInPartita")) && 
+						!(readSocket.equals("@no,@idNonValido")) &&
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -823,14 +818,14 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@ok")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
-						!(readSocket.equals("@no,@idNonValido")) || 
-						!(readSocket.equals("@no,@destinazioneNonValida")) ||
-						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) ||
-						!(readSocket.equals("@no,@mortePerInedia")) ||
-						!(readSocket.equals("@no,@nonIlTuoTurno")) ||
-						!(readSocket.equals("@no,@nonInPartita")) || 
+				}while(!(readSocket.contains("@ok")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
+						!(readSocket.equals("@no,@idNonValido")) && 
+						!(readSocket.equals("@no,@destinazioneNonValida")) &&
+						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) &&
+						!(readSocket.equals("@no,@mortePerInedia")) &&
+						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
+						!(readSocket.equals("@no,@nonInPartita")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -884,13 +879,13 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.contains("@ok")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
-						!(readSocket.equals("@no,@idNonValido")) || 
-						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) ||
-						!(readSocket.equals("@no,@mortePerInedia")) ||
-						!(readSocket.equals("@no,@nonIlTuoTurno")) ||
-						!(readSocket.equals("@no,@nonInPartita")) || 
+				}while(!(readSocket.contains("@ok")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
+						!(readSocket.equals("@no,@idNonValido")) && 
+						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) &&
+						!(readSocket.equals("@no,@mortePerInedia")) &&
+						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
+						!(readSocket.equals("@no,@nonInPartita")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -944,14 +939,14 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!((readSocket.contains("@ok,")) && (readSocket.length() > 4)) ||
-						!(readSocket.equals("@no,@tokenNonValido")) || 
-						!(readSocket.equals("@no,@idNonValido")) || 
-						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) ||
-						!(readSocket.equals("@no,@raggiuntoNumeroMaxDinosauri")) ||
-						!(readSocket.equals("@no,@mortePerInedia")) ||
-						!(readSocket.equals("@no,@nonIlTuoTurno")) ||
-						!(readSocket.equals("@no,@nonInPartita")) || 
+				}while(!((readSocket.contains("@ok,")) && (readSocket.length() > 4)) &&
+						!(readSocket.equals("@no,@tokenNonValido")) && 
+						!(readSocket.equals("@no,@idNonValido")) && 
+						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) &&
+						!(readSocket.equals("@no,@raggiuntoNumeroMaxDinosauri")) &&
+						!(readSocket.equals("@no,@mortePerInedia")) &&
+						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
+						!(readSocket.equals("@no,@nonInPartita")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -1005,10 +1000,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.equals("@ok")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) ||
-						!(readSocket.equals("@no,@nonIlTuoTurno")) ||
-						!(readSocket.equals("@no,@nonInPartita")) || 
+				}while(!(readSocket.equals("@ok")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) &&
+						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
+						!(readSocket.equals("@no,@nonInPartita")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -1062,10 +1057,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.equals("@ok")) ||
-						!(readSocket.equals("@no,@tokenNonValido")) ||
-						!(readSocket.equals("@no,@nonIlTuoTurno")) ||
-						!(readSocket.equals("@no,@nonInPartita")) || 
+				}while(!(readSocket.equals("@ok")) &&
+						!(readSocket.equals("@no,@tokenNonValido")) &&
+						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
+						!(readSocket.equals("@no,@nonInPartita")) && 
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))

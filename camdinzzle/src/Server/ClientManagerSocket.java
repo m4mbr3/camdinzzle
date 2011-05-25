@@ -64,18 +64,12 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 		//this is the daemon for one specify user that manage the processes "not in game" like "create Dinosaur "
 		while(is_run)
 		{
-			do
-			{
-				try 
-				{
-					read_socket = reader_on_socket.readLine();
-				} 
-				catch (IOException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}while(read_socket == null);
+			try {
+				read_socket = reader_on_socket.readLine();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.out.println("MESSAGGIO CLIENT ->" + read_socket);
 			command = ServerMessageBroker.manageMessageType(read_socket);
 			System.out.println("COMMAND ->" + command);
