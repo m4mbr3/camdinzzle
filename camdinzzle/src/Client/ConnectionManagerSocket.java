@@ -8,10 +8,12 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * @author Andrea
@@ -25,51 +27,34 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	private Socket connection_with_server;
 	private BufferedWriter writer_on_socket;
 	private BufferedReader reader_on_socket;
+
 	private String address;
 	private String username;
 	private String password;
 	private String token;
 	private int port;
-	private String command;
 	private String read_socket;
 	
-	public ConnectionManagerSocket(int port, String address, String username, String password)
+
+	Client client;
+	
+	public ConnectionManagerSocket(int port, String address, Client client) throws IOException
 	{
 		// TODO Auto-generated constructor stub
+		this.client = client;
 		this.address = address;
-		this.username = username;
-		this.password = password;
+	
 		this.port = port;
-		command = new String();
+		this.token = null;
 		this.read_socket = null;
 		
-		try {
+		
 			System.out.println("<<CONN MANAGER>>--OPENING SOCKET WITH SERVER AT ADD "+address+" AND PORT " + port );
 			connection_with_server = new Socket(this.address, this.port);
-			
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
 			writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
 			reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("<<CONN MANAGER>>--STARTING THREAD " );
-		(new Thread(this)).start();
-		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
+			(new Thread(this)).start();
+
 	}
 
 	@Override
@@ -83,6 +68,17 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			/*
 			try 
 			{
+<<<<<<< .mine
+				
+					try {
+						read_socket = reader_on_socket.readLine();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+			}while(read_socket == null);
+=======
 				read_socket = reader_on_socket.readLine();
 			} 
 			catch (IOException e) 
@@ -90,12 +86,15 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+>>>>>>> .r138
 			
 			if(read_socket != null)
 			{
 				if(ClientMessageBroker.manageMessageType(read_socket).equals("cambioTurno"))
 				{
+
 					changeRoundNotify(read_socket);
+
 				}
 			}
 			
@@ -132,12 +131,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 					// Ciclo che rimane in ascolto sul socket
 					try 
@@ -182,12 +181,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -240,12 +239,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -296,12 +295,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -351,12 +350,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -406,12 +405,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -461,12 +460,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -516,12 +515,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -571,12 +570,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -627,12 +626,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -683,12 +682,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -740,12 +739,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -797,12 +796,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -858,12 +857,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -918,12 +917,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -979,12 +978,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do
@@ -1023,10 +1022,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
+
 	public String passaTurno() 
 	{
 		String readSocket;
 		String msg = "@passaTurno,token=" + token;
+
 		
 		try
 		{
@@ -1036,12 +1037,12 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 			
 			do
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se è un cambio del turno
+				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se ï¿½ un cambio del turno
 				 * rimane in ascolto fino a che non riceve un messaggio valido
 				 */
 				do
 				{
-					// Ciclo che controlla se il messaggio è un messaggio possibile da ricevere 
+					// Ciclo che controlla se il messaggio ï¿½ un messaggio possibile da ricevere 
 					readSocket = null;
 		
 					do

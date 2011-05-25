@@ -85,6 +85,7 @@ public class ServerLogic {
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
 		//System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
+		this.add_new_user("@creaUtente,user=andrea,pass=andrea");
 	}
 
 	public void controlAction() {

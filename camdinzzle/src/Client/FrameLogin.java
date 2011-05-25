@@ -7,15 +7,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -71,9 +77,12 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	public FrameLogin(String title, Client client) throws HeadlessException {
 		super(title);
 		// TODO Auto-generated constructor stub
+		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
 		this.client = client;
 		this.setVisible(true);
 		this.setSize(330,300);
+		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		new_user = new JLabel("Are you a new user?Click here!");
 		port = new JTextField();
 		enable_port = new JCheckBox("enable");
@@ -134,7 +143,9 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		password_label.setLocation(50,200);
 		username.setLocation(140,160);
 		password.setLocation(140, 200);
+		
 		enable_port.addChangeListener(this);
+		
 		panel.add(enable_port);
 		panel.add(port);
 		panel.add(address);
@@ -239,6 +250,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 			new_userframe.setVisible(true);
 			new_userframe.addWindowListener(this);
 			new_userframe.setSize(330,300);
+			new_userframe.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 			panel.remove(send);
 			panel.add(send_newUser);
 			panel.remove(this.new_user);
@@ -247,14 +259,65 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		}
 		if (arg0.getComponent().equals(send))
 		{
-			this.setVisible(false);
-			Integer port_i = new Integer(port.getText());
-			client.setConnMann(new ConnectionManagerSocket(port_i.intValue(), address.getText(), username.getText(), password.getText()));
+			try{
+					this.setVisible(false);
+					Integer port_i = new Integer(port.getText());
+					ConnectionManagerSocket conn = new ConnectionManagerSocket(port_i.intValue(), address.getText(), client );
+					conn.login(ClientMessageBroker.createLogin(username.getText(), password.getText()));
+					client.setConnMann(conn);
+					//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
+			}
+			catch(ConnectException e)
+			{
+				JOptionPane.showMessageDialog(this,"Please Check your connection data" +
+						"maybe  Server is down","Error Connection in login",JOptionPane.ERROR_MESSAGE);
+				this.setVisible(true);
+			}
+			catch(UnknownHostException e)
+			{
+				JOptionPane.showMessageDialog(this, "Please Check the Address name", "Uknown Host", JOptionPane.ERROR_MESSAGE);
+				new_userframe.setVisible(true);
+			}
+			catch(SocketException e)
+			{
+				JOptionPane.showMessageDialog(this, "Error of Connection","Socket Error", JOptionPane.ERROR_MESSAGE);
+				new_userframe.setVisible(true);
+			}
+			catch(IOException e)
+			{
+				
+			}
 		}
 		if (arg0.getComponent().equals(send_newUser))
 		{
-			new_userframe.setVisible(false);
-			
+			try{
+				new_userframe.setVisible(false);
+				Integer port_i = new Integer(port.getText());
+				ConnectionManagerSocket conn = new ConnectionManagerSocket(port_i.intValue(), address.getText(), client );
+				
+				conn.login(ClientMessageBroker.createLogin(username.getText(), password.getText()));
+				client.setConnMann(conn);
+			}
+			catch(ConnectException e)
+			{
+				JOptionPane.showMessageDialog(this,"Please Check your connection data" +
+						"maybe  Server is down","Error Connection in create NewUser",JOptionPane.ERROR_MESSAGE);
+				new_userframe.setVisible(true);
+			}
+			catch(UnknownHostException e)
+			{
+				JOptionPane.showMessageDialog(this, "Please Check the Address name", "Uknown Host", JOptionPane.ERROR_MESSAGE);
+				new_userframe.setVisible(true);
+			}
+			catch(SocketException e)
+			{
+				JOptionPane.showMessageDialog(this, "Error of Connection","Socket Error", JOptionPane.ERROR_MESSAGE);
+				new_userframe.setVisible(true);
+			}
+			catch(IOException e)
+			{
+				
+			}
 		}
 		
 	}
