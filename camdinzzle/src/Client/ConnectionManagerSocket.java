@@ -28,6 +28,7 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	private String address;
 	private String username;
 	private String password;
+	private String token;
 	private int port;
 	private String command;
 	private String read_socket;
@@ -207,7 +208,7 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 						}
 					}while(readSocket == null);
 					
-				}while(!(readSocket.equals("@ok")) || 
+				}while(!(readSocket.contains("@ok")) || 
 						!(readSocket.equals("@no,@autenticazioneFallita")) || 
 						!((readSocket.contains("@ok")) && (readSocket.length() > 4)) ||
 						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
@@ -216,6 +217,9 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 					changeRoundNotify(readSocket);
 			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
 			
+			if(ClientMessageBroker.checkMessage(msg))
+				token = ClientMessageBroker.manageLogin(readSocket)[0];
+				
 			return readSocket;
 		}
 		catch(IOException e)
@@ -394,9 +398,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String listaGiocatori(String msg)
+	public String listaGiocatori()
 	{
 		String readSocket;
+		String msg = "@listaGiocatori,token=" + token;
 		
 		try
 		{
@@ -448,9 +453,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String classifica(String msg) 
+	public String classifica() 
 	{
 		String readSocket;
+		String msg = "@classifica,token=" + token;
 		
 		try
 		{
@@ -502,9 +508,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String logout(String msg) 
+	public String logout() 
 	{
 		String readSocket;
+		String msg = "@logout,token=" + token;
 		
 		try
 		{
@@ -556,9 +563,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String mappaGenerale(String msg)
+	public String mappaGenerale()
 	{
 		String readSocket;
+		String msg = "@mappaGenerale,token=" + token;
 		
 		try
 		{
@@ -611,9 +619,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String listaDinosauri(String msg) 
+	public String listaDinosauri() 
 	{
 		String readSocket;
+		String msg = "@listaDinosauri,token=" + token;
 		
 		try
 		{
@@ -666,9 +675,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String vistaLocale(String msg) 
+	public String vistaLocale(String dinoId) 
 	{
 		String readSocket;
+		String msg = "@vistaLocale,token=" + token + ",idDino=" + dinoId;
 		
 		try
 		{
@@ -722,9 +732,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String statoDinosauro(String msg)
+	public String statoDinosauro(String dinoId)
 	{
 		String readSocket;
+		String msg = "@statoDinosauro,token=" + token + ",idDino=" + dinoId;
 		
 		try
 		{
@@ -778,9 +789,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String muoviDinosauro(String msg) 
+	public String muoviDinosauro(String dinoId, String row, String col) 
 	{
 		String readSocket;
+		String msg = "@muoviDinosauro,token=" + token + ",idDino=" + dinoId + ",dest={" + row + "," + col + "}";
 		
 		try
 		{
@@ -838,9 +850,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String cresciDinosauro(String msg) 
+	public String cresciDinosauro(String dinoId) 
 	{
 		String readSocket;
+		String msg = "@cresciDinosauro,token=" + token + ",idDino=" + dinoId;
 		
 		try
 		{
@@ -897,9 +910,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String deponiUovo(String msg) 
+	public String deponiUovo(String dinoId) 
 	{
 		String readSocket;
+		String msg = "@deponiUovo,token=" + token + ",idDino=" + dinoId;
 		
 		try
 		{
@@ -957,9 +971,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String confermaTurno(String msg) 
+	public String confermaTurno() 
 	{
 		String readSocket;
+		String msg = "@confermaTurno,token=" + token;
 		
 		try
 		{
@@ -1013,9 +1028,10 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public String passaTurno(String msg) 
+	public String passaTurno() 
 	{
 		String readSocket;
+		String msg = "@passaTurno,token=" + token;
 		
 		try
 		{

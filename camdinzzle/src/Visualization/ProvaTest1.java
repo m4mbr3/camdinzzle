@@ -112,7 +112,7 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createPlayerList(token);
 						System.out.println("Client: " + msg);
-						msg = cms.listaGiocatori(msg);
+						msg = cms.listaGiocatori();
 						System.out.println("cms: " + msg);
 						
 						text.drawPlayerList(msg);
@@ -121,7 +121,7 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createRanking(token);
 						System.out.println("Client: " + msg);
-						msg = cms.classifica(msg);
+						msg = cms.classifica();
 						System.out.println("cms: " + msg);
 						
 						text.drawRanking(msg);
@@ -130,14 +130,14 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createLogout(token);
 						System.out.println("Client: " + msg);
-						msg = cms.logout(msg);
+						msg = cms.logout();
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("GM"))
 					{
 						msg = ClientMessageBroker.createGeneralMap(token);
 						System.out.println("Client: " + msg);
-						msg = cms.mappaGenerale(msg);
+						msg = cms.mappaGenerale();
 						System.out.println("cms: " + msg);
 						
 						text.drawGeneralMap(msg);
@@ -146,7 +146,7 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createGeneralMap(token);
 						System.out.println("Client: " + msg);
-						msg = cms.listaDinosauri(msg);
+						msg = cms.listaDinosauri();
 						System.out.println("cms: " + msg);
 						
 						text.drawDinoList(msg);
@@ -185,7 +185,7 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createDinoMove(token, arr[0], arr[1], arr[2]);
 						
 						System.out.println("Client: " + msg);
-						msg = cms.muoviDinosauro(msg);
+						msg = cms.muoviDinosauro(arr[0], arr[1], arr[2]);
 						System.out.println("cms: " + msg);
 					
 					}
@@ -195,7 +195,7 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createDinoGrowUp(token, dinoId);
 						
 						System.out.println("Client: " + msg);
-						msg = cms.cresciDinosauro(msg);
+						msg = cms.cresciDinosauro(dinoId);
 						System.out.println("cms: " + msg);
 
 					}
@@ -205,21 +205,21 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createNewEgg(token, dinoId);
 						
 						System.out.println("Client: " + msg);
-						msg = cms.deponiUovo(msg);
+						msg = cms.deponiUovo(dinoId);
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("CT"))
 					{
 						msg = ClientMessageBroker.createRoundConfirmation(token);
 						System.out.println("Client: " + msg);
-						msg = cms.confermaTurno(msg);
+						msg = cms.confermaTurno();
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("PT"))
 					{
 						msg = ClientMessageBroker.createPassOffRound(token);
 						System.out.println("Client: " + msg);
-						msg = cms.passaTurno(msg);
+						msg = cms.passaTurno();
 						System.out.println("cms: " + msg);
 						
 						System.out.println("Turno del giocatore: " + msg);

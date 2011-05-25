@@ -9,13 +9,6 @@ package Client;
  */
 public class ConnectionManagerRMI implements ConnectionManager {
 
-	/**
-	 * 
-	 */
-	public ConnectionManagerRMI() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public String creaUtente(String msg) {
 		// TODO Auto-generated method stub
@@ -47,75 +40,76 @@ public class ConnectionManagerRMI implements ConnectionManager {
 	}
 
 	@Override
-	public String listaGiocatori(String msg) {
+	public String listaGiocatori() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String classifica(String msg) {
+	public String classifica() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String logout(String msg) {
+	public String logout() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String mappaGenerale(String msg) {
+	public String mappaGenerale() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String listaDinosauri(String msg) {
+	public String listaDinosauri() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String vistaLocale(String msg) {
+	public String vistaLocale(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String statoDinosauro(String msg) {
+	public String statoDinosauro(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String muoviDinosauro(String msg) {
+	public String muoviDinosauro(String dinoId, String row, String col) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String cresciDinosauro(String msg) {
+	public String cresciDinosauro(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String deponiUovo(String msg) {
+	public String deponiUovo(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String confermaTurno(String msg) {
+	public String confermaTurno() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String passaTurno(String msg) {
+	public String passaTurno() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
