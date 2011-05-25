@@ -94,7 +94,7 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 				}
 				else if (command.compareTo("creaRazza") == 0)
 				{	
-					writer_on_socket.write(serverLogic.add_new_user(read_socket));
+					writer_on_socket.write(serverLogic.addNewSpecies(read_socket));
 					writer_on_socket.newLine();				
 					writer_on_socket.flush();
 				}
