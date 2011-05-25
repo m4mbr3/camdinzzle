@@ -271,6 +271,20 @@ public class ClientMessageBroker
 	}
 	
 	/**
+	 * Gestisce il messaggio del cambio del turno(notifica in partita)
+	 * @param msg
+	 * @return Username del giocatore abilitato a fare le proprie mosse, altrimenti null
+	 */
+	public static String manageChangeRound(String msg)
+	{
+		if(msg.contains(","))
+		{
+			return msg.substring(msg.indexOf(",") + 1);
+		}
+		return null;
+	}
+	
+	/**
 	 * Creazione utente, per creare un nuovo utente
 	 * @param username
 	 * @param password

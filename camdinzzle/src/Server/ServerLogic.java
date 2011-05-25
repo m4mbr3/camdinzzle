@@ -238,7 +238,7 @@ public class ServerLogic {
 					{
 						tokenOfCurrentPlayer = token;
 						isTheFirstAccess = false;
-						//this.changeRound();
+						this.changeRound();
 					}
 					
 					// Aggiungo i dinosauri del giocatore alla mappa
@@ -322,6 +322,14 @@ public class ServerLogic {
 							else
 								Game.setCellMap("t", ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
 						}
+					}
+					
+					if(tokenOfCurrentPlayer.equals(token))
+					{
+						if(counter2m != null)
+							counter2m.interrupt();
+						if(counter30s != null)
+							counter30s.interrupt();
 					}
 					
 					if(currentSession.numberPlayersInGame() == 0)
@@ -987,13 +995,13 @@ public class ServerLogic {
 	 * Crea il messaggio di cambio del turno da mandare in broadcast a tutti i giocatori come notifica di cambio turno
 	 * @return Messaggio da mandare ai client in broadcast
 	 */
-	public String changeRound()
+	public void changeRound()
 	{
 		Counter counter = new Counter(this, timeForConfirm);
 		counter30s = new Thread(counter);
 		counter30s.start();
 		
-		return ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName());
+		Server.sendBroadcastMessage(ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName()));
 	}
 	
 	/**
@@ -1069,7 +1077,8 @@ public class ServerLogic {
 		
 		while(iter.hasNext())
 		{
-			Player currentPlayer = (Player)iter.next();
+			Map.Entry me = (Map.Entry)iter.next();
+			Player currentPlayer = (Player)me.getValue();
 			Species currentSpecie = currentPlayer.getSpecie();			
 			currentSpecie.updateTimeOfLive();
 			currentSpecie.increaseScore();

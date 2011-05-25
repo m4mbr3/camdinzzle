@@ -19,21 +19,13 @@ public class Counter implements Runnable {
 		try 
 		{
 			Thread.sleep(timeToLive); // da considerare il roundtriptime di rete
-			/*
-			if(!setIsJustUpdate)
-			{
-				server.updatePlayer(server.getTokenOfCurrentPlayer());
-				server.changeRound();
-			}
-			*/
+			System.out.println("Scaduti i 30 secondi!!");
 			server.updatePlayer(server.getTokenOfCurrentPlayer());
-			String msg = server.changeRound();
-			// TODO: chiamata al metodo del server che manda il messaggio in broadcast
 		} 
 		catch (InterruptedException e) 
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Thread " + timeToLive + " interrotto");
 		}
 	}
 	

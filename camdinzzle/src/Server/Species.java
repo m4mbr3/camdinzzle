@@ -1,5 +1,6 @@
 package Server;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,7 @@ public class Species
 {
 	private String name;
 	private int timeOfLive;
-	private HashMap<String, Dinosaur> myDinosaurs;
+	private Hashtable<String, Dinosaur> myDinosaurs;
 	
 	protected static enum type {Carnivorous, Vegetarian}
 	private static type speciesType;
@@ -33,7 +34,7 @@ public class Species
 	{
 		int posRig, posCol;
 		
-		myDinosaurs = new HashMap<String, Dinosaur>();
+		myDinosaurs = new Hashtable<String, Dinosaur>();
 		
 		this.name = name;
 		Species.speciesType = speciesType;
@@ -74,14 +75,12 @@ public class Species
 	public void increaseScore()
 	{
 		// TODO: aumentare lo score dove ogni dinosauro vale 1+D punti dove D è la sua dimensione
-		synchronized (myDinosaurs)
+		Iterator iter = this.getDinosaurs();
+		
+		while(iter.hasNext())
 		{
-			Iterator iter = this.getDinosaurs();
-			
-			while(iter.hasNext())
-			{
-				score = score + 1 + ((Dinosaur)iter.next()).getDinoDimension();
-			}
+			Map.Entry me =(Map.Entry)iter.next();
+			score = score + 1 + ((Dinosaur)me.getValue()).getDinoDimension();
 		}
 	}
 	
@@ -151,12 +150,9 @@ public class Species
 	 */
 	public Iterator getDinosaurs()
 	{
-		synchronized (myDinosaurs) 
-		{
-			Set set = myDinosaurs.entrySet();
-			
-			return set.iterator();
-		}
+		Set set = myDinosaurs.entrySet();
+		
+		return set.iterator();
 	}
 	
 	/**

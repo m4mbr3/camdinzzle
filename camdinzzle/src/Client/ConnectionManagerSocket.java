@@ -22,15 +22,16 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	/**
 	 * Socket for Managing the connection by socket with server
 	 */
-	Socket connection_with_server;
-	
+	private Socket connection_with_server;
 	private BufferedWriter writer_on_socket;
 	private BufferedReader reader_on_socket;
-	String address;
-	String username;
-	String password;
-	int port;
-	String command;
+	private String address;
+	private String username;
+	private String password;
+	private int port;
+	private String command;
+	private String read_socket;
+	
 	public ConnectionManagerSocket(int port, String address, String username, String password)
 	{
 		// TODO Auto-generated constructor stub
@@ -39,6 +40,8 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 		this.password = password;
 		this.port = port;
 		command = new String();
+		this.read_socket = null;
+		
 		try {
 			System.out.println("<<CONN MANAGER>>--OPENING SOCKET WITH SERVER AT ADD "+address+" AND PORT " + port );
 			connection_with_server = new Socket(this.address, this.port);
@@ -69,52 +72,149 @@ public class ConnectionManagerSocket extends JFrame implements ConnectionManager
 	}
 
 	@Override
-	public void run() {
+	public void run() 
+	{
 		// TODO Auto-generated method stub
 		String read_socket=null;
 				
-				while(true)
+		while(true)
+		{
+			do
+			{
+				try 
 				{
-					//Implementazione di tutte le funzioni del client che può richiamare su server
-					if(command == "login")
+					read_socket = reader_on_socket.readLine();
+				} 
+				catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}while(read_socket == null);
+			
+			if(read_socket != null)
+			{
+				if(ClientMessageBroker.manageMessageType(read_socket).equals("cambioTurno"))
+				{
+					if(ClientMessageBroker.manageChangeRound(read_socket) != null)
 					{
-						try {
-							System.out.println("<<CONN MANAGER>>--SENDING USERNAME: "+username+" PASSWORD "+password);
-							this.writer_on_socket.write(ClientMessageBroker.createLogin(username, password));
-							this.writer_on_socket.newLine();				
-							this.writer_on_socket.flush();
-							} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							}
-							try {
-							read_socket = reader_on_socket.readLine();
-							} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							}
+						if(ClientMessageBroker.manageChangeRound(read_socket).equals(username))
+						{
+							//TODO: chiamata al metodo del Client che mi lancia il popup di conferma del turno
+						}
+						else
+						{
+							//TODO: chiamata al metodo del Client che mi notifica il cambio del turno e mi evidenzia il giocatore
+						}
 					}
-					else if(command == "creaUtente")
-					{
-						
-					}
-					else if(command == "creaRazza")
-					{
-						
-					}
-					else if(command == "")
-					{
-						
-					}
-					else if(command == "")
-					{
-						
-					}
-						
-					
-				
 				}
 			}
+			
+			read_socket = null;
+		}
+	}
+
+	@Override
+	public String creaUtente(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String login(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String creaRazza(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String accessoPartita(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String uscitaPartita(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String listaGiocatori(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String classifica(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String logout(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String mappaGenerale(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String listaDinosauri(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String vistaLocale(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String statoDinosauro(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String muoviDinosauro(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String cresciDinosauro(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String deponiUovo(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String confermaTurno(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String passaTurno(String msg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 			
 		
 		
