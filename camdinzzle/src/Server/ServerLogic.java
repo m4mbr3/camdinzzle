@@ -889,6 +889,7 @@ public class ServerLogic {
 				{
 					if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
 					{
+	//TODO inserire limite dinosauri
 						String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
 						if(idDino !=null)		//non ha abbastanza energia
 						{

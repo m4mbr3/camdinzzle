@@ -42,4 +42,9 @@ public interface Visual
 	 * Metodo che disegna la classifica attuale della partitas
 	 */
 	public void drawRanking(String msg);
+	
+	/**
+	 * Metodo che disegna lo stato del dinosauro selezionato
+	 */
+	public void drawDinoState(String dinoId, String msg);
 }
