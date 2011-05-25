@@ -2,6 +2,7 @@ package Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class Server implements Runnable {
 		{
 			try {
 				//waiting for connection
-				System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at "+ server.getLocalPort());
+				System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at " + server.getLocalPort());
 				new_connection = server.accept();
 				System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
 				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic);

@@ -69,7 +69,7 @@ public class ProvaTest1 {
 						arr = text.drawUserCreation();
 						msg = ClientMessageBroker.createUser(arr[0], arr[1]);
 						
-						cms = new ConnectionManagerSocket(34567, "192.168.1.103", arr[0], arr[1]);
+						cms = new ConnectionManagerSocket(34567, "localhost", arr[0], arr[1]);
 						
 						System.out.println("Client: " + msg);
 						System.out.println("cms: " + cms.creaUtente(msg));
