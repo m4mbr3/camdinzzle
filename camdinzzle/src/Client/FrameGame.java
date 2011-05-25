@@ -66,11 +66,15 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private ImageIcon iconLandDisable;
 	private JList dinoList;
 	private JTextArea dinoState;
+	private JList playerList;
+	private JPanel commandButtons;
 	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
+	private final int visibleRowCountPlayerList=8;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
-	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 18); 
+	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 18);
+	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
 	
 	/**
 	 * @param title
@@ -151,6 +155,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		m.drawDinoList(msg);
 		msg = "@statoDinosauro,a,a,Carnivorous,{23,3},1,1000,25";
 		m.drawDinoState("a - 1", msg);
+		m.drawCommandButtons();
+		msg = "@listaGiocatori,a,s,d,f";
+		m.drawPlayerList(msg);
 		m.repaint();
 	}
 
@@ -389,6 +396,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	public void drawTime(String msg) {
 		// TODO Auto-generated method stub
 		
+		
 	}
 
 	@Override
@@ -412,7 +420,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		newMsgDinoState += "Dinosaur's state " + dinoId + " of player " + msgDinoState[0] + ":\n";
 		newMsgDinoState += "	race: " + msgDinoState[1] + "\n";
 		newMsgDinoState += "	type: " + msgDinoState[2] + "\n";
-		newMsgDinoState += "	dinosaur's position: " + msgDinoState[3] + ", " + msgDinoState[4] + "\n";
+		newMsgDinoState += "	dinosaur's position: \n          	    row:" + msgDinoState[3] + "\n          	    col:" + msgDinoState[4] + "\n";
 		newMsgDinoState += "	dimension: " + msgDinoState[5] + "\n";
 		
 		// Se il dinosauro appartiene al giocatore allora ci sono delle informazioni aggiuntive
@@ -426,8 +434,53 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		dinoState.setVisible(true);
 		dinoState.setPreferredSize(new Dimension(widthControlPanel,(int)screenSize.getHeight()/14*2));
 		dinoState.setFont(fontDinoState);
+		dinoState.setEditable(false);
 		panelControl.add(dinoState);
 		
 	}
+	@Override
+	public void drawPlayerList(String msg)
+	{
+		String[] msgPlayerList = ClientMessageBroker.manageDinoList(msg);
+		playerList = new JList(msgPlayerList);
+		playerList.setVisibleRowCount(visibleRowCountPlayerList);
+		playerList.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			/**
+			 * classe di ascolto inner anonima
+			 */
+			public void valueChanged(ListSelectionEvent e) 
+			{
+			//TODO inserire chiamata aggiornamento lista giocatori
+					
+				
+			}
+		});
+		playerList.setVisible(true);
+		playerList.setPreferredSize(new Dimension(widthControlPanel-5,(int)screenSize.getHeight()/14*2));
+		playerList.setFont(fontPlayerState);	
+		panelControl.add(new JScrollPane(playerList));
+	}
+	 public void drawCommandButtons()
+	 {
+//TODO  -sistemare l'add
+//		-aggiungere azioni ai bottoni
+
+		 JButton[] commandDinoButton = new JButton[3];
+		 commandDinoButton[0] = new JButton("Muovi Dinosauro");
+		 commandDinoButton[1] = new JButton("Cresci Dinosauro");
+		 commandDinoButton[2] = new JButton("Deponi Uovo");
+		 
+		 for(int i=0;i<3;i++)
+		 {
+			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-10,(int)screenSize.getHeight()/14*1));
+			 commandDinoButton[i].setVisible(true);
+			 commandDinoButton[i].setEnabled(true);
+			 commandButtons.add(commandDinoButton[i]);
+		 }
+		 panelControl.add(commandButtons);
+		 
+	 }
 	
 }

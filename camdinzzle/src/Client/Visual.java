@@ -47,4 +47,9 @@ public interface Visual
 	 * Metodo che disegna lo stato del dinosauro selezionato
 	 */
 	public void drawDinoState(String dinoId, String msg);
+	
+	/**
+	 * metodo che disegna la lista dei giocatori
+	 */
+	public void drawPlayerList(String msg);
 }
