@@ -60,7 +60,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
-		port = new JTextField("4567");
+		port = new JTextField("");
 		enable_port = new JCheckBox("enable");
 		address = new JTextField();
 		radiogroup = new ButtonGroup();
@@ -125,6 +125,12 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		next.addActionListener(this);
 		
 	}
+	public ConnectionManager getConnManager() {
+		return connManager;
+	}
+	public void setConnManager(ConnectionManager connManager) {
+		this.connManager = connManager;
+	}
 	public void createCommand()
 	{
 		
@@ -175,8 +181,8 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 						}
 					catch(ConnectException e)
 					{
-						JOptionPane.showMessageDialog(this,"Please Check your connection data" +
-								"maybe  Server is down","Error Connection in create NewUser",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,"Please Check your connection data " +
+								"maybe  Server is down","Error Connection ",JOptionPane.ERROR_MESSAGE);
 						this.setVisible(true);
 					}
 					catch(UnknownHostException e)
@@ -269,6 +275,10 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	public void startUI()
+	{
+		FrameGame gioco = new FrameGame("Schema Di Gioco");
 	}
 	@Override
 	public void stateChanged(ChangeEvent arg0) {

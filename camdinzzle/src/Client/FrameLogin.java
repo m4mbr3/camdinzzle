@@ -40,11 +40,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private JLabel username_label;
 	private JLabel password_label;
 	private JLabel camdinzzle;
-	private JLabel address_label;
-	private JLabel port_label;
 	private JTextField username;
-	private JTextField port;
-	private JTextField address;
 	private JPasswordField password;
 	private JPanel panel;
 	private JPanel panel_newUser;
@@ -52,7 +48,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private JButton send_newUser;
 	private Dimension screenSize;
 	private Client client;
-	private JCheckBox enable_port;
 	private JLabel new_user;
 	private JFrame new_userframe;
 	/**
@@ -84,11 +79,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		this.setSize(330,300);
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		new_user = new JLabel("Are you a new user?Click here!");
-		port = new JTextField();
-		enable_port = new JCheckBox("enable");
-		address = new JTextField();
-		port_label = new JLabel("Port :");
-		address_label = new JLabel("Address :");
 		camdinzzle = new JLabel("Camdinzzle on Socket v1.0");
 		username_label = new JLabel("Username :");
 		password_label = new JLabel("Password :");
@@ -99,28 +89,21 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		send_newUser = new JButton("Register it!");
 		send = new JButton("Send Information");
 		new_user.setSize(250,20);
-		port_label.setSize(90,20);
-		address_label.setSize(90,20);
 		panel_newUser.setSize(300,300);
 		panel.setSize(300,300);
 		send_newUser.setSize(180,20);
 		send.setSize(180, 20);
 		camdinzzle.setSize(200,70);
-		enable_port.setSize(100,20);
 		username_label.setSize(90,20);
 		password_label.setSize(90,20);
-		port.setSize(90,20);
-		address.setSize(160,20);
+		
 		username.setSize(160,20);
 		password.setSize(160,20);
 		panel.setLayout(null);
-		port.setText(new Integer(4567).toString());
-		port.setVisible(true);
-		port.enable(false);
+		
 		new_user.setVisible(true);
-		address.setVisible(true);
-		port_label.setVisible(true);
-		address_label.setVisible(true);
+		
+		
 		camdinzzle.setVisible(true);
 		send_newUser.setVisible(true);
 		send.setVisible(true);
@@ -130,27 +113,16 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		password.setVisible(true);
 		panel_newUser.setVisible(true);
 		panel.setVisible(true);
-		new_user.setLocation(50,222);
-		enable_port.setLocation(230,80);
-		port.setLocation(140,80);
-		address.setLocation(140,120);
-		port_label.setLocation(50,80);
-		address_label.setLocation(50,120);
+		new_user.setLocation(50,200);
 		camdinzzle.setLocation(50,0);
 		send_newUser.setLocation(50,250);
 		send.setLocation(50, 250);
-		username_label.setLocation(50,160);
-		password_label.setLocation(50,200);
-		username.setLocation(140,160);
-		password.setLocation(140, 200);
+		username_label.setLocation(50,80);
+		password_label.setLocation(50,120);
+		username.setLocation(140,80);
+		password.setLocation(140, 120);
+	
 		
-		enable_port.addChangeListener(this);
-		
-		panel.add(enable_port);
-		panel.add(port);
-		panel.add(address);
-		panel.add(port_label);
-		panel.add(address_label);
 		panel.add(camdinzzle);
 		panel.add(send);
 		panel.add(password_label);
@@ -229,15 +201,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		// TODO Auto-generated method stub
-		if (arg0.getSource() instanceof JCheckBox)
-			if(enable_port.isSelected())
-			{
-				port.setEnabled(true);
-			}
-			else
-			{
-				port.setEnabled(false);
-			}
 	}
 
 	@Override
@@ -259,65 +222,39 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		}
 		if (arg0.getComponent().equals(send))
 		{
-			try{
+			
 					this.setVisible(false);
-					Integer port_i = new Integer(port.getText());
-					ConnectionManagerSocket conn = new ConnectionManagerSocket(port_i.intValue(), address.getText(), client );
-					conn.login(ClientMessageBroker.createLogin(username.getText(), password.getText()));
-					client.setConnMann(conn);
+					
+					if (ClientMessageBroker.manageMessageType(client.getConnManager().login(ClientMessageBroker.createLogin(username.getText(), password.getText()))).compareTo("ok")==0)
+					{
+						client.startUI();
+					}
+					else
+					{
+						this.setVisible(true);
+						JOptionPane.showMessageDialog(this,"Error in Data Login", "Login Error", JOptionPane.ERROR_MESSAGE);
+					}
 					//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
-			}
-			catch(ConnectException e)
-			{
-				JOptionPane.showMessageDialog(this,"Please Check your connection data" +
-						"maybe  Server is down","Error Connection in login",JOptionPane.ERROR_MESSAGE);
-				this.setVisible(true);
-			}
-			catch(UnknownHostException e)
-			{
-				JOptionPane.showMessageDialog(this, "Please Check the Address name", "Uknown Host", JOptionPane.ERROR_MESSAGE);
-				new_userframe.setVisible(true);
-			}
-			catch(SocketException e)
-			{
-				JOptionPane.showMessageDialog(this, "Error of Connection","Socket Error", JOptionPane.ERROR_MESSAGE);
-				new_userframe.setVisible(true);
-			}
-			catch(IOException e)
-			{
-				
-			}
+			
 		}
 		if (arg0.getComponent().equals(send_newUser))
 		{
-			try{
+			
 				new_userframe.setVisible(false);
-				Integer port_i = new Integer(port.getText());
-				ConnectionManagerSocket conn = new ConnectionManagerSocket(port_i.intValue(), address.getText(), client );
-				
-				conn.login(ClientMessageBroker.createLogin(username.getText(), password.getText()));
-				client.setConnMann(conn);
-			}
-			catch(ConnectException e)
-			{
-				JOptionPane.showMessageDialog(this,"Please Check your connection data" +
-						"maybe  Server is down","Error Connection in create NewUser",JOptionPane.ERROR_MESSAGE);
-				new_userframe.setVisible(true);
-			}
-			catch(UnknownHostException e)
-			{
-				JOptionPane.showMessageDialog(this, "Please Check the Address name", "Uknown Host", JOptionPane.ERROR_MESSAGE);
-				new_userframe.setVisible(true);
-			}
-			catch(SocketException e)
-			{
-				JOptionPane.showMessageDialog(this, "Error of Connection","Socket Error", JOptionPane.ERROR_MESSAGE);
-				new_userframe.setVisible(true);
-			}
-			catch(IOException e)
-			{
-				
-			}
+				if (ClientMessageBroker.manageMessageType(client.getConnManager().creaUtente(ClientMessageBroker.createUser(username.getText(), password.getText()))).compareTo("ok")==0)
+				{	
+					
+					this.setVisible(true);
+					panel.remove(send_newUser);
+					panel.add(this.new_user);
+					panel.add(send);
+					this.add(panel);
+					System.out.println("ciao----");
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this,"Username already exist", "NewUser Error", JOptionPane.ERROR_MESSAGE);
+				}
 		}
 		
 	}

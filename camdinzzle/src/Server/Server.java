@@ -91,7 +91,7 @@ public class Server implements Runnable {
 		// TODO Auto-generated method stub
 		ServerLogic serverLogic = new ServerLogic();
 		
-		int port = 34567;
+		int port = 4567;
 		(new Thread(new Server(port,serverLogic))).start();
 		
 	}
