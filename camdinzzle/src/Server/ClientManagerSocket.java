@@ -15,7 +15,7 @@ import Client.ClientMessageBroker;
  * @author Andrea
  *
  */
-public class ClientManagerSocket extends ClientManager implements Runnable {
+public class ClientManagerSocket implements ClientManager, Runnable {
 
 	private Socket connection_with_client;
 	private ServerLogic serverLogic;
@@ -24,10 +24,13 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 	private String read_socket;
 	private String command;
 	private boolean is_run;
+	private String token;
+	private boolean isInGame;
 	
 	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic) {
 		// TODO Auto-generated constructor stub
-		
+		token ="";
+		isInGame = false;
 		this.is_run = true;
 		this.connection_with_client = connection_with_client;
 		this.serverLogic = serverLogic;
@@ -78,18 +81,23 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			
 			try
 			{
+				// TODO: gestione connessioni null quando client si disconnette
 				synchronized(writer_on_socket)
 				{
 					//control of login parameters 
 					if(command.compareTo("creaUtente")==0)
 					{
-						writer_on_socket.write(serverLogic.add_new_user(read_socket));
+						String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+						
+						writer_on_socket.write(serverLogic.add_new_user(parameters[0], parameters[1]));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if (command.compareTo("login")==0)
 					{
-						String login = serverLogic.login(read_socket);
+						String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+						
+						String login = serverLogic.login(parameters[0], parameters[1]);
 						this.setToken(ClientMessageBroker.manageLogin(login)[0]);
 						writer_on_socket.write(login);
 						writer_on_socket.newLine();				
@@ -97,13 +105,17 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 					}
 					else if (command.compareTo("creaRazza") == 0)
 					{	
-						writer_on_socket.write(serverLogic.addNewSpecies(read_socket));
+						String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+						
+						writer_on_socket.write(serverLogic.addNewSpecies(parameters[0], parameters[1], parameters[2]));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if (command.compareTo("accessoPartita") == 0)
 					{
-						String msg = serverLogic.gameAccess(read_socket);
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						String msg = serverLogic.gameAccess(token);
 						
 						if(ClientMessageBroker.checkMessage(msg))
 							this.setIsInGame(true);
@@ -111,10 +123,14 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 						writer_on_socket.write(msg);
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
+						
+						serverLogic.changeRoundNotify();
 					}
 					else if (command.compareTo("uscitaPartita") == 0)
 					{
-						String msg = serverLogic.gameExit(read_socket);
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						String msg = serverLogic.gameExit(token);
 						if(ClientMessageBroker.checkMessage(msg))
 							this.setIsInGame(false);
 						
@@ -124,19 +140,25 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 					}
 					else if (command.compareTo("listaGiocatori") == 0)
 					{
-						writer_on_socket.write(serverLogic.playerList(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						writer_on_socket.write(serverLogic.playerList(token));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if (command.compareTo("classifica") == 0)
 					{
-						writer_on_socket.write(serverLogic.ranking(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						writer_on_socket.write(serverLogic.ranking(token));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if (command.compareTo("logout") == 0)
 					{
-						String msg = serverLogic.logout(read_socket);
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						String msg = serverLogic.logout(token);
 						if(ClientMessageBroker.checkMessage(msg))
 							this.setIsInGame(false);
 							
@@ -149,25 +171,35 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 					
 					else if(command.compareTo("mappaGenerale") == 0)
 					{
-						writer_on_socket.write(serverLogic.generalMap(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						writer_on_socket.write(serverLogic.generalMap(token));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if(command.compareTo("listaDinosauri") == 0)
 					{
-						writer_on_socket.write(serverLogic.dinosaursList(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						writer_on_socket.write(serverLogic.dinosaursList(token));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if(command.compareTo("vistaLocale") == 0)
 					{
-						writer_on_socket.write(serverLogic.dinoZoom(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+						
+						writer_on_socket.write(serverLogic.dinoZoom(token, dinoId));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if(command.compareTo("statoDinosauro") == 0)
 					{
-						writer_on_socket.write(serverLogic.dinoState(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+						
+						writer_on_socket.write(serverLogic.dinoState(token, dinoId));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
@@ -178,19 +210,30 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 					
 					else if(command.compareTo("muoviDinosauro") == 0)
 					{
-						writer_on_socket.write(serverLogic.dinoMove(read_socket));
+						String token = ServerMessageBroker.manageDinoMovement(read_socket)[0];
+						String dinoId = ServerMessageBroker.manageDinoMovement(read_socket)[1];
+						String rowDest = ServerMessageBroker.manageDinoMovement(read_socket)[2];
+						String colDest = ServerMessageBroker.manageDinoMovement(read_socket)[3];
+						
+						writer_on_socket.write(serverLogic.dinoMove(token, dinoId, rowDest, colDest));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if(command.compareTo("crescitaDinosauro") == 0)
 					{
-						writer_on_socket.write(serverLogic.dinoGrowUp(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+						
+						writer_on_socket.write(serverLogic.dinoGrowUp(token, dinoId));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
 					else if(command.compareTo("deponiUovo") == 0)
 					{
-						writer_on_socket.write(serverLogic.dinoNewEgg(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+						
+						writer_on_socket.write(serverLogic.dinoNewEgg(token, dinoId));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
 					}
@@ -199,15 +242,23 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 					
 					else if(command.compareTo("confermaTurno") == 0)
 					{
-						writer_on_socket.write(serverLogic.roundConfirm(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						writer_on_socket.write(serverLogic.roundConfirm(token));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
+						
+						serverLogic.changeRound();
 					}
 					else if(command.compareTo("passaTurno") == 0)
 					{
-						writer_on_socket.write(serverLogic.playerRoundSwitch(read_socket));
+						String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+						
+						writer_on_socket.write(serverLogic.playerRoundSwitch(token));
 						writer_on_socket.newLine();				
 						writer_on_socket.flush();
+						
+						serverLogic.changeRoundNotify();
 					}
 				}
 			}
@@ -237,5 +288,31 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	/**
+	 * @return Token del Player a cui corrisponde il Client
+	 */
+	public String getToken()
+	{
+		return token;
+	}
+	
+	public void setToken(String token)
+	{
+		this.token = token;
+	}
+	
+	/**
+	 * @return true se il Player corrispondente a questo Client è in partita, false altrimenti
+	 */
+	public boolean getIsInGame()
+	{
+		return isInGame;
+	}
+	
+	public void setIsInGame(boolean isInGame)
+	{
+		this.isInGame = isInGame;
 	}
 }

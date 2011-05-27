@@ -8,1076 +8,762 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
+import javax.management.monitor.Monitor;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  * @author Andrea
  *
  */
-public class ConnectionManagerSocket extends JFrame implements ConnectionManager, Runnable  {
+public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	//Class for client logging
 	/**
 	 * Socket for Managing the connection by socket with server
 	 */
 	private Socket connection_with_server;
 	private BufferedWriter writer_on_socket;
-	private BufferedReader reader_on_socket;
-
 	private String address;
 	private String username;
 	private String password;
 	private String token;
 	private int port;
-	private String read_socket;
+	private String command;
+	private MonitorMessage mm;
+	ArrayList<String> requestQueue;
 	
-
-	Client client;
-	
-	public ConnectionManagerSocket(int port, String address, Client client) throws IOException
+	public ConnectionManagerSocket(int port, String address, String username, String password, MonitorMessage mm, Socket soc,
+			ArrayList<String> requestQueue)
 	{
 		// TODO Auto-generated constructor stub
-		this.client = client;
+		this.mm = mm;
 		this.address = address;
-	
+		token = "";
+		this.username = username;
+		this.password = password;
 		this.port = port;
-		this.token = null;
-		this.read_socket = null;
+		command = new String();
+		connection_with_server = soc;
+		this.requestQueue = requestQueue;
 		
-		
-			System.out.println("<<CONN MANAGER>>--OPENING SOCKET WITH SERVER AT ADD "+address+" AND PORT " + port );
-			connection_with_server = new Socket(this.address, this.port);
+		try {
 			writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
-			reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
-			(new Thread(this)).start();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
+		System.out.println("<<CONN MANAGER>>--STARTING THREAD " );
+		(new Thread(this)).start();
+		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
 	}
 
 	@Override
 	public void run() 
 	{
-		// TODO Auto-generated method stub
-		String read_socket=null;
-				
+		// TODO Auto-generated method stub	
 		while(true)
-		{ 
-			/*
-			try 
-			{
-<<<<<<< .mine
-				
-					try {
-						read_socket = reader_on_socket.readLine();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-			}while(read_socket == null);
-=======
-				read_socket = reader_on_socket.readLine();
-			} 
-			catch (IOException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
->>>>>>> .r138
-			
-			if(read_socket != null)
-			{
-				if(ClientMessageBroker.manageMessageType(read_socket).equals("cambioTurno"))
-				{
-
-					changeRoundNotify(read_socket);
-
-				}
-			}
-			
-			read_socket = null;
-			*/
+		{
+			System.out.print("");
 		}
+	}	
+	
+	public synchronized String creaUtente(String username, String password) 
+	{
+		try
+		{
+			String msg = ClientMessageBroker.createUser(username, password);
+			
+			writer_on_socket.write(msg);
+			writer_on_socket.newLine();				
+			writer_on_socket.flush();
+			
+			while(mm.getMessage().equals(""))
+			{
+				System.out.print("");
+			}
+			
+			String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("creaUtente");
+			
+			return retStr;
+			
+		}
+		catch(IOException e)
+		{
+			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+			 * di comunicazione col socket 
+			 */
+			
+			e.printStackTrace();
+			return null;
+		} 
 	}
 	
-	public void changeRoundNotify(String msg)
-	{
-		if(ClientMessageBroker.manageChangeRound(msg) != null)
-		{
-			if(ClientMessageBroker.manageChangeRound(msg).equals(username))
-			{
-				//TODO: chiamata al metodo del Client che mi lancia il popup di conferma del turno
-			}
-			else
-			{
-				//TODO: chiamata al metodo del Client che mi notifica il cambio del turno e mi evidenzia il giocatore
-			}
-		}
-	}
-
 	@Override
-	public String creaUtente(String msg) 
+	public synchronized String login(String username, String password) 
 	{
-		String readSocket;
-		
 		try
 		{
+			String msg = ClientMessageBroker.createLogin(username, password);
+			
 			writer_on_socket.write(msg);
 			writer_on_socket.newLine();				
 			writer_on_socket.flush();
 			
-			do
+			while(mm.getMessage().equals(""))
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
-				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-					// Ciclo che rimane in ascolto sul socket
-					try 
-					{
-						readSocket = reader_on_socket.readLine();
-					} 
-					catch (IOException e) 
-					{
-						e.printStackTrace();
-					}
-					
-				}while(!(readSocket.equals("@ok")) && 
-						!(readSocket.equals("@no,@usernameOccupato")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
+				System.out.print("");
+			}
 			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
+			String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+			mm.setMessage("");
 			
-			return readSocket;
+			System.out.println(retStr);
+			
+			requestQueue.remove("login");
+			
+			if(ClientMessageBroker.checkMessage(retStr))
+				token = ClientMessageBroker.manageLogin(retStr)[0];
+			
+			return retStr;
+			
 		}
 		catch(IOException e)
 		{
 			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
 			 * di comunicazione col socket 
 			 */
+			
 			e.printStackTrace();
 			return null;
-		}
+		} 
 	}
 
 	@Override
-	public String login(String msg) 
+	public synchronized String creaRazza(String name, String type) 
 	{
-		String readSocket;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
-				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@ok")) && 
-						!(readSocket.equals("@no,@autenticazioneFallita")) && 
-						!((readSocket.contains("@ok")) && (readSocket.length() > 4)) &&
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			if(ClientMessageBroker.checkMessage(msg))
-				token = ClientMessageBroker.manageLogin(readSocket)[0];
+				String msg = ClientMessageBroker.createRace(token, name, type);
 				
-			return readSocket;
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
+				{
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("creaRazza");
+				
+				return retStr;
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
 
 	@Override
-	public String creaRazza(String msg) 
+	public synchronized String accessoPartita() 
 	{
-		String readSocket;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createGameAccess(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.equals("@ok")) && 
-						!(readSocket.equals("@no,@nomeRazzaOccupato")) && 
-						!(readSocket.equals("@no,@tokenNonValido")) &&
-						!(readSocket.equals("@no,@razzaGiaCreata")) &&
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("accessoPartita");
+				
+				return retStr;
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
 
 	@Override
-	public String accessoPartita(String msg) 
+	public synchronized String uscitaPartita() 
 	{
-		String readSocket;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createGameExit(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.equals("@ok")) && 
-						!(readSocket.equals("@no,@troppiGiocatori")) && 
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("uscitaPartita");
+				
+				return retStr;
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
 
 	@Override
-	public String uscitaPartita(String msg) 
+	public synchronized String[] listaGiocatori()
 	{
-		String readSocket;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createPlayerList(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.equals("@ok")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("listaGiocatori");
+				
+				return ClientMessageBroker.managePlayerList(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String listaGiocatori()
+	public synchronized ArrayList<String> classifica() 
 	{
-		String readSocket;
-		String msg = "@listaGiocatori,token=" + token;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createRanking(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@listagiocatori,")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("classifica");
+				
+				return ClientMessageBroker.manageRanking(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String classifica() 
+	public synchronized String logout() 
 	{
-		String readSocket;
-		String msg = "@classifica,token=" + token;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createLogout(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@classifica,")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("logout");
+				
+				return retStr;
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String logout() 
+	public synchronized ArrayList<String> mappaGenerale()
 	{
-		String readSocket;
-		String msg = "@logout,token=" + token;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createGeneralMap(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.equals("@ok,")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("mappaGenerale");
+				
+				return ClientMessageBroker.manageGeneralMap(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String mappaGenerale()
+	public synchronized String[] listaDinosauri() 
 	{
-		String readSocket;
-		String msg = "@mappaGenerale,token=" + token;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createDinoList(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@mappaGenerale,")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("listaDinosauri");
+				
+				return ClientMessageBroker.manageDinoList(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String listaDinosauri() 
+	public synchronized ArrayList<String> vistaLocale(String dinoId) 
 	{
-		String readSocket;
-		String msg = "@listaDinosauri,token=" + token;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createDinoZoom(token, dinoId);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@listaDinosauri,")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(readSocket.equals("@no,@nonInPartita")) &&
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("vistaLocale");
+				
+				return ClientMessageBroker.manageDinoZoom(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String vistaLocale(String dinoId) 
+	public synchronized String[] statoDinosauro(String dinoId)
 	{
-		String readSocket;
-		String msg = "@vistaLocale,token=" + token + ",idDino=" + dinoId;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createDinoState(token, dinoId);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@vistaLocale,")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(readSocket.equals("@no,@idNonValido")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("statoDinosauro");
+				
+				return ClientMessageBroker.manageDinoState(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String statoDinosauro(String dinoId)
+	public synchronized String[] muoviDinosauro(String dinoId, String row, String col) 
 	{
-		String readSocket;
-		String msg = "@statoDinosauro,token=" + token + ",idDino=" + dinoId;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createDinoMove(token, dinoId, row, col);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@statoDinosauro,")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(readSocket.equals("@no,@idNonValido")) &&
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				requestQueue.remove("muoviDinosauro");
+				
+				return ClientMessageBroker.manageDinoMove(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String muoviDinosauro(String dinoId, String row, String col) 
+	public synchronized String[] cresciDinosauro(String dinoId) 
 	{
-		String readSocket;
-		String msg = "@muoviDinosauro,token=" + token + ",idDino=" + dinoId + ",dest={" + row + "," + col + "}";
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createDinoGrowUp(token, dinoId);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@ok")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(readSocket.equals("@no,@idNonValido")) && 
-						!(readSocket.equals("@no,@destinazioneNonValida")) &&
-						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) &&
-						!(readSocket.equals("@no,@mortePerInedia")) &&
-						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				requestQueue.remove("cresciDinosauro");
+				
+				return ClientMessageBroker.manageDinoGrowUp(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String cresciDinosauro(String dinoId) 
+	public synchronized String[] deponiUovo(String dinoId) 
 	{
-		String readSocket;
-		String msg = "@cresciDinosauro,token=" + token + ",idDino=" + dinoId;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createNewEgg(token, dinoId);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.contains("@ok")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(readSocket.equals("@no,@idNonValido")) && 
-						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) &&
-						!(readSocket.equals("@no,@mortePerInedia")) &&
-						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				requestQueue.remove("deponiUovo");
+
+				return ClientMessageBroker.manageNewEgg(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String deponiUovo(String dinoId) 
+	public synchronized String[] confermaTurno() 
 	{
-		String readSocket;
-		String msg = "@deponiUovo,token=" + token + ",idDino=" + dinoId;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createRoundConfirmation(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!((readSocket.contains("@ok,")) && (readSocket.length() > 4)) &&
-						!(readSocket.equals("@no,@tokenNonValido")) && 
-						!(readSocket.equals("@no,@idNonValido")) && 
-						!(readSocket.equals("@no,@raggiuntoLimiteMosseDinosauro")) &&
-						!(readSocket.equals("@no,@raggiuntoNumeroMaxDinosauri")) &&
-						!(readSocket.equals("@no,@mortePerInedia")) &&
-						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				requestQueue.remove("confermaTurno");
+				
+				return ClientMessageBroker.manageRoundConfirm(retStr);
+				
+			}
+			catch(IOException e)
+			{
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
+				 */
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
 	}
-
+	
 	@Override
-	public String confermaTurno() 
+	public synchronized String[] passaTurno() 
 	{
-		String readSocket;
-		String msg = "@confermaTurno,token=" + token;
-		
-		try
+		if(!token.equals(""))
 		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+			try
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
-				 */
-				do
+				String msg = ClientMessageBroker.createPassOffRound(token);
+				
+				writer_on_socket.write(msg);
+				writer_on_socket.newLine();				
+				writer_on_socket.flush();
+				
+				while(mm.getMessage().equals(""))
 				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.equals("@ok")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) &&
-						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
-		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	@Override
-
-	public String passaTurno() 
-	{
-		String readSocket;
-		String msg = "@passaTurno,token=" + token;
-
-		
-		try
-		{
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			do
+					System.out.print("");
+				}
+				
+				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
+				mm.setMessage("");
+				
+				System.out.println(retStr);
+				
+				requestQueue.remove("passaTurno");
+				
+				return ClientMessageBroker.managePlayerChangeRound(retStr);
+				
+			}
+			catch(IOException e)
 			{
-				/* Ciclo che controlla che il messaggio ricevuto non sia un cambio del turno. Se � un cambio del turno
-				 * rimane in ascolto fino a che non riceve un messaggio valido
+				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
+				 * di comunicazione col socket 
 				 */
-				do
-				{
-					// Ciclo che controlla se il messaggio � un messaggio possibile da ricevere 
-					readSocket = null;
-		
-					do
-					{
-						// Ciclo che rimane in ascolto sul socket
-						try 
-						{
-							readSocket = reader_on_socket.readLine();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-					}while(readSocket == null);
-					
-				}while(!(readSocket.equals("@ok")) &&
-						!(readSocket.equals("@no,@tokenNonValido")) &&
-						!(readSocket.equals("@no,@nonIlTuoTurno")) &&
-						!(readSocket.equals("@no,@nonInPartita")) && 
-						!(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
-					changeRoundNotify(readSocket);
-			}while((ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno")));
-			
-			return readSocket;
+				
+				e.printStackTrace();
+				return null;
+			} 
 		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			e.printStackTrace();
+		else
 			return null;
-		}
-	}		
+	}	
+	
 }
 	

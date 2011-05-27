@@ -1,5 +1,14 @@
 package Server;
 
+import java.net.MalformedURLException;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,11 +80,7 @@ public class ServerLogic {
 	
 	
 	
-	public ServerLogic() {
-		// TODO Auto-generated constructor stub
-
-		
-		
+	public ServerLogic() throws RemoteException {
 		players = new Hashtable<String, Player>();
 		loggedPlayers = new Hashtable<String, Player>();
 		rank = new Hashtable<String, Species>();
@@ -85,7 +90,6 @@ public class ServerLogic {
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
 		//System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
-		this.add_new_user("@creaUtente,user=andrea,pass=andrea");
 	}
 
 	public void controlAction() {
@@ -98,18 +102,17 @@ public class ServerLogic {
 	 *            Messaggio del Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String add_new_user(String msg) {
-		String[] parameters = ServerMessageBroker
-				.manageReceiveMessageSplit(msg);
-
-		if (!players.containsKey(parameters[0])) {
-			Player newPlayer = new Player(parameters[0], parameters[1]);
-			players.put(parameters[0], newPlayer);
+	public String add_new_user(String username, String password) 
+	{
+		if (!players.containsKey(username)) 
+		{
+			Player newPlayer = new Player(username, password);
+			players.put(username, newPlayer);
 
 			return ServerMessageBroker.createOkMessage();
-		} else
-			return ServerMessageBroker
-					.createErroMessage("usernameOccupato");
+		} 
+		else
+			return ServerMessageBroker.createErroMessage("usernameOccupato");
 	}
 
 	/**
@@ -117,24 +120,21 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String login(String msg)
+	public String login(String username, String password)
 	{
 		// TODO : gestione token perso
-		
-		String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(msg);
-		
-		if(players.containsKey(parameters[0]))
+		if(players.containsKey(username))
 		{
-			if(players.get(parameters[0]) != null)
+			if(!(loggedPlayers.containsValue(players.get(username))))
 			{
-				if((((Player)players.get(parameters[0])).getUserName().equals(parameters[0])) && (((Player)players.get(parameters[0])).getPassword().equals(parameters[1])))
+				if((((Player)players.get(username)).getUserName().equals(username)) && (((Player)players.get(username)).getPassword().equals(password)))
 				{
-					String token = this.generateToken(parameters[0], System.nanoTime());
-					players.get(parameters[0]).setToken(token);
+					String token = this.generateToken(username, System.nanoTime());
+					players.get(username).setToken(token);
 					
 					if(!this.isLoggedUser(token))
 					{
-						loggedPlayers.put(token, players.get(parameters[0]));
+						loggedPlayers.put(token, players.get(username));
 						return ServerMessageBroker.createOkMessageWithOneParameter(token);
 					}
 				}
@@ -149,14 +149,11 @@ public class ServerLogic {
 	 * @param msg : messaggio del Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String addNewSpecies(String msg) 
+	public String addNewSpecies(String token, String name, String type) 
 	{
-		String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(msg);
-		String token = parameters[0];
-		
-		if (this.isLoggedUser(parameters[0])) 
+		if (this.isLoggedUser(token)) 
 		{
-			boolean isRacePresent = false;
+			//oolean isRacePresent = false;
 			
 			/* Collection<Player> c = players.values(); 
 			 * Iterator<Player> iter = c.iterator();
@@ -172,38 +169,38 @@ public class ServerLogic {
 				 */
 				return ServerMessageBroker.createErroMessage("razzaGiaCreata");
 			}
-				
-			Set set = players.entrySet();
-			Iterator<Player> iter = set.iterator();
+			/*	
+			Set set = rank.entrySet();
+			Iterator<Species> iter = set.iterator();
 			isRacePresent = false;
 			
 			while (iter.hasNext()) 
 			{
-				Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
+				Map.Entry me = (Map.Entry) iter.next();
 				
-				if(me.getValue().getSpecie() != null)
+				if(me.getValue() != null)
 				{
-					if (me.getValue().getSpecie().getName().equals(parameters[1]))
+					if (((Species)me.getValue()).getName().equals(name))
 					{
 						isRacePresent = true;
 						break;
 					}
 				}
-			}
-			if (!isRacePresent) 
+			}*/
+			if (rank.get(name) == null) 
 			{
 				Species new_specie;
-				if (parameters[2].equals("c")) 
+				if (type.equals("c")) 
 				{
-					new_specie = new Species(parameters[1], Species.getCarnType(), loggedPlayers.get(parameters[0]).getUserName());
+					new_specie = new Species(name, Species.getCarnType(), loggedPlayers.get(token).getUserName());
 				} 
 				else 
 				{
-					new_specie = new Species(parameters[1], Species.getVegType(), loggedPlayers.get(parameters[0]).getUserName());
+					new_specie = new Species(name, Species.getVegType(), loggedPlayers.get(token).getUserName());
 				}
 
-				rank.put(new_specie.getName(), new_specie);
-				loggedPlayers.get(parameters[0]).setSpecie(new_specie);
+				rank.put(name, new_specie);
+				loggedPlayers.get(token).setSpecie(new_specie);
 				return ServerMessageBroker.createOkMessage();
 			} 
 			else
@@ -223,9 +220,8 @@ public class ServerLogic {
 	 * @param token : token del giocatore
 	 * @return Il comando da inviare al Client
 	 */
-	public String gameAccess(String msg) 
+	public String gameAccess(String token) 
 	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		// TODO: imposizione sul client di creare la specie prima di avere un accesso alla partita
 		// Chiamata di questo metodo seguita dalla chiamata a changeRound
 		if(this.isLoggedUser(token))
@@ -235,10 +231,9 @@ public class ServerLogic {
 				if (currentSession.getPlayer(token) == null)
 				{
 					currentSession.addPlayer(token, loggedPlayers.get(token));
-					if(isTheFirstAccess)
+					if(currentSession.numberPlayersInGame() == 0)
 					{
 						tokenOfCurrentPlayer = token;
-						isTheFirstAccess = false;
 						this.changeRound();
 					}
 					
@@ -293,10 +288,8 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String gameExit(String msg)
-	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		
+	public String gameExit(String token)
+	{		
 		if(this.isLoggedUser(token))
 		{
 			if(currentSession.getPlayer(token) != null)
@@ -351,10 +344,9 @@ public class ServerLogic {
 	 * @param msg : messaggio del Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String playerList(String msg)
+	public String playerList(String token)
 	{
 		ArrayList<String> parameters = new ArrayList<String>();
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		parameters.add("listaGiocatori");
 		
 		if(isLoggedUser(token))
@@ -380,9 +372,8 @@ public class ServerLogic {
 	 * @param msg : messaggio del Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String ranking(String msg)
+	public String ranking(String token)
 	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		ArrayList<String> parameters = new ArrayList<String>();
 		// TODO: gestione specie estinte e cambio punteggio nel player
 		
@@ -443,10 +434,8 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String logout(String msg)
-	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-	
+	public String logout(String token)
+	{	
 		if(isLoggedUser(token))
 		{
 			loggedPlayers.remove(token);
@@ -465,10 +454,9 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String generalMap(String msg)
+	public String generalMap(String token)
 	{
 		ArrayList<String> map = new ArrayList<String>();
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		
 		if(isLoggedUser(token))
 		{
@@ -502,9 +490,8 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String dinosaursList(String msg)
+	public String dinosaursList(String token)
 	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("listaDinosauri");
 		
@@ -533,11 +520,8 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String dinoZoom(String msg)
-	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
-		
+	public String dinoZoom(String token, String dinoId)
+	{		
 		ArrayList<String> zoom = new ArrayList<String>();
 		
 		if(isLoggedUser(token))
@@ -587,10 +571,8 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String dinoState(String msg)
+	public String dinoState(String token, String dinoId)
 	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
 		ArrayList<String> state = new ArrayList<String>();
 		boolean isPossibleDino = false;
 		Dinosaur possibleDino = null;
@@ -687,110 +669,114 @@ public class ServerLogic {
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 	}
 	
-	public String dinoMove(String msg)
+	public String dinoMove(String token, String dinoId, String rowDest, String colDest)
 	{
-		String token = ServerMessageBroker.manageDinoMovement(msg)[0];
-		String dinoId = ServerMessageBroker.manageDinoMovement(msg)[1];
-		int	dinoRow = Integer.parseInt(ServerMessageBroker.manageDinoMovement(msg)[2]);
-		int	dinoCol = Integer.parseInt(ServerMessageBroker.manageDinoMovement(msg)[3]);
+		int	dinoRow = Integer.parseInt(rowDest);
+		int	dinoCol = Integer.parseInt(colDest);
 		
 		if(isLoggedUser(token))						//controlla se � loggato
 		{
 			if(currentSession.getPlayer(token) != null)			//controllo se � in partita
 			{
-	//manca non � il tuo turno
-				if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
+				if(tokenOfCurrentPlayer.equals(token))
 				{
-					Dinosaur dino = currentSession.getPlayer(token).getSpecie().getDino(dinoId);
-					if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getMoveTake())		//controllo che il dinosauro possa fare ancora mosse di movimento
+					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
-						if((dinoRow>=0)&&(dinoRow<Game.maxRow)&&(dinoCol>=0)&&(dinoCol<Game.maxCol))	//controllo che la destinazione sia nella mappa
+						Dinosaur dino = currentSession.getPlayer(token).getSpecie().getDino(dinoId);
+						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getMoveTake())		//controllo che il dinosauro possa fare ancora mosse di movimento
 						{
-							if(Game.checkReachCell(dino.getPosRow(), dino.getPosCol(), dinoRow, dinoCol, dino.getDistMax()))	//controllo che il dinosauro possa arrivare a destinazione
+							if((dinoRow>=0)&&(dinoRow<Game.maxRow)&&(dinoCol>=0)&&(dinoCol<Game.maxCol))	//controllo che la destinazione sia nella mappa
 							{
-								if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino � vegetariano controllo che nn ci sia un vegetariano a destinazione
+								if(Game.checkReachCell(dino.getPosRow(), dino.getPosCol(), dinoRow, dinoCol, dino.getDistMax()))	//controllo che il dinosauro possa arrivare a destinazione
 								{
-									if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).move(dinoRow, dinoCol))		//controlla che abbia abbastanza energia x muoversi e cambia le coordinate in dino
+									if(!(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)))		//se dino � vegetariano controllo che nn ci sia un vegetariano a destinazione
 									{
-										if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'� un altro dinosauro nella cella di arrivo
+										if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).move(dinoRow, dinoCol))		//controlla che abbia abbastanza energia x muoversi e cambia le coordinate in dino
 										{
-											if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).fight(Game.getCell(dinoRow, dinoCol)))		//combatte
+											if((Game.getCell(dinoRow, dinoCol) instanceof Vegetarian)||(Game.getCell(dinoRow, dinoCol) instanceof Carnivorous))		//controlla se c'� un altro dinosauro nella cella di arrivo
 											{
-												
-/*		ricerca dino avversario						String specie = ((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie();
-													boolean check=false;
-													Iterator iter = currentSession.getPlayersList();
-													Map.Entry me;	
-													do
-													{
-														me = (Map.Entry) iter.next();
-														if((specie.compareTo(((Player)me.getValue()).getSpecie().getName()))==0)
+												if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).fight(Game.getCell(dinoRow, dinoCol)))		//combatte
+												{
+													
+	/*		ricerca dino avversario						String specie = ((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie();
+														boolean check=false;
+														Iterator iter = currentSession.getPlayersList();
+														Map.Entry me;	
+														do
 														{
-															check=true;
-														}
-													}while(!check);
-*/													
-												((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
-												
-//aggiornare mappa generale del player che perde													
+															me = (Map.Entry) iter.next();
+															if((specie.compareTo(((Player)me.getValue()).getSpecie().getName()))==0)
+															{
+																check=true;
+															}
+														}while(!check);
+	*/													
+													((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
+													
+	//aggiornare mappa generale del player che perde													
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))		//controlla se il dino � vegetariano e se nella cella c'� vegetazione
+													{
+														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia
+													}
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))	//controlla se il dino � carnivoro e se nella cella c'� carogna
+													{
+	/*mangiare altro dino*/								((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
+													}
+													
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
+													{
+														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
+													}
+													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
+													{
+	/*mangiare altro dino*/								((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+													}
+													
+													Game.setCellMap(currentSession.getPlayer(token).getSpecie().getDino(dinoId), dinoRow, dinoCol);
+													currentSession.getPlayer(token).getSpecie().getDino(dinoId).setLocalMap();
+													return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "v");
+												}
+												else
+												{
+													currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+													return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "p");
+												}
+											}
+											else
+											{
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))		//controlla se il dino � vegetariano e se nella cella c'� vegetazione
 												{
-													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia
+													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia													
+													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+													
 												}
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))	//controlla se il dino � carnivoro e se nella cella c'� carogna
 												{
-/*mangiare altro dino*/								((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
+													((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
+													currentSession.repositionCarrion(dinoRow, dinoCol);																					//riposiziona carogna
 												}
-												
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
 												{
 													((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 												}
 												if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
 												{
-/*mangiare altro dino*/								((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+													((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 												}
-												
 												Game.setCellMap(currentSession.getPlayer(token).getSpecie().getDino(dinoId), dinoRow, dinoCol);
 												currentSession.getPlayer(token).getSpecie().getDino(dinoId).setLocalMap();
-												return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "v");
-											}
-											else
-											{
-												currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
-												return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "p");
+												return ServerMessageBroker.createOkMessage();
 											}
 										}
 										else
 										{
-											if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))		//controlla se il dino � vegetariano e se nella cella c'� vegetazione
-											{
-												((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia													
-												((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
-												
-											}
-											if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))	//controlla se il dino � carnivoro e se nella cella c'� carogna
-											{
-												((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
-												currentSession.repositionCarrion(dinoRow, dinoCol);																					//riposiziona carogna
-											}
-											if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
-											{
-												((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
-											}
-											if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
-											{
-												((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
-											}
-											Game.setCellMap(currentSession.getPlayer(token).getSpecie().getDino(dinoId), dinoRow, dinoCol);
-											currentSession.getPlayer(token).getSpecie().getDino(dinoId).setLocalMap();
-											return ServerMessageBroker.createOkMessage();
+											currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+											return ServerMessageBroker.createErroMessage("mortePerInedia");
 										}
 									}
 									else
 									{
-										currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
-										return ServerMessageBroker.createErroMessage("mortePerInedia");
+										return ServerMessageBroker.createErroMessage("destinazioneNonValida");
 									}
 								}
 								else
@@ -805,17 +791,17 @@ public class ServerLogic {
 						}
 						else
 						{
-							return ServerMessageBroker.createErroMessage("destinazioneNonValida");
+							return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
 						}
 					}
 					else
 					{
-						return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
+						return ServerMessageBroker.createErroMessage("idNonValido");
 					}
 				}
 				else
 				{
-					return ServerMessageBroker.createErroMessage("idNonValido");
+					return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
 				}
 			}
 			else
@@ -829,39 +815,41 @@ public class ServerLogic {
 		}
 	}
 	
-	public String dinoGrowUp(String msg)
-	{
-
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
-		
+	public String dinoGrowUp(String token, String dinoId)
+	{		
 		if(isLoggedUser(token))						//controlla se � loggato
 		{
 			if(currentSession.getPlayer(token) != null)			//controllo token valido
 			{
-	//manca non � il tuo turno
-				if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
+				if(tokenOfCurrentPlayer.equals(token))
 				{
-					if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
+					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
-						if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).growUp())		//non ha abbastanza energia
+						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
 						{
-							return ServerMessageBroker.createOkMessage();
+							if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).growUp())		//non ha abbastanza energia
+							{
+								return ServerMessageBroker.createOkMessage();
+							}
+							else
+							{
+								currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+								return ServerMessageBroker.createErroMessage("mortePerInedia");
+							}
 						}
 						else
 						{
-							currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
-							return ServerMessageBroker.createErroMessage("mortePerInedia");
+							return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
 						}
 					}
 					else
 					{
-						return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
+						return ServerMessageBroker.createErroMessage("idNonValido");
 					}
 				}
 				else
 				{
-					return ServerMessageBroker.createErroMessage("idNonValido");
+					return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
 				}
 			}
 			else
@@ -875,41 +863,42 @@ public class ServerLogic {
 		}
 	}
 	
-	public String dinoNewEgg(String msg)
-	{
-
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		String dinoId = ServerMessageBroker.manageReceiveMessageSplit(msg)[1];
-		
+	public String dinoNewEgg(String token, String dinoId)
+	{		
 		if(isLoggedUser(token))						//controlla se � loggato
 		{
 			if(currentSession.getPlayer(token) != null)			//controllo token valido
 			{
-	//manca non � il tuo turno
-				if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
+				if(tokenOfCurrentPlayer.equals(token))
 				{
-					if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
+					if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 					{
-	//TODO inserire limite dinosauri
-						String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
-						if(idDino !=null)		//non ha abbastanza energia
+						if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
 						{
-							return ServerMessageBroker.createOkMessageWithOneParameter(idDino);//id dino nuovo
+							String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
+							if(idDino !=null)		//non ha abbastanza energia
+							{
+								return ServerMessageBroker.createOkMessageWithOneParameter(idDino);//id dino nuovo
+							}
+							else
+							{
+								currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+								return ServerMessageBroker.createErroMessage("mortePerInedia");
+							}
 						}
 						else
 						{
-							currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
-							return ServerMessageBroker.createErroMessage("mortePerInedia");
+							return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
 						}
 					}
 					else
 					{
-						return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
+						return ServerMessageBroker.createErroMessage("idNonValido");
 					}
 				}
 				else
 				{
-					return ServerMessageBroker.createErroMessage("idNonValido");
+					return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
 				}
 			}
 			else
@@ -929,9 +918,8 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	public String roundConfirm(String msg)
+	public String roundConfirm(String token)
 	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
 		// Dopo questo metodo chiamare la changeRound
 		if(isLoggedUser(token))
 		{
@@ -967,13 +955,11 @@ public class ServerLogic {
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	/* La chiamata di questo metodo è seguita dalla chiamata al metodo chamngeRoundche crea il messaggio da mandare 
+	/* La chiamata di questo metodo è seguita dalla chiamata al metodo changeRound che crea il messaggio da mandare 
 	 * in broadcast
 	 */
-	public String playerRoundSwitch(String msg)
-	{
-		String token = ServerMessageBroker.manageReceiveMessageSplit(msg)[0];
-		
+	public String playerRoundSwitch(String token)
+	{		
 		if(isLoggedUser(token))
 		{
 			if(currentSession.getPlayer(token) != null)
@@ -982,6 +968,7 @@ public class ServerLogic {
 				{
 					this.updatePlayer(token);
 					counter2m.interrupt();
+					this.changeRound();
 					return ServerMessageBroker.createOkMessage();
 				}
 				else
@@ -994,15 +981,17 @@ public class ServerLogic {
 	}
 	
 	/**
-	 * Crea il messaggio di cambio del turno da mandare in broadcast a tutti i giocatori come notifica di cambio turno
-	 * @return Messaggio da mandare ai client in broadcast
+	 * Crea il thread dei 30 secondi di conferma
 	 */
 	public void changeRound()
 	{
 		Counter counter = new Counter(this, timeForConfirm);
 		counter30s = new Thread(counter);
 		counter30s.start();
-		
+	}
+	
+	public void changeRoundNotify()
+	{
 		Server.sendBroadcastMessage(ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName()));
 	}
 	
@@ -1055,7 +1044,7 @@ public class ServerLogic {
 				/* TODO : se arrivato qui significa che tutti i giocatori hanno giocato il server
 				 * deve eseguire il metodo updateGame()
 				 */
-				this.updateGame();
+				this.updateGame(token);
 				break;
 			}
 		}
@@ -1065,7 +1054,7 @@ public class ServerLogic {
 	 * Esegue gli aggiornamenti sugli oggetti della mappa e sulle specie in partita. Da chiamare dopo che tutti hanno 
 	 * giocato.
 	 */
-	public void updateGame()
+	public void updateGame(String token)
 	{
 		/*
 		 * - Diminuisco turni vissuti della specie: massimo 120 turni dopo i quali la specie muore(timeOfLive=0).
@@ -1084,6 +1073,11 @@ public class ServerLogic {
 			Species currentSpecie = currentPlayer.getSpecie();			
 			currentSpecie.updateTimeOfLive();
 			currentSpecie.increaseScore();
+			
+			if(currentSpecie.getDinosaurs() == null)
+			{
+				currentSession.removePlayer(token);
+			}
 			
 			if(currentSpecie.getTimeOfLive() == 0)
 			{
@@ -1218,15 +1212,4 @@ public class ServerLogic {
 			
 		return token;
 	}
-	
-	
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ServerLogic serverLogic = new ServerLogic();
-	}
-
 }

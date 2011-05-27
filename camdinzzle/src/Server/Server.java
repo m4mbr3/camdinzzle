@@ -3,8 +3,17 @@ package Server;
 import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 public class Server implements Runnable {
@@ -12,17 +21,27 @@ public class Server implements Runnable {
 	/**
 	 * @param args
 	 */
-	//Creation of a box for login
+	// RMI variables
+	
+	// End RMI variables
+	
+	// Socket variables
 	private ServerSocket server;
 	private Socket new_connection;
-	private ServerLogic serverLogic;
+	// End Socket variables
+	
+	// ClientManager
+	private ClientManagerSocket clientManagerSocket;
+	private ClientManagerRMI clientManagerRMI;
+	// End ClientManager
+	
+	private static ArrayList<ClientManager> clientList = new ArrayList<ClientManager>();
+	
 	private boolean is_run;
 	private int port;
-	private ClientManagerSocket clientManagerSocket;
-	private static ArrayList<ClientManager> clientList = new ArrayList<ClientManager>();
-	// TODO Auto-generated constructor stub
-		
-	public Server(int port, ServerLogic serverLogic)
+	private ServerLogic serverLogic;
+	
+	public Server(int port, ServerLogic serverLogic) throws RemoteException
 	{
 			this.port = port;
 			try {
@@ -46,6 +65,7 @@ public class Server implements Runnable {
 	public void run()
 	{
 		System.out.println("<<SERVER DAEMON>>--STARTED");
+		
 		while(is_run)
 		{
 			try {
@@ -87,13 +107,77 @@ public class Server implements Runnable {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub
-		ServerLogic serverLogic = new ServerLogic();
+		ServerLogic serverLogic = null;
 		
-		int port = 4567;
-		(new Thread(new Server(port,serverLogic))).start();
+		try
+		{
+			serverLogic = new ServerLogic();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		
+		// RMI
+		
+		Registry registro = null;
+		ClientManagerRMI cmRMI = null;
+		
+		try
+		{
+			cmRMI = new ClientManagerRMI(serverLogic);
+		}
+		catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			registro = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+			Naming.bind("rmi://127.0.0.1/server:1099",(Remote) cmRMI);
+			//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AlreadyBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Naming.rebind("rmi://127.0.0.1/server:1099",(Remote) cmRMI);
+			System.out.println("Server Avviato!");
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		// End RMI
+		
+		
+		try {
+			int port = 34567;
+			(new Thread(new Server(port,serverLogic))).start();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 
 	

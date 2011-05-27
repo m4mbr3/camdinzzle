@@ -7,47 +7,29 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+
+import Server.ClientManagerSocket;
 
 public class ClientListener implements Runnable {
 	private Socket connection_with_server;
-	private BufferedWriter writer_on_socket;
 	private BufferedReader reader_on_socket;
 	private String address;
-	private String username;
-	private String password;
-	private String token;
 	private int port;
-	private String command;
-	private String read_socket;
+	private String readSocket;
+	private MonitorMessage mm;
+	private String username;
 	
-	public ClientListener(int port, String address, String username, String password)
+	public ClientListener(int port, String address, String username, MonitorMessage mm, Socket soc)
 	{
 		// TODO Auto-generated constructor stub
 		this.address = address;
-		this.username = username;
-		this.password = password;
 		this.port = port;
-		command = new String();
-		this.read_socket = null;
+		this.mm = mm;
+		this.readSocket = null;
+		connection_with_server = soc;
+		this.username = username;
 		
-		try {
-			System.out.println("<<CONN MANAGER>>--OPENING SOCKET WITH SERVER AT ADD "+address+" AND PORT " + port );
-			connection_with_server = new Socket(this.address, this.port);
-			
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
-			writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		try {
 			reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
 		} catch (IOException e) {
@@ -61,15 +43,14 @@ public class ClientListener implements Runnable {
 
 	@Override
 	public void run() 
-	{
-		// TODO Auto-generated method stub
-		String read_socket=null;
-				
+	{				
 		while(true)
 		{
+			readSocket = null;
+			
 			try 
 			{
-				read_socket = reader_on_socket.readLine();
+				readSocket = reader_on_socket.readLine();
 			} 
 			catch (IOException e) 
 			{
@@ -77,15 +58,17 @@ public class ClientListener implements Runnable {
 				e.printStackTrace();
 			}
 			
-			if(read_socket != null)
+			if(readSocket != null)
 			{
-				if(ClientMessageBroker.manageMessageType(read_socket).equals("cambioTurno"))
+				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
 				{
-					changeRoundNotify(read_socket);
+					changeRoundNotify(readSocket);
+				}
+				else
+				{
+					mm.setMessage(readSocket);
 				}
 			}
-			
-			read_socket = null;
 		}
 	}
 	

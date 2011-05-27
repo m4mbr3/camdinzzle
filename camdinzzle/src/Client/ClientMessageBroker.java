@@ -38,6 +38,124 @@ public class ClientMessageBroker
 	}
 	
 	/**
+	 * Gestisce il comando di creazione utente
+	 * @param msg : messaggio di risposta del Server
+	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'è stato
+	 */
+	public static String[] manageCreateUser(String msg)
+	{
+		String[] ret = new String[2];
+		
+		if(msg.equals("@ok"))
+		{
+			ret[0] = "ok";
+			
+			return ret;
+		}
+		else if(msg.equals("@no,@usernameOccupato"))
+		{
+			ret[0] = "no";
+			ret[1] = msg.substring(msg.indexOf(",") + 2);
+			
+			return ret;
+		}
+		return null;
+	}
+	
+	/**
+	 * Gestisce il comando di creazione della specie
+	 * @param msg : messaggio di ripsota del Server
+	 * @return Array contenente in prima posizione l'esito del messaggio e se è no contiene in seconda posizione l'errore
+	 */
+	public static String[] manageCreateSpecies(String msg)
+	{
+		String[] ret = new String[2];
+		
+		if(msg.equals("@ok"))
+		{
+			ret[0] = "ok";
+			
+			return ret;
+		}
+		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@razzaGiaCreata")))
+		{
+			ret[0] = "no";
+			ret[1] = msg.substring(msg.indexOf("," + 2));
+			
+			return ret;
+		}
+		return null;
+	}
+	
+	/**
+	 * Gestisce il comando di accesso partita
+	 * @param msg
+	 * @return
+	 */
+	public static String[] manageGameAccess(String msg)
+	{
+		String[] ret = new String[2];
+		
+		if(msg.equals("@ok"))
+		{
+			ret[0] = "ok";
+			
+			return ret;
+		}
+		else if((msg.equals("@no,@troppiGiocatori")) || (msg.equals("@no,@tokenNonValido")))
+		{
+			ret[0] = "no";
+			ret[1] = msg.substring(msg.indexOf("," + 2));
+			
+			return ret;
+		}
+		return null;
+	}
+	
+	/**
+	 * Gestisce il comando di uscita partita
+	 * @param msg
+	 * @return
+	 */
+	public static String[] manageGameExit(String msg)
+	{
+		String[] ret = new String[2];
+		
+		if(msg.equals("@ok"))
+		{
+			ret[0] = "ok";
+			
+			return ret;
+		}
+		else if(msg.equals("@no,@tokenNonValido"))
+		{
+			ret[0] = "no";
+			ret[1] = msg.substring(msg.indexOf("," + 2));
+			
+			return ret;
+		}
+		return null;
+	}
+	
+	/**
+	 * Gestisce il comando di logout
+	 * @param msg
+	 * @return
+	 */
+	public static String[] manageLogout(String msg)
+	{
+		if(msg.equals("@ok"))
+		{
+			return new String[]{"ok"};
+		}
+		else if(msg.equals("@no,@tokenNonValido"))
+		{
+			return new String[]{"no", "tokenNonValido"};
+		}
+		return null;
+	}
+	
+	/**
 	 * Gestisce il nome del comando ricevuto
 	 * @param msg
 	 * @return nome del comando ricevuto
@@ -64,34 +182,50 @@ public class ClientMessageBroker
 	 */
 	public static ArrayList<String> manageGeneralMap(String msg)
 	{
-		ArrayList<String> generalMap = new ArrayList<String>();
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		String[] dotAndCommaSeparator = validMessage.split(";");
-		
-		/**
-		 * gestione prima parte del messaggio contenente la dimenzione della mappa generale
-		 */
-		String[] commaSeparator = dotAndCommaSeparator[0].split(",");
-		generalMap.add(commaSeparator[0].substring(1, 2));
-		generalMap.add(commaSeparator[1].substring(0, 1));
-		/**
-		 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
-		 * poter iniziare il ciclo di gestione delle singole righe
-		 */
-		dotAndCommaSeparator[0] = commaSeparator[2];
-		String[] bracketSquareSeparator;
-		
-		for (String row : dotAndCommaSeparator) 
+		if(msg.contains("@mappaGenerale,"))
 		{
-			bracketSquareSeparator = row.split("\\[");
+			ArrayList<String> generalMap = new ArrayList<String>();
+			String validMessage = msg.substring(msg.indexOf(',')+1);
 			
-			for (int i = 1; i<bracketSquareSeparator.length; i++) 
+			if(msg.contains(";"))
 			{
-				generalMap.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
+				String[] dotAndCommaSeparator = validMessage.split(";");
+				
+				/**
+				 * gestione prima parte del messaggio contenente la dimenzione della mappa generale
+				 */
+				String[] commaSeparator = dotAndCommaSeparator[0].split(",");
+				generalMap.add(commaSeparator[0].substring(1, 2));
+				generalMap.add(commaSeparator[1].substring(0, 1));
+				/**
+				 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
+				 * poter iniziare il ciclo di gestione delle singole righe
+				 */
+				dotAndCommaSeparator[0] = commaSeparator[2];
+				String[] bracketSquareSeparator;
+				
+				for (String row : dotAndCommaSeparator) 
+				{
+					bracketSquareSeparator = row.split("\\[");
+					
+					for (int i = 1; i<bracketSquareSeparator.length; i++) 
+					{
+						generalMap.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
+					}
+				}
+				
+				return generalMap;
 			}
 		}
-		
-		return generalMap;
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))
+		{
+			ArrayList<String> ret = new ArrayList<String>();
+			ret.add("no");
+			ret.add(msg.substring(msg.indexOf(",") + 2));
+			
+			return ret;
+		}
+		return null;
 	}
 	
 	/**
@@ -119,10 +253,26 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageDinoList(String msg)
 	{
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		String[] dinoList = validMessage.split(",");
-		
-		return dinoList;
+		if(msg.contains("@listaDinosauri,"))
+		{
+			String validMessage = msg.substring(msg.indexOf(',')+1);
+			
+			if(validMessage.contains(","))
+			{
+				String[] dinoList = validMessage.split(",");
+				
+				return dinoList;
+			}
+			else
+			{
+				return new String[]{validMessage};
+			}
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
 	}
 	
 	/**
@@ -133,41 +283,51 @@ public class ClientMessageBroker
 	 */
 	public static ArrayList<String> manageDinoZoom(String msg)
 	{
-		//@vistaLocale,{27,8},{1,1},[c,0][c,0][c,0][a][t];[c,0][c,0][a][a][a];[c,0][a][a][a][a];[c,0][t][a][a][a];[t][c,0][t][a][c,0]
-		
-		
-		ArrayList<String> dinoZoomList = new ArrayList<String>();
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		String[] dotAndCommaSeparator = validMessage.split(";");
-		
-		/**
-		 * gestione prima parte del messaggio contenente la posizione di partenza(basso a sx), la dimenzione della vista e
-		 * la prima riga della vista
-		 */
-		String[] commaSeparator = dotAndCommaSeparator[0].split(",");
-		dinoZoomList.add(commaSeparator[0].substring(1));
-		dinoZoomList.add(commaSeparator[1].substring(0, commaSeparator[1].length() - 1));
-		dinoZoomList.add(commaSeparator[2].substring(1));
-		dinoZoomList.add(commaSeparator[3].substring(0, commaSeparator[3].length() - 1));
-		/**
-		 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
-		 * poter iniziare il ciclo di gestione delle singole righe
-		 */
-		dotAndCommaSeparator[0] = dotAndCommaSeparator[0].substring(dotAndCommaSeparator[0].lastIndexOf("\\}") + 2);
-		String[] bracketSquareSeparator;
-		
-		for (String row : dotAndCommaSeparator) 
+		if(msg.contains("@vistaLocale,"))
 		{
-			bracketSquareSeparator = row.trim().split("\\[");
+			ArrayList<String> dinoZoomList = new ArrayList<String>();
+			String validMessage = msg.substring(msg.indexOf(',')+1);
+			String[] dotAndCommaSeparator = validMessage.split(";");
 			
-			// Ciclo che parte da uno perchè il primo carattere dell'array è uno spazio 
-			for (int i = 1; i<bracketSquareSeparator.length; i++) 
+			/**
+			 * gestione prima parte del messaggio contenente la posizione di partenza(basso a sx), la dimenzione della vista e
+			 * la prima riga della vista
+			 */
+			String[] commaSeparator = dotAndCommaSeparator[0].split(",");
+			dinoZoomList.add(commaSeparator[0].substring(1));
+			dinoZoomList.add(commaSeparator[1].substring(0, commaSeparator[1].length() - 1));
+			dinoZoomList.add(commaSeparator[2].substring(1));
+			dinoZoomList.add(commaSeparator[3].substring(0, commaSeparator[3].length() - 1));
+			/**
+			 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
+			 * poter iniziare il ciclo di gestione delle singole righe
+			 */
+			dotAndCommaSeparator[0] = dotAndCommaSeparator[0].substring(dotAndCommaSeparator[0].lastIndexOf("\\}") + 2);
+			String[] bracketSquareSeparator;
+			
+			for (String row : dotAndCommaSeparator) 
 			{
-				dinoZoomList.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
+				bracketSquareSeparator = row.trim().split("\\[");
+				
+				// Ciclo che parte da uno perchè il primo carattere dell'array è uno spazio 
+				for (int i = 1; i<bracketSquareSeparator.length; i++) 
+				{
+					dinoZoomList.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
+				}
 			}
+			
+			return dinoZoomList;
 		}
-		
-		return dinoZoomList;
+		else if((msg.equals("@ok,@tokenNonValido")) ||(msg.equals("@ok,@idNonValido")) || (msg.equals("@ok,@nonInPartita")))
+		{
+			ArrayList<String> ret = new ArrayList<String>();
+			
+			ret.add("no");
+			ret.add(msg.substring(msg.indexOf(",") + 2));
+			
+			return ret;
+		}
+		return null;
 	}
 	
 	/**
@@ -177,30 +337,65 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageDinoState(String msg)
 	{
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		String[] dinoState = validMessage.split(",");
-		
-		//Eliminazione delle parentesi nelle coordinate di inizio
-		dinoState[3] = dinoState[3].substring(1);
-		dinoState[4] = dinoState[4].substring(0, dinoState[4].length() - 1);
-		
-		return dinoState;
+		if(msg.contains("@statoDinosauro,"))
+		{
+			String validMessage = msg.substring(msg.indexOf(',')+1);
+			String[] dinoState = validMessage.split(",");
+			
+			//Eliminazione delle parentesi nelle coordinate di inizio
+			dinoState[3] = dinoState[3].substring(1);
+			dinoState[4] = dinoState[4].substring(0, dinoState[4].length() - 1);
+			
+			return dinoState;
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")) || (msg.equals("@no,@idNonValido")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
 	}
 
 	/**
 	 * Gestisce il messaggio del movimento di un dinosauro
 	 * @param msg
-	 * @return stringa contenente l'esito del combattimento se c'è stato, altrimenti ritorna null
+	 * @return stringa contenente l'esito del combattimento se c'è stato, altrimenti ritorna ok
 	 */
-	public static String manageDinoMove(String msg)
+	public static String[] manageDinoMove(String msg)
 	{
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		
-		if(validMessage.indexOf(',') != -1)
+		if(msg.equals("@ok"))
 		{
-			String[] splittedMessage = validMessage.split(",");
-			 
-			return splittedMessage[1];
+			return new String[]{"ok"};
+		}
+		else if(msg.equals("@ok,@combattimento,v"))
+		{
+			return new String[]{"ok", "combattimento", "v"};
+		}
+		else if(msg.equals("@ok,@combattimento,p"))
+		{
+			return new String[]{"ok", "combattimento", "p"};
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@idNonValido"))
+				|| (msg.equals("@no,@destinazioneNonValida")) || (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
+				|| (msg.equals("@no,@mortePerInedia")) || (msg.equals("@no,@nonIlTuoTurno"))
+				|| (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
+	}
+	
+	public static String[] manageDinoGrowUp(String msg)
+	{
+		if(msg.equals("@ok"))
+		{
+			return new String[]{"ok"};
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@idNonValido"))
+				|| (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
+				|| (msg.equals("@no,@mortePerInedia")) || (msg.equals("@no,@nonIlTuoTurno"))
+				|| (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
 		}
 		return null;
 	}
@@ -212,7 +407,19 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageNewEgg(String msg)
 	{
-		return splitMessage(msg);
+		if(msg.equals("@ok"))
+		{
+			return new String[]{"ok"};
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@idNonValido"))
+				|| (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
+				|| (msg.equals("@no,@raggiuntoNumeroMaxDinosauri"))
+				|| (msg.equals("@no,@mortePerInedia")) || (msg.equals("@no,@nonIlTuoTurno"))
+				|| (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
 	}
 	
 	/**
@@ -222,7 +429,54 @@ public class ClientMessageBroker
 	 */
 	public static String[] roundSwitch(String msg)
 	{
-		return splitMessage(msg);
+		if(msg.equals("@ok"))
+		{
+			return new String[]{"ok"};
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonIlTuoTurno"))
+				|| (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param msg
+	 * @return
+	 */
+	public static String[] manageRoundConfirm(String msg)
+	{
+		if(msg.equals("@ok"))
+		{
+			return new String[]{"ok"};
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonIlTuoTurno"))
+				|| (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param msg
+	 * @return
+	 */
+	public static String[] managePlayerChangeRound(String msg)
+	{
+		if(msg.equals("@ok"))
+		{
+			return new String[]{"ok"};
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonIlTuoTurno"))
+				|| (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
 	}
 	
 	/**
@@ -232,7 +486,23 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageLogin(String msg)
 	{
-		return splitMessage(msg);
+		String[] ret = new String[2];
+		
+		if(msg.contains("@ok,"))
+		{
+			ret[0] = "ok";
+			ret[1] = msg.substring(msg.indexOf(",") + 1);
+			
+			return ret;
+		}
+		else if(msg.equals("@no,@autenticazioneFallita"))
+		{
+			ret[0] = "no";
+			ret[1] = msg.substring(msg.indexOf(",") + 2);
+			
+			return ret;
+		}
+		return null;
 	}
 	
 	/**
@@ -242,7 +512,24 @@ public class ClientMessageBroker
 	 */
 	public static String[] managePlayerList(String msg)
 	{
-		return splitMessage(msg);
+		if(msg.contains("@listaGiocatori,"))
+		{
+			String validMessage = msg.substring(msg.indexOf(',')+1);
+			
+			if(validMessage.contains(","))
+			{
+				return validMessage.split(",");
+			}
+			else
+			{				
+				return new String[]{validMessage};
+			}
+		}
+		else if(msg.equals("@no,@tokenNonValido"))
+		{
+			return new String[]{"no", "tokenNonValido"};
+		}
+		return null;
 	}
 	
 	/**
@@ -253,21 +540,38 @@ public class ClientMessageBroker
 	 */
 	public static ArrayList<String> manageRanking(String msg)
 	{
-		ArrayList<String> rankingList = new ArrayList<String>();
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		String[] bracketBraceSeparator = validMessage.split("\\{");
-		
-		for (int j = 1; j<bracketBraceSeparator.length;j++) 
+		if(msg.contains("@classifica,"))
 		{
-			String[] commaSeparator = bracketBraceSeparator[j].split(",");
-			for(int i = 0; i<=2; i++)
+			ArrayList<String> rankingList = new ArrayList<String>();
+			String validMessage = msg.substring(msg.indexOf(',')+1);
+			
+			if(validMessage.contains("\\{"))
 			{
-				rankingList.add(commaSeparator[i]);
+				String[] bracketBraceSeparator = validMessage.split("\\{");
+				
+				for (int j = 1; j<bracketBraceSeparator.length;j++) 
+				{
+					String[] commaSeparator = bracketBraceSeparator[j].split(",");
+					for(int i = 0; i<=2; i++)
+					{
+						rankingList.add(commaSeparator[i]);
+					}
+					rankingList.add(commaSeparator[3].substring(0, 1));
+				}
+				
+				return rankingList;
 			}
-			rankingList.add(commaSeparator[3].substring(0, 1));
 		}
-		
-		return rankingList;
+		else if(msg.equals("@no,@tokenNonValido"))
+		{
+			ArrayList<String> ret = new ArrayList<String>();
+			
+			ret.add("ok");
+			ret.add("tokenNonValido");
+			
+			return ret;
+		}
+		return null;
 	}
 	
 	/**

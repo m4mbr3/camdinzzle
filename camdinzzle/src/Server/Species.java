@@ -150,9 +150,14 @@ public class Species
 	 */
 	public Iterator getDinosaurs()
 	{
-		Set set = myDinosaurs.entrySet();
-		
-		return set.iterator();
+		if(myDinosaurs.size() > 0)
+		{
+			Set set = myDinosaurs.entrySet();
+			
+			return set.iterator();
+		}
+		else
+			return null;
 	}
 	
 	/**

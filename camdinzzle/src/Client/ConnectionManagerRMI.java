@@ -3,6 +3,11 @@
  */
 package Client;
 
+import java.rmi.Naming;
+import java.util.ArrayList;
+
+
+
 /**
  * @author Andrea
  *
@@ -10,43 +15,43 @@ package Client;
 public class ConnectionManagerRMI implements ConnectionManager {
 
 	@Override
-	public String creaUtente(String msg) {
+	public String creaUtente(String username, String password) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String login(String msg) {
+	public String login(String username, String password) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String creaRazza(String msg) {
+	public String creaRazza(String name, String type) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String accessoPartita(String msg) {
+	public String accessoPartita() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String uscitaPartita(String msg) {
+	public String uscitaPartita() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String listaGiocatori() {
+	public String[] listaGiocatori() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String classifica() {
+	public ArrayList<String> classifica() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -58,58 +63,59 @@ public class ConnectionManagerRMI implements ConnectionManager {
 	}
 
 	@Override
-	public String mappaGenerale() {
+	public ArrayList<String> mappaGenerale() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String listaDinosauri() {
+	public String[] listaDinosauri() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String vistaLocale(String dinoId) {
+	public ArrayList<String> vistaLocale(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String statoDinosauro(String dinoId) {
+	public String[] statoDinosauro(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String muoviDinosauro(String dinoId, String row, String col) {
+	public String[] muoviDinosauro(String dinoId, String row, String col) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String cresciDinosauro(String dinoId) {
+	public String[] cresciDinosauro(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String deponiUovo(String dinoId) {
+	public String[] deponiUovo(String dinoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String confermaTurno() {
+	public String[] confermaTurno() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String passaTurno() {
+	public String[] passaTurno() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	
 
 }

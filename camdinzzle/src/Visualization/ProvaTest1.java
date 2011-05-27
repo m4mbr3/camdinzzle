@@ -1,12 +1,18 @@
 package Visualization;
 
-import Server.*;
 import Client.*;
+import Server.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.security.KeyStore.Entry;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -29,12 +35,29 @@ public class ProvaTest1 {
 		Textual text = new Textual();
 		ConnectionManagerSocket cms = null;
 		ClientListener pl = null;
+		ArrayList<String> requestQueue = new ArrayList<String>();
 		
 		String [] arr;
 		String msg, scelta = "";
 		BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in));
 		String token = "";
 		
+		
+		try {
+			ServerRMIInterface server = (ServerRMIInterface)Naming.lookup("rmi://127.0.0.1/server:1099");
+			System.out.println(server.add_new_user("cio"));
+			
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
 		do
 		{
 			System.out.println("Possibilità di azioni:\n");
@@ -70,19 +93,27 @@ public class ProvaTest1 {
 						arr = text.drawUserCreation();
 						msg = ClientMessageBroker.createUser(arr[0], arr[1]);
 						
-						cms = new ConnectionManagerSocket(34567, "localhost", arr[0], arr[1]);
-						pl = new ClientListener(34567, "localhost", arr[0], arr[1]);
+						MonitorMessage mm = new MonitorMessage();
+						Socket soc = new Socket("localhost", 34567);
+						
+						requestQueue.add("creaUtente");
+						
+						cms = new ConnectionManagerSocket(34567, "localhost", arr[0], arr[1], mm, soc, requestQueue);
+						pl = new ClientListener(34567, "localhost", arr[0], mm, soc);
 						
 						System.out.println("Client: " + msg);
-						System.out.println("cms: " + cms.creaUtente(msg));
+						System.out.println("cms: " + cms.creaUtente(arr[0], arr[1]));
 					}
+					
 					else if(scelta.equals("LOGIN"))
 					{
 						arr = text.drawLogin();
 						msg = ClientMessageBroker.createLogin(arr[0], arr[1]);
 						
+						requestQueue.add("login");
+						
 						System.out.println("Client: " + msg);
-						msg = cms.login(msg);
+						msg = cms.login(arr[0], arr[1]);
 						System.out.println("cms: " + msg);
 						
 						token = ClientMessageBroker.manageLogin(msg)[0];
@@ -92,30 +123,38 @@ public class ProvaTest1 {
 						arr = text.drawRaceCreation();
 						msg = ClientMessageBroker.createRace(token, arr[0], arr[1]);
 						
+						requestQueue.add("creaRazza");
+						
 						System.out.println("Client: " + msg);
-						System.out.println("cms: " + cms.creaRazza(msg));
+						System.out.println("cms: " + cms.creaRazza(arr[0], arr[1]));
 					}
 					else if(scelta.equals("AP"))
 					{
 						// TODO: prima di accedere all partia, imporre la creazione di una razza
 						msg = ClientMessageBroker.createGameAccess(token);
 						
+						requestQueue.add("accessoPartita");
+						
 						System.out.println("Client: " + msg);
-						System.out.println("cms: " + cms.accessoPartita(msg));
+						System.out.println("cms: " + cms.accessoPartita());
 					}
 					else if(scelta.equals("UP"))
 					{
 						msg = ClientMessageBroker.createGameExit(token);
 						
+						requestQueue.add("uscitaPartita");
+						
 						System.out.println("Client: " + msg);
-						System.out.println("cms: " + cms.uscitaPartita(msg));
+						System.out.println("cms: " + cms.uscitaPartita());
 					}
 					else if(scelta.equals("LG"))
 					{
 						msg = ClientMessageBroker.createPlayerList(token);
 						System.out.println("Client: " + msg);
-						msg = cms.listaGiocatori();
-						System.out.println("cms: " + msg);
+						
+						requestQueue.add("listaGiocatori");
+						
+						String[] response = cms.listaGiocatori();
 						
 						text.drawPlayerList(msg);
 					}
@@ -123,8 +162,10 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createRanking(token);
 						System.out.println("Client: " + msg);
-						msg = cms.classifica();
-						System.out.println("cms: " + msg);
+						
+						requestQueue.add("classifica");
+						
+						ArrayList<String> a = cms.classifica();
 						
 						text.drawRanking(msg);
 					}
@@ -132,6 +173,9 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createLogout(token);
 						System.out.println("Client: " + msg);
+						
+						requestQueue.add("logout");
+						
 						msg = cms.logout();
 						System.out.println("cms: " + msg);
 					}
@@ -139,7 +183,10 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createGeneralMap(token);
 						System.out.println("Client: " + msg);
-						msg = cms.mappaGenerale();
+						
+						requestQueue.add("mappaGenerale");
+						
+						ArrayList<String> a = cms.mappaGenerale();
 						System.out.println("cms: " + msg);
 						
 						text.drawGeneralMap(msg);
@@ -148,7 +195,10 @@ public class ProvaTest1 {
 					{
 						msg = ClientMessageBroker.createGeneralMap(token);
 						System.out.println("Client: " + msg);
-						msg = cms.listaDinosauri();
+						
+						requestQueue.add("listaDinosauri");
+						
+						String[] a = cms.listaDinosauri();
 						System.out.println("cms: " + msg);
 						
 						text.drawDinoList(msg);
@@ -161,7 +211,10 @@ public class ProvaTest1 {
 						{
 							msg = ClientMessageBroker.createDinoZoom(token, dinoId);
 							System.out.println("Client: " + msg);
-							msg = cms.vistaLocale(msg);
+							
+							requestQueue.add("vistaLocale");
+							
+							ArrayList<String> a = cms.vistaLocale(msg);
 							System.out.println("cms: " + msg);
 							text.drawDinoZoom(dinoId, msg);
 						}
@@ -175,7 +228,10 @@ public class ProvaTest1 {
 						{
 							msg = ClientMessageBroker.createDinoState(token, dinoId);
 							System.out.println("Client: " + msg);
-							msg = cms.statoDinosauro(msg);
+							
+							requestQueue.add("statoDinosauro");
+							
+							String[] a = cms.statoDinosauro(msg);
 							System.out.println("cms: " + msg);
 							text.drawDinoState(dinoId, msg);
 						}
@@ -187,7 +243,10 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createDinoMove(token, arr[0], arr[1], arr[2]);
 						
 						System.out.println("Client: " + msg);
-						msg = cms.muoviDinosauro(arr[0], arr[1], arr[2]);
+						
+						requestQueue.add("muoviDinosauro");
+						
+						String[] a = cms.muoviDinosauro(arr[0], arr[1], arr[2]);
 						System.out.println("cms: " + msg);
 					
 					}
@@ -197,7 +256,10 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createDinoGrowUp(token, dinoId);
 						
 						System.out.println("Client: " + msg);
-						msg = cms.cresciDinosauro(dinoId);
+						
+						requestQueue.add("cresciDinosauro");
+						
+						String[] a = cms.cresciDinosauro(dinoId);
 						System.out.println("cms: " + msg);
 
 					}
@@ -207,21 +269,30 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createNewEgg(token, dinoId);
 						
 						System.out.println("Client: " + msg);
-						msg = cms.deponiUovo(dinoId);
+						
+						requestQueue.add("deponiUovo");
+						
+						String[] a = cms.deponiUovo(dinoId);
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("CT"))
 					{
 						msg = ClientMessageBroker.createRoundConfirmation(token);
 						System.out.println("Client: " + msg);
-						msg = cms.confermaTurno();
+						
+						requestQueue.add("confermaTurno");
+						
+						String[] a = cms.confermaTurno();
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("PT"))
 					{
 						msg = ClientMessageBroker.createPassOffRound(token);
 						System.out.println("Client: " + msg);
-						msg = cms.passaTurno();
+						
+						requestQueue.add("passaTurno");
+						
+						String[] a = cms.passaTurno();
 						System.out.println("cms: " + msg);
 						
 						System.out.println("Turno del giocatore: " + msg);
@@ -246,6 +317,7 @@ public class ProvaTest1 {
 					
 					System.out.println("*****FINE INTERAZIONE*****\n");
 				}
+				
 				catch(IOException ex)
 				{
 					ex.printStackTrace();
@@ -259,54 +331,5 @@ public class ProvaTest1 {
 		}
 		while(!scelta.equals("E")); 
 		
-		
-		
-		
-		/*ProvaTest1 a1 = new ProvaTest1();
-		System.out.println(a1.generateToken("formenti", new Player("aznors", "kihidui")));*/
-		
-		//ClientManagerSocket p = new ClientManagerSocket(connection_with_client, server, username)
-		/*
-		HashMap<String, String> a = new HashMap<String, String>();
-		
-		a.put("carlo", "formenti");
-		a.put("carlo23441", "formenti3443");
-		
-		Set set = a.entrySet();
-		Iterator  iter = set.iterator();
-		
-		while(iter.hasNext())
-		{
-			Map.Entry me = (Map.Entry) iter.next();
-			System.out.println(me.getValue());
-		}
-		//a.findMin(a.generateKeyForToken());
-		System.out.println(a.generateToken("carlos", new Player("Carlo","Formenti")));
-*/
-		/**
-		 * prova fuma!!!
-		 */
-//		Game g= new Game();
-//		g.createMap();
-//		g.stampa();
-/*		System.out.println((int)(Math.random() * 29 + 4));
-		System.out.println((int)(Math.random() * 29 + 4));
-		System.out.println((int)(Math.random() * 29 + 4));
-		System.out.println((int)(Math.random() * 29 + 4));
-		System.out.println("");
-		System.out.println((int)(Math.random() * 30 + 4));//ok(4 a 33)
-		System.out.println((int)(Math.random() * 30 + 4));
-		System.out.println((int)(Math.random() * 30 + 4));
-		System.out.println((int)(Math.random() * 30 + 4));
-		System.out.println("");
-		System.out.println((int)(Math.random() * 11 + 5));
-		System.out.println((int)(Math.random() * 11 + 5));
-		System.out.println((int)(Math.random() * 11 + 5));
-		System.out.println((int)(Math.random() * 11 + 5));
-		System.out.println((int)(Math.random() * 11 + 5));
-		System.out.println((int)(Math.random() * 11 + 5));
-		System.out.println((int)(Math.random() * 11 + 5));
-		System.out.println((int)(Math.random() * 11 + 5));
-*/	
 	}
 }
