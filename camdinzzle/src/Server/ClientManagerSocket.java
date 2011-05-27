@@ -64,6 +64,7 @@ public class ClientManagerSocket extends ClientManager implements Runnable {
 		//this is the daemon for one specify user that manage the processes "not in game" like "create Dinosaur "
 		while(is_run)
 		{
+			
 			try {
 				read_socket = reader_on_socket.readLine();
 			} catch (IOException e1) {

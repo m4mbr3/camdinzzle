@@ -50,6 +50,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private Client client;
 	private JLabel new_user;
 	private JLabel back;
+	private FrameGameManager managerframe;
 	private JFrame new_userframe;
 	/**
 	 * @throws HeadlessException
@@ -242,12 +243,12 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 					
 					if (ClientMessageBroker.manageMessageType(client.getConnManager().login(ClientMessageBroker.createLogin(username.getText(), password.getText()))).compareTo("ok")==0)
 					{
-						client.startUI();
+						managerframe = new FrameGameManager("ManagerPanel",client);
 					}
 					else
 					{
 						this.setVisible(true);
-						JOptionPane.showMessageDialog(this,"Error in Data Login", "Login Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,"Authentication Failed!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
 					}
 					//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
 			
