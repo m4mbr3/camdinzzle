@@ -26,6 +26,7 @@ public class Species
 	private Object[][] map;
 	private int score;
 	private String playerUsername;
+	private final int maxDino=10;
 	
 	/**
 	 * Create a new species, set name, type, timeOfLive and add one dinosaur
@@ -329,5 +330,13 @@ public class Species
 	public void setCellMap(String msg, int row, int col)
 	{
 		map[row][col] = msg;
+	}
+	
+	public boolean ckeckDinoNumber()
+	{
+		if(dinoNumber<=maxDino)
+			return true;
+		else
+			return false;
 	}
 }

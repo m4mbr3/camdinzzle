@@ -28,6 +28,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -68,6 +69,12 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private JTextArea dinoState;
 	private JList playerList;
 	private JPanel commandButtons;
+	private JButton[] commandDinoButton;
+	private JButton[] commandGameButton;
+	private JPanel timer;
+	private JFrame ranking;
+	private JTable ranking1;
+	private Client client;
 	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
@@ -80,9 +87,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 * @param title
 	 * @throws HeadlessException
 	 */
-	public FrameGame(String title) throws HeadlessException{
+	public FrameGame(String title,Client client) throws HeadlessException{
 		super(title);
-		// TODO Auto-generated constructor stub
+		this.client=client;
 		buttons = new JButton[row][col];
 		iconVegetation = new ImageIcon("Images/vege.jpg");
 		iconLand = new ImageIcon("Images/terra.jpg");
@@ -110,6 +117,14 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		panelControl.setPreferredSize(new Dimension(widthControlPanel, (int)screenSize.getHeight()));
 		panel.setLayout(new GridLayout(row,col));
 		panelControl.setLayout(new FlowLayout());
+		commandButtons = new JPanel();
+		commandButtons.setVisible(true);
+		commandButtons.setBorder(null);
+		commandButtons.setPreferredSize(new Dimension(widthControlPanel-10, ((int)screenSize.getHeight()/14*4)));
+		timer = new JPanel();
+		timer.setVisible(true);
+		timer.setBorder(null);
+		timer.setPreferredSize(new Dimension(widthControlPanel-10, (int)screenSize.getHeight()/14));
 		for (int i=0; i < row; i++)
 		{
 			for(int j=0; j < col; j++)
@@ -125,7 +140,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				//buttons[i][j].setToolTipText();
 				buttons[i][j].setIcon(iconLand);
 				buttons[i][j].setEnabled(false);
-				buttons[i][j].setDisabledIcon(iconLandDisable);
+//				buttons[i][j].setDisabledIcon(iconLandDisable);
 				panel.add(buttons[i][j]);
 //				System.out.println("Creata la cella "+i+"X"+ j);
 			}
@@ -134,7 +149,13 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		this.add(panel,BorderLayout.WEST);
 		//this.add(panelControl);
 		this.add(panelControl, BorderLayout.EAST);
-		this.repaint();
+//		this.repaint();
+		panelControl.add(new JScrollPane(dinoList));
+		panelControl.add(dinoState);
+		panelControl.add(commandButtons);
+		panelControl.add(new JScrollPane(playerList));
+		panelControl.add(timer);
+		
 		
 		this.validate();
 		}
@@ -145,24 +166,49 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 */
 	public FrameGame(String title, GraphicsConfiguration gc) {
 		super(title, gc);
-		// TODO Auto-generated constructor stub
+		// TODO ???
 	}
 	public static void main(String[] args)
 	{
-		FrameGame m = new FrameGame("fc");
+		Client c = new Client("ciao");
+		FrameGame m = new FrameGame("fc",c);
 		String msg = "@mappaGenerale,{40,40},[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][t][t][t][t][t][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][t][t][t][t][t][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][v][v][d][t][v][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][v][t][t][v][t][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][t][t][v][t][a][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b]";
 		//String msg = "@mappaGenerale,{40,40},[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][v][t][t][t][v][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][t][a][t][t][t][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][t][a][d][v][v][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][t][t][t][t][v][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][v][t][t][t][t][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b];[b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b][b]";
-		m.drawMap(msg);
+		ArrayList<String> mapList = ClientMessageBroker.manageGeneralMap(msg);
+		m.drawMap(mapList);
 		msg = "@vistaLocale,{23,15},{5,5},[a][a][v,10][t][a];[v,10][t][t][v,10][t];[v,10][v,10][d,a - 1][t][v,10];[t][c,22][t][t][c,22];[t][t][t][t][t]";
-		m.drawDinoZoom("a - 1", msg);
+		mapList = ClientMessageBroker.manageDinoZoom(msg);
+		m.drawDinoZoom("a - 1", mapList);
 		msg = "@listaDinosauri,a - 1,a - 2,a - 3,a - 4,a - 5,a - 6,a - 7,a - 8,a - 9";
-		m.drawDinoList(msg);
+		String[] msgDinoList = ClientMessageBroker.manageDinoList(msg);
+		m.drawDinoList(msgDinoList);
 		msg = "@statoDinosauro,a,a,Carnivorous,{23,3},1,1000,25";
-		m.drawDinoState("a - 1", msg);
-		//m.drawCommandButtons();
-		msg = "@listaGiocatori,a,s,d,f";
-		m.drawPlayerList(msg);
+		String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
+		m.drawDinoState("a - 1", msgDinoState);
+		m.drawCommandButtons();
+		msg = "@listaGiocatori,a,s,d,f,g,h,j,k";
+		String[] msgPlayerList = ClientMessageBroker.managePlayerList(msg);
+		m.drawPlayerList(msgPlayerList);
+		m.drawTime();
 		m.repaint();
+	}
+	
+	public void startFrameGame(Client client)
+	{
+		 FrameGame game = new FrameGame("Isola dei Dinosauri", client);
+		 game.drawMap(client.getConnManager().mappaGenerale());
+		 String[] msgDinoList = client.getConnManager().listaDinosauri();
+		 game.drawDinoList(msgDinoList);
+		 for(int i=0; i<msgDinoList.length; i++)
+		 {
+			 game.drawDinoZoom(msgDinoList[i], client.getConnManager().vistaLocale(msgDinoList[i]));
+		 }
+		 game.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
+		 game.drawCommandButtons();
+		 game.drawPlayerList(client.getConnManager().listaGiocatori());
+		 game.drawTime();
+		 game.repaint();
+		 
 	}
 
 	@Override
@@ -220,9 +266,36 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseClicked(MouseEvent arg0) 
+	{
+		if(arg0.getComponent().equals(commandDinoButton[0]))
+		{
+			//TODO chiamare movimento
+		}
+		if(arg0.getComponent().equals(commandDinoButton[1]))
+		{
+			//TODO chiamare cresci dinosauro
+		}
+		if(arg0.getComponent().equals(commandDinoButton[2]))
+		{
+			//TODO ciamare deponi uovo
+			client.getConnManager().deponiUovo(null);
+		}
+		if(arg0.getComponent().equals(commandGameButton[0]))
+		{
+			//TODO chiamare classifica creare popup
+			
+			ArreyList<String> classifica = client.getConnManager().classifica();
+			drawRanking(classifica);
+		}
+		if(arg0.getComponent().equals(commandGameButton[1]))
+		{
+			//TODO chiamare passa turno
+		}
+		if(arg0.getComponent().equals(commandGameButton[2]))
+		{
+			//TODO chiamre esci partita
+		}
 	}
 
 	@Override
@@ -250,40 +323,44 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	/**
 	 * inizializza la mappa generale con le carateristiche inviategli nel msg
 	 * @param msg
 	 */
-	public void drawMap(String msg) {
-		// TODO Auto-generated method stub
-		ArrayList<String> mapList = ClientMessageBroker.manageGeneralMap(msg);
-		int j=0;
-		int z=0;
-		for(int i = 2; i< mapList.size(); i++)
+	public boolean drawMap(ArrayList<String> mapList) {
+//		ArrayList<String> mapList = ClientMessageBroker.manageGeneralMap(msg);
+		if(mapList!=null)
 		{
-			if(z==col)
+			int j=0;
+			int z=0;
+			for(int i = 2; i< mapList.size(); i++)
 			{
-				z=0;
-				j++;
-			}
-			buttons[j][z].setEnabled(false);
-			if(mapList.get(i).compareTo("b")==0)
+				if(z==col)
 				{
-					buttons[j][z].setIcon(iconDark);
-					buttons[j][z].setDisabledIcon(iconDark);
+					z=0;
+					j++;
 				}
-			else if(mapList.get(i).compareTo("v")==0)
-				buttons[j][z].setDisabledIcon(iconVegetationDisable);
-			else if(mapList.get(i).compareTo("t")==0)
-				buttons[j][z].setDisabledIcon(iconLandDisable);
-			else if(mapList.get(i).compareTo("a")==0)
-				buttons[j][z].setDisabledIcon(iconWaterDisable);
-			else if(mapList.get(i).compareTo("d")==0)
-				buttons[j][z].setDisabledIcon(iconDark);
-			z++;
+				buttons[j][z].setEnabled(false);
+				if(mapList.get(i).compareTo("b")==0)
+					{
+						buttons[j][z].setIcon(iconDark);
+						buttons[j][z].setDisabledIcon(iconDark);
+					}
+				else if(mapList.get(i).compareTo("v")==0)
+					buttons[j][z].setDisabledIcon(iconVegetationDisable);
+				else if(mapList.get(i).compareTo("t")==0)
+					buttons[j][z].setDisabledIcon(iconLandDisable);
+				else if(mapList.get(i).compareTo("a")==0)
+					buttons[j][z].setDisabledIcon(iconWaterDisable);
+				else if(mapList.get(i).compareTo("d")==0)
+					buttons[j][z].setDisabledIcon(iconDark);
+				z++;
+			}
 		}
+		else
+			return false;
 	}
 
 	@Override
@@ -292,10 +369,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 * @param dinoId non serve
 	 * @param msg : messaggio contenente vista locale
 	 */
-	public void drawDinoZoom(String dinoId, String msg) 
+	public void drawDinoZoom(String dinoId, ArrayList<String> mapList) 
 	{
-		// TODO Auto-generated method stub
-		ArrayList<String> mapList = ClientMessageBroker.manageDinoZoom(msg);
+//		ArrayList<String> mapList = ClientMessageBroker.manageDinoZoom(msg);
 		int startRow = Integer.parseInt(mapList.get(0));
 		int startCol = Integer.parseInt(mapList.get(1));
 		int maxRow = startRow - Integer.parseInt(mapList.get(2));
@@ -346,7 +422,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				}
 				col++;
 			}
-			for(int rowEnable=startRow+1; rowEnable>maxRow; rowEnable--)
+			for(int rowEnable=startRow+1; rowEnable>maxRow-1; rowEnable--)
 			{
 				for(int colEnable=startCol-1; colEnable<maxCol+1; colEnable++)
 				{
@@ -369,9 +445,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	/**
 	 * prende la lista dinosauri e la stampa in alto a destra
 	 */
-	public void drawDinoList(String msg) {
+	public void drawDinoList(String[] msgDinoList) {
 		
-		String[] msgDinoList = ClientMessageBroker.manageDinoList(msg);
+//		String[] msgDinoList = ClientMessageBroker.manageDinoList(msg);
 		dinoList = new JList(msgDinoList);
 		dinoList.setVisibleRowCount(visibleRowCountDinoList);
 		dinoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -384,7 +460,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			public void valueChanged(ListSelectionEvent e) 
 			{
 			//TODO inserire chiamata dello stato dino
-					
+				dinoList.getSelectedIndex();
+				game.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
 				
 			}
 		});
@@ -392,14 +469,16 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		dinoList.setPreferredSize(new Dimension(widthControlPanel-25,(int)screenSize.getHeight()/14*4));
 //		dinoList.setAlignmentX(LEFT_ALIGNMENT);
 		dinoList.setFont(fontDinoList);	
-		panelControl.add(new JScrollPane(dinoList));
+		
 
 		
 	}
 
 	@Override
-	public void drawTime(String msg) {
-		// TODO Auto-generated method stub
+	public void drawTime() {
+		// TODO countdown 2m
+		timer.setBackground(Color.GREEN);
+		panelControl.add(timer);
 		
 		
 	}
@@ -411,15 +490,38 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
-	public void drawRanking(String msg) {
-		// TODO Auto-generated method stub
+	public void drawRanking(ArrayList<String> classifica) {
+		// TODO creare popup con classifica
+		ranking = new JFrame("Classifica");
+		ranking.setVisible(true);
+		ranking.setPreferredSize(new Dimension(300, 500));
+		Object[] columnNames = new String[4];
+		columnNames[0] = "USERNAME";
+		columnNames[1] = "NOME SPECIE";
+		columnNames[2] = "PUNTEGGIO";
+		columnNames[3] = "IN PARTITA";
+		Object[][] rowData = new String [classifica.size()/4][4];
+		int j=0,z=0;
+		for(int i=0;i<classifica.size();i++)
+		{
+			if(z>=4)
+			{
+				j++;
+				z=0;
+			}
+			rowData[j][z] = classifica.get(i);
+			z++;
+		}
+		ranking1 = new JTable(rowData, columnNames);
+		ranking1.setVisible(true);
+		ranking.add(ranking1);
 		
 	}
 
 	@Override
-	public void drawDinoState(String dinoId, String msg) {
+	public void drawDinoState(String dinoId, String[] msgDinoState) {
 		// TODO stampare stato dinosauro
-		String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
+//		String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
 		String newMsgDinoState="";
 		
 		newMsgDinoState += "Dinosaur's state " + dinoId + " of player " + msgDinoState[0] + ":\n";
@@ -440,13 +542,13 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		dinoState.setPreferredSize(new Dimension(widthControlPanel,(int)screenSize.getHeight()/14*2));
 		dinoState.setFont(fontDinoState);
 		dinoState.setEditable(false);
-		panelControl.add(dinoState);
+		
 		
 	}
 	@Override
-	public void drawPlayerList(String msg)
+	public void drawPlayerList(String[] msgPlayerList)
 	{
-		String[] msgPlayerList = ClientMessageBroker.manageDinoList(msg);
+//		String[] msgPlayerList = ClientMessageBroker.managePlayerList(msg);
 		playerList = new JList(msgPlayerList);
 		playerList.setVisibleRowCount(visibleRowCountPlayerList);
 		playerList.addListSelectionListener(new ListSelectionListener() {
@@ -469,23 +571,42 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 	 public void drawCommandButtons()
 	 {
-//TODO  -sistemare l'add
+//TODO  
 //		-aggiungere azioni ai bottoni
 
-		 JButton[] commandDinoButton = new JButton[3];
+		 commandDinoButton = new JButton[3];
 		 commandDinoButton[0] = new JButton("Muovi Dinosauro");
 		 commandDinoButton[1] = new JButton("Cresci Dinosauro");
 		 commandDinoButton[2] = new JButton("Deponi Uovo");
+		 commandGameButton = new JButton[3];
+		 commandGameButton[0] = new JButton("Classifica");
+		 commandGameButton[1] = new JButton("Passa Turno");
+		 commandGameButton[2] = new JButton("Esci dalla Partita");
 		 
 		 for(int i=0;i<3;i++)
 		 {
-			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-10,(int)screenSize.getHeight()/14*1));
+			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-10,(int)screenSize.getHeight()/14/5*3));
 			 commandDinoButton[i].setVisible(true);
 			 commandDinoButton[i].setEnabled(true);
+			 commandDinoButton[i].addMouseListener(this);
 			 commandButtons.add(commandDinoButton[i]);
 		 }
-		 panelControl.add(commandButtons);
+		 for(int i=0;i<3;i++)
+		 {
+			 commandGameButton[i].setPreferredSize(new Dimension(widthControlPanel - 10, (int)screenSize.getHeight()/14/5*3));
+			 commandGameButton[i].setVisible(true);
+			 commandGameButton[i].setEnabled(true);
+			 commandGameButton[i].addMouseListener(this);
+			 commandButtons.add(commandGameButton[i]);
+		 }
+		 
+		 
+
+	 }
+	 public void errorMessage()
+	 {
 		 
 	 }
-	
+	 
+
 }
