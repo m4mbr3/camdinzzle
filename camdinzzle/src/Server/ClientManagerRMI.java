@@ -19,10 +19,6 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIInterface {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	ServerLogic serverLogic;
 
 	public ClientManagerRMI(ServerLogic sv) throws RemoteException
@@ -30,105 +26,109 @@ public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIIn
 		super();
 		serverLogic = sv;
 	}
-	
-	@Override
-	public synchronized String add_new_user(String msg) throws RemoteException {
-		// TODO Auto-generated method stub
-		return "ciao";
-	}
 
 	@Override
-	public String login(String msg) throws RemoteException {
+	public String add_new_user(String username, String password)
+			throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String addNewSpecies(String msg) throws RemoteException {
+	public String login(String username, String password)
+			throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String gameAccess(String msg) throws RemoteException {
+	public String addNewSpecies(String name, String type)
+			throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String gameExit(String msg) throws RemoteException {
+	public String gameAccess() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String playerList(String msg) throws RemoteException {
+	public String gameExit() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String ranking(String msg) throws RemoteException {
+	public String playerList() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String logout(String msg) throws RemoteException {
+	public String ranking() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String generalMap(String msg) throws RemoteException {
+	public String logout() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String dinosaursList(String msg) throws RemoteException {
+	public String generalMap() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String dinoZoom(String msg) throws RemoteException {
+	public String dinosaursList() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String dinoState(String msg) throws RemoteException {
+	public String dinoZoom(String dinoId) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String dinoMove(String msg) throws RemoteException {
+	public String dinoState(String dinoId) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String dinoGrowUp(String msg) throws RemoteException {
+	public String dinoMove(String dinoId, String row, String col)
+			throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String dinoNewEgg(String msg) throws RemoteException {
+	public String dinoGrowUp(String dinoId) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String roundConfirm(String msg) throws RemoteException {
+	public String dinoNewEgg(String dinoId) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String playerRoundSwitch(String msg) throws RemoteException {
+	public String roundConfirm() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String playerRoundSwitch() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -138,7 +138,4 @@ public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIIn
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-
 }

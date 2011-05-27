@@ -76,6 +76,8 @@ public class ClientListener implements Runnable {
 	{
 		if(ClientMessageBroker.manageChangeRound(msg) != null)
 		{
+			System.out.println("--> CAMBIO TURNO: " + msg);
+			
 			if(ClientMessageBroker.manageChangeRound(msg).equals(username))
 			{
 				//TODO: chiamata al metodo del Client che mi lancia il popup di conferma del turno

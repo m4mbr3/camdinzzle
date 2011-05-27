@@ -93,7 +93,6 @@ public class Server implements Runnable {
 	public static void sendBroadcastMessage(String msg)
 	{
 		//TODO: ciclo che manda a tutti i Client connessi il messaggio di notifica del turno
-		
 		if(clientList.size() > 0)
 		{
 			for (ClientManager client : clientList) 

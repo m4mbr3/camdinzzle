@@ -1,5 +1,6 @@
 package Visualization;
 
+
 import Client.*;
 import Server.*;
 
@@ -45,7 +46,7 @@ public class ProvaTest1 {
 		
 		try {
 			ServerRMIInterface server = (ServerRMIInterface)Naming.lookup("rmi://127.0.0.1/server:1099");
-			System.out.println(server.add_new_user("cio"));
+			System.out.println(server.add_new_user("cio", "io"));
 			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -116,7 +117,7 @@ public class ProvaTest1 {
 						msg = cms.login(arr[0], arr[1]);
 						System.out.println("cms: " + msg);
 						
-						token = ClientMessageBroker.manageLogin(msg)[0];
+						token = ClientMessageBroker.manageLogin(msg)[1];
 					}
 					else if(scelta.equals("CR"))
 					{
@@ -231,7 +232,7 @@ public class ProvaTest1 {
 							
 							requestQueue.add("statoDinosauro");
 							
-							String[] a = cms.statoDinosauro(msg);
+							String[] a = cms.statoDinosauro(dinoId);
 							System.out.println("cms: " + msg);
 							text.drawDinoState(dinoId, ClientMessageBroker.manageDinoState(msg));
 						}

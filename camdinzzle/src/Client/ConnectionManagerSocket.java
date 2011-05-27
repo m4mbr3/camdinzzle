@@ -67,34 +67,34 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		// TODO Auto-generated method stub	
 		while(true)
 		{
-			System.out.print("");
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-	}	
+	}
 	
-	public synchronized String creaUtente(String username, String password) 
+	public String sendMessage(String msg)
 	{
 		try
 		{
-			String msg = ClientMessageBroker.createUser(username, password);
-			
 			writer_on_socket.write(msg);
 			writer_on_socket.newLine();				
 			writer_on_socket.flush();
 			
 			while(mm.getMessage().equals(""))
 			{
-				System.out.print("");
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
-			String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-			mm.setMessage("");
-			
-			System.out.println(retStr);
-			
-			requestQueue.remove("creaUtente");
-			
-			return retStr;
-			
+			return mm.getMessage();
 		}
 		catch(IOException e)
 		{
@@ -107,44 +107,35 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		} 
 	}
 	
+	public synchronized String creaUtente(String username, String password) 
+	{
+		String msg = ClientMessageBroker.createUser(username, password);
+		
+		String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+		mm.setMessage("");
+		
+		System.out.println(retStr);
+		
+		requestQueue.remove("creaUtente");
+		
+		return retStr;
+	}
+	
 	@Override
 	public synchronized String login(String username, String password) 
 	{
-		try
-		{
-			String msg = ClientMessageBroker.createLogin(username, password);
-			
-			writer_on_socket.write(msg);
-			writer_on_socket.newLine();				
-			writer_on_socket.flush();
-			
-			while(mm.getMessage().equals(""))
-			{
-				System.out.print("");
-			}
-			
-			String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-			mm.setMessage("");
-			
-			System.out.println(retStr);
-			
-			requestQueue.remove("login");
-			
-			if(ClientMessageBroker.checkMessage(retStr))
-				token = ClientMessageBroker.manageLogin(retStr)[0];
-			
-			return retStr;
-			
-		}
-		catch(IOException e)
-		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
-			
-			e.printStackTrace();
-			return null;
-		} 
+		String msg = ClientMessageBroker.createLogin(username, password);
+		
+		String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+		mm.setMessage("");
+		
+		token = ClientMessageBroker.manageLogin(retStr)[1];
+		
+		System.out.println(retStr);
+		
+		requestQueue.remove("login");
+		
+		return retStr;
 	}
 
 	@Override
@@ -152,38 +143,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createRace(token, name, type);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("creaRazza");
-				
-				return retStr;
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			
+			String msg = ClientMessageBroker.createRace(token, name, type);
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("creaRazza");
+			
+			return retStr;
 		}
 		else
 			return null;
@@ -194,38 +163,15 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createGameAccess(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("accessoPartita");
-				
-				return retStr;
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createGameAccess(token);
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("accessoPartita");
+			
+			return retStr;		
 		}
 		else
 			return null;
@@ -236,38 +182,15 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createGameExit(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("uscitaPartita");
-				
-				return retStr;
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createGameExit(token);	
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("uscitaPartita");
+			
+			return retStr;
 		}
 		else
 			return null;
@@ -278,38 +201,15 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createPlayerList(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("listaGiocatori");
-				
-				return ClientMessageBroker.managePlayerList(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createPlayerList(token);
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("listaGiocatori");
+			
+			return ClientMessageBroker.managePlayerList(retStr);
 		}
 		else
 			return null;
@@ -320,38 +220,15 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createRanking(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("classifica");
-				
-				return ClientMessageBroker.manageRanking(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createRanking(token);
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("classifica");
+			
+			return ClientMessageBroker.manageRanking(retStr);
 		}
 		else
 			return null;
@@ -362,38 +239,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createLogout(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("logout");
-				
-				return retStr;
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createLogout(token);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("logout");
+			
+			return retStr;
 		}
 		else
 			return null;
@@ -404,38 +259,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createGeneralMap(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("mappaGenerale");
-				
-				return ClientMessageBroker.manageGeneralMap(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createGeneralMap(token);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("mappaGenerale");
+			
+			return ClientMessageBroker.manageGeneralMap(retStr);
 		}
 		else
 			return null;
@@ -446,38 +279,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createDinoList(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("listaDinosauri");
-				
-				return ClientMessageBroker.manageDinoList(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createDinoList(token);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("listaDinosauri");
+			
+			return ClientMessageBroker.manageDinoList(retStr);
 		}
 		else
 			return null;
@@ -488,38 +299,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createDinoZoom(token, dinoId);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("vistaLocale");
-				
-				return ClientMessageBroker.manageDinoZoom(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createDinoZoom(token, dinoId);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("vistaLocale");
+			
+			return ClientMessageBroker.manageDinoZoom(retStr);
 		}
 		else
 			return null;
@@ -530,38 +319,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createDinoState(token, dinoId);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("statoDinosauro");
-				
-				return ClientMessageBroker.manageDinoState(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createDinoState(token, dinoId);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			requestQueue.remove("statoDinosauro");
+			
+			return ClientMessageBroker.manageDinoState(retStr);
 		}
 		else
 			return null;
@@ -572,35 +339,17 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createDinoMove(token, dinoId, row, col);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				requestQueue.remove("muoviDinosauro");
-				
-				return ClientMessageBroker.manageDinoMove(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createDinoMove(token, dinoId, row, col);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			mm.setMessage("");
+			requestQueue.remove("muoviDinosauro");
+			
+			return ClientMessageBroker.manageDinoMove(retStr);
 		}
 		else
 			return null;
@@ -611,35 +360,17 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createDinoGrowUp(token, dinoId);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				requestQueue.remove("cresciDinosauro");
-				
-				return ClientMessageBroker.manageDinoGrowUp(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createDinoGrowUp(token, dinoId);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			mm.setMessage("");
+			requestQueue.remove("cresciDinosauro");
+			
+			return ClientMessageBroker.manageDinoGrowUp(retStr);
 		}
 		else
 			return null;
@@ -649,36 +380,18 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	public synchronized String[] deponiUovo(String dinoId) 
 	{
 		if(!token.equals(""))
-		{
-			try
-			{
-				String msg = ClientMessageBroker.createNewEgg(token, dinoId);
+		{	
+			String msg = ClientMessageBroker.createNewEgg(token, dinoId);
 				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				requestQueue.remove("deponiUovo");
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			mm.setMessage("");
+			requestQueue.remove("deponiUovo");
 
-				return ClientMessageBroker.manageNewEgg(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			return ClientMessageBroker.manageNewEgg(retStr);
 		}
 		else
 			return null;
@@ -689,35 +402,17 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createRoundConfirmation(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				requestQueue.remove("confermaTurno");
-				
-				return ClientMessageBroker.manageRoundConfirm(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createRoundConfirmation(token);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			mm.setMessage("");
+			requestQueue.remove("confermaTurno");
+			
+			return ClientMessageBroker.manageRoundConfirm(retStr);
 		}
 		else
 			return null;
@@ -728,38 +423,17 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	{
 		if(!token.equals(""))
 		{
-			try
-			{
-				String msg = ClientMessageBroker.createPassOffRound(token);
-				
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				
-				while(mm.getMessage().equals(""))
-				{
-					System.out.print("");
-				}
-				
-				String retStr = String.copyValueOf(mm.getMessage().toCharArray());
-				mm.setMessage("");
-				
-				System.out.println(retStr);
-				
-				requestQueue.remove("passaTurno");
-				
-				return ClientMessageBroker.managePlayerChangeRound(retStr);
-				
-			}
-			catch(IOException e)
-			{
-				/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-				 * di comunicazione col socket 
-				 */
-				
-				e.printStackTrace();
-				return null;
-			} 
+			String msg = ClientMessageBroker.createPassOffRound(token);
+			
+			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			mm.setMessage("");
+			
+			System.out.println(retStr);
+			
+			mm.setMessage("");				
+			requestQueue.remove("passaTurno");
+			
+			return ClientMessageBroker.managePlayerChangeRound(retStr);
 		}
 		else
 			return null;
