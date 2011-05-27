@@ -60,7 +60,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
-		port = new JTextField("");
+		port = new JTextField("4567");
 		enable_port = new JCheckBox("enable");
 		address = new JTextField();
 		radiogroup = new ButtonGroup();
@@ -123,7 +123,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		this.add(panel);
 		this.addWindowListener(this);
 		next.addActionListener(this);
-		
+		this.repaint();
 	}
 	public ConnectionManager getConnManager() {
 		return connManager;
@@ -195,9 +195,13 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 						JOptionPane.showMessageDialog(this, "Error of Connection","Socket Error", JOptionPane.ERROR_MESSAGE);
 						this.setVisible(true);
 					}
+					catch(NumberFormatException e)
+					{
+						JOptionPane.showMessageDialog(this, "Check you port!!!", "Port Error", JOptionPane.ERROR_MESSAGE);
+					}
 					catch(IOException e)
 					{
-						
+						JOptionPane.showMessageDialog(this, "Generic IOError ", "IOException", JOptionPane.ERROR_MESSAGE);
 					}
 					
 						

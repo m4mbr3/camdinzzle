@@ -49,6 +49,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private Dimension screenSize;
 	private Client client;
 	private JLabel new_user;
+	private JLabel back;
 	private JFrame new_userframe;
 	/**
 	 * @throws HeadlessException
@@ -79,6 +80,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		this.setSize(330,300);
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		new_user = new JLabel("Are you a new user?Click here!");
+		back = new JLabel("Come back to login");
 		camdinzzle = new JLabel("Camdinzzle on Socket v1.0");
 		username_label = new JLabel("Username :");
 		password_label = new JLabel("Password :");
@@ -88,6 +90,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		panel_newUser = new JPanel();
 		send_newUser = new JButton("Register it!");
 		send = new JButton("Send Information");
+		back.setSize(250,20);
 		new_user.setSize(250,20);
 		panel_newUser.setSize(300,300);
 		panel.setSize(300,300);
@@ -102,7 +105,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		panel.setLayout(null);
 		
 		new_user.setVisible(true);
-		
+		back.setVisible(true);
 		
 		camdinzzle.setVisible(true);
 		send_newUser.setVisible(true);
@@ -113,6 +116,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		password.setVisible(true);
 		panel_newUser.setVisible(true);
 		panel.setVisible(true);
+		back.setLocation(50,200);
 		new_user.setLocation(50,200);
 		camdinzzle.setLocation(50,0);
 		send_newUser.setLocation(50,250);
@@ -131,7 +135,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		panel.add(username);
 		panel.add(new_user);
 		
-
+		back.addMouseListener(this);
 		send.addMouseListener(this);
 		new_user.addMouseListener(this);
 		send_newUser.addMouseListener(this);
@@ -206,6 +210,16 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		if(arg0.getComponent().equals(back))
+		{
+			new_userframe.setVisible(false);
+			panel.remove(send_newUser);
+			panel.add(send);
+			panel.remove(back);
+			panel.add(new_user);
+			this.add(panel);
+			this.setVisible(true);
+		}
 		if(arg0.getComponent().equals(new_user))
 		{
 			this.setVisible(false);
@@ -215,6 +229,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 			new_userframe.setSize(330,300);
 			new_userframe.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 			panel.remove(send);
+			panel.add(back);
 			panel.add(send_newUser);
 			panel.remove(this.new_user);
 			new_userframe.add(panel);
@@ -254,6 +269,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 				else
 				{
 					JOptionPane.showMessageDialog(this,"Username already exist", "NewUser Error", JOptionPane.ERROR_MESSAGE);
+					new_userframe.setVisible(true);
 				}
 		}
 		
