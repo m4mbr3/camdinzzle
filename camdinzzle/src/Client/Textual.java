@@ -23,9 +23,9 @@ public class Textual implements Visual
 	
 	// Inutile implementarlo
 	@Override
-	public void drawMap(String msg) 
+	public boolean drawMap(ArrayList<String> mapList) 
 	{
-	
+		return false;
 	}
 
 	/**
@@ -54,11 +54,11 @@ public class Textual implements Visual
 	 * @param msg Messaggio del ServerLogic
 	 */
 	@Override
-	public void drawDinoZoom(String dinoId, String msg) 
+	public void drawDinoZoom(String dinoId, ArrayList<String> dinoZoomList) 
 	{ 
-		if(ClientMessageBroker.checkMessage(msg))
+//		if(ClientMessageBroker.checkMessage(msg))
 		{
-			ArrayList<String> dinoZoomList = ClientMessageBroker.manageDinoZoom(msg);
+			//ArrayList<String> dinoZoomList = ClientMessageBroker.manageDinoZoom(msg);
 			// Alla posizione 2 dell'arraylist c'è il numero delle righe della vista
 			int rowsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
 			// Alla posizione 3 dell'arraylist c'è il numero delle colonne della vista
@@ -105,8 +105,8 @@ public class Textual implements Visual
 			}
 			System.out.print("\n");
 		}
-		else
-			drawError(msg);
+//		else
+//			drawError(msg);
 	}
 
 	/**
@@ -114,20 +114,20 @@ public class Textual implements Visual
 	 * @param msg Messaggio del ServerLogic
 	 */
 	@Override
-	public void drawDinoList(String msg) 
+	public void drawDinoList(String[] msgDinoList) 
 	{
-		if(ClientMessageBroker.checkMessage(msg))
+//		if(ClientMessageBroker.checkMessage(msg))
 		{
-			String[] dinoList = ClientMessageBroker.manageDinoList(msg);
+//			String[] dinoList = ClientMessageBroker.manageDinoList(msg);
 			System.out.println("Dinosaurs list:\n");
 			
-			for (String dino : dinoList) 
+			for (String dino : msgDinoList) 
 			{
 				System.out.println("	" + dino +"\n");
 			}
 		}
-		else
-			drawError(msg);
+//		else
+//			drawError(msg);
 	}
 	
 	/**
@@ -135,11 +135,11 @@ public class Textual implements Visual
 	 * @param dinoId Id del dinosauro
 	 * @param msg Messaggio del ServerLogic
 	 */
-	public void drawDinoState(String dinoId, String msg)
+	public void drawDinoState(String dinoId, String[] dinoState)
 	{
-		if(ClientMessageBroker.checkMessage(msg))
+//		if(ClientMessageBroker.checkMessage(msg))
 		{
-			String[] dinoState = ClientMessageBroker.manageDinoState(msg);
+//			String[] dinoState = ClientMessageBroker.manageDinoState(msg);
 			System.out.println("Dinosaur's state " + dinoId + " of player " + dinoState[0] + ":");
 			System.out.println("	race: " + dinoState[1]);
 			System.out.println("	type: " + dinoState[2]);
@@ -153,12 +153,12 @@ public class Textual implements Visual
 				System.out.println("	round lived: " + dinoState[7]);
 			}
 		}
-		else
-			drawError(msg);
+//		else
+//			drawError(msg);
 	}
 
 	@Override
-	public void drawTime(String msg) 
+	public void drawTime() 
 	{
 		
 	}
@@ -201,11 +201,11 @@ public class Textual implements Visual
 	 * @param msg Messaggio del ServerLogic
 	 */
 	@Override
-	public void drawRanking(String msg) 
+	public void drawRanking(ArrayList<String> rankingList) 
 	{
-		if(ClientMessageBroker.checkMessage(msg))
+//		if(ClientMessageBroker.checkMessage(msg))
 		{
-			ArrayList<String> rankingList = ClientMessageBroker.manageRanking(msg);
+//			ArrayList<String> rankingList = ClientMessageBroker.manageRanking(msg);
 			System.out.println("Classifica della partita:");
 			
 			for(int i = 0; i<rankingList.size(); i = i+4) 
@@ -216,8 +216,8 @@ public class Textual implements Visual
 				System.out.println("	in partita: " + rankingList.get(i+3) + "\n");
 			}
 		}
-		else
-			drawError(msg);
+//		else
+//			drawError(msg);
 	}
 	
 	/**
@@ -316,11 +316,11 @@ public class Textual implements Visual
 	 * Stampa a video la lista degli username dei giocatopri in partita
 	 * @param msg Messaggio del ServerLogic
 	 */
-	public void drawPlayerList(String msg)
+	public void drawPlayerList(String[] playerList)
 	{		
-		if(ClientMessageBroker.checkMessage(msg))
+//		if(ClientMessageBroker.checkMessage(msg))
 		{
-			String[] playerList = ClientMessageBroker.managePlayerList(msg);
+//			String[] playerList = ClientMessageBroker.managePlayerList(msg);
 			
 			if(playerList == null)
 				System.out.println("Non ci sono giocatori in partita.");
@@ -334,8 +334,8 @@ public class Textual implements Visual
 				}
 			}
 		}
-		else
-			drawError(msg);
+//		else
+//			drawError(msg);
 	}
 	
 	/**

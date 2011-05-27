@@ -156,7 +156,7 @@ public class ProvaTest1 {
 						
 						String[] response = cms.listaGiocatori();
 						
-						text.drawPlayerList(msg);
+						text.drawPlayerList(ClientMessageBroker.managePlayerList(msg));
 					}
 					else if(scelta.equals("CG"))
 					{
@@ -167,7 +167,7 @@ public class ProvaTest1 {
 						
 						ArrayList<String> a = cms.classifica();
 						
-						text.drawRanking(msg);
+						text.drawRanking(ClientMessageBroker.manageRanking(msg));
 					}
 					else if(scelta.equals("LOGOUT"))
 					{
@@ -201,7 +201,7 @@ public class ProvaTest1 {
 						String[] a = cms.listaDinosauri();
 						System.out.println("cms: " + msg);
 						
-						text.drawDinoList(msg);
+						text.drawDinoList(ClientMessageBroker.manageDinoList(msg));
 					}
 					else if(scelta.equals("VL"))
 					{
@@ -216,7 +216,7 @@ public class ProvaTest1 {
 							
 							ArrayList<String> a = cms.vistaLocale(msg);
 							System.out.println("cms: " + msg);
-							text.drawDinoZoom(dinoId, msg);
+							text.drawDinoZoom(dinoId, ClientMessageBroker.manageDinoZoom(msg));
 						}
 						
 					}
@@ -233,7 +233,7 @@ public class ProvaTest1 {
 							
 							String[] a = cms.statoDinosauro(msg);
 							System.out.println("cms: " + msg);
-							text.drawDinoState(dinoId, msg);
+							text.drawDinoState(dinoId, ClientMessageBroker.manageDinoState(msg));
 						}
 						
 					}

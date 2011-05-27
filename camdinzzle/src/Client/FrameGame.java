@@ -150,7 +150,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		//this.add(panelControl);
 		this.add(panelControl, BorderLayout.EAST);
 //		this.repaint();
+		dinoList = new JList();
 		panelControl.add(new JScrollPane(dinoList));
+		dinoState = new JTextArea();
 		panelControl.add(dinoState);
 		panelControl.add(commandButtons);
 		panelControl.add(new JScrollPane(playerList));
@@ -285,7 +287,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		{
 			//TODO chiamare classifica creare popup
 			
-			ArreyList<String> classifica = client.getConnManager().classifica();
+			ArrayList<String> classifica = client.getConnManager().classifica();
 			drawRanking(classifica);
 		}
 		if(arg0.getComponent().equals(commandGameButton[1]))
@@ -358,6 +360,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 					buttons[j][z].setDisabledIcon(iconDark);
 				z++;
 			}
+			return true;
 		}
 		else
 			return false;
@@ -460,8 +463,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			public void valueChanged(ListSelectionEvent e) 
 			{
 			//TODO inserire chiamata dello stato dino
-				dinoList.getSelectedIndex();
-				game.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
+				drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
+				dinoState.repaint();
 				
 			}
 		});

@@ -14,7 +14,7 @@ public interface Visual
 	/**
 	 *  Metodo che disegna la mappa generale del player con terra, acqua, vegetazione oppure buio
 	 */
-	public void drawMap(ArrayList<String> mapList);
+	public boolean drawMap(ArrayList<String> mapList);
 	
 	/**
 	 * Metodo che disegna la mappa intorno ad un dinosauro identificato dal suo dinoId. La mappa conterrà, oltre 
@@ -43,7 +43,7 @@ public interface Visual
 	/**
 	 * Metodo che disegna la classifica attuale della partitas
 	 */
-	public void drawRanking(ArrayList<String> classifica);
+	public void drawRanking(ArrayList<String> rankingList);
 	
 	/**
 	 * Metodo che disegna lo stato del dinosauro selezionato
