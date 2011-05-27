@@ -19,6 +19,8 @@ public class ClientListener implements Runnable {
 	private String readSocket;
 	private MonitorMessage mm;
 	private String username;
+	private int timelineServerNull;
+	private boolean run;
 	
 	public ClientListener(int port, String address, String username, MonitorMessage mm, Socket soc)
 	{
@@ -29,6 +31,8 @@ public class ClientListener implements Runnable {
 		this.readSocket = null;
 		connection_with_server = soc;
 		this.username = username;
+		timelineServerNull = 0;
+		run = true;
 		
 		try {
 			reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
@@ -41,10 +45,15 @@ public class ClientListener implements Runnable {
 		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
 	}
 
+	public void stop()
+	{
+		run = false;
+	}
+	
 	@Override
 	public void run() 
 	{				
-		while(true)
+		while(run)
 		{
 			readSocket = null;
 			
@@ -68,6 +77,10 @@ public class ClientListener implements Runnable {
 				{
 					mm.setMessage(readSocket);
 				}
+			}
+			else
+			{
+				timelineServerNull++;
 			}
 		}
 	}

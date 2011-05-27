@@ -276,6 +276,12 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 							if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
 								serverLogic.changeRoundNotify();
 						}
+						else
+						{
+							writer_on_socket.write("@" + command);
+							writer_on_socket.newLine();				
+							writer_on_socket.flush();
+						}
 					}
 				}
 				catch(IOException e)

@@ -6,7 +6,6 @@
 
 package Server;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 /**
@@ -45,7 +44,7 @@ public class ServerMessageBroker
 			return splittedMessage[0].substring(1);
 		}
 		else
-			return msg.substring(1);
+			return "comandoNonValido";
 	}
 	
 	/**

@@ -99,7 +99,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("creaUtente");
 						
-						cms = new ConnectionManagerSocket(34567, "localhost", arr[0], arr[1], mm, soc, requestQueue);
+						cms = new ConnectionManagerSocket(34567, "localhost", arr[0], arr[1], mm, soc);
 						pl = new ClientListener(34567, "localhost", arr[0], mm, soc);
 						
 						System.out.println("Client: " + msg);

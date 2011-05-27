@@ -33,10 +33,9 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	private int port;
 	private String command;
 	private MonitorMessage mm;
-	ArrayList<String> requestQueue;
+	private boolean run;
 	
-	public ConnectionManagerSocket(int port, String address, String username, String password, MonitorMessage mm, Socket soc,
-			ArrayList<String> requestQueue)
+	public ConnectionManagerSocket(int port, String address, String username, String password, MonitorMessage mm, Socket soc)
 	{
 		// TODO Auto-generated constructor stub
 		this.mm = mm;
@@ -47,7 +46,7 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		this.port = port;
 		command = new String();
 		connection_with_server = soc;
-		this.requestQueue = requestQueue;
+		run = true;
 		
 		try {
 			writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
@@ -61,11 +60,16 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
 	}
 
+	public void stop()
+	{
+		run = false;
+	}
+	
 	@Override
 	public void run() 
 	{
 		// TODO Auto-generated method stub	
-		while(true)
+		while(run)
 		{
 			try {
 				Thread.sleep(10);
@@ -76,6 +80,7 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		}
 	}
 	
+	// TODO: scelta gestione comandoNonValido
 	public String sendMessage(String msg)
 	{
 		try
@@ -116,8 +121,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		
 		System.out.println(retStr);
 		
-		requestQueue.remove("creaUtente");
-		
 		return retStr;
 	}
 	
@@ -133,8 +136,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		
 		System.out.println(retStr);
 		
-		requestQueue.remove("login");
-		
 		return retStr;
 	}
 
@@ -149,8 +150,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			mm.setMessage("");
 			
 			System.out.println(retStr);
-			
-			requestQueue.remove("creaRazza");
 			
 			return retStr;
 		}
@@ -169,8 +168,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			
 			System.out.println(retStr);
 			
-			requestQueue.remove("accessoPartita");
-			
 			return retStr;		
 		}
 		else
@@ -187,8 +184,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			mm.setMessage("");
 			
 			System.out.println(retStr);
-			
-			requestQueue.remove("uscitaPartita");
 			
 			return retStr;
 		}
@@ -207,8 +202,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			
 			System.out.println(retStr);
 			
-			requestQueue.remove("listaGiocatori");
-			
 			return ClientMessageBroker.managePlayerList(retStr);
 		}
 		else
@@ -225,8 +218,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			mm.setMessage("");
 			
 			System.out.println(retStr);
-			
-			requestQueue.remove("classifica");
 			
 			return ClientMessageBroker.manageRanking(retStr);
 		}
@@ -246,8 +237,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			
 			System.out.println(retStr);
 			
-			requestQueue.remove("logout");
-			
 			return retStr;
 		}
 		else
@@ -265,8 +254,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			mm.setMessage("");
 			
 			System.out.println(retStr);
-			
-			requestQueue.remove("mappaGenerale");
 			
 			return ClientMessageBroker.manageGeneralMap(retStr);
 		}
@@ -286,8 +273,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			
 			System.out.println(retStr);
 			
-			requestQueue.remove("listaDinosauri");
-			
 			return ClientMessageBroker.manageDinoList(retStr);
 		}
 		else
@@ -306,8 +291,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			
 			System.out.println(retStr);
 			
-			requestQueue.remove("vistaLocale");
-			
 			return ClientMessageBroker.manageDinoZoom(retStr);
 		}
 		else
@@ -325,8 +308,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			mm.setMessage("");
 			
 			System.out.println(retStr);
-			
-			requestQueue.remove("statoDinosauro");
 			
 			return ClientMessageBroker.manageDinoState(retStr);
 		}
@@ -347,7 +328,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			System.out.println(retStr);
 			
 			mm.setMessage("");
-			requestQueue.remove("muoviDinosauro");
 			
 			return ClientMessageBroker.manageDinoMove(retStr);
 		}
@@ -368,7 +348,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			System.out.println(retStr);
 			
 			mm.setMessage("");
-			requestQueue.remove("cresciDinosauro");
 			
 			return ClientMessageBroker.manageDinoGrowUp(retStr);
 		}
@@ -389,7 +368,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			System.out.println(retStr);
 			
 			mm.setMessage("");
-			requestQueue.remove("deponiUovo");
 
 			return ClientMessageBroker.manageNewEgg(retStr);
 		}
@@ -410,7 +388,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			System.out.println(retStr);
 			
 			mm.setMessage("");
-			requestQueue.remove("confermaTurno");
 			
 			return ClientMessageBroker.manageRoundConfirm(retStr);
 		}
@@ -431,7 +408,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			System.out.println(retStr);
 			
 			mm.setMessage("");				
-			requestQueue.remove("passaTurno");
 			
 			return ClientMessageBroker.managePlayerChangeRound(retStr);
 		}
