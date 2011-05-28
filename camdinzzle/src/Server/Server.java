@@ -35,7 +35,7 @@ public class Server implements Runnable {
 	private ClientManagerRMI clientManagerRMI;
 	// End ClientManager
 	
-	private static ArrayList<ClientManager> clientList = new ArrayList<ClientManager>();
+	private static ArrayList<ClientManager> clientList;
 	
 	private boolean is_run;
 	private int port;
@@ -44,14 +44,17 @@ public class Server implements Runnable {
 	public Server(int port, ServerLogic serverLogic) throws RemoteException
 	{
 			this.port = port;
-			try {
+			try 
+			{
 				this.server = new ServerSocket(this.port) ;
-			} catch (IOException e) {
+			} 
+			catch (IOException e) 
+			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			this.serverLogic = serverLogic;
-			//clientList = new ArrayList<ClientManager>();
+			clientList = new ArrayList<ClientManager>();
 			this.new_connection = null;
 			this.is_run = true;
 			this.clientManagerSocket=null;
@@ -152,7 +155,7 @@ public class Server implements Runnable {
 		}
 		try {
 			Naming.rebind("rmi://127.0.0.1/server:1099",(Remote) cmRMI);
-			System.out.println("Server Avviato!");
+			System.out.println("Server RMI Avviato!");
 		} catch (AccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

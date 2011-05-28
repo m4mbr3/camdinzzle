@@ -52,12 +52,388 @@ public class ServerMessageBroker
 	 * @param msg
 	 * @return array contenente il messaggio diviso per parametri tranne il nome del comando
 	 */
-	public static String[] manageReceiveMessageSplit(String msg)
+	private static String[] manageReceiveMessageSplit(String msg)
 	{
 		String validMessage = msg.substring(msg.indexOf(',')+1);
 		String[] returnValues = validMessage.split(",");
 		
 		return deleteEqualSymbol(returnValues);
+	}
+	
+	public static String[] manageCreateUser(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 3)
+			{
+				if(splitMessage[0].equals("@creaUtente"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("user"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("pass")))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageLogin(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 3)
+			{
+				if(splitMessage[0].equals("@login"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("user"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("pass")))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageCreateRace(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 4)
+			{
+				if(splitMessage[0].equals("@creaRazza"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")) && (splitMessage[3].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("nome"))
+								&& (splitMessage[3].substring(0, splitMessage[3].indexOf("=")).equals("tipo")))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageGameAccess(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@accessoPartita"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageGameExit(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@uscitaPartita"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] managePlayerList(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@listaGiocatori"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageRanking(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@classifica"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageLogout(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@logout"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageGeneralMap(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@mappaGenerale"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageDinoList(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@listaDinosauri"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageDinoZoom(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 3)
+			{
+				if(splitMessage[0].equals("@vistaLocale"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("idDino")))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageDinoState(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 3)
+			{
+				if(splitMessage[0].equals("@statoDinosauro"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("idDino")))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageDinoGrowUp(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 3)
+			{
+				if(splitMessage[0].equals("@cresciDinosauro"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("idDino")))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageNewEgg(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 3)
+			{
+				if(splitMessage[0].equals("@deponiUovo"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("idDino")))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] manageRoundConfirm(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@confermaTurno"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static String[] managePlayerRoundSwitch(String msg)
+	{
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 2)
+			{
+				if(splitMessage[0].equals("@passaTurno"))
+				{
+					if(splitMessage[1].contains("="))
+					{
+						if(splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+						{
+							return manageReceiveMessageSplit(msg);
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -68,15 +444,42 @@ public class ServerMessageBroker
 	 */
 	public static String[] manageDinoMovement(String msg)
 	{
-		String validMessage = msg.substring(msg.indexOf(',')+1);
-		String[] returnValues = validMessage.split(",");
-		
-		returnValues[0] = returnValues[0].substring(returnValues[0].indexOf('=')+1);
-		returnValues[1] = returnValues[1].substring(returnValues[1].indexOf('=')+1);
-		returnValues[2] = returnValues[2].substring(returnValues[2].indexOf('{')+1);
-		returnValues[3] = returnValues[3].substring(0, returnValues[3].indexOf('}'));
-		
-		return returnValues;
+		if(msg.contains(","))
+		{
+			String[] splitMessage = msg.split(",");
+			
+			if(splitMessage.length == 5)
+			{
+				if(splitMessage[0].equals("@muoviDinosauro"))
+				{
+					if((splitMessage[1].contains("=")) && (splitMessage[2].contains("=")) && (splitMessage[3].contains("=")))
+					{
+						if((splitMessage[1].substring(0, splitMessage[1].indexOf("=")).equals("token"))
+								&& (splitMessage[2].substring(0, splitMessage[2].indexOf("=")).equals("idDino"))
+								&& (splitMessage[3].substring(0, splitMessage[3].indexOf("=")).equals("dest")))
+						{
+							if((splitMessage[3].contains("{")) && (splitMessage[4].contains("}")))
+							{
+								if((splitMessage[3].substring(0, splitMessage[3].indexOf("{")).equals("dest="))
+										&& (splitMessage[4].length() > 1))
+								{
+									String validMessage = msg.substring(msg.indexOf(',')+1);
+									String[] returnValues = validMessage.split(",");
+									
+									returnValues[0] = returnValues[0].substring(returnValues[0].indexOf('=')+1);
+									returnValues[1] = returnValues[1].substring(returnValues[1].indexOf('=')+1);
+									returnValues[2] = returnValues[2].substring(returnValues[2].indexOf('{')+1);
+									returnValues[3] = returnValues[3].substring(0, returnValues[3].indexOf('}'));
+									
+									return returnValues;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -185,7 +588,14 @@ public class ServerMessageBroker
 			returnMessage += "{";
 			for(int j = 0; j<4; j++)
 			{
-				returnMessage += ranking.get(i+j) + ",";
+				if(j == 3)
+				{
+					returnMessage += ranking.get(i+j);
+				}
+				else
+				{
+					returnMessage += ranking.get(i+j) + ",";
+				}
 			}
 			returnMessage += "}";
 		}

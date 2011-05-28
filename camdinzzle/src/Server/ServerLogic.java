@@ -252,8 +252,13 @@ public class ServerLogic {
 			// Chiamata di questo metodo seguita dalla chiamata a changeRound
 			if(this.isLoggedUser(token))
 			{
-				if (currentSession.numberPlayersInGame() < currentSession.getMaxPlayers()) 
+				if (currentSession.numberPlayersInGame() < currentSession.getMaxPlayers())
 				{
+					if(loggedPlayers.get(token).getSpecie() != null)
+					{
+						return ServerMessageBroker.createTokenNonValidoErrorMessage();
+					}
+					
 					if (currentSession.getPlayer(token) == null)
 					{
 						if(currentSession.numberPlayersInGame() == 0)

@@ -545,7 +545,7 @@ public class ClientMessageBroker
 			ArrayList<String> rankingList = new ArrayList<String>();
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			
-			if(validMessage.contains("\\{"))
+			if(validMessage.contains("{"))
 			{
 				String[] bracketBraceSeparator = validMessage.split("\\{");
 				

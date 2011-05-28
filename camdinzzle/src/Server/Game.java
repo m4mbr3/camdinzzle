@@ -107,6 +107,7 @@ public class Game {
 			if(playersInGame.containsKey(token))
 			{
 				playersInGame.remove(token);
+				
 				return true;
 			}
 			return false;

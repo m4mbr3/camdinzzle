@@ -132,7 +132,8 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
 		mm.setMessage("");
 		
-		token = ClientMessageBroker.manageLogin(retStr)[1];
+		if(ClientMessageBroker.manageLogin(retStr)[0].equals("ok"))
+			token = ClientMessageBroker.manageLogin(retStr)[1];
 		
 		System.out.println(retStr);
 		

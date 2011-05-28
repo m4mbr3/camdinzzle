@@ -208,12 +208,15 @@ public class Textual implements Visual
 //			ArrayList<String> rankingList = ClientMessageBroker.manageRanking(msg);
 			System.out.println("Classifica della partita:");
 			
-			for(int i = 0; i<rankingList.size(); i = i+4) 
+			if(rankingList != null)
 			{
-				System.out.println("	username: " + rankingList.get(i));
-				System.out.println("	razza: " + rankingList.get(i+1));
-				System.out.println("	punteggio: " + rankingList.get(i+2));
-				System.out.println("	in partita: " + rankingList.get(i+3) + "\n");
+				for(int i = 0; i<rankingList.size(); i = i+4) 
+				{
+					System.out.println("	username: " + rankingList.get(i));
+					System.out.println("	razza: " + rankingList.get(i+1));
+					System.out.println("	punteggio: " + rankingList.get(i+2));
+					System.out.println("	in partita: " + rankingList.get(i+3) + "\n");
+				}
 			}
 		}
 //		else

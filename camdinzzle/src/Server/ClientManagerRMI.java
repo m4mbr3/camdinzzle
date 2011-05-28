@@ -13,13 +13,16 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import Client.ClientMessageBroker;
+
 /**
  * @author Andrea
  *
  */
 public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIInterface {
 
-	ServerLogic serverLogic;
+	private ServerLogic serverLogic;
+	private String serverResponse;
 
 	public ClientManagerRMI(ServerLogic sv) throws RemoteException
 	{
@@ -28,114 +31,138 @@ public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIIn
 	}
 
 	@Override
-	public String add_new_user(String username, String password)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String login(String username, String password)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String addNewSpecies(String name, String type)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String gameAccess() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String gameExit() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String playerList() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String ranking() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String logout() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String generalMap() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String dinosaursList() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String dinoZoom(String dinoId) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String dinoState(String dinoId) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String dinoMove(String dinoId, String row, String col)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String dinoGrowUp(String dinoId) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String dinoNewEgg(String dinoId) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String roundConfirm() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String playerRoundSwitch() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void changeRound() throws RemoteException {
-		// TODO Auto-generated method stub
+	public synchronized String creaUtente(String username, String password) throws RemoteException 
+	{
+		serverResponse = serverLogic.add_new_user(username, password);
 		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String login(String username, String password) throws RemoteException 
+	{
+		serverResponse = serverLogic.login(username, password);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String creaRazza(String token, String name, String type) throws RemoteException 
+	{
+		serverResponse = serverLogic.addNewSpecies(token, name, type);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String accessoPartita(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.gameAccess(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String uscitaPartita(String token) throws RemoteException
+	{
+		serverResponse = serverLogic.gameAccess(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String listaGiocatori(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.gameExit(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String classifica(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.ranking(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String logout(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.logout(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String mappaGenerale(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.generalMap(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String listaDinosauri(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.dinosaursList(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String vistaLocale(String token, String dinoId) throws RemoteException 
+	{
+		serverResponse = serverLogic.dinoZoom(token, dinoId);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String statoDinosauro(String token, String dinoId) throws RemoteException 
+	{
+		serverResponse = serverLogic.dinoState(token, dinoId);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String muoviDinosauro(String token, String dinoId, String row, String col) throws RemoteException 
+	{
+		serverResponse = serverLogic.dinoMove(token, dinoId, row, col);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String cresciDinosauro(String token, String dinoId) throws RemoteException 
+	{
+		serverResponse = serverLogic.dinoGrowUp(token, dinoId);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String deponiUovo(String token, String dinoId) throws RemoteException 
+	{
+		serverResponse = serverLogic.dinoNewEgg(token, dinoId);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String confermaTurno(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.roundConfirm(token);
+		
+		return serverResponse;
+	}
+
+	@Override
+	public synchronized String passaTurno(String token) throws RemoteException 
+	{
+		serverResponse = serverLogic.playerRoundSwitch(token);
+		
+		return serverResponse;
 	}
 }

@@ -101,122 +101,228 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 						//control of login parameters 
 						if(command.compareTo("creaUtente")==0)
 						{
-							String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+							String[] parameters = ServerMessageBroker.manageCreateUser(read_socket);
 							
-							writer_on_socket.write(serverLogic.add_new_user(parameters[0], parameters[1]));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.add_new_user(parameters[0], parameters[1]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if (command.compareTo("login")==0)
 						{
-							String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+							String[] parameters = ServerMessageBroker.manageLogin(read_socket);
 							
-							String login = serverLogic.login(parameters[0], parameters[1]);
-							this.setToken(ClientMessageBroker.manageLogin(login)[0]);
-							writer_on_socket.write(login);
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								String login = serverLogic.login(parameters[0], parameters[1]);
+								this.setToken(login.substring(login.indexOf(",") + 1));
+								writer_on_socket.write(login);
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if (command.compareTo("creaRazza") == 0)
 						{	
-							String[] parameters = ServerMessageBroker.manageReceiveMessageSplit(read_socket);
+							String[] parameters = ServerMessageBroker.manageCreateRace(read_socket);
 							
-							writer_on_socket.write(serverLogic.addNewSpecies(parameters[0], parameters[1], parameters[2]));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.addNewSpecies(parameters[0], parameters[1], parameters[2]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if (command.compareTo("accessoPartita") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.manageGameAccess(read_socket);
 							
-							String msg = serverLogic.gameAccess(token);
-							
-							if(ClientMessageBroker.checkMessage(msg))
-								this.setIsInGame(true);
+							if(parameters != null)
+							{
+								String msg = serverLogic.gameAccess(parameters[0]);
 								
-							writer_on_socket.write(msg);
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
-							
-							if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
-								serverLogic.changeRoundNotify();
+								if(msg.equals("@ok"))
+									this.setIsInGame(true);
+									
+								writer_on_socket.write(msg);
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+								
+								if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+									serverLogic.changeRoundNotify();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if (command.compareTo("uscitaPartita") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.manageGameExit(read_socket);
 							
-							String msg = serverLogic.gameExit(token);
-							if(ClientMessageBroker.checkMessage(msg))
-								this.setIsInGame(false);
-							
-							writer_on_socket.write(msg);
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								String msg = serverLogic.gameExit(parameters[0]);
+								if(msg.equals("@ok"))
+									this.setIsInGame(false);
+								
+								writer_on_socket.write(msg);
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if (command.compareTo("listaGiocatori") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.managePlayerList(read_socket);
 							
-							writer_on_socket.write(serverLogic.playerList(token));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.playerList(parameters[0]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if (command.compareTo("classifica") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.manageRanking(read_socket);
 							
-							writer_on_socket.write(serverLogic.ranking(token));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.ranking(parameters[0]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if (command.compareTo("logout") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.manageLogout(read_socket);
 							
-							String msg = serverLogic.logout(token);
-							if(ClientMessageBroker.checkMessage(msg))
-								this.setIsInGame(false);
-								
-							writer_on_socket.write(msg);
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								String msg = serverLogic.logout(parameters[0]);
+								if(msg.equals("@ok"))
+									this.setIsInGame(false);
+									
+								writer_on_socket.write(msg);
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						
 						// Comandi in partita(Informazioni)
 						
 						else if(command.compareTo("mappaGenerale") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.manageGeneralMap(read_socket);
 							
-							writer_on_socket.write(serverLogic.generalMap(token));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.generalMap(parameters[0]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if(command.compareTo("listaDinosauri") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.manageDinoList(read_socket);
 							
-							writer_on_socket.write(serverLogic.dinosaursList(token));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.dinosaursList(parameters[0]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if(command.compareTo("vistaLocale") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
-							String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+							String[] parameters = ServerMessageBroker.manageDinoZoom(read_socket);
 							
-							writer_on_socket.write(serverLogic.dinoZoom(token, dinoId));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.dinoZoom(parameters[0], parameters[1]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if(command.compareTo("statoDinosauro") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
-							String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+							String[] parameters = ServerMessageBroker.manageDinoState(read_socket);
 							
-							writer_on_socket.write(serverLogic.dinoState(token, dinoId));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.dinoState(parameters[0], parameters[1]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						
 						// End Comandi in partita(Informazioni)
@@ -225,56 +331,97 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 						
 						else if(command.compareTo("muoviDinosauro") == 0)
 						{
-							String token = ServerMessageBroker.manageDinoMovement(read_socket)[0];
-							String dinoId = ServerMessageBroker.manageDinoMovement(read_socket)[1];
-							String rowDest = ServerMessageBroker.manageDinoMovement(read_socket)[2];
-							String colDest = ServerMessageBroker.manageDinoMovement(read_socket)[3];
+							String[] parameters = ServerMessageBroker.manageDinoMovement(read_socket);
 							
-							writer_on_socket.write(serverLogic.dinoMove(token, dinoId, rowDest, colDest));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.dinoMove(parameters[0], parameters[1], parameters[2],
+										parameters[3]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if(command.compareTo("crescitaDinosauro") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
-							String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+							String[] parameters = ServerMessageBroker.manageDinoGrowUp(read_socket);
 							
-							writer_on_socket.write(serverLogic.dinoGrowUp(token, dinoId));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.dinoGrowUp(parameters[0], parameters[1]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if(command.compareTo("deponiUovo") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
-							String dinoId = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[1];
+							String[] parameters = ServerMessageBroker.manageNewEgg(read_socket);
 							
-							writer_on_socket.write(serverLogic.dinoNewEgg(token, dinoId));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.dinoNewEgg(parameters[0], parameters[1]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						
 						// End Comandi in partita(Azioni)
 						
 						else if(command.compareTo("confermaTurno") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.manageRoundConfirm(read_socket);
 							
-							writer_on_socket.write(serverLogic.roundConfirm(token));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
-							
-							serverLogic.changeRoundNotify();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.roundConfirm(parameters[0]));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+								
+								serverLogic.changeRoundNotify();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else if(command.compareTo("passaTurno") == 0)
 						{
-							String token = ServerMessageBroker.manageReceiveMessageSplit(read_socket)[0];
+							String[] parameters = ServerMessageBroker.managePlayerRoundSwitch(read_socket);
 							
-							writer_on_socket.write(serverLogic.playerRoundSwitch(token));
-							writer_on_socket.newLine();				
-							writer_on_socket.flush();
-							
-							if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
-								serverLogic.changeRoundNotify();
+							if(parameters != null)
+							{
+								writer_on_socket.write(serverLogic.playerRoundSwitch(token));
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+								
+								if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+									serverLogic.changeRoundNotify();
+							}
+							else
+							{
+								writer_on_socket.write("@comandoNonValido");
+								writer_on_socket.newLine();				
+								writer_on_socket.flush();
+							}
 						}
 						else
 						{
