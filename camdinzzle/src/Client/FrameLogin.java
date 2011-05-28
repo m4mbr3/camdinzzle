@@ -240,15 +240,19 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		{
 			
 					this.setVisible(false);
-					
-					if (ClientMessageBroker.manageMessageType(client.getConnManager().login(ClientMessageBroker.createLogin(username.getText(), password.getText()))).compareTo("ok")==0)
+					if (ClientMessageBroker.manageLogin(client.getConnManager().login(username.getText(), password.getText()))[0].compareTo("ok")==0)
 					{
 						managerframe = new FrameGameManager("ManagerPanel",client);
+					}
+					else if (ClientMessageBroker.manageLogin(client.getConnManager().login(username.getText(), password.getText()))[0].compareTo("no")==0)
+					{
+						this.setVisible(true);
+						JOptionPane.showMessageDialog(this,"Authentication Failed!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
 						this.setVisible(true);
-						JOptionPane.showMessageDialog(this,"Authentication Failed!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,"MessageIncorrect", "Message Error", JOptionPane.ERROR_MESSAGE);
 					}
 					//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
 			
@@ -257,15 +261,14 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		{
 			
 				new_userframe.setVisible(false);
-				if (ClientMessageBroker.manageMessageType(client.getConnManager().creaUtente(ClientMessageBroker.createUser(username.getText(), password.getText()))).compareTo("ok")==0)
+				if (ClientMessageBroker.manageMessageType(client.getConnManager().creaUtente(username.getText(), password.getText())).compareTo("ok")==0)
 				{	
-					
 					this.setVisible(true);
 					panel.remove(send_newUser);
 					panel.add(this.new_user);
+					panel.remove(back);
 					panel.add(send);
 					this.add(panel);
-					System.out.println("ciao----");
 				}
 				else
 				{

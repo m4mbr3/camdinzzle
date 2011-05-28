@@ -34,18 +34,18 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	private String command;
 	private MonitorMessage mm;
 	private boolean run;
-	
-	public ConnectionManagerSocket(int port, String address, String username, String password, MonitorMessage mm, Socket soc)
+	private ClientListener clientListener;
+	public ConnectionManagerSocket(int port, String address, MonitorMessage mm) throws IOException
 	{
 		// TODO Auto-generated constructor stub
 		this.mm = mm;
 		this.address = address;
 		token = "";
-		this.username = username;
-		this.password = password;
+		
 		this.port = port;
 		command = new String();
-		connection_with_server = soc;
+		connection_with_server = new Socket(address,port);
+		clientListener = new ClientListener(mm, this.connection_with_server);
 		run = true;
 		
 		try {

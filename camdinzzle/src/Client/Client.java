@@ -169,14 +169,14 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				}
 				else if(rmi.isSelected())
 				{
-					this.connManager = new ConnectionManagerRMI();
+					//this.connManager = new ConnectionManagerRMI();
 				}
 				else
 				{
 					this.setVisible(false);
 					Integer port_i = new Integer(port.getText());
 					try{
-							connManager = new ConnectionManagerSocket(port_i.intValue(), address.getText(), this);
+							connManager = new ConnectionManagerSocket(port_i.intValue(), address.getText(), new MonitorMessage());
 							login = new FrameLogin("Login",this);
 						}
 					catch(ConnectException e)
@@ -258,7 +258,6 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("ciao");
 	}
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -282,7 +281,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	}
 	public void startUI()
 	{
-		FrameGame gioco = new FrameGame("Schema Di Gioco");
+		FrameGame gioco = new FrameGame("Schema Di Gioco",this);
 	}
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
