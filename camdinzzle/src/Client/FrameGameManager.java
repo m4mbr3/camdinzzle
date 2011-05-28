@@ -47,7 +47,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		creaRazza = new JLabel("Create new Species");
 		accPartita = new JLabel("Access to Game");
 		lisGiocatori = new JLabel("Give List of Players");
-		classifica = new JLabel("Giva the Classific");
+		classifica = new JLabel("Give the Classific");
 		logout = new JLabel("Exit to Camdinzzle");
 		
 		creaRazza.setSize(300, 76);

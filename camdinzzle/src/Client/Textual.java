@@ -203,6 +203,7 @@ public class Textual implements Visual
 	@Override
 	public void drawRanking(ArrayList<String> rankingList) 
 	{
+		//TODO sistemare estremi for!!! nullPointerException
 //		if(ClientMessageBroker.checkMessage(msg))
 		{
 //			ArrayList<String> rankingList = ClientMessageBroker.manageRanking(msg);

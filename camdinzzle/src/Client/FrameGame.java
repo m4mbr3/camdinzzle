@@ -5,6 +5,7 @@ package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -25,6 +26,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -75,6 +77,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private JFrame ranking;
 	private JTable ranking1;
 	private Client client;
+	private boolean buttonChosen=false;
+	private String dinoId;
 	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
@@ -150,13 +154,13 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		//this.add(panelControl);
 		this.add(panelControl, BorderLayout.EAST);
 //		this.repaint();
-		dinoList = new JList();
-		panelControl.add(new JScrollPane(dinoList));
-		dinoState = new JTextArea();
-		panelControl.add(dinoState);
-		panelControl.add(commandButtons);
-		panelControl.add(new JScrollPane(playerList));
-		panelControl.add(timer);
+//		dinoList = new JList();
+//		panelControl.add(new JScrollPane(dinoList));
+//		dinoState = new JTextArea();
+//		panelControl.add(dinoState);
+//		panelControl.add(commandButtons);
+//		panelControl.add(new JScrollPane(playerList));
+//		panelControl.add(timer);
 		
 		
 		this.validate();
@@ -193,9 +197,10 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		m.drawPlayerList(msgPlayerList);
 		m.drawTime();
 		m.repaint();
+//		startFrameGame(c);
 	}
 	
-	public void startFrameGame(Client client)
+	public static void startFrameGame(Client client)
 	{
 		 FrameGame game = new FrameGame("Isola dei Dinosauri", client);
 		 game.drawMap(client.getConnManager().mappaGenerale());
@@ -215,50 +220,42 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		this.repaint();
 	}
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		System.exit(0);
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		this.repaint();
+		//this.repaint();
 		for(int i = 0; i < row; i++)
 			for(int j =0; j< col;j++)
 				{
@@ -270,6 +267,10 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	@Override
 	public void mouseClicked(MouseEvent arg0) 
 	{
+		for(int i=0; i<3; i++)
+		{
+			commandDinoButton[i].setEnabled(false);
+		}
 		if(arg0.getComponent().equals(commandDinoButton[0]))
 		{
 			//TODO chiamare movimento
@@ -281,49 +282,83 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		if(arg0.getComponent().equals(commandDinoButton[2]))
 		{
 			//TODO ciamare deponi uovo
-			client.getConnManager().deponiUovo(null);
+//			newEgg();
+			if((arg0.getComponent() instanceof JButton))
+			{
+			buttonChosen = true;
+			
+			client.getConnManager().deponiUovo(arg0.getComponent().getName());
+			}
 		}
 		if(arg0.getComponent().equals(commandGameButton[0]))
 		{
-			//TODO chiamare classifica creare popup
 			
-			ArrayList<String> classifica = client.getConnManager().classifica();
-			drawRanking(classifica);
+	//		ArrayList<String> classifica = client.getConnManager().classifica();
+			String msg = "@classifica,{a,a,0,s},{b,b,100,n}";
+			ArrayList<String> classifica = ClientMessageBroker.manageRanking(msg);
+			if(classifica!=null)
+			{
+				drawRanking(classifica);
+			}
+			else
+			{
+				errorMessage();
+			}
 		}
 		if(arg0.getComponent().equals(commandGameButton[1]))
 		{
-			//TODO chiamare passa turno
+			String[] check = client.getConnManager().passaTurno();
+			if(check==null)
+			{
+				errorMessage();
+			}
 		}
 		if(arg0.getComponent().equals(commandGameButton[2]))
 		{
 			//TODO chiamre esci partita
+			String check = client.getConnManager().uscitaPartita();
+			if(check==null)
+			{
+				errorMessage();
+			}
+		}
+		if(arg0.getComponent() instanceof JButton)
+		{
+			if(((String)arg0.getComponent().getName()).contains("-"))
+			{
+				dinoId = arg0.getComponent().getName();
+				for(int i=0; i<3; i++)
+				{
+					commandDinoButton[i].setEnabled(true);
+				}
+			}
 		}
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		if (arg0.getSource() instanceof JButton)
+	public void mouseEntered(MouseEvent arg0) 
+	{
+		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandDinoButton[2])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
 			((JButton) arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		if (arg0.getSource() instanceof JButton)
+	public void mouseExited(MouseEvent arg0) 
+	{
+		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandDinoButton[2])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
 			((JButton) arg0.getComponent()).setBorder(null);
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mousePressed(MouseEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseReleased(MouseEvent arg0) 
+	{
+				
 	}
 	
 	@Override
@@ -331,7 +366,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 * inizializza la mappa generale con le carateristiche inviategli nel msg
 	 * @param msg
 	 */
-	public boolean drawMap(ArrayList<String> mapList) {
+	public boolean drawMap(ArrayList<String> mapList) 
+	{
 //		ArrayList<String> mapList = ClientMessageBroker.manageGeneralMap(msg);
 		if(mapList!=null)
 		{
@@ -347,17 +383,30 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				buttons[j][z].setEnabled(false);
 				if(mapList.get(i).compareTo("b")==0)
 					{
+						buttons[j][z].setName("dark");
 						buttons[j][z].setIcon(iconDark);
 						buttons[j][z].setDisabledIcon(iconDark);
 					}
 				else if(mapList.get(i).compareTo("v")==0)
-					buttons[j][z].setDisabledIcon(iconVegetationDisable);
+					{
+						buttons[j][z].setName("vegetation");
+						buttons[j][z].setDisabledIcon(iconVegetationDisable);
+					}
 				else if(mapList.get(i).compareTo("t")==0)
-					buttons[j][z].setDisabledIcon(iconLandDisable);
+					{
+						buttons[j][z].setName("land");
+						buttons[j][z].setDisabledIcon(iconLandDisable);
+					}
 				else if(mapList.get(i).compareTo("a")==0)
-					buttons[j][z].setDisabledIcon(iconWaterDisable);
+					{
+						buttons[j][z].setName("water");
+						buttons[j][z].setDisabledIcon(iconWaterDisable);
+					}
 				else if(mapList.get(i).compareTo("d")==0)
-					buttons[j][z].setDisabledIcon(iconDark);
+					{
+						buttons[j][z].setName("dinosaur");
+						buttons[j][z].setDisabledIcon(iconDark);
+					}
 				z++;
 			}
 			return true;
@@ -396,14 +445,17 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				}
 				if(mapList.get(i).compareTo("b")==0)
 				{
+					buttons[row][col].setName("dark");
 					buttons[row][col].setIcon(iconDark);
 				}
 				else if(mapList.get(i).compareTo("t")==0)
 				{
+					buttons[row][col].setName("land");
 					buttons[row][col].setIcon(iconLand);
 				}
 				else if(mapList.get(i).compareTo("a")==0)
 				{
+					buttons[row][col].setName("water");
 					buttons[row][col].setIcon(iconWater);
 				}
 					
@@ -412,14 +464,20 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 					energySplit = ((String)mapList.get(i)).split(",");
 					if(energySplit[0].compareTo("d")==0)
 					{
+						buttons[row][col].setName(energySplit[1]);
+						buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
 						buttons[row][col].setIcon(iconDark);
 					}
 					else if(energySplit[0].compareTo("v")==0)
 					{
+						buttons[row][col].setName("vegetation");
+						buttons[row][col].setToolTipText("energia vegetazione: " + energySplit[1]);
 						buttons[row][col].setIcon(iconVegetation);
 					}
 					else if(energySplit[0].compareTo("c")==0)
 					{
+						buttons[row][col].setName("carrion");
+						buttons[row][col].setToolTipText("energia carogna: " + energySplit[1]);
 						buttons[row][col].setIcon(iconCarrion);
 					}
 				}
@@ -448,7 +506,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	/**
 	 * prende la lista dinosauri e la stampa in alto a destra
 	 */
-	public void drawDinoList(String[] msgDinoList) {
+	public void drawDinoList(String[] msgDinoList) 
+	{
 		
 //		String[] msgDinoList = ClientMessageBroker.manageDinoList(msg);
 		dinoList = new JList(msgDinoList);
@@ -462,23 +521,23 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			 */
 			public void valueChanged(ListSelectionEvent e) 
 			{
-			//TODO inserire chiamata dello stato dino
-				drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
-				dinoState.repaint();
+				String msg = "@statoDinosauro,a,a,Carnivorous,{11,11},4,1500,30";
+				String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
+				drawDinoState(dinoList.getSelectedValue().toString(), msgDinoState);
+//				drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
+				panelControl.repaint();
 				
 			}
 		});
 		dinoList.setVisible(true);
 		dinoList.setPreferredSize(new Dimension(widthControlPanel-25,(int)screenSize.getHeight()/14*4));
-//		dinoList.setAlignmentX(LEFT_ALIGNMENT);
 		dinoList.setFont(fontDinoList);	
-		
-
-		
+		panelControl.add(new JScrollPane(dinoList));
 	}
 
 	@Override
-	public void drawTime() {
+	public void drawTime() 
+	{
 		// TODO countdown 2m
 		timer.setBackground(Color.GREEN);
 		panelControl.add(timer);
@@ -487,23 +546,24 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
-	public void drawConnectionState(String msg) {
-		// TODO Auto-generated method stub
+	public void drawConnectionState(String msg) 
+	{
+
 		
 	}
 
 	@Override
 	public void drawRanking(ArrayList<String> classifica) {
-		// TODO creare popup con classifica
+		// TODO sistemare intestazione colonne
 		ranking = new JFrame("Classifica");
 		ranking.setVisible(true);
-		ranking.setPreferredSize(new Dimension(300, 500));
-		Object[] columnNames = new String[4];
-		columnNames[0] = "USERNAME";
+		ranking.setSize(new Dimension(300, 500));
+		String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
+/*		columnNames[0] = "USERNAME";
 		columnNames[1] = "NOME SPECIE";
 		columnNames[2] = "PUNTEGGIO";
-		columnNames[3] = "IN PARTITA";
-		Object[][] rowData = new String [classifica.size()/4][4];
+		columnNames[3] = "IN PARTITA";*/
+		String[][] rowData = new String [classifica.size()/4][4];
 		int j=0,z=0;
 		for(int i=0;i<classifica.size();i++)
 		{
@@ -522,8 +582,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
-	public void drawDinoState(String dinoId, String[] msgDinoState) {
-		// TODO stampare stato dinosauro
+	public void drawDinoState(String dinoId, String[] msgDinoState) 
+	{
 //		String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
 		String newMsgDinoState="";
 		
@@ -545,6 +605,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		dinoState.setPreferredSize(new Dimension(widthControlPanel,(int)screenSize.getHeight()/14*2));
 		dinoState.setFont(fontDinoState);
 		dinoState.setEditable(false);
+		panelControl.add(dinoState);
 		
 		
 	}
@@ -579,18 +640,24 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 
 		 commandDinoButton = new JButton[3];
 		 commandDinoButton[0] = new JButton("Muovi Dinosauro");
+		 commandDinoButton[0].setName("Muovi Dinosauro");
 		 commandDinoButton[1] = new JButton("Cresci Dinosauro");
+		 commandDinoButton[1].setName("Cresci Dinosauro");
 		 commandDinoButton[2] = new JButton("Deponi Uovo");
+		 commandDinoButton[2].setName("Deponi Uovo");
 		 commandGameButton = new JButton[3];
 		 commandGameButton[0] = new JButton("Classifica");
+		 commandGameButton[0].setName("Classifica");
 		 commandGameButton[1] = new JButton("Passa Turno");
+		 commandGameButton[1].setName("Passa Turno");
 		 commandGameButton[2] = new JButton("Esci dalla Partita");
+		 commandGameButton[2].setName("Esci dalla Partita");
 		 
 		 for(int i=0;i<3;i++)
 		 {
 			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-10,(int)screenSize.getHeight()/14/5*3));
 			 commandDinoButton[i].setVisible(true);
-			 commandDinoButton[i].setEnabled(true);
+			 commandDinoButton[i].setEnabled(false);
 			 commandDinoButton[i].addMouseListener(this);
 			 commandButtons.add(commandDinoButton[i]);
 		 }
@@ -602,14 +669,22 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			 commandGameButton[i].addMouseListener(this);
 			 commandButtons.add(commandGameButton[i]);
 		 }
-		 
+		 panelControl.add(commandButtons);
 		 
 
 	 }
 	 public void errorMessage()
 	 {
-		 
+		 JOptionPane.showMessageDialog(panel, "Azione non compiuta", "Erorr", JOptionPane.ERROR_MESSAGE);
 	 }
+	 private void newEgg()
+	 {
+		 JOptionPane newEgg = new JOptionPane();
+		 newEgg.showMessageDialog(panel, "Seleziona un tuo dinosauro sulla mappa", "Deponi Uovo", JOptionPane.INFORMATION_MESSAGE);
+		 newEgg.setWantsInput(buttonChosen);
+		 buttonChosen=false;
+	 }
+	 
 	 
 
 }
