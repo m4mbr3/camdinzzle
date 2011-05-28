@@ -18,6 +18,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -41,6 +42,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JFrame creaRazzaFrame;
 	private JLabel razzatitle;
 	private JLabel razza_testo;
+	private JLabel choice;
 	private JTextField razza_valore;
 	private JRadioButton Vege;
 	private JRadioButton Carn;
@@ -65,6 +67,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		
 		razzatitle = new JLabel("Create new Species");
 		razza_testo = new JLabel("Insert the Name");
+		choice = new JLabel("Select the type of new Species :");
 		razza_valore = new JTextField();
 		radiogroup = new ButtonGroup();
 		Vege = new JRadioButton("Vegetarian");
@@ -72,18 +75,21 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		razza_button = new JButton("Create new Species");
 		radiogroup.add(Vege);
 		radiogroup.add(Carn);
-		razza_button.setSize(100, 20);
+		razza_button.setSize(180, 20);
 		razzatitle.setSize(200,20);
 		razza_testo.setSize(130,20);
 		razza_valore.setSize(120,20);
-		Vege.setSize(200,20);
-		Carn.setSize(200,20);
+		Vege.setSize(130,20);
+		Carn.setSize(130,20);
 		razzatitle.setLocation(10,0);
-		razza_testo.setLocation(10,70);
-		razza_valore.setLocation(180, 70);
-		Vege.setLocation(10,100);
-		Carn.setLocation(10,130);
-		razza_button.setLocation(10,160);
+		razza_testo.setLocation(10,50);
+		razza_valore.setLocation(180, 50);
+		Vege.setLocation(10,130);
+		Vege.setSelected(true);
+		Carn.setLocation(150,130);
+		Carn.setSelected(false);
+		razza_button.setLocation(10,190);
+		razza_button.addMouseListener(this);
 		
 		
 		creaRazza.setSize(300, 76);
@@ -156,7 +162,31 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(logout))
 		{
-			
+			int ritorno = JOptionPane.showConfirmDialog(
+				    this,
+				    "Do you really want to exit from Camdinzzle?",
+				    "Exit Question",
+				    JOptionPane.YES_NO_OPTION);
+			if (ritorno == 1) System.exit(0);
+		}
+		else if (arg0.getComponent().equals(razza_button))
+		{
+			 creaRazzaFrame.setVisible(false);
+			 String type;
+			 if(Vege.isSelected()) type = new String("c");
+			 else  type = new String("e");
+			 String[] response=ClientMessageBroker.manageCreateSpecies(client.getConnManager().creaRazza( razza_valore.getText() , type));	 
+			 if(response[0].compareTo("ok")==0)
+			 {
+				 JOptionPane.showMessageDialog(this,"New Specie's been created!!!", "New Species", JOptionPane.INFORMATION_MESSAGE);
+			 }
+			 else if (response[0].compareTo("no")==0)
+			 {
+				if(response[1].compareTo("nomeRazzaOccupato")==0) JOptionPane.showMessageDialog(this,"Name busy!!! try with another name", "New Species Error", JOptionPane.ERROR_MESSAGE);
+				else if(response[1].compareTo("tokenNonValido")==0)JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+				else if(response[1].compareTo("razzaGiaCreata")==0)JOptionPane.showMessageDialog(this,"You already have created another specie !!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+			 }
+			 else if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	@Override
