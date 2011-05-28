@@ -566,7 +566,7 @@ public class ClientMessageBroker
 		{
 			ArrayList<String> ret = new ArrayList<String>();
 			
-			ret.add("ok");
+			ret.add("no");
 			ret.add("tokenNonValido");
 			
 			return ret;

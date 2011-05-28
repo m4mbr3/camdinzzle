@@ -23,9 +23,9 @@ public class Textual implements Visual
 	
 	// Inutile implementarlo
 	@Override
-	public boolean drawMap(ArrayList<String> mapList) 
+	public void drawMap(ArrayList<String> mapList) 
 	{
-		return false;
+		
 	}
 
 	/**

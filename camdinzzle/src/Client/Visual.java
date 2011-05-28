@@ -14,7 +14,7 @@ public interface Visual
 	/**
 	 *  Metodo che disegna la mappa generale del player con terra, acqua, vegetazione oppure buio
 	 */
-	public boolean drawMap(ArrayList<String> mapList);
+	public void drawMap(ArrayList<String> mapList);
 	
 	/**
 	 * Metodo che disegna la mappa intorno ad un dinosauro identificato dal suo dinoId. La mappa conterrà, oltre 

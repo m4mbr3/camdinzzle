@@ -5,14 +5,12 @@ package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,16 +26,12 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import javax.swing.JFrame;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -77,12 +71,12 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private JFrame ranking;
 	private JTable ranking1;
 	private Client client;
-	private boolean buttonChosen=false;
 	private String dinoId;
 	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
 	private final int visibleRowCountPlayerList=8;
+	private final int maxAttempt = 5;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 18);
 	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
@@ -137,7 +131,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				buttons[i][j].setVisible(true);
 				//buttons[i][j].setBackground(Color.blue);
 				buttons[i][j].setSize(((int)screenSize.getWidth()-widthControlPanel)/col, ((int)screenSize.getHeight()/row));
-				buttons[i][j].setName(i+"X"+j);
+				buttons[i][j].setName(i+","+j);
 				buttons[i][j].addActionListener(this);
 				buttons[i][j].addMouseListener(this);
 				buttons[i][j].setBorder(null);
@@ -151,7 +145,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		}	
 		
 		this.add(panel,BorderLayout.WEST);
-		//this.add(panelControl);
+//		this.add(panelControl);
 		this.add(panelControl, BorderLayout.EAST);
 //		this.repaint();
 //		dinoList = new JList();
@@ -206,10 +200,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 game.drawMap(client.getConnManager().mappaGenerale());
 		 String[] msgDinoList = client.getConnManager().listaDinosauri();
 		 game.drawDinoList(msgDinoList);
-		 for(int i=0; i<msgDinoList.length; i++)
-		 {
-			 game.drawDinoZoom(msgDinoList[i], client.getConnManager().vistaLocale(msgDinoList[i]));
-		 }
 		 game.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
 		 game.drawCommandButtons();
 		 game.drawPlayerList(client.getConnManager().listaGiocatori());
@@ -267,44 +257,116 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	@Override
 	public void mouseClicked(MouseEvent arg0) 
 	{
+		//TODO controllare messaggio!!!
 		for(int i=0; i<3; i++)
 		{
 			commandDinoButton[i].setEnabled(false);
 		}
+		/*MOVIMENTO
+		 * dopo aver cliccato una cella con un dinosauro si attiva il tasto movimento,
+		 * dopo aver selezionato il tasto di destinazione si fa la chiamata a server
+		 * se il messaggio non è null ridisegna la mappa
+		 * se @no viene creato un popup
+		 */
 		if(arg0.getComponent().equals(commandDinoButton[0]))
 		{
-			//TODO chiamare movimento
+			JOptionPane.showMessageDialog(panelControl, "Seleziona la Destinazione");
+			arg0.consume();
+			String nameCell = arg0.getComponent().getName();
+			String[]  nameDest = nameCell.split(",");
+			String[] check = client.getConnManager().muoviDinosauro(dinoId, nameDest[0], nameDest[1]);
+			if(check==null)
+			{
+				errorMessage();
+			}
+			else
+			{
+				if(!check[0].equals("no"))
+				{
+					drawMap(client.getConnManager().mappaGenerale());	
+				}
+				else
+				{
+					errorMessageServer(check);
+				}
+			}
+			
 		}
+		/*CRESCI DINOSAURO
+		 * dopo aver cliccato una cella con un dinosauro si attiva il tasto
+		 * se il messaggio non è null viene aggiornato la descrizione dello stato dino appena cresciuto
+		 */
 		if(arg0.getComponent().equals(commandDinoButton[1]))
 		{
-			//TODO chiamare cresci dinosauro
-		}
-		if(arg0.getComponent().equals(commandDinoButton[2]))
-		{
-			//TODO ciamare deponi uovo
-//			newEgg();
-			if((arg0.getComponent() instanceof JButton))
+			String[] groUpDino = client.getConnManager().cresciDinosauro(dinoId);
+			if(groUpDino==null)
 			{
-			buttonChosen = true;
-			
-			client.getConnManager().deponiUovo(arg0.getComponent().getName());
+				errorMessage();
 			}
+			else
+			{
+				drawDinoState(dinoId,client.getConnManager().statoDinosauro(dinoId));
+				
+			}	
 		}
+		/*DEPONI UOVO
+		 *  dopo aver cliccato una cella con un dinosauro si attiva il tasto
+		 *  dopo aver inviato la richiesta
+		 *  se la risposta è diversa da null controlla il messaggio
+		 *  se non è no ridisegna la mappa altrimenti crea un popup
+		 */
+		if(arg0.getComponent().equals(commandDinoButton[2]))
+		{	
+			String[] newEgg = client.getConnManager().deponiUovo(dinoId);
+			if(newEgg==null)
+			{
+				errorMessage();
+			}
+			else
+			{
+				if(newEgg[0].equals("no"))
+				{
+					errorMessageServer(newEgg);
+				}
+				else
+				{
+					drawMap(client.getConnManager().mappaGenerale());
+				}
+			}
+
+		}
+		/*CLASSIFICA
+		 * tasto sempre attivo
+		 * se la risposta non è null e non no, crea un popup con la classifica
+		 * altrimenti stampa l'errore
+		 */
 		if(arg0.getComponent().equals(commandGameButton[0]))
 		{
-			
-	//		ArrayList<String> classifica = client.getConnManager().classifica();
-			String msg = "@classifica,{a,a,0,s},{b,b,100,n}";
-			ArrayList<String> classifica = ClientMessageBroker.manageRanking(msg);
+			ArrayList<String> classifica = client.getConnManager().classifica();
+//prova		String msg = "@classifica,{a,a,0,s},{b,b,100,n}";
+//			ArrayList<String> classifica = ClientMessageBroker.manageRanking(msg);
 			if(classifica!=null)
 			{
-				drawRanking(classifica);
+				if(!classifica.contains("no"))
+				{
+					drawRanking(classifica);
+				}
+				else
+				{
+					errorMessageServer(classifica);
+				}
 			}
 			else
 			{
 				errorMessage();
 			}
 		}
+		/*PASSA TURNO
+		 * tasto sempre attivo
+		 * fa la chiamata a server
+		 * se la risposta è null o no crea popup con errore
+		 * altrimenti nulla
+		 */
 		if(arg0.getComponent().equals(commandGameButton[1]))
 		{
 			String[] check = client.getConnManager().passaTurno();
@@ -312,16 +374,37 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			{
 				errorMessage();
 			}
+			else
+			{
+				if(check[0].equals("no"))
+				{
+					errorMessageServer(check);
+				}
+			}
 		}
+		/*ESCI DALLA PARTITA
+		 * fa la chiamata a server
+		 * se la risposta è null o no crea popup con errore
+		 */
 		if(arg0.getComponent().equals(commandGameButton[2]))
 		{
-			//TODO chiamre esci partita
 			String check = client.getConnManager().uscitaPartita();
 			if(check==null)
 			{
 				errorMessage();
 			}
+			else
+			{
+				if(check.equals("no"))
+				{
+					errorMessageServer(check);
+				}
+			}
 		}
+		/*BOTTONI MAPPA
+		 * se viene cliccato un bottone contenente un dinosauro del giocatore allora
+		 * attiva i pulsanti MOVIMENTO, CRESCI DINOSAURO, DEPONI UOVO
+		 */
 		if(arg0.getComponent() instanceof JButton)
 		{
 			if(((String)arg0.getComponent().getName()).contains("-"))
@@ -336,6 +419,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
+	/*
+	 * se il cursore entra in un bottone della mappa si crea un bordo nero
+	 */
 	public void mouseEntered(MouseEvent arg0) 
 	{
 		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandDinoButton[2])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
@@ -343,6 +429,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
+	/*
+	 * quando il cursore esce dal bottone della mappa il bordo si cancella
+	 */
 	public void mouseExited(MouseEvent arg0) 
 	{
 		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandDinoButton[2])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
@@ -363,10 +452,12 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	
 	@Override
 	/**
-	 * inizializza la mappa generale con le carateristiche inviategli nel msg
-	 * @param msg
+	 * inizializza la mappa generale con le carateristiche inviategli nella mapList
+	 * richiede le mappe locali di tutti i dinosauri del giocatore e le stampa su quella generale
+	 * se il server risponde con errato messaggio mapList è null e viene rifatta la richiesta per un numero massimo uguale a maxAttempt
+	 * @param mapList
 	 */
-	public boolean drawMap(ArrayList<String> mapList) 
+	public void drawMap(ArrayList<String> mapList) 
 	{
 //		ArrayList<String> mapList = ClientMessageBroker.manageGeneralMap(msg);
 		if(mapList!=null)
@@ -383,156 +474,224 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				buttons[j][z].setEnabled(false);
 				if(mapList.get(i).compareTo("b")==0)
 					{
-						buttons[j][z].setName("dark");
+						buttons[j][z].setName(buttons[j][z].getName() + " dark");
 						buttons[j][z].setIcon(iconDark);
 						buttons[j][z].setDisabledIcon(iconDark);
 					}
 				else if(mapList.get(i).compareTo("v")==0)
 					{
-						buttons[j][z].setName("vegetation");
+						buttons[j][z].setName(buttons[j][z].getName() + " vegetation");
 						buttons[j][z].setDisabledIcon(iconVegetationDisable);
 					}
 				else if(mapList.get(i).compareTo("t")==0)
 					{
-						buttons[j][z].setName("land");
+						buttons[j][z].setName(buttons[j][z].getName() + " land");
 						buttons[j][z].setDisabledIcon(iconLandDisable);
 					}
 				else if(mapList.get(i).compareTo("a")==0)
 					{
-						buttons[j][z].setName("water");
+						buttons[j][z].setName(buttons[j][z].getName() + " water");
 						buttons[j][z].setDisabledIcon(iconWaterDisable);
 					}
 				else if(mapList.get(i).compareTo("d")==0)
 					{
-						buttons[j][z].setName("dinosaur");
+						buttons[j][z].setName(buttons[j][z].getName() + " dinosaur");
 						buttons[j][z].setDisabledIcon(iconDark);
 					}
 				z++;
 			}
-			return true;
+/*codice		String[] msgDinoList = client.getConnManager().listaDinosauri();		
+finale			for(int i=0; i<msgDinoList.length; i++)
+quando			{
+attivato		drawDinoZoom(msgDinoList[i], client.getConnManager().vistaLocale(msgDinoList[i]));
+connManager		}*/
+			
 		}
 		else
-			return false;
+		{
+			int count = 0;
+			ArrayList<String> msg;
+			do
+			{
+				msg = client.getConnManager().mappaGenerale();
+				count++;
+			}
+			while((msg==null)&&(count<maxAttempt));
+			if(msg==null)
+			{
+				errorMessageServer();
+			}
+		}
 	}
 
 	@Override
 	/**
 	 * Sovrascrive la mappa generale con la vista locale di un dinosauro
-	 * @param dinoId non serve
-	 * @param msg : messaggio contenente vista locale
+	 * nel caso in cui il messaggio è null viene rifatta la richiesta per maxAttempt volte
+	 * se mapList contiente no viene creato un popup di errore
+	 * @param dinoId 
+	 * @param mapList : messaggio contenente vista locale
 	 */
 	public void drawDinoZoom(String dinoId, ArrayList<String> mapList) 
 	{
 //		ArrayList<String> mapList = ClientMessageBroker.manageDinoZoom(msg);
-		int startRow = Integer.parseInt(mapList.get(0));
-		int startCol = Integer.parseInt(mapList.get(1));
-		int maxRow = startRow - Integer.parseInt(mapList.get(2));
-		int maxCol = Integer.parseInt(mapList.get(3)) + startCol;
-		
-		int row=startRow;
-		int col=startCol;
-		String[] energySplit = new String [2];
-//		System.out.println(mapList.size());
-		
-		for(int i=4; i<mapList.size(); i++)
+		if(mapList!=null)
 		{
-			if((row>=0)&&(row<this.row)&&(col>=0)&&(col<this.col))
+			if(!mapList.get(0).equals("no"))
 			{
-				if(col==maxCol)
+				int startRow = Integer.parseInt(mapList.get(0));
+				int startCol = Integer.parseInt(mapList.get(1));
+				int maxRow = startRow - Integer.parseInt(mapList.get(2));
+				int maxCol = Integer.parseInt(mapList.get(3)) + startCol;
+				
+				int row=startRow;
+				int col=startCol;
+				String[] energySplit = new String [2];
+		//		System.out.println(mapList.size());
+				
+				for(int i=4; i<mapList.size(); i++)
 				{
-					col=startCol;
-					row--;
-				}
-				if(mapList.get(i).compareTo("b")==0)
-				{
-					buttons[row][col].setName("dark");
-					buttons[row][col].setIcon(iconDark);
-				}
-				else if(mapList.get(i).compareTo("t")==0)
-				{
-					buttons[row][col].setName("land");
-					buttons[row][col].setIcon(iconLand);
-				}
-				else if(mapList.get(i).compareTo("a")==0)
-				{
-					buttons[row][col].setName("water");
-					buttons[row][col].setIcon(iconWater);
-				}
-					
-				else if(mapList.get(i).indexOf(",") != -1)
-				{
-					energySplit = ((String)mapList.get(i)).split(",");
-					if(energySplit[0].compareTo("d")==0)
+					if((row>=0)&&(row<this.row)&&(col>=0)&&(col<this.col))
 					{
-						buttons[row][col].setName(energySplit[1]);
-						buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
-						buttons[row][col].setIcon(iconDark);
+						if(col==maxCol)
+						{
+							col=startCol;
+							row--;
+						}
+						if(mapList.get(i).compareTo("b")==0)
+						{
+							buttons[row][col].setName(buttons[row][col].getName() + " dark");
+							buttons[row][col].setIcon(iconDark);
+						}
+						else if(mapList.get(i).compareTo("t")==0)
+						{
+							buttons[row][col].setName(buttons[row][col].getName() + " land");
+							buttons[row][col].setIcon(iconLand);
+						}
+						else if(mapList.get(i).compareTo("a")==0)
+						{
+							buttons[row][col].setName(buttons[row][col].getName() + " water");
+							buttons[row][col].setIcon(iconWater);
+						}
+							
+						else if(mapList.get(i).indexOf(",") != -1)
+						{
+							energySplit = ((String)mapList.get(i)).split(",");
+							if(energySplit[0].compareTo("d")==0)
+							{
+								buttons[row][col].setName(buttons[row][col].getName() + " " + energySplit[1]);
+								buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
+								buttons[row][col].setIcon(iconDark);
+							}
+							else if(energySplit[0].compareTo("v")==0)
+							{
+								buttons[row][col].setName(buttons[row][col].getName() + " vegetation");
+								buttons[row][col].setToolTipText("energia vegetazione: " + energySplit[1]);
+								buttons[row][col].setIcon(iconVegetation);
+							}
+							else if(energySplit[0].compareTo("c")==0)
+							{
+								buttons[row][col].setName(buttons[row][col].getName() + " carrion");
+								buttons[row][col].setToolTipText("energia carogna: " + energySplit[1]);
+								buttons[row][col].setIcon(iconCarrion);
+							}
+						}
+						col++;
 					}
-					else if(energySplit[0].compareTo("v")==0)
+					for(int rowEnable=startRow+1; rowEnable>maxRow-1; rowEnable--)
 					{
-						buttons[row][col].setName("vegetation");
-						buttons[row][col].setToolTipText("energia vegetazione: " + energySplit[1]);
-						buttons[row][col].setIcon(iconVegetation);
-					}
-					else if(energySplit[0].compareTo("c")==0)
-					{
-						buttons[row][col].setName("carrion");
-						buttons[row][col].setToolTipText("energia carogna: " + energySplit[1]);
-						buttons[row][col].setIcon(iconCarrion);
+						for(int colEnable=startCol-1; colEnable<maxCol+1; colEnable++)
+						{
+							if((rowEnable>=0)&&(rowEnable<this.row)&&(colEnable>=0)&&(colEnable<this.col))
+							{
+								buttons[rowEnable][colEnable].setEnabled(true);
+							}
+						}
 					}
 				}
-				col++;
 			}
-			for(int rowEnable=startRow+1; rowEnable>maxRow-1; rowEnable--)
+			else
 			{
-				for(int colEnable=startCol-1; colEnable<maxCol+1; colEnable++)
-				{
-					if((rowEnable>=0)&&(rowEnable<this.row)&&(colEnable>=0)&&(colEnable<this.col))
-					{
-						buttons[rowEnable][colEnable].setEnabled(true);
-					}
-				}
+				errorMessageServer(mapList);
 			}
-
-			
-			
 		}
-		
-		
-		
+		else
+		{
+			int count = 0;
+			ArrayList<String> msg;
+			do
+			{
+				msg = client.getConnManager().vistaLocale(dinoId);
+				count++;
+			}
+			while((msg==null)&&(count<maxAttempt));
+			if(msg==null)
+			{
+				errorMessageServer();
+			}
+		}
 	}
 
 	@Override
 	/**
 	 * prende la lista dinosauri e la stampa in alto a destra
+	 * se msgDinoList è null fa la richiesta per un numero pari a maxAttempt dopo di che crea un popup di errore
+	 * se il messaggio contiene no crea un popup di errore
+	 * se il messaggio è valido stampa la lista dei dinosauri
+	 * quando viene cliccato un dinosauro viene aggiornato il campo stato dinosauro
 	 */
 	public void drawDinoList(String[] msgDinoList) 
 	{
 		
 //		String[] msgDinoList = ClientMessageBroker.manageDinoList(msg);
-		dinoList = new JList(msgDinoList);
-		dinoList.setVisibleRowCount(visibleRowCountDinoList);
-		dinoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		dinoList.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			/**
-			 * classe di ascolto inner anonima
-			 */
-			public void valueChanged(ListSelectionEvent e) 
+		if(msgDinoList!=null)
+		{
+			if(!msgDinoList[0].equals("no"))
 			{
-				String msg = "@statoDinosauro,a,a,Carnivorous,{11,11},4,1500,30";
-				String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
-				drawDinoState(dinoList.getSelectedValue().toString(), msgDinoState);
-//				drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
-				panelControl.repaint();
-				
+				dinoList = new JList(msgDinoList);
+				dinoList.setVisibleRowCount(visibleRowCountDinoList);
+				dinoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				dinoList.addListSelectionListener(new ListSelectionListener() {
+					
+					@Override
+					/**
+					 * classe di ascolto inner anonima
+					 */
+					public void valueChanged(ListSelectionEvent e) 
+					{
+						String msg = "@statoDinosauro,a,a,Carnivorous,{11,11},4,1500,30";
+						String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
+						drawDinoState(dinoList.getSelectedValue().toString(), msgDinoState);
+//						drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
+						panelControl.repaint();
+						
+					}
+				});
+				dinoList.setVisible(true);
+				dinoList.setPreferredSize(new Dimension(widthControlPanel-25,(int)screenSize.getHeight()/14*4));
+				dinoList.setFont(fontDinoList);	
+				panelControl.add(new JScrollPane(dinoList));
 			}
-		});
-		dinoList.setVisible(true);
-		dinoList.setPreferredSize(new Dimension(widthControlPanel-25,(int)screenSize.getHeight()/14*4));
-		dinoList.setFont(fontDinoList);	
-		panelControl.add(new JScrollPane(dinoList));
+			else
+			{
+				errorMessageServer(msgDinoList);
+			}
+		}
+		else
+		{
+			int count = 0;
+			String[] msg;
+			do
+			{
+				msg = client.getConnManager().listaDinosauri();
+				count++;
+			}
+			while((msg==null)&&(count<maxAttempt));
+			if(msg==null)
+			{
+				errorMessageServer();
+			}
+		}
 	}
 
 	@Override
@@ -553,35 +712,37 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
+	/**STAMPA CLASSIFICA
+	 * crea un popup con la classifica
+	 */
 	public void drawRanking(ArrayList<String> classifica) {
 		// TODO sistemare intestazione colonne
-		ranking = new JFrame("Classifica");
-		ranking.setVisible(true);
-		ranking.setSize(new Dimension(300, 500));
-		String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
-/*		columnNames[0] = "USERNAME";
-		columnNames[1] = "NOME SPECIE";
-		columnNames[2] = "PUNTEGGIO";
-		columnNames[3] = "IN PARTITA";*/
-		String[][] rowData = new String [classifica.size()/4][4];
-		int j=0,z=0;
-		for(int i=0;i<classifica.size();i++)
-		{
-			if(z>=4)
+			ranking = new JFrame("Classifica");
+			ranking.setVisible(true);
+			ranking.setSize(new Dimension(300, 500));
+			String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
+			String[][] rowData = new String [classifica.size()/4][4];
+			int j=0,z=0;
+			for(int i=0;i<classifica.size();i++)
 			{
-				j++;
-				z=0;
+				if(z>=4)
+				{
+					j++;
+					z=0;
+				}
+				rowData[j][z] = classifica.get(i);
+				z++;
 			}
-			rowData[j][z] = classifica.get(i);
-			z++;
-		}
-		ranking1 = new JTable(rowData, columnNames);
-		ranking1.setVisible(true);
-		ranking.add(ranking1);
+			ranking1 = new JTable(rowData, columnNames);
+			ranking1.setVisible(true);
+			ranking.add(ranking1);
 		
 	}
 
 	@Override
+	/**STAMPA LO STATO DINOSAURO
+	 * 
+	 */
 	public void drawDinoState(String dinoId, String[] msgDinoState) 
 	{
 //		String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
@@ -610,6 +771,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		
 	}
 	@Override
+	/**stampa la lista giocatori
+	 * 
+	 */
 	public void drawPlayerList(String[] msgPlayerList)
 	{
 //		String[] msgPlayerList = ClientMessageBroker.managePlayerList(msg);
@@ -633,6 +797,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		playerList.setFont(fontPlayerState);	
 		panelControl.add(new JScrollPane(playerList));
 	}
+	/**
+	 * istanzia i bottoni per comandare i dinosauri e il gioco
+	 */
 	 public void drawCommandButtons()
 	 {
 //TODO  
@@ -673,16 +840,47 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 
 
 	 }
+	 /**
+	  * messaggio di errore in caso di messaggio di risposta illeggibile
+	  */
 	 public void errorMessage()
 	 {
-		 JOptionPane.showMessageDialog(panel, "Azione non compiuta", "Erorr", JOptionPane.ERROR_MESSAGE);
+		 JOptionPane.showMessageDialog(panel, "Azione non compiuta", "Error", JOptionPane.ERROR_MESSAGE);
 	 }
-	 private void newEgg()
+	 
+	 /**
+	  * messaggio di errore con l'Arrey di stringhe ricevuta dal server
+	  * @param msg
+	  */
+	 public void errorMessageServer(String[] msg)
 	 {
-		 JOptionPane newEgg = new JOptionPane();
-		 newEgg.showMessageDialog(panel, "Seleziona un tuo dinosauro sulla mappa", "Deponi Uovo", JOptionPane.INFORMATION_MESSAGE);
-		 newEgg.setWantsInput(buttonChosen);
-		 buttonChosen=false;
+		 JOptionPane.showMessageDialog(panel, msg);
+	 }
+	 
+	 /**
+	  * messaggio di errore in caso di comunicazione non corretta con il server
+	  */
+	 public void errorMessageServer()
+	 {
+		 JOptionPane.showMessageDialog(panel, "Errore nella comunicazione col server");
+	 }
+	 
+	 /**
+	  * messaggio di errore con l'ArrayList ricevuto dal server
+	  * @param msg
+	  */
+	 public void errorMessageServer(ArrayList<String> msg)
+	 {
+		 JOptionPane.showMessageDialog(panel, msg);
+	 }
+	 
+	 /**
+	  * messaggio di errore con la striga ricevuto dal server
+	  * @param msg
+	  */
+	 public void errorMessageServer(String msg)
+	 {
+		 JOptionPane.showMessageDialog(panel, msg);
 	 }
 	 
 	 
