@@ -3,9 +3,11 @@
  */
 package Client;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
@@ -19,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -48,6 +51,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JRadioButton Carn;
 	private ButtonGroup radiogroup;
 	private JButton razza_button;
+	private FrameGame game;
+	
+	private JFrame listaGiocatori;
+	private JPanel pannelloGiocatori;
+	private JLabel[] postiGiocatori;
+	private JLabel titoloGiocatori;
 	/**
 	 * @param title
 	 * @throws HeadlessException
@@ -64,7 +73,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		lisGiocatori = new JLabel("Give List of Players");
 		classifica = new JLabel("Give the Classific");
 		logout = new JLabel("Exit to Camdinzzle");
-		
 		razzatitle = new JLabel("Create new Species");
 		razza_testo = new JLabel("Insert the Name");
 		choice = new JLabel("Select the type of new Species :");
@@ -150,11 +158,66 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(accPartita))
 		{
-			//Frame di accesso alla partita..
+			String[] response = ClientMessageBroker.manageGameAccess(client.getConnManager().accessoPartita());
+			if(response == null)
+			{
+				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+			}
+			else if(response[0].compareTo("ok")==0)
+			{
+				game = new FrameGame("Game",client);
+				this.setVisible(false);
+				game.setVisible(true);
+			}
+			else if (response[0].compareTo("no")==0)
+			{
+				if (response[1].compareTo("troppiGiocatori")==0)
+				{
+					JOptionPane.showMessageDialog(this,"There aren't free spot!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(response[1].compareTo("tokenNonValido")==0)
+				{
+					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
 		else if (arg0.getComponent().equals(lisGiocatori))
 		{
-			
+			String[] response = client.getConnManager().listaGiocatori();
+			if (response == null)
+			{
+				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE);
+			}
+			else if (response[0].compareTo("listaGiocatori")==0)
+			{
+				System.out.println("ciaoasdasdas");
+				listaGiocatori = new JFrame("List of Players");
+				listaGiocatori.setLayout(new BorderLayout());
+				listaGiocatori.setVisible(true);
+				listaGiocatori.setSize(300, 600);
+				listaGiocatori.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-600)/2);
+				titoloGiocatori = new JLabel("Players of this Game:");
+				listaGiocatori.add(titoloGiocatori, BorderLayout.NORTH);
+				postiGiocatori = new JLabel[8];
+				pannelloGiocatori = new JPanel();
+				listaGiocatori.add(pannelloGiocatori,BorderLayout.SOUTH);
+				pannelloGiocatori.setLayout(new GridLayout(1,8));
+				int j;
+				for (int i=1; i < response.length; i++)
+				{
+					postiGiocatori[i-1].setText(response[i]);
+				}
+				for (int i=0; i < postiGiocatori.length; i++)
+				{
+					if (postiGiocatori[i].getText() == "") postiGiocatori[i].setText("Spot Empty");
+					pannelloGiocatori.add(postiGiocatori[i]);
+				}
+				listaGiocatori.repaint();
+			}
+			else if (response[0].compareTo("no")==0)
+			{
+				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		else if (arg0.getComponent().equals(classifica))
 		{
