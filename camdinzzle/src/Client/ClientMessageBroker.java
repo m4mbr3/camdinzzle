@@ -18,7 +18,7 @@ public class ClientMessageBroker
 	// Gestione messaggi in entrata
 	
 	/**
-	 * Controlla se il messaggio è valido oppure no
+	 * Controlla se il messaggio ï¿½ valido oppure no
 	 * @param msg messaggio del server
 	 * @return true se messaggio valido, false altrimenti
 	 */
@@ -40,7 +40,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il comando di creazione utente
 	 * @param msg : messaggio di risposta del Server
-	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'è stato
+	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'ï¿½ stato
 	 */
 	public static String[] manageCreateUser(String msg)
 	{
@@ -65,12 +65,11 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il comando di creazione della specie
 	 * @param msg : messaggio di ripsota del Server
-	 * @return Array contenente in prima posizione l'esito del messaggio e se è no contiene in seconda posizione l'errore
+	 * @return Array contenente in prima posizione l'esito del messaggio e se ï¿½ no contiene in seconda posizione l'errore
 	 */
 	public static String[] manageCreateSpecies(String msg)
 	{
 		String[] ret = new String[2];
-		
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";
@@ -80,8 +79,7 @@ public class ClientMessageBroker
 		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@razzaGiaCreata")))
 		{
 			ret[0] = "no";
-			ret[1] = msg.substring(msg.indexOf("," + 2));
-			
+			ret[1] = msg.substring(msg.indexOf(",") + 2);
 			return ret;
 		}
 		return null;
@@ -178,7 +176,7 @@ public class ClientMessageBroker
 	 * @param msg Messaggio del server
 	 * @return ArrayList contenente(in ordine di posizione): x di partenza, y di partenza, numero di righe della
 	 * vista, numero di colonne della vista, elemento della prima colonna della prima riga, elemento della seconda
-	 * colonna della prima riga e così via
+	 * colonna della prima riga e cosï¿½ via
 	 */
 	public static ArrayList<String> manageGeneralMap(String msg)
 	{
@@ -198,7 +196,7 @@ public class ClientMessageBroker
 				generalMap.add(commaSeparator[0].substring(1, 2));
 				generalMap.add(commaSeparator[1].substring(0, 1));
 				/**
-				 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
+				 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista cosï¿½ da
 				 * poter iniziare il ciclo di gestione delle singole righe
 				 */
 				dotAndCommaSeparator[0] = commaSeparator[2];
@@ -299,7 +297,7 @@ public class ClientMessageBroker
 			dinoZoomList.add(commaSeparator[2].substring(1));
 			dinoZoomList.add(commaSeparator[3].substring(0, commaSeparator[3].length() - 1));
 			/**
-			 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
+			 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista cosï¿½ da
 			 * poter iniziare il ciclo di gestione delle singole righe
 			 */
 			dotAndCommaSeparator[0] = dotAndCommaSeparator[0].substring(dotAndCommaSeparator[0].lastIndexOf("\\}") + 2);
@@ -309,7 +307,7 @@ public class ClientMessageBroker
 			{
 				bracketSquareSeparator = row.trim().split("\\[");
 				
-				// Ciclo che parte da uno perchè il primo carattere dell'array è uno spazio 
+				// Ciclo che parte da uno perchï¿½ il primo carattere dell'array ï¿½ uno spazio 
 				for (int i = 1; i<bracketSquareSeparator.length; i++) 
 				{
 					dinoZoomList.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
@@ -358,7 +356,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il messaggio del movimento di un dinosauro
 	 * @param msg
-	 * @return stringa contenente l'esito del combattimento se c'è stato, altrimenti ritorna ok
+	 * @return stringa contenente l'esito del combattimento se c'ï¿½ stato, altrimenti ritorna ok
 	 */
 	public static String[] manageDinoMove(String msg)
 	{
@@ -536,7 +534,7 @@ public class ClientMessageBroker
 	 * Gestisce il messaggio della classifica dei giocatori di una partita
 	 * @param msg
 	 * @return ArrayList contenente in ordine i giocatori con il loro stato; 4 celle per ogni giocatore 
-	 * contenti(in ordine): username, nome specie, punteggio, se è in partita
+	 * contenti(in ordine): username, nome specie, punteggio, se ï¿½ in partita
 	 */
 	public static ArrayList<String> manageRanking(String msg)
 	{
@@ -755,8 +753,8 @@ public class ClientMessageBroker
 	}
 	
 	/**
-	 * Conferma turno, per confermare la volontà di utilizzare il turno (entro 30 secondi dalla notifica 
-	 * che è il proprio turno)
+	 * Conferma turno, per confermare la volontï¿½ di utilizzare il turno (entro 30 secondi dalla notifica 
+	 * che ï¿½ il proprio turno)
 	 * @param token
 	 * @return messaggio completo
 	 */

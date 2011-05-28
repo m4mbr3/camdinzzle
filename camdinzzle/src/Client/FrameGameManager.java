@@ -167,16 +167,28 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				    "Do you really want to exit from Camdinzzle?",
 				    "Exit Question",
 				    JOptionPane.YES_NO_OPTION);
-			if (ritorno == 1) System.exit(0);
+			if (ritorno == 0){
+				String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
+				if(response[0].compareTo("ok")==0)
+				{
+					System.exit(0);
+				}
+				if(response[0].compareTo("no")==0)
+				{
+					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
 		else if (arg0.getComponent().equals(razza_button))
 		{
 			 creaRazzaFrame.setVisible(false);
-			 String type;
+			 String type = null;
 			 if(Vege.isSelected()) type = new String("c");
 			 else  type = new String("e");
-			 String[] response=ClientMessageBroker.manageCreateSpecies(client.getConnManager().creaRazza( razza_valore.getText() , type));	 
-			 if(response[0].compareTo("ok")==0)
+			 System.out.println("sonoprima");
+			 String[] response = ClientMessageBroker.manageCreateSpecies(client.getConnManager().creaRazza(razza_valore.getText(), type));	 
+			 if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+			 else if(response[0].compareTo("ok")==0)
 			 {
 				 JOptionPane.showMessageDialog(this,"New Specie's been created!!!", "New Species", JOptionPane.INFORMATION_MESSAGE);
 			 }
@@ -186,7 +198,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				else if(response[1].compareTo("tokenNonValido")==0)JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
 				else if(response[1].compareTo("razzaGiaCreata")==0)JOptionPane.showMessageDialog(this,"You already have created another specie !!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
 			 }
-			 else if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+			 
 		}
 	}
 	@Override
