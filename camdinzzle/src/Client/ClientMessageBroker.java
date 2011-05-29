@@ -263,7 +263,7 @@ public class ClientMessageBroker
 			}
 			else
 			{
-				return new String[]{validMessage};
+				return new String[]{"null"};
 			}
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))
@@ -520,7 +520,7 @@ public class ClientMessageBroker
 			}
 			else
 			{				
-				return new String[]{validMessage};
+				return new String[]{"null"};
 			}
 		}
 		else if(msg.equals("@no,@tokenNonValido"))
@@ -558,6 +558,13 @@ public class ClientMessageBroker
 				}
 				
 				return rankingList;
+			}
+			else
+			{
+				ArrayList<String> ret = new ArrayList<String>();
+				
+				ret.add("null");
+				return ret;
 			}
 		}
 		else if(msg.equals("@no,@tokenNonValido"))
