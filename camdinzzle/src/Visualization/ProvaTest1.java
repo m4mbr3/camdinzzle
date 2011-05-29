@@ -2,7 +2,6 @@ package Visualization;
 
 
 import Client.*;
-import Server.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,6 +60,7 @@ public class ProvaTest1 {
 			e.printStackTrace();
 		}
 		
+		/*
 		do
 		{
 			System.out.println("Possibilità di azioni:\n");
