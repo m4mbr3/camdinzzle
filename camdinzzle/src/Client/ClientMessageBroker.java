@@ -103,7 +103,7 @@ public class ClientMessageBroker
 		else if((msg.equals("@no,@troppiGiocatori")) || (msg.equals("@no,@tokenNonValido")))
 		{
 			ret[0] = "no";
-			ret[1] = msg.substring(msg.indexOf("," + 2));
+			ret[1] = msg.substring(msg.indexOf(",") + 2);
 			
 			return ret;
 		}
@@ -128,7 +128,7 @@ public class ClientMessageBroker
 		else if(msg.equals("@no,@tokenNonValido"))
 		{
 			ret[0] = "no";
-			ret[1] = msg.substring(msg.indexOf("," + 2));
+			ret[1] = msg.substring(msg.indexOf(",") + 2);
 			
 			return ret;
 		}
@@ -219,7 +219,7 @@ public class ClientMessageBroker
 		{
 			ArrayList<String> ret = new ArrayList<String>();
 			ret.add("no");
-			ret.add(msg.substring(msg.indexOf(",") + 2));
+			ret.add(msg.substring(msg.indexOf(",")) + 2);
 			
 			return ret;
 		}
