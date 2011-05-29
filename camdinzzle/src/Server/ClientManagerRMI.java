@@ -12,6 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 import Client.ClientMessageBroker;
 
@@ -21,6 +22,10 @@ import Client.ClientMessageBroker;
  */
 public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIInterface {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ServerLogic serverLogic;
 	private String serverResponse;
 
@@ -71,19 +76,19 @@ public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIIn
 	}
 
 	@Override
-	public synchronized String listaGiocatori(String token) throws RemoteException 
+	public synchronized String[] listaGiocatori(String token) throws RemoteException 
 	{
 		serverResponse = serverLogic.gameExit(token);
 		
-		return serverResponse;
+		return RMIMessageBroker.convertPlayerList(serverResponse);
 	}
 
 	@Override
-	public synchronized String classifica(String token) throws RemoteException 
+	public synchronized ArrayList<String> classifica(String token) throws RemoteException 
 	{
 		serverResponse = serverLogic.ranking(token);
 		
-		return serverResponse;
+		return RMIMessageBroker.convertRanking(serverResponse);
 	}
 
 	@Override
@@ -95,35 +100,35 @@ public class ClientManagerRMI extends UnicastRemoteObject implements ServerRMIIn
 	}
 
 	@Override
-	public synchronized String mappaGenerale(String token) throws RemoteException 
+	public synchronized ArrayList<String> mappaGenerale(String token) throws RemoteException 
 	{
 		serverResponse = serverLogic.generalMap(token);
 		
-		return serverResponse;
+		return RMIMessageBroker.convertGeneralMap(serverResponse);
 	}
 
 	@Override
-	public synchronized String listaDinosauri(String token) throws RemoteException 
+	public synchronized String[] listaDinosauri(String token) throws RemoteException 
 	{
 		serverResponse = serverLogic.dinosaursList(token);
 		
-		return serverResponse;
+		return RMIMessageBroker.convertDinoList(serverResponse);
 	}
 
 	@Override
-	public synchronized String vistaLocale(String token, String dinoId) throws RemoteException 
+	public synchronized ArrayList<String> vistaLocale(String token, String dinoId) throws RemoteException 
 	{
 		serverResponse = serverLogic.dinoZoom(token, dinoId);
 		
-		return serverResponse;
+		return RMIMessageBroker.convertDinoZoom(serverResponse);
 	}
 
 	@Override
-	public synchronized String statoDinosauro(String token, String dinoId) throws RemoteException 
+	public synchronized String[] statoDinosauro(String token, String dinoId) throws RemoteException 
 	{
 		serverResponse = serverLogic.dinoState(token, dinoId);
 		
-		return serverResponse;
+		return RMIMessageBroker.convertDinoState(serverResponse);
 	}
 
 	@Override
