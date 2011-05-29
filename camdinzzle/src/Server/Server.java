@@ -32,7 +32,7 @@ public class Server implements Runnable {
 	
 	// ClientManager
 	private ClientManagerSocket clientManagerSocket;
-	private ServerManagerRMI serverManagerRMI;
+	private ServerRMI serverRMI;
 	// End ClientManager
 	
 	private static ArrayList<ClientManager> clientList;
