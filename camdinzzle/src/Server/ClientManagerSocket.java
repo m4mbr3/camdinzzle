@@ -123,7 +123,10 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 							if(parameters != null)
 							{
 								String login = serverLogic.login(parameters[0], parameters[1]);
-								this.setToken(login.substring(login.indexOf(",") + 1));
+								
+								if(login.contains("@ok,"))
+									this.setToken(login.substring(login.indexOf(",") + 1));
+								
 								writer_on_socket.write(login);
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
