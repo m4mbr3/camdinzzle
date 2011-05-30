@@ -174,11 +174,10 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 		
-		/*
 		
 		
 		// End RMI
-		/*
+		
 		
 		try {
 			int port = 4567;
@@ -187,7 +186,7 @@ public class Server implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/	
+			
 	}
 
 	

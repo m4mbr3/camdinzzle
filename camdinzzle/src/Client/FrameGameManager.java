@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -23,6 +24,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -56,6 +59,10 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JPanel pannelloGiocatori;
 	private JLabel[] postiGiocatori;
 	private JLabel titoloGiocatori;
+	
+	private JFrame ranking;
+	private JScrollPane ranking2;
+	private JTable ranking1;
 	/**
 	 * @param title
 	 * @throws HeadlessException
@@ -182,14 +189,15 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(lisGiocatori))
 		{
+			System.out.println("ciaoasdasdas");
+
 			String[] response = client.getConnManager().listaGiocatori();
 			if (response == null)
 			{
 				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE);
 			}
-			else if (response[0].compareTo("listaGiocatori")==0)
+			else if (response[0].compareTo("@listaGiocatori")==0)
 			{
-				System.out.println("ciaoasdasdas");
 				listaGiocatori = new JFrame("List of Players");
 				listaGiocatori.setLayout(new BorderLayout());
 				listaGiocatori.setVisible(true);
@@ -223,7 +231,43 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(classifica))
 		{
-			
+			ArrayList<String> classifica = client.getConnManager().classifica();
+			if(classifica!=null)
+			{
+				if(!classifica.contains("no"))
+				{
+					ranking = new JFrame("Classifica");
+					ranking.setVisible(true);
+					ranking.setSize(new Dimension(350, 500));
+					ranking2 = new JScrollPane();
+					String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
+					String[][] rowData = new String [classifica.size()/4][4];
+					int j=0,z=0;
+					for(int i=1;i<classifica.size();i++)
+					{
+						if(z>=4)
+						{
+							j++;
+							z=0;
+						}
+						rowData[j][z] = classifica.get(i);
+						z++;
+					}
+					ranking1 = new JTable(rowData, columnNames);
+					ranking1.setVisible(true);
+					ranking2.getViewport().add(ranking1);
+					ranking.add(ranking2);
+				
+				}
+				else
+				{
+					 JOptionPane.showMessageDialog(this, "Azione non compiuta", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else
+			{
+				//errorMessage();
+			}
 		}
 		else if (arg0.getComponent().equals(logout))
 		{
@@ -281,7 +325,22 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		System.exit(0);
+		int ritorno = JOptionPane.showConfirmDialog(
+			    this,
+			    "Do you really want to exit from Camdinzzle?",
+			    "Exit Question",
+			    JOptionPane.YES_NO_OPTION);
+		if (ritorno == 0){
+			String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
+			if(response[0].compareTo("ok")==0)
+			{
+				System.exit(0);
+			}
+			if(response[0].compareTo("no")==0)
+			{
+				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	@Override

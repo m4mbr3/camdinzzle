@@ -219,12 +219,28 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		
+		String check = client.getConnManager().uscitaPartita();
+		if(check==null)
+		{
+			errorMessage();
+		}
+		else
+		{
+			if(check.equals("no"))
+			{
+				errorMessageServer(check);
+			}
+			else
+			{
+				this.setVisible(false);
+				//FrameGameManager gameIntro = new FrameGameManager("ManagerPanel", client);
+			}
+		}
 	}
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		System.exit(0);
+		
 	}
 
 	@Override
@@ -269,7 +285,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		/*MOVIMENTO
 		 * dopo aver cliccato una cella con un dinosauro si attiva il tasto movimento,
 		 * dopo aver selezionato il tasto di destinazione si fa la chiamata a server
-		 * se il messaggio non è null ridisegna la mappa
+		 * se il messaggio non ÔøΩ null ridisegna la mappa
 		 * se @no viene creato un popup
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[0]))
@@ -279,7 +295,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		}
 		/*CRESCI DINOSAURO
 		 * dopo aver cliccato una cella con un dinosauro si attiva il tasto
-		 * se il messaggio non è null viene aggiornato la descrizione dello stato dino appena cresciuto
+		 * se il messaggio non ÔøΩ null viene aggiornato la descrizione dello stato dino appena cresciuto
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[1]))
 		{
@@ -297,8 +313,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		/*DEPONI UOVO
 		 *  dopo aver cliccato una cella con un dinosauro si attiva il tasto
 		 *  dopo aver inviato la richiesta
-		 *  se la risposta è diversa da null controlla il messaggio
-		 *  se non è no ridisegna la mappa altrimenti crea un popup
+		 *  se la risposta ÔøΩ diversa da null controlla il messaggio
+		 *  se non ÔøΩ no ridisegna la mappa altrimenti crea un popup
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[2]))
 		{	
@@ -322,7 +338,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		}
 		/*CLASSIFICA
 		 * tasto sempre attivo
-		 * se la risposta non è null e non no, crea un popup con la classifica
+		 * se la risposta non ÔøΩ null e non no, crea un popup con la classifica
 		 * altrimenti stampa l'errore
 		 */
 		if(arg0.getComponent().equals(commandGameButton[0]))
@@ -347,7 +363,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		/*PASSA TURNO
 		 * tasto sempre attivo
 		 * fa la chiamata a server
-		 * se la risposta è null o no crea popup con errore
+		 * se la risposta ÔøΩ null o no crea popup con errore
 		 * altrimenti nulla
 		 */
 		if(arg0.getComponent().equals(commandGameButton[1]))
@@ -367,7 +383,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		}
 		/*ESCI DALLA PARTITA
 		 * fa la chiamata a server
-		 * se la risposta è null o no crea popup con errore
+		 * se la risposta ÔøΩ null o no crea popup con errore
 		 */
 		if(arg0.getComponent().equals(commandGameButton[2]))
 		{
@@ -385,7 +401,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				else
 				{
 					this.setVisible(false);
-					FrameGameManager gameIntro = new FrameGameManager("ManagerPanel", client);
+					//FrameGameManager gameIntro = new FrameGameManager("ManagerPanel", client);
 				}
 			}
 		}
@@ -476,7 +492,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	/**
 	 * inizializza la mappa generale con le carateristiche inviategli nella mapList
 	 * richiede le mappe locali di tutti i dinosauri del giocatore e le stampa su quella generale
-	 * se il server risponde con errato messaggio mapList è null e viene rifatta la richiesta per un numero massimo uguale a maxAttempt
+	 * se il server risponde con errato messaggio mapList ÔøΩ null e viene rifatta la richiesta per un numero massimo uguale a maxAttempt
 	 * @param mapList
 	 */
 	public void drawMap(ArrayList<String> mapList) 
@@ -549,7 +565,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	@Override
 	/**
 	 * Sovrascrive la mappa generale con la vista locale di un dinosauro
-	 * nel caso in cui il messaggio è null viene rifatta la richiesta per maxAttempt volte
+	 * nel caso in cui il messaggio ÔøΩ null viene rifatta la richiesta per maxAttempt volte
 	 * se mapList contiente no viene creato un popup di errore
 	 * @param dinoId 
 	 * @param mapList : messaggio contenente vista locale
@@ -657,9 +673,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	@Override
 	/**
 	 * prende la lista dinosauri e la stampa in alto a destra
-	 * se msgDinoList è null fa la richiesta per un numero pari a maxAttempt dopo di che crea un popup di errore
+	 * se msgDinoList ÔøΩ null fa la richiesta per un numero pari a maxAttempt dopo di che crea un popup di errore
 	 * se il messaggio contiene no crea un popup di errore
-	 * se il messaggio è valido stampa la lista dei dinosauri
+	 * se il messaggio ÔøΩ valido stampa la lista dei dinosauri
 	 * quando viene cliccato un dinosauro viene aggiornato il campo stato dinosauro
 	 */
 	public void drawDinoList(String[] msgDinoList) 
