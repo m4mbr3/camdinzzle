@@ -34,6 +34,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.html.Option;
 
 
 /**
@@ -70,8 +71,10 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private JPanel timer;
 	private JFrame ranking;
 	private JTable ranking1;
+	private JScrollPane ranking2;
 	private Client client;
 	private String dinoId;
+	private int flag=0;
 	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
@@ -168,7 +171,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		super(title, gc);
 		// TODO ???
 	}
-	public static void main(String[] args)
+/*	public static void main(String[] args)
 	{
 		Client c = new Client("ciao");
 		FrameGame m = new FrameGame("fc",c);
@@ -193,7 +196,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		m.repaint();
 //		startFrameGame(c);
 	}
-	
+*/	
 	public static void startFrameGame(Client client)
 	{
 		 FrameGame game = new FrameGame("Isola dei Dinosauri", client);
@@ -271,30 +274,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[0]))
 		{
-			JOptionPane.showMessageDialog(panelControl, "Seleziona la Destinazione");
-			arg0.consume();
-			String nameCell = arg0.getComponent().getName();
-			if(nameCell.contains(";"))
-			{
-				String[] nameDest = nameCell.split(";");
-				String[] newNameDest = nameDest[0].split(",");
-				String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
-				if(check==null)
-				{
-					errorMessage();
-				}
-				else
-				{
-					if(!check[0].equals("no"))
-					{
-						drawMap(client.getConnManager().mappaGenerale());	
-					}
-					else
-					{
-						errorMessageServer(check);
-					}
-				}
-			}
+//TODO eliminare bottone movimento e mettere aggiorna lista giocatori in fondo
 			
 		}
 		/*CRESCI DINOSAURO
@@ -348,8 +328,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		if(arg0.getComponent().equals(commandGameButton[0]))
 		{
 			ArrayList<String> classifica = client.getConnManager().classifica();
-//prova		String msg = "@classifica,{a,a,0,s},{b,b,100,n}";
-//			ArrayList<String> classifica = ClientMessageBroker.manageRanking(msg);
 			if(classifica!=null)
 			{
 				if(!classifica.contains("no"))
@@ -417,13 +395,47 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 */
 		if(arg0.getComponent() instanceof JButton)
 		{
-			if(((String)arg0.getComponent().getName()).contains("-"))
+			if(flag==1)
 			{
-				dinoId = arg0.getComponent().getName();
+				String nameCell = arg0.getComponent().getName();
+				if(nameCell.contains(";"))
+				{
+					String[] option = {"yes","no"};
+					int opt = JOptionPane.showOptionDialog(panel, "Vuoi muovere il dinosauro", "Muovi Dinosauro", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
+					if(opt==0)
+					{
+						String[] nameDest = nameCell.split(";");
+						String[] newNameDest = nameDest[0].split(",");
+						String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
+						if(check==null)
+						{
+							errorMessage();
+						}
+						else
+						{
+							if(!check[0].equals("no"))
+							{
+								drawMap(client.getConnManager().mappaGenerale());
+								drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+							}
+							else
+							{
+								errorMessageServer(check);
+							}
+						}
+					}
+				}
+				flag=0;
+			}
+			else if(((String)arg0.getComponent().getName()).contains("-"))
+			{
+				String[] idDino = arg0.getComponent().getName().split(";");
+				dinoId = idDino[1];
 				for(int i=0; i<3; i++)
 				{
 					commandDinoButton[i].setEnabled(true);
 				}
+				flag=1;
 			}
 		}
 	}
@@ -669,9 +681,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 					 */
 					public void valueChanged(ListSelectionEvent e) 
 					{
-//						String msg = "@statoDinosauro,a,a,Carnivorous,{11,11},4,1500,30";
-//						String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
-//						drawDinoState(dinoList.getSelectedValue().toString(), msgDinoState);
 						drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
 						panelControl.repaint();
 						
@@ -729,7 +738,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		// TODO sistemare intestazione colonne
 			ranking = new JFrame("Classifica");
 			ranking.setVisible(true);
-			ranking.setSize(new Dimension(300, 500));
+			ranking.setSize(new Dimension(350, 500));
+			ranking2 = new JScrollPane();
 			String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
 			String[][] rowData = new String [classifica.size()/4][4];
 			int j=0,z=0;
@@ -745,7 +755,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			}
 			ranking1 = new JTable(rowData, columnNames);
 			ranking1.setVisible(true);
-			ranking.add(ranking1);
+			ranking2.getViewport().add(ranking1);
+			ranking.add(ranking2);
 		
 	}
 

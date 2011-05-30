@@ -62,7 +62,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		address_label = new JLabel("Address :");
 		port = new JTextField("4567");
 		enable_port = new JCheckBox("enable");
-		address = new JTextField();
+		address = new JTextField("localhost");
 		radiogroup = new ButtonGroup();
 		next = new JButton("Continue");
 		next.setLocation(150,310);
