@@ -131,7 +131,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				buttons[i][j].setVisible(true);
 				//buttons[i][j].setBackground(Color.blue);
 				buttons[i][j].setSize(((int)screenSize.getWidth()-widthControlPanel)/col, ((int)screenSize.getHeight()/row));
-				buttons[i][j].setName(i+","+j);
+				buttons[i][j].setName(i+","+j +";");
 				buttons[i][j].addActionListener(this);
 				buttons[i][j].addMouseListener(this);
 				buttons[i][j].setBorder(null);
@@ -198,6 +198,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	{
 		 FrameGame game = new FrameGame("Isola dei Dinosauri", client);
 		 game.drawMap(client.getConnManager().mappaGenerale());
+		 //TODO gestire lista vuota
 		 String[] msgDinoList = client.getConnManager().listaDinosauri();
 		 game.drawDinoList(msgDinoList);
 		 game.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
@@ -273,21 +274,25 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			JOptionPane.showMessageDialog(panelControl, "Seleziona la Destinazione");
 			arg0.consume();
 			String nameCell = arg0.getComponent().getName();
-			String[]  nameDest = nameCell.split(",");
-			String[] check = client.getConnManager().muoviDinosauro(dinoId, nameDest[0], nameDest[1]);
-			if(check==null)
+			if(nameCell.contains(";"))
 			{
-				errorMessage();
-			}
-			else
-			{
-				if(!check[0].equals("no"))
+				String[] nameDest = nameCell.split(";");
+				String[] newNameDest = nameDest[0].split(",");
+				String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
+				if(check==null)
 				{
-					drawMap(client.getConnManager().mappaGenerale());	
+					errorMessage();
 				}
 				else
 				{
-					errorMessageServer(check);
+					if(!check[0].equals("no"))
+					{
+						drawMap(client.getConnManager().mappaGenerale());	
+					}
+					else
+					{
+						errorMessageServer(check);
+					}
 				}
 			}
 			
@@ -399,6 +404,11 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				{
 					errorMessageServer(check);
 				}
+				else
+				{
+					this.setVisible(false);
+					FrameGameManager gameIntro = new FrameGameManager("ManagerPanel", client);
+				}
 			}
 		}
 		/*BOTTONI MAPPA
@@ -474,37 +484,37 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				buttons[j][z].setEnabled(false);
 				if(mapList.get(i).compareTo("b")==0)
 					{
-						buttons[j][z].setName(buttons[j][z].getName() + " dark");
+						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dark");
 						buttons[j][z].setIcon(iconDark);
 						buttons[j][z].setDisabledIcon(iconDark);
 					}
 				else if(mapList.get(i).compareTo("v")==0)
 					{
-						buttons[j][z].setName(buttons[j][z].getName() + " vegetation");
+						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "vegetation");
 						buttons[j][z].setDisabledIcon(iconVegetationDisable);
 					}
 				else if(mapList.get(i).compareTo("t")==0)
 					{
-						buttons[j][z].setName(buttons[j][z].getName() + " land");
+						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "land");
 						buttons[j][z].setDisabledIcon(iconLandDisable);
 					}
 				else if(mapList.get(i).compareTo("a")==0)
 					{
-						buttons[j][z].setName(buttons[j][z].getName() + " water");
+						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "water");
 						buttons[j][z].setDisabledIcon(iconWaterDisable);
 					}
 				else if(mapList.get(i).compareTo("d")==0)
 					{
-						buttons[j][z].setName(buttons[j][z].getName() + " dinosaur");
+						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dinosaur");
 						buttons[j][z].setDisabledIcon(iconDark);
 					}
 				z++;
 			}
-/*codice		String[] msgDinoList = client.getConnManager().listaDinosauri();		
-finale			for(int i=0; i<msgDinoList.length; i++)
-quando			{
-attivato		drawDinoZoom(msgDinoList[i], client.getConnManager().vistaLocale(msgDinoList[i]));
-connManager		}*/
+			String[] msgDinoList = client.getConnManager().listaDinosauri();		
+			for(int i=0; i<msgDinoList.length; i++)
+			{
+				drawDinoZoom(msgDinoList[i], client.getConnManager().vistaLocale(msgDinoList[i]));
+			}
 			
 		}
 		else
@@ -560,17 +570,17 @@ connManager		}*/
 						}
 						if(mapList.get(i).compareTo("b")==0)
 						{
-							buttons[row][col].setName(buttons[row][col].getName() + " dark");
+							buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "dark");
 							buttons[row][col].setIcon(iconDark);
 						}
 						else if(mapList.get(i).compareTo("t")==0)
 						{
-							buttons[row][col].setName(buttons[row][col].getName() + " land");
+							buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "land");
 							buttons[row][col].setIcon(iconLand);
 						}
 						else if(mapList.get(i).compareTo("a")==0)
 						{
-							buttons[row][col].setName(buttons[row][col].getName() + " water");
+							buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "water");
 							buttons[row][col].setIcon(iconWater);
 						}
 							
@@ -579,19 +589,19 @@ connManager		}*/
 							energySplit = ((String)mapList.get(i)).split(",");
 							if(energySplit[0].compareTo("d")==0)
 							{
-								buttons[row][col].setName(buttons[row][col].getName() + " " + energySplit[1]);
+								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + energySplit[1]);
 								buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
 								buttons[row][col].setIcon(iconDark);
 							}
 							else if(energySplit[0].compareTo("v")==0)
 							{
-								buttons[row][col].setName(buttons[row][col].getName() + " vegetation");
+								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "vegetation");
 								buttons[row][col].setToolTipText("energia vegetazione: " + energySplit[1]);
 								buttons[row][col].setIcon(iconVegetation);
 							}
 							else if(energySplit[0].compareTo("c")==0)
 							{
-								buttons[row][col].setName(buttons[row][col].getName() + " carrion");
+								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "carrion");
 								buttons[row][col].setToolTipText("energia carogna: " + energySplit[1]);
 								buttons[row][col].setIcon(iconCarrion);
 							}
@@ -659,10 +669,10 @@ connManager		}*/
 					 */
 					public void valueChanged(ListSelectionEvent e) 
 					{
-						String msg = "@statoDinosauro,a,a,Carnivorous,{11,11},4,1500,30";
-						String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
-						drawDinoState(dinoList.getSelectedValue().toString(), msgDinoState);
-//						drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
+//						String msg = "@statoDinosauro,a,a,Carnivorous,{11,11},4,1500,30";
+//						String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
+//						drawDinoState(dinoList.getSelectedValue().toString(), msgDinoState);
+						drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
 						panelControl.repaint();
 						
 					}
@@ -723,7 +733,7 @@ connManager		}*/
 			String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
 			String[][] rowData = new String [classifica.size()/4][4];
 			int j=0,z=0;
-			for(int i=0;i<classifica.size();i++)
+			for(int i=1;i<classifica.size();i++)
 			{
 				if(z>=4)
 				{
@@ -745,7 +755,6 @@ connManager		}*/
 	 */
 	public void drawDinoState(String dinoId, String[] msgDinoState) 
 	{
-//		String[] msgDinoState = ClientMessageBroker.manageDinoState(msg);
 		String newMsgDinoState="";
 		
 		newMsgDinoState += "Dinosaur's state " + dinoId + " of player " + msgDinoState[0] + ":\n";
@@ -776,8 +785,10 @@ connManager		}*/
 	 */
 	public void drawPlayerList(String[] msgPlayerList)
 	{
-//		String[] msgPlayerList = ClientMessageBroker.managePlayerList(msg);
-		playerList = new JList(msgPlayerList);
+		String[] newMsgPlayerList = new String[8];
+		for(int i=0;i<msgPlayerList.length-1; i++)
+			newMsgPlayerList[i]=msgPlayerList[i+1];
+		playerList = new JList(newMsgPlayerList);
 		playerList.setVisibleRowCount(visibleRowCountPlayerList);
 		playerList.addListSelectionListener(new ListSelectionListener() {
 			
@@ -802,9 +813,6 @@ connManager		}*/
 	 */
 	 public void drawCommandButtons()
 	 {
-//TODO  
-//		-aggiungere azioni ai bottoni
-
 		 commandDinoButton = new JButton[3];
 		 commandDinoButton[0] = new JButton("Muovi Dinosauro");
 		 commandDinoButton[0].setName("Muovi Dinosauro");

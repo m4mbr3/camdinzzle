@@ -248,8 +248,8 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		{
 			 creaRazzaFrame.setVisible(false);
 			 String type = null;
-			 if(Vege.isSelected()) type = new String("c");
-			 else  type = new String("e");
+			 if(Vege.isSelected()) type = new String("e");
+			 else  type = new String("c");
 			 System.out.println("sonoprima");
 			 String[] response = ClientMessageBroker.manageCreateSpecies(client.getConnManager().creaRazza(razza_valore.getText(), type));	 
 			 if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
