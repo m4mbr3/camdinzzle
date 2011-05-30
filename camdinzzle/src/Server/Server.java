@@ -129,14 +129,14 @@ public class Server implements Runnable {
 			ex.printStackTrace();
 		}
 		
-		/*// RMI
+		// RMI
 		
 		Registry registro = null;
-		ClientManagerRMI cmRMI = null;
+		ServerRMI cmRMI = null;
 		
 		try
 		{
-			cmRMI = new ClientManagerRMI(serverLogic);
+			cmRMI = new ServerRMI(serverLogic);
 		}
 		catch (RemoteException e1) {
 			// TODO Auto-generated catch block
@@ -174,11 +174,11 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 		
-		
+		/*
 		
 		
 		// End RMI
-		*/
+		/*
 		
 		try {
 			int port = 4567;
@@ -186,7 +186,8 @@ public class Server implements Runnable {
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
+		*/	
 	}
 
 	

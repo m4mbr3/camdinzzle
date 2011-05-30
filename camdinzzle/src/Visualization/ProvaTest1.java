@@ -22,8 +22,6 @@ import java.util.Set;
 import javax.annotation.Generated;
 import javax.xml.soap.Text;
 
-import Server.ClientManagerSocket;
-import Server.Player;
 
 public class ProvaTest1 {
 	/**
@@ -36,7 +34,7 @@ public class ProvaTest1 {
 		ConnectionManagerSocket cms = null;
 		ClientListener pl = null;
 		ArrayList<String> requestQueue = new ArrayList<String>();
-		ServerRMIInterface server = null;
+		//ServerRMIInterface server = null;
 		
 		String [] arr;
 		String msg, scelta = "";
@@ -46,21 +44,9 @@ public class ProvaTest1 {
 		
 		// RMI
 		
-		try {
-			server = (ServerRMIInterface)Naming.lookup("rmi://127.0.0.1/server:1099");
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ConnectionManagerRMI server = new ConnectionManagerRMI("ciao", "localhost", "1099", "server");
 		
-		/*
+		
 		do
 		{
 			System.out.println("Possibilità di azioni:\n");
@@ -97,7 +83,7 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createUser(arr[0], arr[1]);
 						
 						MonitorMessage mm = new MonitorMessage();
-						Socket soc = new Socket("localhost", 34567);
+						//Socket soc = new Socket("localhost", 34567);
 						
 						requestQueue.add("creaUtente");
 						
@@ -127,7 +113,7 @@ public class ProvaTest1 {
 						requestQueue.add("creaRazza");
 						
 						System.out.println("Client: " + msg);
-						System.out.println("cms: " + server.creaRazza(token, arr[0], arr[1]));
+						System.out.println("cms: " + server.creaRazza(arr[0], arr[1]));
 					}
 					else if(scelta.equals("AP"))
 					{
@@ -137,7 +123,7 @@ public class ProvaTest1 {
 						requestQueue.add("accessoPartita");
 						
 						System.out.println("Client: " + msg);
-						System.out.println("cms: " + server.accessoPartita(token));
+						System.out.println("cms: " + server.accessoPartita());
 					}
 					else if(scelta.equals("UP"))
 					{
@@ -146,7 +132,7 @@ public class ProvaTest1 {
 						requestQueue.add("uscitaPartita");
 						
 						System.out.println("Client: " + msg);
-						System.out.println("cms: " + server.uscitaPartita(token));
+						System.out.println("cms: " + server.uscitaPartita());
 					}
 					else if(scelta.equals("LG"))
 					{
@@ -155,7 +141,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("listaGiocatori");
 						
-						msg = server.listaGiocatori(token);
+						String[] ar = server.listaGiocatori();
 						
 						System.out.println("cms: " + msg);
 						
@@ -168,7 +154,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("classifica");
 						
-						msg = server.classifica(token);
+						ArrayList<String> arl = server.classifica();
 						
 						System.out.println("cms: " + msg);
 						
@@ -181,7 +167,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("logout");
 						
-						msg = server.logout(token);
+						msg = server.logout();
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("GM"))
@@ -191,7 +177,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("mappaGenerale");
 						
-						msg = server.mappaGenerale(token);
+						ArrayList<String> arl = server.mappaGenerale();
 						System.out.println("cms: " + msg);
 						
 						text.drawGeneralMap(msg);
@@ -203,7 +189,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("listaDinosauri");
 						
-						msg = server.listaDinosauri(token);
+						String[] ar = server.listaDinosauri();
 						System.out.println("cms: " + msg);
 						
 						text.drawDinoList(ClientMessageBroker.manageDinoList(msg));
@@ -219,7 +205,7 @@ public class ProvaTest1 {
 							
 							requestQueue.add("vistaLocale");
 							
-							msg = server.vistaLocale(token, dinoId);
+							ArrayList<String> arl = server.vistaLocale(dinoId);
 							System.out.println("cms: " + msg);
 							text.drawDinoZoom(dinoId, ClientMessageBroker.manageDinoZoom(msg));
 						}
@@ -236,7 +222,7 @@ public class ProvaTest1 {
 							
 							requestQueue.add("statoDinosauro");
 							
-							msg = server.statoDinosauro(token, dinoId);
+							String[] ar = server.statoDinosauro(dinoId);
 							System.out.println("cms: " + msg);
 							text.drawDinoState(dinoId, ClientMessageBroker.manageDinoState(msg));
 						}
@@ -251,7 +237,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("muoviDinosauro");
 						
-						msg = server.muoviDinosauro(token, arr[0], arr[1], arr[2]);
+						String[] ar = server.muoviDinosauro(arr[0], arr[1], arr[2]);
 						System.out.println("cms: " + msg);
 					
 					}
@@ -264,7 +250,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("cresciDinosauro");
 						
-						msg = server.cresciDinosauro(token, dinoId);
+						String[] ar = server.cresciDinosauro(dinoId);
 						System.out.println("cms: " + msg);
 
 					}
@@ -277,7 +263,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("deponiUovo");
 						
-						msg = server.deponiUovo(token, dinoId);
+						String[] ar = server.deponiUovo(dinoId);
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("CT"))
@@ -287,7 +273,7 @@ public class ProvaTest1 {
 						
 						requestQueue.add("confermaTurno");
 						
-						msg = server.confermaTurno(token);
+						String[] ar = server.confermaTurno();
 						System.out.println("cms: " + msg);
 					}
 					else if(scelta.equals("PT"))
@@ -297,11 +283,12 @@ public class ProvaTest1 {
 						
 						requestQueue.add("passaTurno");
 						
-						msg = server.passaTurno(token);
+						String[] ar = server.passaTurno();
 						System.out.println("cms: " + msg);
 						
 						System.out.println("Turno del giocatore: " + msg);
 					}
+					/*
 					else if(scelta.equals("MC"))
 						Game.stampa();
 					
@@ -314,12 +301,12 @@ public class ProvaTest1 {
 						returnValues[0] = Integer.parseInt(dataInput.readLine());
 						System.out.println("Colonna:");
 						returnValues[1] = Integer.parseInt(dataInput.readLine());
-						Game.stampaReachAble(returnValues[0], returnValues[1]);
+						//Game.stampaReachAble(returnValues[0], returnValues[1]);
 					}
 					
 					else if(scelta.equals("E"))
 						System.out.println("Uscita dal gioco");
-					
+					*/
 					System.out.println("*****FINE INTERAZIONE*****\n");
 				}
 				
@@ -376,12 +363,12 @@ public class ProvaTest1 {
 						msg = ClientMessageBroker.createUser(arr[0], arr[1]);
 						
 						MonitorMessage mm = new MonitorMessage();
-						Socket soc = new Socket("localhost", 34567);
+						//Socket soc = new Socket("localhost", 34567);
 						
 						requestQueue.add("creaUtente");
 						
-						cms = new ConnectionManagerSocket(34567, "localhost", arr[0], arr[1], mm, soc);
-						pl = new ClientListener(34567, "localhost", arr[0], mm, soc);
+						cms = new ConnectionManagerSocket(4567, "localhost", new MonitorMessage());
+						//pl = new ClientListener(34567, "localhost", arr[0], mm, soc);
 						
 						System.out.println("Client: " + msg);
 						System.out.println("cms: " + cms.creaUtente(arr[0], arr[1]));
@@ -580,8 +567,8 @@ public class ProvaTest1 {
 						System.out.println("Turno del giocatore: " + msg);
 					}
 					else if(scelta.equals("MC"))
-						Game.stampa();
-					
+						//Game.stampa();
+					/*
 					else if(scelta.equals("RM"))
 					{
 						BufferedReader dataInput1 = new BufferedReader(new InputStreamReader(System.in));
@@ -591,7 +578,7 @@ public class ProvaTest1 {
 						returnValues[0] = Integer.parseInt(dataInput.readLine());
 						System.out.println("Colonna:");
 						returnValues[1] = Integer.parseInt(dataInput.readLine());
-						Game.stampaReachAble(returnValues[0], returnValues[1]);
+						//Game.stampaReachAble(returnValues[0], returnValues[1]);
 					}
 					
 					else if(scelta.equals("E"))
