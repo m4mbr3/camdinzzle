@@ -102,8 +102,15 @@ public class Server implements Runnable {
 			{
 				if(client.getIsInGame())
 				{
-					// TODO: gestione se messaggio non inviato ad un client
-					boolean result = client.sendChangeRound(msg);
+					try
+					{
+						// TODO: gestione se messaggio non inviato ad un client
+						boolean result = client.sendChangeRound(msg);
+					}
+					catch(Exception ex)
+					{
+						clientList.remove(client);
+					}
 				}
 			}
 		}

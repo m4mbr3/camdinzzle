@@ -78,7 +78,8 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	
 		this.client = client;
 		this.setVisible(true);
-		this.setSize(330,300);
+		this.setResizable(false);
+		this.setSize(330,330);
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		new_user = new JLabel("Are you a new user?Click here!");
 		back = new JLabel("Come back to login");
@@ -225,6 +226,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		{
 			this.setVisible(false);
 			new_userframe = new JFrame("New User");
+			new_userframe.setResizable(false);
 			new_userframe.setVisible(true);
 			new_userframe.addWindowListener(this);
 			new_userframe.setSize(330,300);

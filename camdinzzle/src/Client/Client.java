@@ -57,7 +57,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	public Client(String Name) {
 		super (Name);
 		this.setVisible(true);
-		
+		this.setResizable(false);
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
 		port = new JTextField("4567");
@@ -66,7 +66,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		radiogroup = new ButtonGroup();
 		next = new JButton("Continue");
 		next.setLocation(150,310);
-		next.setSize(150, 30);
+		next.setSize(150, 40);
 		local = new JRadioButton("Local");
 		rmi = new JRadioButton("rmi");
 		socket = new JRadioButton("socket");
@@ -169,10 +169,12 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				}
 				else if(rmi.isSelected())
 				{
+					port.setText("1099");
 					//this.connManager = new ConnectionManagerRMI();
 				}
 				else
 				{
+					port.setText("4567");
 					this.setVisible(false);
 					Integer port_i = new Integer(port.getText());
 					try{

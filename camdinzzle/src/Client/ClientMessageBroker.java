@@ -511,8 +511,8 @@ public class ClientMessageBroker
 	public static String[] managePlayerList(String msg)
 	{
 		if(msg.contains("@listaGiocatori,"))
-		{
-			String validMessage = msg.substring(msg.indexOf(',')+1);
+		{			
+			String validMessage = msg.substring(1);
 			
 			if(validMessage.contains(","))
 			{
@@ -541,6 +541,8 @@ public class ClientMessageBroker
 		if(msg.contains("@classifica,"))
 		{
 			ArrayList<String> rankingList = new ArrayList<String>();
+			rankingList.add(msg.substring(1, msg.indexOf(",")));
+			
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			
 			if(validMessage.contains("{"))
@@ -556,16 +558,8 @@ public class ClientMessageBroker
 					}
 					rankingList.add(commaSeparator[3].substring(0, 1));
 				}
-				
-				return rankingList;
 			}
-			else
-			{
-				ArrayList<String> ret = new ArrayList<String>();
-				
-				ret.add("null");
-				return ret;
-			}
+			return rankingList;
 		}
 		else if(msg.equals("@no,@tokenNonValido"))
 		{

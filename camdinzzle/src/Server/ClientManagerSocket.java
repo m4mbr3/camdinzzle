@@ -74,6 +74,16 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				serverLogic.gameExit(token);
 				serverLogic.logout(token);
 				
+				writer_on_socket = null;
+				try {
+					connection_with_client.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					this.stop();
+				}
+				
+				this.stop();
+				
 				break;
 			}
 			
@@ -248,6 +258,11 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.write(msg);
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
+								
+								writer_on_socket = null;
+								connection_with_client.close();
+								
+								this.stop();
 							}
 							else
 							{

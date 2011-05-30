@@ -254,7 +254,7 @@ public class ServerLogic {
 			{
 				if (currentSession.numberPlayersInGame() < currentSession.getMaxPlayers())
 				{
-					if(loggedPlayers.get(token).getSpecie() != null)
+					if(loggedPlayers.get(token).getSpecie() == null)
 					{
 						return ServerMessageBroker.createTokenNonValidoErrorMessage();
 					}

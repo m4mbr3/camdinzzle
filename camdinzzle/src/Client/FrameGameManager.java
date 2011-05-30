@@ -51,7 +51,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JRadioButton Carn;
 	private ButtonGroup radiogroup;
 	private JButton razza_button;
-	private FrameGame game;
 	
 	private JFrame listaGiocatori;
 	private JPanel pannelloGiocatori;
@@ -165,9 +164,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			}
 			else if(response[0].compareTo("ok")==0)
 			{
-				game = new FrameGame("Game",client);
-				this.setVisible(false);
-				game.setVisible(true);
+				FrameGame.startFrameGame(client);
+				
+				
 			}
 			else if (response[0].compareTo("no")==0)
 			{
@@ -177,7 +176,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				}
 				else if(response[1].compareTo("tokenNonValido")==0)
 				{
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,"Before access to game you must create a new specie!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -209,6 +208,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				}
 				for (int i=0; i < postiGiocatori.length; i++)
 				{
+					if(postiGiocatori[i] == null)
+						postiGiocatori[i] = new JLabel();
+					
 					if (postiGiocatori[i].getText() == "") postiGiocatori[i].setText("Spot Empty");
 					pannelloGiocatori.add(postiGiocatori[i]);
 				}
