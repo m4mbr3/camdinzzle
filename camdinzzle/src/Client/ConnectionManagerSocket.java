@@ -35,6 +35,7 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 	private MonitorMessage mm;
 	private boolean run;
 	private ClientListener clientListener;
+	
 	public ConnectionManagerSocket(int port, String address, MonitorMessage mm) throws IOException
 	{
 		// TODO Auto-generated constructor stub
@@ -238,6 +239,8 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			
 			System.out.println(retStr);
 			
+			clientListener.stop();
+			
 			return retStr;
 		}
 		else
@@ -416,5 +419,9 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 			return null;
 	}	
 	
+	public void stopClientListener()
+	{
+		clientListener.stop();
+	}
 }
 	
