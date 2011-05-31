@@ -627,12 +627,12 @@ public class Game {
 		int startCol = h;
 		if(k<0)
 		{
-			sizeRow -= k;
+			sizeRow += k;
 			k=0;
 		}
 		if(h<0)
 		{
-			sizeCol -= h;
+			sizeCol += h;
 			startCol=0;
 		}
 		if((k+sizeRow-1)>=maxRow)

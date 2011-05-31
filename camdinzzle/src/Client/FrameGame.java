@@ -593,7 +593,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				int row=startRow;
 				int col=startCol;
 				String[] energySplit = new String [2];
-				if(startRow>=this.row)
+/*				if(startRow>=this.row)
 					startRow=this.row-1;
 				if(startRow<0)
 					startRow=0;
@@ -602,7 +602,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				if(maxCol>=this.col)
 					maxCol=this.col-1;
 				if(maxRow<0)
-					maxRow=-1;
+					maxRow=-1;*/
 				int i=4;
 //				for(int i=4; i<mapList.size(); i++)
 				for(row=startRow;row>maxRow;row--)

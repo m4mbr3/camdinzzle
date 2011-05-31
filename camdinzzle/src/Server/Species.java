@@ -254,17 +254,18 @@ public class Species
 				int h=0;
 				for(int j=posCol-sizeCol/2; j<=posCol+sizeCol/2; j++)
 				{
-					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol)&&(h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
+					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
 					{
-						if(localMap[k][h]!=null)
-						{
-							map[i][j] = null;
-							map[i][j] = localMap[k][h].toString();
-						}
+						map[i][j] = null;
+						map[i][j] = localMap[k][h].toString();
+						if((h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
+							h++;
+						else
+							h=0;
 					}
-					h++;
 				}
-				k++;
+				if((h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
+					k++;
 			}
 		}
 	}
