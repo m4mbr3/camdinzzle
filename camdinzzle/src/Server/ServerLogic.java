@@ -1184,7 +1184,15 @@ public class ServerLogic {
 				}
 			}
 			
-			currentSession.getPlayer(token).getSpecie().updateMap();
+			if(!currentSession.getPlayer(token).getSpecie().getDinosaurs().hasNext())
+			{
+				currentSession.getPlayer(token).getSpecie();
+				currentSession.removePlayer(token);
+			}
+			else
+			{
+				currentSession.getPlayer(token).getSpecie().updateMap();
+			}
 			// End aggiornamento stato giocatore
 			
 			iter = currentSession.getPlayersList();
