@@ -68,6 +68,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		{
 			if (!client.getConnManager().getChangeRound().equals(""))
 			{
+				
 				frameGame.drawRound(client.getConnManager().getChangeRound());
 				if(!client.getConnManager().getUsername().equals(client.getConnManager().getChangeRound()))
 				{
