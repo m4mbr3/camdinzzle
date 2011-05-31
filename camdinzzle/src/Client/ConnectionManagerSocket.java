@@ -35,12 +35,13 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	private MonitorMessage mm;
 	private boolean run;
 	private ClientListener clientListener;
-	private String changeRound = null;
+	private String changeRound;
 	
 	public ConnectionManagerSocket(int port, String address, MonitorMessage mm) throws IOException
 	{
 		// TODO Auto-generated constructor stub
 		this.mm = mm;
+		changeRound = "";
 		this.address = address;
 		token = "";
 		

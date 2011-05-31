@@ -21,11 +21,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 	private ServerRMIInterface server;
 	private String token;
 	private ClientRMI client;
-	private String changeRound = null;
+	private String changeRound;
 	
 	public ConnectionManagerRMI(String address, String port, String serverName) throws Exception
 	{
 		this.username = "";
+		changeRound = "";
 		this.address = address;
 		this.serverName = serverName;
 		this.port = port;
