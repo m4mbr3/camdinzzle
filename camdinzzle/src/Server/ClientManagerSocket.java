@@ -415,7 +415,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
 								
-								serverLogic.changeRoundNotify();
+								//serverLogic.changeRoundNotify();
 							}
 							else
 							{
