@@ -93,13 +93,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 					
 					this.setVisible(true);
 					client.getConnManager().setChangeRound("");
-					try{
-						Thread.sleep(1000);
-					}
-					catch(InterruptedException e)
-					{
-						e.printStackTrace();
-					}
+					this.repaint();
 				}
 				client.getConnManager().setChangeRound("");
 			}
