@@ -135,4 +135,6 @@ public interface ConnectionManager {
 	
 	public String getChangeRound();
 	public void setChangeRound(String msg);
+	public String getToken();
+	public String getUsername();
 }

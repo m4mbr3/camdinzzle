@@ -432,5 +432,17 @@ public class ConnectionManagerRMI implements ConnectionManager
 		this.changeRound = msg;
 	}
 
+	@Override
+	public String getToken() {
+		// TODO Auto-generated method stub
+		return token;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return username;
+	}
+
 	
 }

@@ -43,8 +43,8 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		this.mm = mm;
 		changeRound = "";
 		this.address = address;
-		token = "";
-		
+ 		token = "";
+		changeRound = "";
 		this.port = port;
 		command = new String();
 		connection_with_server = new Socket(address,port);
@@ -409,6 +409,18 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	public void stopClientListener() 
 	{
 		clientListener.stop();
+	}
+
+	@Override
+	public String getToken() {
+		// TODO Auto-generated method stub
+		return token;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return username;
 	}
 
 	

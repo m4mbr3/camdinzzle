@@ -125,6 +125,18 @@ public class ConnectionManagerLocal implements ConnectionManager
 		
 	}
 
+	@Override
+	public String getToken() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }

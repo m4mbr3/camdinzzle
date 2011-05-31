@@ -245,6 +245,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 					if (ClientMessageBroker.manageLogin(client.getConnManager().login(username.getText(), password.getText()))[0].compareTo("ok")==0)
 					{
 						managerframe = new FrameGameManager("ManagerPanel",client);
+						
 					}
 					else if (ClientMessageBroker.manageLogin(client.getConnManager().login(username.getText(), password.getText()))[0].compareTo("no")==0)
 					{
