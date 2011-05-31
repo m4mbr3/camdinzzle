@@ -80,6 +80,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private String dinoId;
 	private int flag=0;
 	private JScrollPane scrollPlayerList;
+	private int timeGlobal;
 	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
@@ -751,12 +752,17 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	@Override
 	public void drawTime(int timeInt) 
 	{
+		timeGlobal = timeInt;
 		if(time==null)
 			panelControlDown.remove(timer);
 		String timeString = String.valueOf(timeInt);
 		time = new JLabel(timeString);
 		timer.add(time);
 		panelControlDown.add(timer,BorderLayout.SOUTH);	
+	}
+	public int getTime()
+	{
+		return timeGlobal;
 	}
 	public void drawRound(String user)
 	{
