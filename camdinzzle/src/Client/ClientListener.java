@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 import Server.ClientManagerSocket;
 
-public class ClientListener implements Runnable {
+public class ClientListener implements Runnable 
+{
 	private Socket connection_with_server;
 	private BufferedReader reader_on_socket;
 	private String readSocket;
@@ -82,7 +83,7 @@ public class ClientListener implements Runnable {
 		}
 	}
 	
-	public void changeRoundNotify(String msg)
+	public void changeRoundNotify(String msg) throws ChangeRoundException, IsMyRoundException
 	{
 		if(ClientMessageBroker.manageChangeRound(msg) != null)
 		{
@@ -90,12 +91,17 @@ public class ClientListener implements Runnable {
 			
 			if(ClientMessageBroker.manageChangeRound(msg).equals(username))
 			{
-				//TODO: chiamata al metodo del Client che mi lancia il popup di conferma del turno
+				throw new IsMyRoundException(this.username);
 			}
 			else
 			{
-				//TODO: chiamata al metodo del Client che mi notifica il cambio del turno e mi evidenzia il giocatore
+				throw new ChangeRoundException(ClientMessageBroker.manageChangeRound(msg));
 			}
 		}
+	}
+	
+	public void setUsername(String username)
+	{
+		this.username = username;
 	}
 }

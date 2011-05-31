@@ -46,6 +46,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -72,6 +73,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -91,6 +93,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -121,6 +124,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -144,6 +148,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -163,6 +168,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -182,6 +188,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -205,6 +212,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -224,6 +232,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -243,6 +252,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -262,6 +272,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -281,6 +292,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		return msg;
@@ -300,6 +312,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		if(msg != null)
@@ -323,6 +336,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		if(msg != null)
@@ -346,6 +360,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		if(msg != null)
@@ -369,6 +384,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		if(msg != null)
@@ -392,6 +408,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		
 		if(msg != null)

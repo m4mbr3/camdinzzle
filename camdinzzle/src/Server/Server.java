@@ -208,7 +208,7 @@ public class Server implements Runnable {
 		try {
 			int port = 4567;
 			(new Thread(new Server(port,serverLogic))).start();
-		} catch (RemoteException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

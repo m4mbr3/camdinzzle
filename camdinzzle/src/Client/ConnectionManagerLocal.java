@@ -9,8 +9,8 @@ import java.util.ArrayList;
  * @author Andrea
  *
  */
-public class ConnectionManagerLocal implements ConnectionManager {
-
+public class ConnectionManagerLocal implements ConnectionManager 
+{	
 	@Override
 	public String creaUtente(String username, String password) {
 		// TODO Auto-generated method stub

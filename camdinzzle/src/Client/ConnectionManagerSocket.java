@@ -106,7 +106,11 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		mm.setMessage("");
 		
 		if(ClientMessageBroker.manageLogin(retStr)[0].equals("ok"))
+		{
 			token = ClientMessageBroker.manageLogin(retStr)[1];
+			this.username = username;
+			clientListener.setUsername(this.username);
+		}
 		
 		System.out.println(retStr);
 		
