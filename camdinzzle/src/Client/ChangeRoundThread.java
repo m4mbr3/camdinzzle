@@ -30,6 +30,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 	private Dimension screenSize;
 	private JButton confirm;
 	private JButton deny;
+	private boolean is_my_turn;
 	public ChangeRoundThread(String name,Client client,FrameGame frameGame)
 	{
 		super (name);
@@ -39,7 +40,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		this.msg = new JLabel();
 		this.setSize(300, 200);
 		this.setVisible(false);
-		
+		this.is_my_turn=false;
 		confirm = new JButton("Confirm");
 		deny = new JButton("Deny");
 		confirm.addMouseListener(this);
@@ -67,12 +68,13 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		{
 			if (!client.getConnManager().getChangeRound().equals(""))
 			{
+				frameGame.drawRound(client.getConnManager().getChangeRound());
 				if(!client.getConnManager().getUsername().equals(client.getConnManager().getChangeRound()))
 				{
 					this.msg.setText(client.getConnManager().getChangeRound());
 					this.remove (deny);
 					this.remove(confirm);
-					
+					this.is_my_turn = false;
 					this.setVisible(true);
 					
 						try {
@@ -87,7 +89,6 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 				
 				else
 				{
-					this.msg.setText(client.getConnManager().getChangeRound());
 					this.add(confirm);
 					this.add(deny);
 					
@@ -96,6 +97,10 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 					this.repaint();
 				}
 				client.getConnManager().setChangeRound("");
+			}
+			if(is_my_turn)
+			{
+				frameGame.drawTime(frameGame.getTime()-1);
 			}
 			try{
 				Thread.sleep(1000);
@@ -123,6 +128,8 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			if(response[0].equals("ok"))
 			{
 				JOptionPane.showMessageDialog(this,"Your turn is confermed", "Turn", JOptionPane.INFORMATION_MESSAGE);
+				this.is_my_turn=true;
+				frameGame.drawTime(120);
 			}
 			else if (response[0].equals("no"))
 			{
