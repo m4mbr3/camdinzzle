@@ -9,8 +9,12 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -187,8 +191,33 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				else if(rmi.isSelected())
 				{
 					this.setVisible(false);
-					this.connManager = new ConnectionManagerRMI(address.getText(),port.getText(),server_value.getText());
-					login = new FrameLogin("Login",this);
+					try{
+						this.connManager = new ConnectionManagerRMI(address.getText(),port.getText(),server_value.getText());
+						login = new FrameLogin("Login",this);
+					}
+					catch(MalformedURLException e)
+					{
+						JOptionPane.showMessageDialog(this, "Error in the url...check your data connect", "Malformed URL ", JOptionPane.ERROR_MESSAGE);
+					}
+					catch(AccessException e)
+					{
+						JOptionPane.showMessageDialog(this, "Error during the access", "Access Exception", JOptionPane.ERROR_MESSAGE);
+					}
+					catch(AlreadyBoundException e)
+					{
+						JOptionPane.showMessageDialog(this, "Object already in use", "AlreadyBoundException", JOptionPane.ERROR_MESSAGE);
+					}
+					catch(RemoteException e)
+					{
+						JOptionPane.showMessageDialog(this, "Error during contact the remote server", "Remote Exception", JOptionPane.ERROR_MESSAGE);
+					} 
+					catch (Exception e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		
+					
 				}	
 				else
 				{
@@ -321,11 +350,11 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				port.setText("4567");
 				enable_port.setEnabled(true);
 				address.setEditable(true);
+				address.setVisible(true);
 				port_label.setEnabled(true);
 				address_label.setEnabled(true);
 				nome_server.setEnabled(false);
 				server_value.setEnabled(false);
-				address.setEditable(true);
 				server_value.setEditable(true);
 			}
 			if(rmi.isSelected())
@@ -333,6 +362,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				port.setText("1099");
 				enable_port.setEnabled(true);
 				address.setEditable(true);
+				address.setEnabled(true);
 				port_label.setEnabled(true);
 				address_label.setEnabled(true);
 				nome_server.setEnabled(true);
@@ -348,6 +378,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				enable_port.setEnabled(false);
 				port.setEnabled(false);
 				address.setEditable(false);
+				address.setEnabled(true);
 				port_label.setEnabled(false);
 				address_label.setEnabled(false);
 				nome_server.setEnabled(false);
