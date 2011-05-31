@@ -253,7 +253,10 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 							{
 								String msg = serverLogic.logout(parameters[0]);
 								if(msg.equals("@ok"))
+								{
 									this.setIsInGame(false);
+									token = "";
+								}
 									
 								writer_on_socket.write(msg);
 								writer_on_socket.newLine();				
