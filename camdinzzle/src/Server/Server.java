@@ -1,7 +1,9 @@
 package Server;
 
 import java.io.IOException;
+import javax.swing.JOptionPane;
 import java.io.ObjectInputStream.GetField;
+import java.net.BindException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
@@ -13,8 +15,12 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Server implements Runnable {
 
@@ -48,6 +54,11 @@ public class Server implements Runnable {
 			{
 				this.server = new ServerSocket(this.port) ;
 			} 
+			catch (BindException e)
+			{
+				JOptionPane.showMessageDialog(new JFrame(), "Another server is already running", "initing new server error",JOptionPane.ERROR_MESSAGE);
+				
+			}
 			catch (IOException e) 
 			{
 				// TODO Auto-generated catch block
@@ -137,6 +148,11 @@ public class Server implements Runnable {
 		try
 		{
 			cmRMI = new ServerRMI(serverLogic);
+		}
+	
+		catch(ExportException e)
+		{
+			JOptionPane.showMessageDialog(new JFrame(),"Port already in use: 1099!!!", "initing RMI server", JOptionPane.ERROR_MESSAGE);
 		}
 		catch (RemoteException e1) {
 			// TODO Auto-generated catch block

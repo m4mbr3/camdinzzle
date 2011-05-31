@@ -71,6 +71,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		super(title);
 		// TODO Auto-generated constructor stub
 		this.client = client;
+		this.setResizable(false);
 		this.setLayout(null);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		titleframe = new JLabel("ManagerPanel v 1.0");
@@ -189,14 +190,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(lisGiocatori))
 		{
-			System.out.println("ciaoasdasdas");
-
 			String[] response = client.getConnManager().listaGiocatori();
 			if (response == null)
 			{
 				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE);
 			}
-			else if (response[0].compareTo("@listaGiocatori")==0)
+			else if (response[0].compareTo("listaGiocatori")==0)
 			{
 				listaGiocatori = new JFrame("List of Players");
 				listaGiocatori.setLayout(new BorderLayout());
@@ -205,10 +204,11 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				listaGiocatori.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-600)/2);
 				titoloGiocatori = new JLabel("Players of this Game:");
 				listaGiocatori.add(titoloGiocatori, BorderLayout.NORTH);
+				titoloGiocatori.setSize(300,20);
 				postiGiocatori = new JLabel[8];
 				pannelloGiocatori = new JPanel();
-				listaGiocatori.add(pannelloGiocatori,BorderLayout.SOUTH);
-				pannelloGiocatori.setLayout(new GridLayout(1,8));
+				listaGiocatori.add(pannelloGiocatori,BorderLayout.CENTER);
+				pannelloGiocatori.setLayout(new GridLayout(8,1));
 				int j;
 				for (int i=1; i < response.length; i++)
 				{
