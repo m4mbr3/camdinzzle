@@ -33,7 +33,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		
 		server = (ServerRMIInterface)Naming.lookup("rmi://" + address + "/" + serverName + ":" + port);
 	}
-
+	
 	@Override
 	public String creaUtente(String username, String password)
 	{
@@ -420,15 +420,15 @@ public class ConnectionManagerRMI implements ConnectionManager
 	}
 
 	@Override
-	public String getChangeRound() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getChangeRound() 
+	{
+		return changeRound;
 	}
 
 	@Override
-	public void setChangeRound(String msg) {
-		// TODO Auto-generated method stub
-		
+	public void setChangeRound(String msg) 
+	{
+		this.changeRound = msg;
 	}
 
 	

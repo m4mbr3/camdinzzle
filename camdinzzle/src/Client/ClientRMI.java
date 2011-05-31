@@ -40,7 +40,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 		{
 			System.out.println("--> CAMBIO TURNO: " + msg);
 			
-			
+			cmRMI.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
 			
 			return true;
 			/*
