@@ -152,6 +152,10 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			if(!token.equals(""))
 				msg = server.uscitaPartita(token);
+			if(ClientMessageBroker.manageGameExit(msg)[0].equals("ok"))
+			{
+				client.setInGame(false);
+			}
 		} 
 		catch (RemoteException e) 
 		{
@@ -209,6 +213,10 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			if(!token.equals(""))
 				msg = server.logout(token);
+			if(ClientMessageBroker.manageLogout(msg)[0].equals("ok"))
+			{
+				client = null;
+			}
 		} 
 		catch (RemoteException e) 
 		{
