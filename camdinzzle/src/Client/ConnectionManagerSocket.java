@@ -49,12 +49,8 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		clientListener = new ClientListener(mm, this.connection_with_server);
 		run = true;
 		
-		try {
-			writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
+		
 	}
 	
 	// TODO: scelta gestione comandoNonValido
