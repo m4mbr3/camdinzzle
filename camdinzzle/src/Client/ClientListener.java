@@ -20,11 +20,12 @@ public class ClientListener implements Runnable
 	private String username;
 	private int timelineServerNull;
 	private boolean run;
+	private ConnectionManagerSocket cms;
 	
-	public ClientListener(MonitorMessage mm, Socket soc)
+	public ClientListener(MonitorMessage mm, Socket soc, ConnectionManagerSocket cms)
 	{
 		// TODO Auto-generated constructor stub
-		
+		this.cms = cms;
 		this.mm = mm;
 		this.readSocket = null;
 		connection_with_server = soc;
@@ -49,7 +50,7 @@ public class ClientListener implements Runnable
 	}
 	
 	@Override
-	public void run() throws IsMyRoundException, ChangeRoundException
+	public void run() 
 	{				
 		while(run)
 		{
@@ -83,12 +84,14 @@ public class ClientListener implements Runnable
 		}
 	}
 	
-	public void changeRoundNotify(String msg) throws ChangeRoundException, IsMyRoundException
+	public void changeRoundNotify(String msg)
 	{
 		if(ClientMessageBroker.manageChangeRound(msg) != null)
 		{
 			System.out.println("--> CAMBIO TURNO: " + msg);
 			
+			cms.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
+			/*
 			if(ClientMessageBroker.manageChangeRound(msg).equals(username))
 			{
 				throw new IsMyRoundException(this.username);
@@ -97,6 +100,7 @@ public class ClientListener implements Runnable
 			{
 				throw new ChangeRoundException(ClientMessageBroker.manageChangeRound(msg));
 			}
+			*/
 		}
 	}
 	

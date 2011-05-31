@@ -169,42 +169,27 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		else if (arg0.getComponent().equals(accPartita))
 		{
 			frameGame = new FrameGame();
-			try
+			String[] response = ClientMessageBroker.manageGameAccess(client.getConnManager().accessoPartita());
+			if(response == null)
 			{
-				String[] response = ClientMessageBroker.manageGameAccess(client.getConnManager().accessoPartita());
-				if(response == null)
-				{
-					JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
-				}
-				else if(response[0].compareTo("ok")==0)
-				{
-					frameGame.startFrameGame(client);
-					
-					
-				}
-				else if (response[0].compareTo("no")==0)
-				{
-					if (response[1].compareTo("troppiGiocatori")==0)
-					{
-						JOptionPane.showMessageDialog(this,"There aren't free spot!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
-					}
-					else if(response[1].compareTo("tokenNonValido")==0)
-					{
-						JOptionPane.showMessageDialog(this,"Before access to game you must create a new specie!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
-					}
-				}
+				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
 			}
-			catch(ChangeRoundException ex)
+			else if(response[0].compareTo("ok")==0)
 			{
-				if ( exception == null ) exception = new JOptionPane();
-					exception.showConfirmDialog(frameGame, "this is the turn of "+ ex.getUsername(), "Change Round", JOptionPane.INFORMATION_MESSAGE);
+				frameGame.startFrameGame(client);
+				
 				
 			}
-			catch(IsMyRoundException ex)
+			else if (response[0].compareTo("no")==0)
 			{
-				if ( exception == null ) exception = new JOptionPane();
-				exception.showConfirmDialog(frameGame, "this is the turn of "+ ex.getUsername(), "Change Round", JOptionPane.INFORMATION_MESSAGE);
-				
+				if (response[1].compareTo("troppiGiocatori")==0)
+				{
+					JOptionPane.showMessageDialog(this,"There aren't free spot!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(response[1].compareTo("tokenNonValido")==0)
+				{
+					JOptionPane.showMessageDialog(this,"Before access to game you must create a new specie!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 		else if (arg0.getComponent().equals(lisGiocatori))

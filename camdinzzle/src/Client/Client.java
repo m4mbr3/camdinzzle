@@ -147,6 +147,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		this.validate();
 	}
 	public ConnectionManager getConnManager() {
+		
 		return connManager;
 	}
 	public void setConnManager(ConnectionManager connManager) {
@@ -262,7 +263,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	
 	public void setConnMann(ConnectionManagerSocket conn)
 	{
-		this.connManager = conn ;
+		this.connManager = conn;
 	}
 	@Override
 	public void windowActivated(WindowEvent arg0) {
