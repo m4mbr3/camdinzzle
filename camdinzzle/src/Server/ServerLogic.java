@@ -1103,7 +1103,8 @@ public class ServerLogic {
 					if(tokenOfCurrentPlayer.equals(token))
 					{
 						this.updatePlayer(token);
-						counter2m.interrupt();
+						if(counter2m != null)
+							counter2m.interrupt();
 						this.changeRound();
 						//this.changeRoundNotify();
 						return ServerMessageBroker.createOkMessage();
