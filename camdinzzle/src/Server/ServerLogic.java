@@ -284,9 +284,9 @@ public class ServerLogic {
 								 * libera partendo dall'inizio della sua vista in alto a sinistra. Viene assunto che 
 								 * sicuramente una casella libera nella sua vista c'è!!!!!!!
 								 */
-								for(int i = current.getPosRow() - current.getSizeLocalMap(); i<current.getPosRow() + current.getSizeLocalMap(); i++)
+								for(int i = current.getPosRow() - current.getSizeRowLocalMap(); i<current.getPosRow() + current.getSizeRowLocalMap(); i++)
 								{
-									for(int j = current.getPosCol() - current.getSizeLocalMap(); j<current.getPosCol() + current.getSizeLocalMap(); j++)
+									for(int j = current.getPosCol() - current.getSizeColLocalMap(); j<current.getPosCol() + current.getSizeColLocalMap(); j++)
 									{
 										if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur) == false)
 											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
@@ -620,10 +620,10 @@ public class ServerLogic {
 					Dinosaur dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
 					if( dino != null)
 					{
-						zoom.add(String.valueOf(dino.getPosRow()+dino.getSizeLocalMap()/2));
-						zoom.add(String.valueOf(dino.getPosCol()-dino.getSizeLocalMap()/2));
-						zoom.add(String.valueOf(dino.getSizeLocalMap()));
-						zoom.add(String.valueOf(dino.getSizeLocalMap()));
+						zoom.add(String.valueOf(dino.getPosRow()+dino.getSizeRowLocalMap()/2));
+						zoom.add(String.valueOf(dino.getPosCol()-dino.getSizeColLocalMap()/2));
+						zoom.add(String.valueOf(dino.getSizeRowLocalMap()));
+						zoom.add(String.valueOf(dino.getSizeColLocalMap()));
 						
 						Object[][] localMap = dino.getLocalMap();
 						

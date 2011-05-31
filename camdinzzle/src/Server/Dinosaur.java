@@ -201,23 +201,13 @@ public abstract class Dinosaur
 	 * restituisce la dimensione della mappa locale in base alla dimensione del dinosauro
 	 * @return
 	 */
-	public int getSizeLocalMap()
+	public int getSizeRowLocalMap()
+	{		
+		return localMap.length;
+	}
+	public int getSizeColLocalMap()
 	{
-		if(dimension==1)
-		{
-			return 5;
-		}
-		else
-		{
-			if((dimension==2)||(dimension==3))
-			{
-				return 7;
-			}
-			else
-			{
-				return 9;
-			}
-		}
+		return localMap[0].length;
 	}
 	
 	/**
@@ -225,11 +215,7 @@ public abstract class Dinosaur
 	 */
 	public void setLocalMap()
 	{
-		int size = getSizeLocalMap();
-
-		localMap = new Object[size][size];
-		localMap = Game.getLocalMap(posRow, posCol, dimension);
-		
+		localMap = Game.getLocalMap(posRow, posCol, dimension);		
 	}
 	 
 	public Object[][] getLocalMap()

@@ -244,16 +244,17 @@ public class Species
 			Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) iter.next();
 			dino = me.getValue();
 			Object[][] localMap = dino.getLocalMap();
-			int size = dino.getSizeLocalMap();
+			int sizeRow = dino.getSizeRowLocalMap();
+			int sizeCol = dino.getSizeColLocalMap();
 			int posRow = dino.getPosRow();
 			int posCol = dino.getPosCol();
 			int k=0;
-			for(int i=posRow-size/2; i<=posRow+size/2; i++)
+			for(int i=posRow-sizeRow/2; i<=posRow+sizeRow/2; i++)
 			{
 				int h=0;
-				for(int j=posCol-size/2; j<=posCol+size/2; j++)
+				for(int j=posCol-sizeCol/2; j<=posCol+sizeCol/2; j++)
 				{
-					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol)&&(h>=0)&&(h<size)&&(k>=0)&&(k<size))
+					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol)&&(h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
 					{
 						if(localMap[k][h]!=null)
 						{

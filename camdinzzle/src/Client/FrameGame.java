@@ -41,7 +41,7 @@ import javax.swing.text.html.Option;
  * @author Andrea
  *
  */
-public class FrameGame extends JFrame implements WindowListener, ActionListener, MouseListener,Visual{
+public class FrameGame extends JFrame implements WindowListener, ActionListener, MouseListener,Visual throws ChangeRoundException{
 
 	private Dimension screenSize;
 	private JPanel panel;
@@ -578,7 +578,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				int row=startRow;
 				int col=startCol;
 				String[] energySplit = new String [2];
-		//		System.out.println(mapList.size());
 				
 				for(int i=4; i<mapList.size(); i++)
 				{
@@ -913,7 +912,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 {
 			 //TODO turno rifiutato
 		 }
-
 	 }
 	 
 

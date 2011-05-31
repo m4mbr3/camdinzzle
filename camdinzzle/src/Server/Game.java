@@ -624,20 +624,31 @@ public class Game {
 		}
 		int k = row - sizeRow/2;
 		int h = col - sizeCol/2;
+		int startCol = h;
 		if(k<0)
 		{
 			sizeRow -= k;
+			k=0;
 		}
-		else if(k>=maxRow)
+		if(h<0)
 		{
-			sizeRow -= k-maxRow;
+			sizeCol -= h;
+			startCol=0;
+		}
+		if((k+sizeRow-1)>=maxRow)
+		{
+			sizeRow += maxRow - (k+sizeRow);
+		}
+		if((h+sizeCol-1)>=maxCol)
+		{
+			sizeCol += maxCol - (h+sizeCol);
 		}
 		
 		Object[][] localMap = new Object[sizeRow][sizeCol];
 		
 		for(int i=0; i<sizeRow; i++)
 		{
-			
+			h=startCol;
 			for(int j=0; j<sizeCol; j++)
 			{
 				if((k>=0)&&(k<Game.maxRow)&&(h>=0)&&(h<Game.maxCol))
