@@ -71,7 +71,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private JPanel commandButtons;
 	private JButton[] commandDinoButton;
 	private JButton[] commandGameButton;
-	private JPanel timer;
 	private JLabel time;
 	private JFrame ranking;
 	private JTable ranking1;
@@ -91,10 +90,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
 	
 	
-	public FrameGame()
-	{
-		
-	}
 	/**
 	 * @param title
 	 * @throws HeadlessException
@@ -148,10 +143,10 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		commandButtons.setVisible(true);
 		commandButtons.setBorder(null);
 		commandButtons.setPreferredSize(new Dimension(widthControlPanel-10, ((int)screenSize.getHeight()/14*4)));
-		timer = new JPanel();
-		timer.setVisible(true);
-		timer.setBorder(null);
-		timer.setPreferredSize(new Dimension(widthControlPanel-10, (int)screenSize.getHeight()/14));
+		time = new JLabel();
+		time.setPreferredSize(new Dimension(widthControlPanel-10, (int)screenSize.getHeight()/14));
+		time.setVisible(true);
+		panelControlDown.add(time,BorderLayout.SOUTH);
 		for (int i=0; i < row; i++)
 		{
 			for(int j=0; j < col; j++)
@@ -174,9 +169,17 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		}	
 		
 		this.add(panel,BorderLayout.WEST);
-		this.add(panelControl, BorderLayout.EAST);				
+		this.add(panelControl, BorderLayout.EAST);	
 		this.validate();
-		}
+		this.drawMap(client.getConnManager().mappaGenerale());
+		//TODO gestire lista vuota
+		String[] msgDinoList = client.getConnManager().listaDinosauri();
+		this.drawDinoList(msgDinoList);
+		this.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
+		this.drawCommandButtons();
+		this.drawPlayerList(client.getConnManager().listaGiocatori());
+		this.repaint();
+	}
 
 	/**
 	 * @param title
@@ -189,15 +192,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 
 	public void startFrameGame(Client client)
 	{
-		 FrameGame game = new FrameGame("Isola dei Dinosauri", client);
-		 game.drawMap(client.getConnManager().mappaGenerale());
-		 //TODO gestire lista vuota
-		 String[] msgDinoList = client.getConnManager().listaDinosauri();
-		 game.drawDinoList(msgDinoList);
-		 game.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
-		 game.drawCommandButtons();
-		 game.drawPlayerList(client.getConnManager().listaGiocatori());
-		 game.repaint();
+
 		 
 	}
 
@@ -753,12 +748,10 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	public void drawTime(int timeInt) 
 	{
 		timeGlobal = timeInt;
-		if(time==null)
-			panelControlDown.remove(timer);
 		String timeString = String.valueOf(timeInt);
-		time = new JLabel(timeString);
-		timer.add(time);
-		panelControlDown.add(timer,BorderLayout.SOUTH);	
+		time.setText(timeString);
+		time.setVisible(true);
+		panelControlDown.repaint();	
 	}
 	public int getTime()
 	{
@@ -766,11 +759,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 	public void drawRound(String user)
 	{
-		if(time==null)
-			panelControlDown.remove(timer);
-		time = new JLabel("ora  il turno di:\n" + user);
-		time.add(time);
-		panelControlDown.add(timer,BorderLayout.SOUTH);
+		time.setText("ora  il turno di:\n" + user);
+		time.setVisible(true);
+		panelControlDown.repaint();
 	}
 
 	@Override

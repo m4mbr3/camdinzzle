@@ -168,7 +168,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(accPartita))
 		{
-			frameGame = new FrameGame();
+			
 			String[] response = ClientMessageBroker.manageGameAccess(client.getConnManager().accessoPartita());
 			if(response == null)
 			{
@@ -176,9 +176,10 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			}
 			else if(response[0].compareTo("ok")==0)
 			{
+				frameGame = new FrameGame("Isola dei Dinosauri",client);
 				ChangeRoundThread changeRoundThread = new ChangeRoundThread("Change Round", client, frameGame);
 				(new Thread(changeRoundThread)).start();
-				frameGame.startFrameGame(client);
+//				frameGame.startFrameGame(client);
 				
 				
 				
