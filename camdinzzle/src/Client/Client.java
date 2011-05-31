@@ -66,7 +66,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		nome_server.setSize(90,20);
 		server_value.setSize(160, 20);
 		nome_server.setLocation(50,280);
-		server_value.setLocation(0,280);
+		server_value.setLocation(150,280);
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
 		port = new JTextField("");
@@ -186,8 +186,10 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				}
 				else if(rmi.isSelected())
 				{
-					//this.connManager = new ConnectionManagerRMI();
-				}
+					this.setVisible(false);
+					this.connManager = new ConnectionManagerRMI(address.getText(),port.getText(),server_value.getText());
+					login = new FrameLogin("Login",this);
+				}	
 				else
 				{
 					this.setVisible(false);
