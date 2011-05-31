@@ -12,11 +12,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 
-
-/**
- * @author Andrea
- *
- */
 public class ConnectionManagerRMI implements ConnectionManager 
 {
 	private String username;
@@ -27,7 +22,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 	private String token;
 	private ClientRMI client;
 	
-	public ConnectionManagerRMI(String address, String port, String serverName)
+	public ConnectionManagerRMI(String address, String port, String serverName) throws Exception
 	{
 		this.username = "";
 		this.address = address;
@@ -35,23 +30,11 @@ public class ConnectionManagerRMI implements ConnectionManager
 		this.port = port;
 		this.token = "";
 		
-		try {
-			server = (ServerRMIInterface)Naming.lookup("rmi://" + address + "/" + serverName + ":" + port);
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		server = (ServerRMIInterface)Naming.lookup("rmi://" + address + "/" + serverName + ":" + port);
 	}
 
 	@Override
-	public String creaUtente(String username, String password) 
+	public String creaUtente(String username, String password)
 	{
 		String msg = null;
 		

@@ -3,6 +3,7 @@
  */
 package Client;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
