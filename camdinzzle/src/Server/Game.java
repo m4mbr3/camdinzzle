@@ -602,28 +602,43 @@ public class Game {
 	 */
 	public static Object[][] getLocalMap(int row, int col, int dimension)
 	{
-		int size;
+		int sizeRow;
+		int sizeCol;
 		if(dimension==1)
 		{
-			size = 5;
+			sizeRow = 5;
+			sizeCol = 5;
 		}
 		else
 		{
 			if((dimension==2)||(dimension==3))
 			{
-				size = 7;
+				sizeRow = 7;
+				sizeCol = 7;
 			}
 			else
 			{
-				size = 9;
+				sizeRow = 9;
+				sizeCol = 9;
 			}
 		}
-		Object[][] localMap = new Object[size][size];
-		int k = row - size/2;
-		for(int i=0; i<size; i++)
+		int k = row - sizeRow/2;
+		int h = col - sizeCol/2;
+		if(k<0)
 		{
-			int h = col - size/2;
-			for(int j=0; j<size; j++)
+			sizeRow -= k;
+		}
+		else if(k>=maxRow)
+		{
+			sizeRow -= k-maxRow;
+		}
+		
+		Object[][] localMap = new Object[sizeRow][sizeCol];
+		
+		for(int i=0; i<sizeRow; i++)
+		{
+			
+			for(int j=0; j<sizeCol; j++)
 			{
 				if((k>=0)&&(k<Game.maxRow)&&(h>=0)&&(h<Game.maxCol))
 				{
