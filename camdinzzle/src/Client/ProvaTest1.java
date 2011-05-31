@@ -57,7 +57,13 @@ public class ProvaTest1 {
 			e1.printStackTrace();
 		}
 		
-		ConnectionManagerRMI server = new ConnectionManagerRMI("localhost", "1099", "server");
+		ConnectionManagerRMI server = null;
+		try {
+			server = new ConnectionManagerRMI("localhost", "1099", "server");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String username = null;
 		
 		do
