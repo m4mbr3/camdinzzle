@@ -21,6 +21,7 @@ import javax.management.timer.Timer;
 import javax.management.timer.TimerNotification;
 
 import Server.Species.type;
+import Client.ClientRMIInterface;
 
 /**
  * @author Andrea
@@ -185,7 +186,7 @@ public class ServerLogic {
 					/* Dal Client non bisogna permettere di creare una specie se ce ne ï¿½ giï¿½
 					 * una avviata nella partita
 					 */
-					return ServerMessageBroker.createErroMessage("razzaGiaCreata");
+					return "@no";
 				}
 				/*	
 				Set set = rank.entrySet();
@@ -1149,6 +1150,11 @@ public class ServerLogic {
 		{
 			System.out.println(ex.getMessage());
 		}
+	}
+	
+	public void notifyGameAccess(ClientRMIInterface clRMI)
+	{
+		Server.addClientRMI(clRMI);
 	}
 	
 	/**

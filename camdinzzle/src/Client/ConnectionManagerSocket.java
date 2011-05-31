@@ -19,7 +19,7 @@ import javax.swing.JFrame;
  * @author Andrea
  *
  */
-public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
+public class ConnectionManagerSocket implements ConnectionManager {
 	//Class for client logging
 	/**
 	 * Socket for Managing the connection by socket with server
@@ -54,30 +54,6 @@ public class ConnectionManagerSocket implements ConnectionManager, Runnable  {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-
-		System.out.println("<<CONN MANAGER>>--STARTING THREAD " );
-		(new Thread(this)).start();
-		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
-	}
-
-	public void stop()
-	{
-		run = false;
-	}
-	
-	@Override
-	public void run() 
-	{
-		// TODO Auto-generated method stub	
-		while(run)
-		{
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 	

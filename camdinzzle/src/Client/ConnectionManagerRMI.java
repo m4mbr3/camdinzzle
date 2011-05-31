@@ -3,6 +3,7 @@
  */
 package Client;
 
+import Server.ServerLogic;
 import Server.ServerRMIInterface;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -24,10 +25,11 @@ public class ConnectionManagerRMI implements ConnectionManager
 	private String port;
 	private ServerRMIInterface server;
 	private String token;
+	private ClientRMI client;
 	
-	public ConnectionManagerRMI(String username, String address, String port, String serverName)
+	public ConnectionManagerRMI(String address, String port, String serverName)
 	{
-		this.username = username;
+		this.username = "";
 		this.address = address;
 		this.serverName = serverName;
 		this.port = port;
@@ -80,6 +82,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 			if(response[0].equals("ok"))
 			{
 				token = response[1];
+				this.username = username;
 			}
 		} 
 		catch (RemoteException e) 
@@ -119,6 +122,17 @@ public class ConnectionManagerRMI implements ConnectionManager
 		{
 			if(!token.equals(""))
 				msg = server.accessoPartita(token);
+			
+			if(ClientMessageBroker.manageGameAccess(msg)[0].equals("ok"))
+			{
+				try {
+					client = new ClientRMI(this.address, this.username);
+					server.notifyGameAccess(client);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		} 
 		catch (RemoteException e) 
 		{

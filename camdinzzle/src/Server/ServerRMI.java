@@ -13,6 +13,8 @@ import org.omg.IOP.ServiceContext;
 import org.omg.PortableInterceptor.InvalidSlot;
 import org.omg.PortableInterceptor.ServerRequestInfoOperations;
 
+import Client.ClientRMIInterface;;
+
 public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterface 
 {
 	/**
@@ -162,5 +164,10 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 		serverResponse = serverLogic.playerRoundSwitch(token);
 		
 		return serverResponse;
+	}
+	
+	public synchronized void notifyGameAccess(ClientRMIInterface client) throws RemoteException
+	{
+		serverLogic.notifyGameAccess(client);
 	}
 }

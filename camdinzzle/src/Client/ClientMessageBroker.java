@@ -34,7 +34,10 @@ public class ClientMessageBroker
 				return false;
 			return true;
 		}
-		return true;
+		else if(msg.equals("@ok"))
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -76,10 +79,12 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
-		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@razzaGiaCreata")))
+		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no,@tokenNonValido")) 
+				|| (msg.equals("@no")))
 		{
 			ret[0] = "no";
-			ret[1] = msg.substring(msg.indexOf(",") + 2);
+			if(msg.contains(","))
+				ret[1] = msg.substring(msg.indexOf(",") + 2);
 			return ret;
 		}
 		return null;

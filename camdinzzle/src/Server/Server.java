@@ -19,8 +19,8 @@ import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import Client.ClientRMIInterface;
+
 
 public class Server implements Runnable {
 
@@ -56,8 +56,7 @@ public class Server implements Runnable {
 			} 
 			catch (BindException e)
 			{
-				JOptionPane.showMessageDialog(new JFrame(), "Another server is already running", "initing new server error",JOptionPane.ERROR_MESSAGE);
-				
+				System.out.println("Another server is already running");
 			}
 			catch (IOException e) 
 			{
@@ -106,7 +105,6 @@ public class Server implements Runnable {
 	 */
 	public static void sendBroadcastMessage(String msg)
 	{
-		//TODO: ciclo che manda a tutti i Client connessi il messaggio di notifica del turno
 		if(clientList.size() > 0)
 		{
 			for (ClientManager client : clientList) 
@@ -124,6 +122,18 @@ public class Server implements Runnable {
 					}
 				}
 			}
+		}
+	}
+	
+	public static void addClientRMI(ClientRMIInterface cmRMI)
+	{
+		try
+		{
+			clientList.add(new ClientManagerRMI(cmRMI));
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
 		}
 	}
 	
@@ -152,7 +162,7 @@ public class Server implements Runnable {
 	
 		catch(ExportException e)
 		{
-			JOptionPane.showMessageDialog(new JFrame(),"Port already in use: 1099!!!", "initing RMI server", JOptionPane.ERROR_MESSAGE);
+			System.out.println("Port already in use: 1099!!!");
 		}
 		catch (RemoteException e1) {
 			// TODO Auto-generated catch block

@@ -8,9 +8,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,9 +48,17 @@ public class ProvaTest1 {
 		
 		
 		// RMI
+		String  port = null;
+		System.out.println("inserisci la porta: \n");
+		try {
+			port = dataInput.readLine();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
-		ConnectionManagerRMI server = new ConnectionManagerRMI("ciao", "localhost", "1099", "server");
-		
+		ConnectionManagerRMI server = new ConnectionManagerRMI("localhost", "1099", "server");
+		String username = null;
 		
 		do
 		{
@@ -95,6 +108,7 @@ public class ProvaTest1 {
 					{
 						arr = text.drawLogin();
 						msg = ClientMessageBroker.createLogin(arr[0], arr[1]);
+						username = arr[0];
 						
 						requestQueue.add("login");
 						
@@ -119,6 +133,43 @@ public class ProvaTest1 {
 					{
 						// TODO: prima di accedere all partia, imporre la creazione di una razza
 						msg = ClientMessageBroker.createGameAccess(token);
+						
+						
+						Registry registro = null;
+						ClientRMI client = null;
+						
+						try {
+							client = new ClientRMI("127.0.0.1", username);
+							registro = LocateRegistry.createRegistry(Integer.parseInt(port));
+							Naming.bind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
+							//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
+						} catch (AccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (AlreadyBoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (MalformedURLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							Naming.rebind("rmi://127.0.0.1/carlo:1999",(Remote) client);
+							System.out.println("Server RMI Avviato!");
+						} catch (AccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (MalformedURLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
 						
 						requestQueue.add("accessoPartita");
 						
