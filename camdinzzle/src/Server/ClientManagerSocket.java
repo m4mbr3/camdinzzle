@@ -368,7 +368,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.flush();
 							}
 						}
-						else if(command.compareTo("crescitaDinosauro") == 0)
+						else if(command.compareTo("cresciDinosauro") == 0)
 						{
 							String[] parameters = ServerMessageBroker.manageDinoGrowUp(read_socket);
 							
