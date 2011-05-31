@@ -54,7 +54,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	// TODO: scelta gestione comandoNonValido
-	public String sendMessage(String msg)
+	public String sendMessage(String msg) throws ChangeRoundException, IsMyRoundException
 	{
 		try
 		{
@@ -85,7 +85,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		} 
 	}
 	
-	public synchronized String creaUtente(String username, String password) 
+	public synchronized String creaUtente(String username, String password) throws ChangeRoundException, IsMyRoundException
 	{
 		String msg = ClientMessageBroker.createUser(username, password);
 		
@@ -98,7 +98,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String login(String username, String password) 
+	public synchronized String login(String username, String password) throws ChangeRoundException, IsMyRoundException
 	{
 		String msg = ClientMessageBroker.createLogin(username, password);
 		
@@ -118,7 +118,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 
 	@Override
-	public synchronized String creaRazza(String name, String type) 
+	public synchronized String creaRazza(String name, String type) throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -136,7 +136,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 
 	@Override
-	public synchronized String accessoPartita() 
+	public synchronized String accessoPartita() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -153,7 +153,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 
 	@Override
-	public synchronized String uscitaPartita() 
+	public synchronized String uscitaPartita() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -170,7 +170,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 
 	@Override
-	public synchronized String[] listaGiocatori()
+	public synchronized String[] listaGiocatori() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -187,7 +187,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized ArrayList<String> classifica() 
+	public synchronized ArrayList<String> classifica() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -204,7 +204,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String logout() 
+	public synchronized String logout() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -224,7 +224,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized ArrayList<String> mappaGenerale()
+	public synchronized ArrayList<String> mappaGenerale() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -242,7 +242,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String[] listaDinosauri() 
+	public synchronized String[] listaDinosauri() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -260,7 +260,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized ArrayList<String> vistaLocale(String dinoId) 
+	public synchronized ArrayList<String> vistaLocale(String dinoId) throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -278,7 +278,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String[] statoDinosauro(String dinoId)
+	public synchronized String[] statoDinosauro(String dinoId) throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -296,7 +296,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String[] muoviDinosauro(String dinoId, String row, String col) 
+	public synchronized String[] muoviDinosauro(String dinoId, String row, String col) throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -316,7 +316,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String[] cresciDinosauro(String dinoId) 
+	public synchronized String[] cresciDinosauro(String dinoId) throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -336,7 +336,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String[] deponiUovo(String dinoId) 
+	public synchronized String[] deponiUovo(String dinoId) throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{	
@@ -356,7 +356,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String[] confermaTurno() 
+	public synchronized String[] confermaTurno() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -376,7 +376,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	}
 	
 	@Override
-	public synchronized String[] passaTurno() 
+	public synchronized String[] passaTurno() throws ChangeRoundException, IsMyRoundException
 	{
 		if(!token.equals(""))
 		{
@@ -395,7 +395,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 			return null;
 	}	
 	
-	public void stopClientListener()
+	public void stopClientListener() throws ChangeRoundException, IsMyRoundException
 	{
 		clientListener.stop();
 	}
