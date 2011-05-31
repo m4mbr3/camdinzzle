@@ -54,14 +54,22 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	private JTextField port;
 	private JCheckBox enable_port;
 	private JTextField address;
+	private JLabel nome_server;
+	private JTextField server_value;
 	
 	public Client(String Name) {
 		super (Name);
 		this.setVisible(true);
 		this.setResizable(false);
+		nome_server = new JLabel("NameServer: ");
+		server_value = new JTextField("server");
+		nome_server.setSize(90,20);
+		server_value.setSize(160, 20);
+		nome_server.setLocation(50,280);
+		server_value.setLocation(0,280);
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
-		port = new JTextField("4567");
+		port = new JTextField("");
 		enable_port = new JCheckBox("enable");
 		address = new JTextField("localhost");
 		radiogroup = new ButtonGroup();
@@ -104,12 +112,19 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		address.setLocation(140,240);
 		port_label.setLocation(50,200);
 		address_label.setLocation(50,240);
+		server_value.setVisible(true);
+		nome_server.setVisible(true);
+		address.setEnabled(false);
+		server_value.setEnabled(false);
+		nome_server.setEnabled(false);
 		enable_port.setEnabled(false);
 		port.setEnabled(false);
 		address.setEditable(false);
 		port_label.setEnabled(false);
 		address_label.setEnabled(false);
 		
+		panel.add(nome_server);
+		panel.add(server_value);
 		panel.add(address);
 		panel.add(address_label);
 		panel.add(enable_port);
@@ -125,6 +140,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		this.addWindowListener(this);
 		next.addActionListener(this);
 		this.repaint();
+		this.validate();
 	}
 	public ConnectionManager getConnManager() {
 		return connManager;
@@ -170,12 +186,10 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				}
 				else if(rmi.isSelected())
 				{
-					port.setText("1099");
 					//this.connManager = new ConnectionManagerRMI();
 				}
 				else
 				{
-					port.setText("4567");
 					this.setVisible(false);
 					Integer port_i = new Integer(port.getText());
 					try{
@@ -302,25 +316,40 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		{
 			if(socket.isSelected())
 			{
+				port.setText("4567");
 				enable_port.setEnabled(true);
 				address.setEditable(true);
 				port_label.setEnabled(true);
 				address_label.setEnabled(true);
+				nome_server.setEnabled(false);
+				server_value.setEnabled(false);
+				address.setEditable(true);
+				server_value.setEditable(true);
 			}
 			if(rmi.isSelected())
 			{
+				port.setText("1099");
 				enable_port.setEnabled(true);
 				address.setEditable(true);
 				port_label.setEnabled(true);
 				address_label.setEnabled(true);
+				nome_server.setEnabled(true);
+				server_value.setEnabled(true);
+				address.setEditable(true);
+				server_value.setEditable(true);
 			}
 			if(local.isSelected())
 			{
+				port.setText("");
+				address.setEditable(false);
+				server_value.setEditable(false);
 				enable_port.setEnabled(false);
 				port.setEnabled(false);
 				address.setEditable(false);
 				port_label.setEnabled(false);
 				address_label.setEnabled(false);
+				nome_server.setEnabled(false);
+				server_value.setEnabled(false);
 			}
 		}
 	}
