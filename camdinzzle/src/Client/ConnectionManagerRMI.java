@@ -418,5 +418,17 @@ public class ConnectionManagerRMI implements ConnectionManager
 		return null;
 	}
 
+	@Override
+	public String getChangeRound() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setChangeRound(String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

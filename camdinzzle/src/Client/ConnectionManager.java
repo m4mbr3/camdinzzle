@@ -131,4 +131,8 @@ public interface ConnectionManager {
 	 * @return Risposta del Server, se va in errore ritorna null
 	 */
 	public String[] passaTurno() ;
+	
+	
+	public String getChangeRound();
+	public void setChangeRound(String msg);
 }

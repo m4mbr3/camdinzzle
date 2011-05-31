@@ -91,6 +91,10 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		} 
 	}
 	
+	public String getChangeRound() {
+		return changeRound;
+	}
+
 	public synchronized String creaUtente(String username, String password) 
 	{
 		String msg = ClientMessageBroker.createUser(username, password);
@@ -405,5 +409,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	{
 		clientListener.stop();
 	}
+
+	
 }
 	
