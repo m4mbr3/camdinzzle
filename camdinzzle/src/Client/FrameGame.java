@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -71,6 +72,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private JButton[] commandDinoButton;
 	private JButton[] commandGameButton;
 	private JPanel timer;
+	private JLabel time;
 	private JFrame ranking;
 	private JTable ranking1;
 	private JScrollPane ranking2;
@@ -194,7 +196,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 game.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
 		 game.drawCommandButtons();
 		 game.drawPlayerList(client.getConnManager().listaGiocatori());
-		 game.drawTime();
 		 game.repaint();
 		 
 	}
@@ -275,15 +276,22 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[0]))
 		{
-			String[] groUpDino = client.getConnManager().cresciDinosauro(dinoId);
-			if(groUpDino==null)
+			String[] growUpDino = client.getConnManager().cresciDinosauro(dinoId);
+			if(growUpDino==null)
 			{
 				errorMessage();
 			}
 			else
 			{
-				drawDinoState(dinoId,client.getConnManager().statoDinosauro(dinoId));
-				
+				if(growUpDino[0].equals("no"))
+				{
+					errorMessageServer(growUpDino);
+				}
+				else
+				{
+					drawDinoState(dinoId,client.getConnManager().statoDinosauro(dinoId));
+					drawMap(client.getConnManager().mappaGenerale());
+				}
 			}	
 		}
 		/*DEPONI UOVO
@@ -585,16 +593,29 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				int row=startRow;
 				int col=startCol;
 				String[] energySplit = new String [2];
-				
-				for(int i=4; i<mapList.size(); i++)
+				if(startRow>=this.row)
+					startRow=this.row-1;
+				if(startRow<0)
+					startRow=0;
+				if(startCol<0)
+					startCol=0;
+				if(maxCol>=this.col)
+					maxCol=this.col-1;
+				if(maxRow<0)
+					maxRow=-1;
+				int i=4;
+//				for(int i=4; i<mapList.size(); i++)
+				for(row=startRow;row>maxRow;row--)
 				{
-					if((row>=0)&&(row<this.row)&&(col>=0)&&(col<this.col)&&(mapList.get(i).compareTo("null")!=0))
+					for(col=startCol;col<maxCol;col++)
+				{
+/*					if((row>=0)&&(row<this.row)&&(col>=0)&&(col<this.col))
 					{
 						if(col==maxCol)
 						{
 							col=startCol;
 							row--;
-						}
+						}*/
 						if(mapList.get(i).compareTo("b")==0)
 						{
 							buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "dark");
@@ -633,8 +654,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 								buttons[row][col].setIcon(iconCarrion);
 							}
 						}
-						col++;
-					}
+						//col++;
+					i++;
+				}
 				}
 				for(int rowEnable=startRow+1; rowEnable>maxRow-1; rowEnable--)
 				{
@@ -727,13 +749,22 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 
 	@Override
-	public void drawTime() 
+	public void drawTime(int timeInt) 
 	{
-		// TODO countdown 2m
-		timer.setBackground(Color.GREEN);
+		if(time==null)
+			panelControlDown.remove(timer);
+		String timeString = String.valueOf(timeInt);
+		time = new JLabel(timeString);
+		timer.add(time);
+		panelControlDown.add(timer,BorderLayout.SOUTH);	
+	}
+	public void drawRound(String user)
+	{
+		if(time==null)
+			panelControlDown.remove(timer);
+		time = new JLabel("ora è il turno di:\n" + user);
+		time.add(time);
 		panelControlDown.add(timer,BorderLayout.SOUTH);
-		
-		
 	}
 
 	@Override

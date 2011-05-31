@@ -158,7 +158,7 @@ public class Textual implements Visual
 	}
 
 	@Override
-	public void drawTime() 
+	public void drawTime(int timeInt) 
 	{
 		
 	}

@@ -43,7 +43,7 @@ public abstract class Dinosaur
 		dimension = 1;
 		energy = 1000;
 		this.dinoId = dinoId;
-		energyMax = energy * dimension;
+		energyMax = 1000 * dimension;
 		this.posRow = posRow;
 		this.posCol = posCol;
 		distMax=0;
@@ -68,6 +68,7 @@ public abstract class Dinosaur
 			{
 				energy = energy - energyMax/2;
 				dimension = dimension + 1;
+				energyMax = dimension * 1000;
 				setActionTake(true);
 				return true;
 			}

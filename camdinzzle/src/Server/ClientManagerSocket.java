@@ -435,7 +435,10 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.flush();
 								
 								if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
-									serverLogic.changeRoundNotify();
+									{
+										Thread.sleep(1000);
+										serverLogic.changeRoundNotify();
+									}
 							}
 							else
 							{
@@ -454,6 +457,9 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				}
 				catch(IOException e)
 				{
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			

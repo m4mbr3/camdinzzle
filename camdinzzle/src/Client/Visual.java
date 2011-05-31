@@ -33,7 +33,7 @@ public interface Visual
 	 * Metodo che disegna l'area relativa al tempo a disposizione del player. Gestisce sia il timeout di scelta di
 	 * gioco, sia il timeout di fine turno
 	 */
-	public void drawTime();
+	public void drawTime(int timeInt);
 	
 	/**
 	 * Metodo che disegna lo stato della connessione fra client e server
