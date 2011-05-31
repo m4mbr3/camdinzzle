@@ -21,6 +21,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 	private ServerRMIInterface server;
 	private String token;
 	private ClientRMI client;
+	private String changeRound = null;
 	
 	public ConnectionManagerRMI(String address, String port, String serverName) throws Exception
 	{
@@ -112,7 +113,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 			if(ClientMessageBroker.manageGameAccess(msg)[0].equals("ok"))
 			{
 				try {
-					client = new ClientRMI(this.address, this.username);
+					client = new ClientRMI(this.address, this.username, this);
 					server.notifyGameAccess(client);
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block

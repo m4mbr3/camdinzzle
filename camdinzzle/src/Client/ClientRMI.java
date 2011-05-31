@@ -22,10 +22,12 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 	private String username;
 	private boolean isInGame;
 	private static final String port = "1099";
+	private ConnectionManagerRMI cmRMI;
 	
-	public ClientRMI(String address, String username) throws RemoteException 
+	public ClientRMI(String address, String username, ConnectionManagerRMI cmRMI) throws RemoteException 
 	{
 		super();
+		this.cmRMI = cmRMI;
 		this.address = address;
 		this.username = username;
 		isInGame = true;
@@ -38,6 +40,10 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 		{
 			System.out.println("--> CAMBIO TURNO: " + msg);
 			
+			
+			
+			return true;
+			/*
 			if(ClientMessageBroker.manageChangeRound(msg).equals(username))
 			{
 				//TODO: chiamata al metodo del Client che mi lancia il popup di conferma del turno
@@ -47,7 +53,9 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 				//TODO: chiamata al metodo del Client che mi notifica il cambio del turno e mi evidenzia il giocatore
 			}
 			return true;
+			*/
 		}
+		
 		return false;
 	}
 
