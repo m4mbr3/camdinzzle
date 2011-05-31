@@ -118,7 +118,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		// TODO Auto-generated method stub
 		String[] response;
 		if(arg0.getComponent().equals(confirm))
-		{
+		{ 
 			this.setVisible(false);
 			response=client.getConnManager().confermaTurno();
 			if (response == null)
