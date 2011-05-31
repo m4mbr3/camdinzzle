@@ -49,7 +49,7 @@ public class ClientListener implements Runnable
 	}
 	
 	@Override
-	public void run() 
+	public void run() throws IsMyRoundException, ChangeRoundException
 	{				
 		while(run)
 		{

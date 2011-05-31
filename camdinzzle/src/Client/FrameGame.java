@@ -41,7 +41,7 @@ import javax.swing.text.html.Option;
  * @author Andrea
  *
  */
-public class FrameGame extends JFrame implements WindowListener, ActionListener, MouseListener,Visual throws ChangeRoundException{
+public class FrameGame extends JFrame implements WindowListener, ActionListener, MouseListener,Visual {
 
 	private Dimension screenSize;
 	private JPanel panel;
@@ -87,10 +87,17 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 18);
 	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
 	
+	
+	public FrameGame()
+	{
+		
+	}
 	/**
 	 * @param title
 	 * @throws HeadlessException
+	 * 
 	 */
+	
 	public FrameGame(String title,Client client) throws HeadlessException{
 		super(title);
 		this.client=client;
@@ -177,7 +184,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		super(title, gc);
 	}
 
-	public static void startFrameGame(Client client)
+	public void startFrameGame(Client client)
 	{
 		 FrameGame game = new FrameGame("Isola dei Dinosauri", client);
 		 game.drawMap(client.getConnManager().mappaGenerale());
@@ -900,6 +907,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 JOptionPane.showMessageDialog(panel, msg);
 	 }
 	 
+
 	 public static void drawChangingRound()
 	 {
 		 String[] option = {"yes","no"};

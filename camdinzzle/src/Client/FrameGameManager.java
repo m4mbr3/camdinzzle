@@ -63,6 +63,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JFrame ranking;
 	private JScrollPane ranking2;
 	private JTable ranking1;
+	
+	private JOptionPane exception;
+	private FrameGame frameGame;
 	/**
 	 * @param title
 	 * @throws HeadlessException
@@ -165,6 +168,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(accPartita))
 		{
+			frameGame = new FrameGame();
 			try
 			{
 				String[] response = ClientMessageBroker.manageGameAccess(client.getConnManager().accessoPartita());
@@ -174,7 +178,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				}
 				else if(response[0].compareTo("ok")==0)
 				{
-					FrameGame.startFrameGame(client);
+					frameGame.startFrameGame(client);
 					
 					
 				}
@@ -192,10 +196,14 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			}
 			catch(ChangeRoundException ex)
 			{
+				if ( exception == null ) exception = new JOptionPane();
+					exception.showConfirmDialog(frameGame, "this is the turn of "+ ex.getUsername(), "Change Round", JOptionPane.INFORMATION_MESSAGE);
 				
 			}
 			catch(IsMyRoundException ex)
 			{
+				if ( exception == null ) exception = new JOptionPane();
+				exception.showConfirmDialog(frameGame, "this is the turn of "+ ex.getUsername(), "Change Round", JOptionPane.INFORMATION_MESSAGE);
 				
 			}
 		}
