@@ -80,7 +80,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private int flag=0;
 	private JScrollPane scrollPlayerList;
 	private int timeGlobal;
-	private ChangeRoundThread changeRoundThread;
+	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
 	private final int visibleRowCountPlayerList=8;
@@ -96,7 +96,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 * 
 	 */
 	
-	public FrameGame(String title,Client client,ChangeRoundThread changeRoundThread) throws HeadlessException{
+	public FrameGame(String title,Client client) throws HeadlessException{
 		super(title);
 		this.client=client;
 		buttons = new JButton[row][col];
@@ -112,7 +112,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		this.setVisible(true);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0,0);
-		this.changeRoundThread = changeRoundThread;
 		this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
 		//this.setLayout(new BorderLayout());
 		this.addWindowListener(this);
@@ -380,7 +379,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				}
 				else
 				{
-					changeRoundThread.stop();
+					ChangeRoundThread.stop();
 					this.setVisible(false);
 					//FrameGameManager gameIntro = new FrameGameManager("ManagerPanel", client);
 				}

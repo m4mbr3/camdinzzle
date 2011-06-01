@@ -23,7 +23,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 	*/
-	private boolean is_run;
+	private static boolean is_run;
 	private Client client;
 	private FrameGame frameGame;
 	private JLabel msg;
@@ -57,9 +57,9 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		this.add(msg);
 		this.repaint();
 	}
-	public void stop()
+	public static void stop()
 	{
-		this.is_run = false;
+		is_run = false;
 	}
 	@Override
 	public void run() {
@@ -69,11 +69,11 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			if (!client.getConnManager().getChangeRound().equals(""))
 			{
 				
-				this.msg.setText("Ora tocca: "+ client.getConnManager().getChangeRound());
+				
 				frameGame.drawRound(client.getConnManager().getChangeRound());
 				if(!client.getConnManager().getUsername().equals(client.getConnManager().getChangeRound()))
 				{
-					
+					this.msg.setText("Ora tocca: "+ client.getConnManager().getChangeRound());
 					this.remove(deny);
 					this.remove(confirm);
 					this.is_my_turn = false;
@@ -91,6 +91,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 				
 				else
 				{
+					this.msg.setText("Ora tocca: "+ client.getConnManager().getChangeRound());
 					this.add(confirm);
 					this.add(deny);
 					this.setVisible(true);
