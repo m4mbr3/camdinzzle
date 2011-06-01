@@ -520,26 +520,31 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dark");
 						buttons[j][z].setIcon(iconDark);
 						buttons[j][z].setDisabledIcon(iconDark);
+						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("v")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "vegetation");
 						buttons[j][z].setDisabledIcon(iconVegetationDisable);
+						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("t")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "land");
 						buttons[j][z].setDisabledIcon(iconLandDisable);
+						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("a")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "water");
 						buttons[j][z].setDisabledIcon(iconWaterDisable);
+						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("d")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dinosaur");
 						buttons[j][z].setDisabledIcon(iconDark);
+						buttons[j][z].setToolTipText(null);
 					}
 				z++;
 			}
@@ -604,55 +609,55 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				for(row=startRow;row>maxRow;row--)
 				{
 					for(col=startCol;col<maxCol;col++)
-				{
-/*					if((row>=0)&&(row<this.row)&&(col>=0)&&(col<this.col))
 					{
-						if(col==maxCol)
+	/*					if((row>=0)&&(row<this.row)&&(col>=0)&&(col<this.col))
 						{
-							col=startCol;
-							row--;
-						}*/
-						if(mapList.get(i).compareTo("b")==0)
-						{
-							buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "dark");
-							buttons[row][col].setIcon(iconDark);
-						}
-						else if(mapList.get(i).compareTo("t")==0)
-						{
-							buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "land");
-							buttons[row][col].setIcon(iconLand);
-						}
-						else if(mapList.get(i).compareTo("a")==0)
-						{
-							buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "water");
-							buttons[row][col].setIcon(iconWater);
-						}
-							
-						else if(mapList.get(i).indexOf(",") != -1)
-						{
-							energySplit = ((String)mapList.get(i)).split(",");
-							if(energySplit[0].compareTo("d")==0)
+							if(col==maxCol)
 							{
-								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + energySplit[1]);
-								buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
+								col=startCol;
+								row--;
+							}*/
+							if(mapList.get(i).compareTo("b")==0)
+							{
+								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "dark");
 								buttons[row][col].setIcon(iconDark);
 							}
-							else if(energySplit[0].compareTo("v")==0)
+							else if(mapList.get(i).compareTo("t")==0)
 							{
-								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "vegetation");
-								buttons[row][col].setToolTipText("energia vegetazione: " + energySplit[1]);
-								buttons[row][col].setIcon(iconVegetation);
+								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "land");
+								buttons[row][col].setIcon(iconLand);
 							}
-							else if(energySplit[0].compareTo("c")==0)
+							else if(mapList.get(i).compareTo("a")==0)
 							{
-								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "carrion");
-								buttons[row][col].setToolTipText("energia carogna: " + energySplit[1]);
-								buttons[row][col].setIcon(iconCarrion);
+								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "water");
+								buttons[row][col].setIcon(iconWater);
 							}
-						}
-						//col++;
-					i++;
-				}
+								
+							else if(mapList.get(i).indexOf(",") != -1)
+							{
+								energySplit = ((String)mapList.get(i)).split(",");
+								if(energySplit[0].compareTo("d")==0)
+								{
+									buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + energySplit[1]);
+									buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
+									buttons[row][col].setIcon(iconDark);
+								}
+								else if(energySplit[0].compareTo("v")==0)
+								{
+									buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "vegetation");
+									buttons[row][col].setToolTipText("energia vegetazione: " + energySplit[1]);
+									buttons[row][col].setIcon(iconVegetation);
+								}
+								else if(energySplit[0].compareTo("c")==0)
+								{
+									buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "carrion");
+									buttons[row][col].setToolTipText("energia carogna: " + energySplit[1]);
+									buttons[row][col].setIcon(iconCarrion);
+								}
+							}
+							//col++;
+						i++;
+					}
 				}
 				for(int rowEnable=startRow+1; rowEnable>maxRow-1; rowEnable--)
 				{

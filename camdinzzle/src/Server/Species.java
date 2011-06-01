@@ -246,9 +246,11 @@ public class Species
 			Object[][] localMap = dino.getLocalMap();
 			int sizeRow = dino.getSizeRowLocalMap();
 			int sizeCol = dino.getSizeColLocalMap();
-			int posRow = dino.getPosRow();
-			int posCol = dino.getPosCol();
-			int k=0;
+			int startRow = dino.getPosRow() - sizeRow/2;
+			int endRow = startRow + sizeRow-1;
+			int startCol = dino.getPosCol() - sizeCol/2;
+			int endCol = startCol + sizeCol-1;
+/*			int k=0;
 			for(int i=posRow-sizeRow/2; i<=posRow+sizeRow/2; i++)
 			{
 				int h=0;
@@ -266,7 +268,28 @@ public class Species
 				}
 				if((h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
 					k++;
+			}*/
+			if(startRow<0)
+				startRow=0;
+			if(startCol<0)
+				startCol=0;
+			if(endRow>=Game.maxRow)
+				endRow=Game.maxRow;
+			if(endCol>=Game.maxCol)
+				endCol=Game.maxCol;
+			int k=0;
+			for(int i=startRow; i<endRow; i++)
+			{
+				int h=0;
+				for(int j=startCol; j<endCol; j++)
+				{
+					map[i][j] = localMap[k][h].toString();
+					h++;
+				}
+				k++;
 			}
+			
+			
 		}
 	}
 	
