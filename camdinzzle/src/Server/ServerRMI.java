@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -29,14 +30,16 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	private static final long serialVersionUID = 1L;
 	private ServerLogic serverLogic;
 	private String serverResponse;
-	private Hashtable<String, ClientManagerRMI> client;
+	private ArrayList<String> usernameClient;
+	private ArrayList<ClientManagerRMI> client;
 	private String serverIp;
 	private String serverPort;
 
 	public ServerRMI(ServerLogic sv, String serverIp, String serverPort) throws RemoteException
 	{
 		super();
-		client = new Hashtable<String, ClientManagerRMI>();
+		usernameClient = new ArrayList<String>();
+		client = new ArrayList<ClientManagerRMI>();
 		serverLogic = sv;
 		this.serverIp = serverIp;
 		this.serverPort = serverPort;
@@ -85,7 +88,7 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	@Override
 	public synchronized String[] listaGiocatori(String token) throws RemoteException 
 	{
-		serverResponse = serverLogic.gameExit(token);
+		serverResponse = serverLogic.playerList(token);
 		
 		return RMIMessageBroker.convertPlayerList(serverResponse);
 	}
@@ -183,7 +186,8 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	{
 		try {
 			ClientManagerRMI cmRMI = new ClientManagerRMI(username, serverIp, "1999");
-			client.put(username, cmRMI);
+			usernameClient.add(username);
+			client.add(cmRMI);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -196,23 +200,26 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	@Override
 	public synchronized void notifyLogout(String username) throws RemoteException
 	{
-		client.remove(username);
+		int index = usernameClient.indexOf(username);
+		usernameClient.remove(username);
+		
+		client.remove(index);
 	}
 
 	@Override
 	public void setGameAccess(boolean isInGame, String username) throws RemoteException
 	{
 		// TODO Auto-generated method stub
-		client.get(username).setIsInGame(isInGame);
+		int index = usernameClient.indexOf(username);
+		
+		client.get(index).setIsInGame(isInGame);
 	}
 	
-	public Iterator getClient() throws RemoteException
+	public ArrayList<ClientManagerRMI> getClient() throws RemoteException
 	{
 		if(client.size() > 0)
 		{
-			Set set = client.entrySet();
-			
-			return set.iterator();
+			return client;
 		}
 		else
 			return null;

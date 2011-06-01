@@ -185,15 +185,15 @@ public class Server implements Runnable {
 			}
 		}
 		
-		Iterator clients = null;
+		ArrayList<ClientManagerRMI> clientRMI = null;
 		try {
-			clients = cmRMI.getClient();
+			clientRMI = cmRMI.getClient();
 			
-			if(clients != null)
+			if(clientRMI != null)
 			{
-				while(clients.hasNext())
+				for (ClientManagerRMI cl : clientRMI) 
 				{
-					((ClientManagerRMI)clients.next()).sendChangeRound(msg);
+					cl.sendChangeRound(msg);
 				}
 			}
 		} catch (RemoteException e) {

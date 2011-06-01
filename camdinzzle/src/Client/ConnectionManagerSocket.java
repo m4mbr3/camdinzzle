@@ -92,7 +92,8 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		} 
 	}
 	
-	public String getChangeRound() {
+	public String getChangeRound() 
+	{
 		return changeRound;
 	}
 
