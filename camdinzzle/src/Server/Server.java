@@ -190,10 +190,10 @@ public class Server implements Runnable {
 			int port = 4567;
 			
 			Server ss = new Server(port,serverLogic);
-			ServerForClientRMI sfcRMI = new ServerForClientRMI(serverLogic, ip, "server", "1099");
+			//ServerForClientRMI sfcRMI = new ServerForClientRMI(serverLogic, ip, "server", "1099");
 			
 			(new Thread(ss)).start();
-			(new Thread(sfcRMI)).start();
+			//(new Thread(sfcRMI)).start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

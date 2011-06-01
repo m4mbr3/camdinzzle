@@ -102,10 +102,11 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			}
 			if(is_my_turn)
 			{
-				frameGame.drawTime(frameGame.getTime()-1);
+				if(frameGame.getTime()!=0)
+					frameGame.drawTime(frameGame.getTime()-1);
 			}
 			try{
-				Thread.sleep(1000);
+				Thread.sleep(950);
 			}
 			catch(InterruptedException e)
 			{
@@ -129,7 +130,6 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			}
 			if(response[0].equals("ok"))
 			{
-				JOptionPane.showMessageDialog(this,"Your turn is confermed", "Turn", JOptionPane.INFORMATION_MESSAGE);
 				this.is_my_turn=true;
 				frameGame.drawTime(120);
 			}
@@ -162,7 +162,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			}
 			else if(response[0].equals("ok"))
 			{
-				JOptionPane.showMessageDialog(this,"Your turn is passed", "Turn", JOptionPane.INFORMATION_MESSAGE);
+				System.out.println("Turno passato");
 			}
 			else if (response[0].equals("no"))
 			{
