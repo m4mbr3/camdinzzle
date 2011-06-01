@@ -19,23 +19,18 @@ public class ClientManagerRMI implements ClientManager
 {
 	private String username;
 	private ClientRMIInterface client;
+	private String port;
+	private boolean isInGame;
 	
-	public ClientManagerRMI(String username, String address)
+	public ClientManagerRMI(String username, String address, String port) throws MalformedURLException,
+	NotBoundException, RemoteException
 	{
 		this.username = username;
+		this.port = port;
+		this.isInGame = false;
 		
-		try {
-			client = (ClientRMIInterface)Naming.lookup("rmi://" + address + "/" + username + ":1999");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		client = (ClientRMIInterface)Naming.lookup("rmi://" + address + "/" + username + ":" + port);
+		
 	}
 	
 	@Override
@@ -53,19 +48,14 @@ public class ClientManagerRMI implements ClientManager
 	@Override
 	public boolean getIsInGame() 
 	{
-		try {
-			return client.getIsInGame();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
+		return isInGame;
+		
 	}
 
 	@Override
 	public void setIsInGame(boolean isInGame) {
 		// TODO Auto-generated method stub
-		
+		this.isInGame = isInGame;
 	}
 
 	

@@ -1,8 +1,14 @@
 package Server;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.Object;
@@ -23,11 +29,17 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	private static final long serialVersionUID = 1L;
 	private ServerLogic serverLogic;
 	private String serverResponse;
+	private Hashtable<String, ClientManagerRMI> client;
+	private String serverIp;
+	private String serverPort;
 
-	public ServerRMI(ServerLogic sv) throws RemoteException
+	public ServerRMI(ServerLogic sv, String serverIp, String serverPort) throws RemoteException
 	{
 		super();
+		client = new Hashtable<String, ClientManagerRMI>();
 		serverLogic = sv;
+		this.serverIp = serverIp;
+		this.serverPort = serverPort;
 	}
 
 	@Override
@@ -166,8 +178,44 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 		return serverResponse;
 	}
 	
-	public synchronized void notifyGameAccess(String username) throws RemoteException
+	@Override
+	public synchronized void notifyLogin(String username) throws RemoteException
 	{
-		serverLogic.notifyGameAccess(username);
+		try {
+			ClientManagerRMI cmRMI = new ClientManagerRMI(username, serverIp, "1999");
+			client.put(username, cmRMI);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
+	@Override
+	public synchronized void notifyLogout(String username) throws RemoteException
+	{
+		client.remove(username);
+	}
+
+	@Override
+	public void setGameAccess(boolean isInGame, String username) throws RemoteException
+	{
+		// TODO Auto-generated method stub
+		client.get(username).setIsInGame(isInGame);
+	}
+	
+	public Iterator getClient() throws RemoteException
+	{
+		if(client.size() > 0)
+		{
+			Set set = client.entrySet();
+			
+			return set.iterator();
+		}
+		else
+			return null;
+	}
+	
 }

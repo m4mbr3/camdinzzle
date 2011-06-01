@@ -35,6 +35,8 @@ public class ServerLogic {
 	 */
 	// oggetti per sincronizzare i metodi sugli arraylist
 
+	private Server server = null;
+	
 	Thread counter30s;
 	Thread counter2m;
 	private static int timeForConfirm = 30000;   // in millisecondi
@@ -1157,7 +1159,7 @@ public class ServerLogic {
 	{
 		try
 		{
-			Server.sendBroadcastMessage(ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName()));
+			server.sendBroadcastMessage(ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName()));
 		}
 		catch(Exception ex)
 		{
@@ -1168,11 +1170,6 @@ public class ServerLogic {
 	public String getuUsernameOfCurrentPlayer()
 	{
 		return currentSession.getPlayer(tokenOfCurrentPlayer).getUserName();
-	}
-	
-	public void notifyGameAccess(String username)
-	{
-		Server.addClientRMI(username);
 	}
 	
 	/**
@@ -1336,6 +1333,11 @@ public class ServerLogic {
 			System.out.println(ex.getMessage());
 			return false;
 		}
+	}
+	
+	public void setServer(Server s)
+	{
+		this.server = s;
 	}
 	
 	/**

@@ -21,7 +21,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 	private String address;
 	private String username;
 	private boolean isInGame;
-	private static final String port = "1099";
+	private static final String port = "1999";
 	private ConnectionManagerRMI cmRMI;
 	
 	public ClientRMI(String address, String username, ConnectionManagerRMI cmRMI) throws RemoteException 

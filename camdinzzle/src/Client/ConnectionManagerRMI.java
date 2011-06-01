@@ -79,15 +79,10 @@ public class ConnectionManagerRMI implements ConnectionManager
 				token = response[1];
 				this.username = username;
 				
-				try
-				{
+				try{
 					client = new ClientRMI(this.address, this.username, this);
 				}
 			
-				catch(ExportException e)
-				{
-					System.out.println("Port already in use: 1999!!!");
-				}
 				catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -113,6 +108,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 				try {
 					Naming.rebind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 					System.out.println("Client RMI Avviato!");
+					server.notifyLogin(username);
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -123,6 +119,8 @@ public class ConnectionManagerRMI implements ConnectionManager
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+				server.notifyLogin(username);
 			}
 		} 
 		catch (RemoteException e) 
@@ -167,12 +165,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 			
 			if(ClientMessageBroker.manageGameAccess(msg)[0].equals("ok"))
 			{
-				try {
-					server.notifyGameAccess(username);
-				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				server.setGameAccess(true, username);
 			}
 		} 
 		catch (RemoteException e) 
@@ -196,7 +189,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 				msg = server.uscitaPartita(token);
 			if(ClientMessageBroker.manageGameExit(msg)[0].equals("ok"))
 			{
-				client.setInGame(false);
+				server.setGameAccess(false, username);
 			}
 		} 
 		catch (RemoteException e) 
@@ -261,6 +254,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 			if(ClientMessageBroker.manageLogout(msg)[0].equals("ok"))
 			{
 				client = null;
+				
 			}
 		} 
 		catch (RemoteException e) 

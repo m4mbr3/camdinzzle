@@ -23,6 +23,9 @@ import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
 
 import Client.Client;
 import Client.ClientRMIInterface;
@@ -48,6 +51,9 @@ public class Server implements Runnable {
 	private ServerRMI serverRMI;
 	// End ClientManager
 	
+	
+	private ServerRMI cmRMI;
+	
 	private static ArrayList<ClientManager> clientList;
 	private static String address = "127.0.0.1";
 	
@@ -55,9 +61,12 @@ public class Server implements Runnable {
 	private int port;
 	private ServerLogic serverLogic;
 	
-	public Server(int port, ServerLogic serverLogic) throws RemoteException
+	public Server(int port, ServerLogic serverLogic, String serverIp, String serverPort, String serverName)
 	{
 			this.port = port;
+			
+			serverLogic.setServer(this);
+			
 			try 
 			{
 				this.server = new ServerSocket(this.port) ;
@@ -76,6 +85,50 @@ public class Server implements Runnable {
 			this.new_connection = null;
 			this.is_run = true;
 			this.clientManagerSocket=null;
+			
+			cmRMI = null;
+			
+			try
+			{
+				cmRMI = new ServerRMI(serverLogic, serverIp, serverPort);
+			}
+		
+			
+			catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			try {
+				Registry registro = LocateRegistry.createRegistry(Integer.parseInt(serverPort));
+				Naming.bind("rmi://" + serverIp + "/" + serverName + ":" + serverPort,(Remote) cmRMI);
+				//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
+			} catch (AccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (AlreadyBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				Naming.rebind("rmi://" + serverIp + "/" + serverName + ":" + serverPort,(Remote) cmRMI);
+				System.out.println("Server RMI Avviato!");
+			} catch (AccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	public void stop()
@@ -111,7 +164,7 @@ public class Server implements Runnable {
 	 * Per ogni  Client in partita invia la notifica di cambio del turno
 	 * @param msg : messaggio da mandare al Client
 	 */
-	public static void sendBroadcastMessage(String msg)
+	public void sendBroadcastMessage(String msg)
 	{
 		if(clientList.size() > 0)
 		{
@@ -131,20 +184,39 @@ public class Server implements Runnable {
 				}
 			}
 		}
+		
+		Iterator clients = null;
+		try {
+			clients = cmRMI.getClient();
+			
+			if(clients != null)
+			{
+				while(clients.hasNext())
+				{
+					((ClientManagerRMI)clients.next()).sendChangeRound(msg);
+				}
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public static void addClientRMI(String username)
+	public void addClientRMI(ClientManagerRMI cmRMI)
 	{
 		try
 		{
-			ClientManagerRMI cmRMI = new ClientManagerRMI(username, address);
-
 			clientList.add(cmRMI);
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
 		}
+	}
+	
+	public static void removeClient(ClientManager cm)
+	{
+		clientList.remove(cm);
 	}
 	
 	public static void main(String[] args) throws RemoteException {
@@ -189,9 +261,9 @@ public class Server implements Runnable {
 		try {
 			int port = 4567;
 			
-			Server ss = new Server(port,serverLogic);
+			Server ss = new Server(port, serverLogic, "127.0.0.1", "1099", "server");
 			//ServerForClientRMI sfcRMI = new ServerForClientRMI(serverLogic, ip, "server", "1099");
-			
+
 			(new Thread(ss)).start();
 			//(new Thread(sfcRMI)).start();
 		} catch (Exception e) {

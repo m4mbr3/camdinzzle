@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal server. Utilizzato in tutte e 
- * due i tipi di visualizzazione. I metodi che iniziano con "manage" gestiscono le stringhe dei messaggi 
+ * due i tipi di visualizzazione. I metodi che iniziano con "convert" gestiscono le stringhe dei messaggi 
  * proveniente dal ServerLogic; i metodi che iniziano con "create" creano le stringhe dei messaggi da mandare al ServerLogic
  */
 public class RMIMessageBroker 
@@ -18,7 +18,7 @@ public class RMIMessageBroker
 	// Gestione messaggi in entrata
 	
 	/**
-	 * Controlla se il messaggio è valido oppure no
+	 * Controlla se il messaggio ï¿½ valido oppure no
 	 * @param msg messaggio del server
 	 * @return true se messaggio valido, false altrimenti
 	 */
@@ -34,13 +34,16 @@ public class RMIMessageBroker
 				return false;
 			return true;
 		}
-		return true;
+		else if(msg.equals("@ok"))
+			return true;
+		else
+			return false;
 	}
 	
 	/**
 	 * Gestisce il comando di creazione utente
 	 * @param msg : messaggio di risposta del Server
-	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'è stato
+	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'ï¿½ stato
 	 */
 	public static String[] convertCreateUser(String msg)
 	{
@@ -65,23 +68,23 @@ public class RMIMessageBroker
 	/**
 	 * Gestisce il comando di creazione della specie
 	 * @param msg : messaggio di ripsota del Server
-	 * @return Array contenente in prima posizione l'esito del messaggio e se è no contiene in seconda posizione l'errore
+	 * @return Array contenente in prima posizione l'esito del messaggio e se ï¿½ no contiene in seconda posizione l'errore
 	 */
 	public static String[] convertCreateSpecies(String msg)
 	{
 		String[] ret = new String[2];
-		
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";
 			
 			return ret;
 		}
-		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@razzaGiaCreata")))
+		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no,@tokenNonValido")) 
+				|| (msg.equals("@no")))
 		{
 			ret[0] = "no";
-			ret[1] = msg.substring(msg.indexOf("," + 2));
-			
+			if(msg.contains(","))
+				ret[1] = msg.substring(msg.indexOf(",") + 2);
 			return ret;
 		}
 		return null;
@@ -105,7 +108,7 @@ public class RMIMessageBroker
 		else if((msg.equals("@no,@troppiGiocatori")) || (msg.equals("@no,@tokenNonValido")))
 		{
 			ret[0] = "no";
-			ret[1] = msg.substring(msg.indexOf("," + 2));
+			ret[1] = msg.substring(msg.indexOf(",") + 2);
 			
 			return ret;
 		}
@@ -130,7 +133,7 @@ public class RMIMessageBroker
 		else if(msg.equals("@no,@tokenNonValido"))
 		{
 			ret[0] = "no";
-			ret[1] = msg.substring(msg.indexOf("," + 2));
+			ret[1] = msg.substring(msg.indexOf(",") + 2);
 			
 			return ret;
 		}
@@ -178,7 +181,7 @@ public class RMIMessageBroker
 	 * @param msg Messaggio del server
 	 * @return ArrayList contenente(in ordine di posizione): x di partenza, y di partenza, numero di righe della
 	 * vista, numero di colonne della vista, elemento della prima colonna della prima riga, elemento della seconda
-	 * colonna della prima riga e così via
+	 * colonna della prima riga e cosï¿½ via
 	 */
 	public static ArrayList<String> convertGeneralMap(String msg)
 	{
@@ -198,7 +201,7 @@ public class RMIMessageBroker
 				generalMap.add(commaSeparator[0].substring(1, 2));
 				generalMap.add(commaSeparator[1].substring(0, 1));
 				/**
-				 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
+				 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista cosï¿½ da
 				 * poter iniziare il ciclo di gestione delle singole righe
 				 */
 				dotAndCommaSeparator[0] = commaSeparator[2];
@@ -221,7 +224,7 @@ public class RMIMessageBroker
 		{
 			ArrayList<String> ret = new ArrayList<String>();
 			ret.add("no");
-			ret.add(msg.substring(msg.indexOf(",") + 2));
+			ret.add(msg.substring(msg.indexOf(",")) + 2);
 			
 			return ret;
 		}
@@ -263,9 +266,13 @@ public class RMIMessageBroker
 				
 				return dinoList;
 			}
-			else
+			else if(!validMessage.contains(","))
 			{
 				return new String[]{validMessage};
+			}
+			else
+			{
+				return new String[]{"null"};
 			}
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))
@@ -299,7 +306,7 @@ public class RMIMessageBroker
 			dinoZoomList.add(commaSeparator[2].substring(1));
 			dinoZoomList.add(commaSeparator[3].substring(0, commaSeparator[3].length() - 1));
 			/**
-			 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista così da
+			 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista cosï¿½ da
 			 * poter iniziare il ciclo di gestione delle singole righe
 			 */
 			dotAndCommaSeparator[0] = dotAndCommaSeparator[0].substring(dotAndCommaSeparator[0].lastIndexOf("\\}") + 2);
@@ -309,7 +316,7 @@ public class RMIMessageBroker
 			{
 				bracketSquareSeparator = row.trim().split("\\[");
 				
-				// Ciclo che parte da uno perchè il primo carattere dell'array è uno spazio 
+				// Ciclo che parte da uno perchï¿½ il primo carattere dell'array ï¿½ uno spazio 
 				for (int i = 1; i<bracketSquareSeparator.length; i++) 
 				{
 					dinoZoomList.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
@@ -358,7 +365,7 @@ public class RMIMessageBroker
 	/**
 	 * Gestisce il messaggio del movimento di un dinosauro
 	 * @param msg
-	 * @return stringa contenente l'esito del combattimento se c'è stato, altrimenti ritorna ok
+	 * @return stringa contenente l'esito del combattimento se c'ï¿½ stato, altrimenti ritorna ok
 	 */
 	public static String[] convertDinoMove(String msg)
 	{
@@ -415,6 +422,25 @@ public class RMIMessageBroker
 				|| (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
 				|| (msg.equals("@no,@raggiuntoNumeroMaxDinosauri"))
 				|| (msg.equals("@no,@mortePerInedia")) || (msg.equals("@no,@nonIlTuoTurno"))
+				|| (msg.equals("@no,@nonInPartita")))
+		{
+			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		return null;
+	}
+	
+	/**
+	 * Gestisce il messaggio del cambio del turno
+	 * @param msg
+	 * @return array contenente i parametri del messaggio
+	 */
+	public static String[] roundSwitch(String msg)
+	{
+		if(msg.equals("@ok"))
+		{
+			return new String[]{"ok"};
+		}
+		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonIlTuoTurno"))
 				|| (msg.equals("@no,@nonInPartita")))
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
@@ -494,8 +520,8 @@ public class RMIMessageBroker
 	public static String[] convertPlayerList(String msg)
 	{
 		if(msg.contains("@listaGiocatori,"))
-		{
-			String validMessage = msg.substring(msg.indexOf(',')+1);
+		{			
+			String validMessage = msg.substring(1);
 			
 			if(validMessage.contains(","))
 			{
@@ -503,7 +529,7 @@ public class RMIMessageBroker
 			}
 			else
 			{				
-				return new String[]{validMessage};
+				return new String[]{"null"};
 			}
 		}
 		else if(msg.equals("@no,@tokenNonValido"))
@@ -517,13 +543,15 @@ public class RMIMessageBroker
 	 * Gestisce il messaggio della classifica dei giocatori di una partita
 	 * @param msg
 	 * @return ArrayList contenente in ordine i giocatori con il loro stato; 4 celle per ogni giocatore 
-	 * contenti(in ordine): username, nome specie, punteggio, se è in partita
+	 * contenti(in ordine): username, nome specie, punteggio, se ï¿½ in partita
 	 */
 	public static ArrayList<String> convertRanking(String msg)
 	{
 		if(msg.contains("@classifica,"))
 		{
 			ArrayList<String> rankingList = new ArrayList<String>();
+			rankingList.add(msg.substring(1, msg.indexOf(",")));
+			
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			
 			if(validMessage.contains("{"))
@@ -539,9 +567,8 @@ public class RMIMessageBroker
 					}
 					rankingList.add(commaSeparator[3].substring(0, 1));
 				}
-				
-				return rankingList;
 			}
+			return rankingList;
 		}
 		else if(msg.equals("@no,@tokenNonValido"))
 		{
@@ -554,5 +581,20 @@ public class RMIMessageBroker
 		}
 		return null;
 	}
+	
+	/**
+	 * Gestisce il messaggio del cambio del turno(notifica in partita)
+	 * @param msg
+	 * @return Username del giocatore abilitato a fare le proprie mosse, altrimenti null
+	 */
+	public static String convertChangeRound(String msg)
+	{
+		if(msg.contains(","))
+		{
+			return msg.substring(msg.indexOf(",") + 1);
+		}
+		return null;
+	}
+	
 }
 
