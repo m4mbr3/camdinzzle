@@ -60,6 +60,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private ImageIcon iconWaterDisable;
 	private ImageIcon iconLandDisable;
 	private JList dinoList;
+	private boolean flagDinoList;
 	private JTextArea dinoState;
 	private JList playerList;
 	private JPanel commandButtons;
@@ -74,6 +75,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private int flag=0;
 	private JScrollPane scrollPlayerList;
 	private int timeGlobal;
+	
 	
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
@@ -344,6 +346,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		if(arg0.getComponent().equals(commandGameButton[1]))
 		{
 			String[] check = client.getConnManager().passaTurno();
+			drawDinoList(client.getConnManager().listaDinosauri());
 			if(check==null)
 			{
 				errorMessage();
@@ -498,7 +501,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 */
 	public void drawMap(ArrayList<String> mapList) 
 	{
-//		ArrayList<String> mapList = ClientMessageBroker.manageGeneralMap(msg);
 		if(mapList!=null)
 		{
 			int j=0;
@@ -705,7 +707,12 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		{
 			if(!msgDinoList[0].equals("no"))
 			{
-				dinoList = new JList(msgDinoList);
+				if(dinoList==null)
+				{
+					dinoList = new JList(msgDinoList);
+					flagDinoList=true;
+				}
+				dinoList.setListData(msgDinoList);
 				dinoList.setVisibleRowCount(visibleRowCountDinoList);
 				dinoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				dinoList.addListSelectionListener(new ListSelectionListener() {
@@ -722,7 +729,12 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				dinoList.setVisible(true);
 				dinoList.setPreferredSize(new Dimension(widthControlPanel-25,(int)screenSize.getHeight()/14*4));
 				dinoList.setFont(fontDinoList);	
-				panelControlUp.add(new JScrollPane(dinoList),BorderLayout.NORTH);
+				if(flagDinoList)
+				{
+					panelControlUp.add(new JScrollPane(dinoList),BorderLayout.NORTH);
+					flagDinoList=false;
+				}
+				panelControlUp.repaint();
 			}
 			else
 			{
@@ -801,6 +813,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			ranking1.setVisible(true);
 			ranking2.getViewport().add(ranking1);
 			ranking.add(ranking2);
+			ranking.setLocation((int)screenSize.getWidth()/2-175, (int)screenSize.getHeight()/2-250);
 	}
 
 	@Override

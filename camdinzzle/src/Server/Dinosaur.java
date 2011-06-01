@@ -102,7 +102,7 @@ public abstract class Dinosaur
 							if((Game.getCell(i, j) instanceof String)&&(((String)Game.getCell(i, j)).compareTo("t")==0))
 							{
 								newDino=nameSpecie.addDinosaur(i, j);
-								idDino=newDino.toString();
+								idDino=newDino.getDinoId();
 								positioned = true;
 								newDino.setActionTake(true);
 								newDino.setMoveTake(true);

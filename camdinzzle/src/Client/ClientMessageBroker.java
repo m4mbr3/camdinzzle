@@ -414,9 +414,9 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageNewEgg(String msg)
 	{
-		if(msg.equals("@ok"))
+		if(msg.contains("@ok,"))
 		{
-			return new String[]{"ok"};
+			return new String[]{"ok",msg.substring(msg.indexOf(",")+1)};
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@idNonValido"))
 				|| (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
