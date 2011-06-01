@@ -328,10 +328,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		// TODO Auto-generated method stub
 		
 	}
-	public void startUI()
-	{
-		FrameGame gioco = new FrameGame("Schema Di Gioco",this);
-	}
+	
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		// TODO Auto-generated method stub
