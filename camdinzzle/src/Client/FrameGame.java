@@ -112,6 +112,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		this.setVisible(true);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0,0);
+		
 		this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
 		//this.setLayout(new BorderLayout());
 		this.addWindowListener(this);
@@ -379,7 +380,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				}
 				else
 				{
-					ChangeRoundThread.stop();
 					this.setVisible(false);
 					//FrameGameManager gameIntro = new FrameGameManager("ManagerPanel", client);
 				}
@@ -759,7 +759,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	}
 	public void drawRound(String user)
 	{
-		time.setText("ora ÔøΩ il turno di:\n" + user);
+		time.setText("ora è il turno di:\n" + user);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
