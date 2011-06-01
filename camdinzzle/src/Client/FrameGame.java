@@ -389,7 +389,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 */
 		if(arg0.getComponent().equals(commandGameButton[3]))
 		{
-//TODO  mettere aggiorna lista giocatori in fondo
 			String[] check = client.getConnManager().listaGiocatori();
 
 			if(check==null)
@@ -791,7 +790,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 */
 	public void drawRanking(ArrayList<String> classifica) 
 	{
-		// TODO sistemare centratura
 			ranking = new JFrame("Classifica");
 			ranking.setVisible(true);
 			ranking.setSize(new Dimension(350, 500));
@@ -952,20 +950,4 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 JOptionPane.showMessageDialog(panel, msg);
 	 }
 	 
-
-	 public static void drawChangingRound()
-	 {
-		 String[] option = {"yes","no"};
-		 int opt = JOptionPane.showOptionDialog(null, "Hai 30 secondi per confermare il tuo turno\nVuoi giocare?", "Cambio Turno", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
-		 if(opt==0)
-		 {
-			 //TODO turno confermato
-		 }
-		 else
-		 {
-			 //TODO turno rifiutato
-		 }
-	 }
-	 
-
 }
