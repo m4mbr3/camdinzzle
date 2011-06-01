@@ -438,15 +438,17 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 							
 							if(parameters != null)
 							{
-								writer_on_socket.write(serverLogic.playerRoundSwitch(token));
+								String msg = serverLogic.playerRoundSwitch(token);
+								
+								writer_on_socket.write(msg);
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
 								
-								if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
-									{
-										Thread.sleep(1000);
-										serverLogic.changeRoundNotify();
-									}
+								if(msg.equals("@ok"))
+								{
+									Thread.sleep(1000);
+									serverLogic.changeRoundNotify();
+								}
 							}
 							else
 							{
