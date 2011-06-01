@@ -145,7 +145,7 @@ public class ProvaTest1 {
 						ClientRMI client = null;
 						
 						try {
-							client = new ClientRMI("127.0.0.1", username);
+//							client = new ClientRMI("127.0.0.1", username);
 							registro = LocateRegistry.createRegistry(Integer.parseInt(port));
 							Naming.bind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 							//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());

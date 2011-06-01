@@ -26,8 +26,9 @@ import javax.xml.soap.Text;
 public class ProvaTest1 {
 	/**
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		//cms cms = new cms(); 
 		Textual text = new Textual();
@@ -44,7 +45,7 @@ public class ProvaTest1 {
 		
 		// RMI
 		
-		ConnectionManagerRMI server = new ConnectionManagerRMI("ciao", "localhost", "1099", "server");
+		ConnectionManagerRMI server = new ConnectionManagerRMI("ciao", "localhost", "1099");
 		
 		
 		do
