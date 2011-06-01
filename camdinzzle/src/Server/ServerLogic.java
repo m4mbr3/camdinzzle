@@ -1286,8 +1286,36 @@ public class ServerLogic {
 				{
 					Object current = Game.getCell(i, j);
 					
-					if((current instanceof Vegetation) || (current instanceof Carrion))
-						((Food)current).rebirth();
+					if(current instanceof Vegetation)
+					{
+						if(((Vegetation)current).getMaxPower() > ((Vegetation)current).getPower() + ((Vegetation)current).getMaxPower() / 10)
+						{
+							((Food)current).rebirth();
+						}
+					}
+					else if(current instanceof Carrion)
+					{
+						if(((Carrion)current).getPower() - ((Carrion)current).getMaxPower() / 10 > 0)
+						{
+							((Food)current).rebirth();
+						}
+						else
+						{
+							// TODO: controllo se vegetazione interna ad un carnivoro o erbivoro e carogna su erbivoro
+							int posRig;
+							int posCol;
+							
+							do
+							{
+								posRig = (int) (Math.random() * 40);
+								posCol = (int) (Math.random() * 40);
+							}while(!((Game.getCell(posRig, posCol) instanceof String)&&(((String)Game.getCell(posRig, posCol)).compareTo("t")==0)));
+							
+							Game.setCellMap((Carrion)current, posRig, posCol);
+							Game.setCellMap("t", i, j);
+							((Carrion)current).setPower(((Carrion)current).getMaxPower());
+						}
+					}
 				}
 			}
 		}
