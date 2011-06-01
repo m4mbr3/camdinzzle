@@ -176,8 +176,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			}
 			else if(response[0].compareTo("ok")==0)
 			{
-				frameGame = new FrameGame("Isola dei Dinosauri",client);
+				
 				ChangeRoundThread changeRoundThread = new ChangeRoundThread("Change Round", client, frameGame);
+				frameGame = new FrameGame("Isola dei Dinosauri",client, changeRoundThread);
 				(new Thread(changeRoundThread)).start();
 //				frameGame.startFrameGame(client);
 				
