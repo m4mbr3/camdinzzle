@@ -166,8 +166,8 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 		return serverResponse;
 	}
 	
-	public synchronized void notifyGameAccess(ClientRMIInterface client) throws RemoteException
+	public synchronized void notifyGameAccess(String username) throws RemoteException
 	{
-		serverLogic.notifyGameAccess(client);
+		serverLogic.notifyGameAccess(username);
 	}
 }

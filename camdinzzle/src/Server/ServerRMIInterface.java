@@ -25,5 +25,5 @@ public interface ServerRMIInterface extends Remote {
 	public String deponiUovo(String token, String dinoId) throws RemoteException;
 	public String confermaTurno(String token) throws RemoteException;
 	public String passaTurno(String token) throws RemoteException;
-	public void notifyGameAccess(ClientRMIInterface client) throws RemoteException;
+	public void notifyGameAccess(String username) throws RemoteException;
 }

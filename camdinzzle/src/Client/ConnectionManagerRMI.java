@@ -4,11 +4,18 @@
 package Client;
 
 import Server.ServerLogic;
+import Server.ServerRMI;
 import Server.ServerRMIInterface;
 import java.net.MalformedURLException;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 
 
@@ -58,6 +65,54 @@ public class ConnectionManagerRMI implements ConnectionManager
 	public String login(String username, String password)
 	{
 		String msg = null;
+		
+		Registry registro = null;
+		
+		try
+		{
+			client = new ClientRMI(this.address, this.username, this);
+		}
+	
+		catch(ExportException e)
+		{
+			System.out.println("Port already in use: 1999!!!");
+		}
+		catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			registro = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+			Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+			//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AlreadyBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Naming.rebind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+			System.out.println("Client RMI Avviato!");
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		try 
 		{
@@ -114,8 +169,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 			if(ClientMessageBroker.manageGameAccess(msg)[0].equals("ok"))
 			{
 				try {
-					client = new ClientRMI(this.address, this.username, this);
-					server.notifyGameAccess(client);
+					server.notifyGameAccess(username);
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

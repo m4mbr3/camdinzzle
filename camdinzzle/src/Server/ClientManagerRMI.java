@@ -3,6 +3,9 @@
  */
 package Server;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -14,11 +17,25 @@ import Client.ClientRMIInterface;
  */
 public class ClientManagerRMI implements ClientManager 
 {
+	private String username;
 	private ClientRMIInterface client;
 	
-	public ClientManagerRMI(ClientRMIInterface client)
+	public ClientManagerRMI(String username, String address)
 	{
-		this.client = client;
+		this.username = username;
+		
+		try {
+			client = (ClientRMIInterface)Naming.lookup("rmi://" + address + "/" + username + ":1999");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

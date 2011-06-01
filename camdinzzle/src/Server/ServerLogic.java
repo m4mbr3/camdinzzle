@@ -1159,9 +1159,9 @@ public class ServerLogic {
 		}
 	}
 	
-	public void notifyGameAccess(ClientRMIInterface clRMI)
+	public void notifyGameAccess(String username)
 	{
-		Server.addClientRMI(clRMI);
+		Server.addClientRMI(username);
 	}
 	
 	/**
@@ -1193,7 +1193,7 @@ public class ServerLogic {
 			
 			if(!currentSession.getPlayer(token).getSpecie().getDinosaurs().hasNext())
 			{
-				currentSession.getPlayer(token).getSpecie();
+				currentSession.getPlayer(token).setSpecie(null);
 				currentSession.removePlayer(token);
 			}
 			else

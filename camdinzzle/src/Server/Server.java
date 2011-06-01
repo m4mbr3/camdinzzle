@@ -19,7 +19,9 @@ import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import Client.Client;
 import Client.ClientRMIInterface;
+import Client.ConnectionManagerRMI;
 
 
 public class Server implements Runnable {
@@ -42,6 +44,7 @@ public class Server implements Runnable {
 	// End ClientManager
 	
 	private static ArrayList<ClientManager> clientList;
+	private static String address = "127.0.0.1";
 	
 	private boolean is_run;
 	private int port;
@@ -125,11 +128,13 @@ public class Server implements Runnable {
 		}
 	}
 	
-	public static void addClientRMI(ClientRMIInterface cmRMI)
+	public static void addClientRMI(String username)
 	{
 		try
 		{
-			clientList.add(new ClientManagerRMI(cmRMI));
+			ClientManagerRMI cmRMI = new ClientManagerRMI(username, address);
+
+			clientList.add(cmRMI);
 		}
 		catch(Exception ex)
 		{
