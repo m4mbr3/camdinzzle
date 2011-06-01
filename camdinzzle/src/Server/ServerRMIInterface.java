@@ -28,4 +28,7 @@ public interface ServerRMIInterface extends Remote {
 	public void notifyLogin(String username) throws RemoteException;
 	public void notifyLogout(String username) throws RemoteException;
 	public void setGameAccess(boolean isInGame, String username) throws RemoteException;
+	public String getTokenOfCurrentPlayer() throws RemoteException;
+	public void changeRoundNotify() throws RemoteException;
+	public String getUsernameOfCurrentPlayer() throws RemoteException;
 }

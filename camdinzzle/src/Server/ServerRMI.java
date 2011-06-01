@@ -224,5 +224,22 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 		else
 			return null;
 	}
-	
+
+	@Override
+	public String getTokenOfCurrentPlayer() throws RemoteException 
+	{
+		return serverLogic.getTokenOfCurrentPlayer();
+	}
+
+	@Override
+	public void changeRoundNotify() throws RemoteException 
+	{
+		serverLogic.changeRoundNotify();
+	}
+
+	@Override
+	public String getUsernameOfCurrentPlayer() throws RemoteException 
+	{
+		return serverLogic.getuUsernameOfCurrentPlayer();
+	}	
 }

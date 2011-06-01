@@ -166,6 +166,15 @@ public class ConnectionManagerRMI implements ConnectionManager
 			if(ClientMessageBroker.manageGameAccess(msg)[0].equals("ok"))
 			{
 				server.setGameAccess(true, username);
+				
+				if(token.equals(server.getTokenOfCurrentPlayer()))
+				{
+					server.changeRoundNotify();
+				}
+				else if(server.getTokenOfCurrentPlayer() != "")
+				{
+					client.sendMessage("@cambioTurno," + server.getUsernameOfCurrentPlayer());
+				}
 			}
 		} 
 		catch (RemoteException e) 
@@ -462,6 +471,13 @@ public class ConnectionManagerRMI implements ConnectionManager
 		
 		if(msg != null)
 		{
+			if(msg.equals("@ok"))
+				try {
+					server.changeRoundNotify();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			return ClientMessageBroker.managePlayerChangeRound(msg);
 		}
 		return null;

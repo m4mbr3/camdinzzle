@@ -179,7 +179,7 @@ public class Server implements Runnable {
 					}
 					catch(Exception ex)
 					{
-						clientList.remove(client);
+						//clientList.remove(client);
 					}
 				}
 			}
