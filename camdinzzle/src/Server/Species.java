@@ -278,10 +278,10 @@ public class Species
 			if(endCol > Game.maxCol)
 				endCol = Game.maxCol;
 			int k=0;
-			for(int i=startRow; i<endRow; i++)
+			for(int i=startRow; i<=endRow; i++)
 			{
 				int h=0;
-				for(int j=startCol; j<endCol; j++)
+				for(int j=startCol; j<=endCol; j++)
 				{
 					map[i][j] = localMap[k][h].toString();
 					h++;

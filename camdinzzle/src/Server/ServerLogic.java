@@ -620,8 +620,14 @@ public class ServerLogic {
 					Dinosaur dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
 					if( dino != null)
 					{
-						zoom.add(String.valueOf(dino.getPosRow()+dino.getSizeRowLocalMap()/2));
-						zoom.add(String.valueOf(dino.getPosCol()-dino.getSizeColLocalMap()/2));
+						int row = dino.getPosRow()+dino.getSizeRowLocalMap()/2;
+						if(row>Game.maxRow)
+							row=Game.maxRow;	
+						zoom.add(String.valueOf(row));
+						int col = dino.getPosCol()-dino.getSizeColLocalMap()/2;
+						if(col<0)
+							col=0;
+						zoom.add(String.valueOf(col));
 						zoom.add(String.valueOf(dino.getSizeRowLocalMap()));
 						zoom.add(String.valueOf(dino.getSizeColLocalMap()));
 						

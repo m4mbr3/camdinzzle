@@ -6,7 +6,6 @@ package Client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
@@ -35,7 +34,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.html.Option;
 
 
 /**
@@ -55,15 +53,11 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	private ImageIcon iconVegetation;
 	private ImageIcon iconWater;
 	private ImageIcon iconCarrion;
-	private ImageIcon iconDinoCarn;
-	private ImageIcon iconDinoVege;
+	private ImageIcon iconDino;
 	private ImageIcon iconDark;
 	private ImageIcon iconLand;
 	private ImageIcon iconVegetationDisable;
 	private ImageIcon iconWaterDisable;
-	private ImageIcon iconCarrionDisable;
-	private ImageIcon iconDinoCarnDisable;
-	private ImageIcon iconDinoVegeDisable;
 	private ImageIcon iconLandDisable;
 	private JList dinoList;
 	private JTextArea dinoState;
@@ -105,10 +99,10 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		iconWater = new ImageIcon("Images/acqua.jpg");
 		iconDark = new ImageIcon("Images/red.jpg");
 		iconCarrion = new ImageIcon("Images/carrion.jpg");
-		iconCarrionDisable = new ImageIcon("Images/CarrionDisable.jpg");
 		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
 		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
 		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
+		iconDino = new ImageIcon("Images/dino.jpg");
 		this.setVisible(true);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0,0);
@@ -438,6 +432,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 							if(!check[0].equals("no"))
 							{
 								drawMap(client.getConnManager().mappaGenerale());
+								drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
 							}
 							else
 							{
@@ -544,7 +539,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				else if(mapList.get(i).compareTo("d")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dinosaur");
-						buttons[j][z].setDisabledIcon(iconDark);
+						buttons[j][z].setDisabledIcon(iconDino);
 						buttons[j][z].setToolTipText(null);
 					}
 				z++;
@@ -597,6 +592,8 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				String[] energySplit = new String [2];
 				if(startRow>=this.row)
 					startRow=this.row-1;
+				if(startCol<0)
+					startCol=0;
 /*				if(startRow<0)
 					startRow=0;
 				if(startCol<0)
@@ -641,7 +638,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 								{
 									buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + energySplit[1]);
 									buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
-									buttons[row][col].setIcon(iconDark);
+									buttons[row][col].setIcon(iconDino);
 								}
 								else if(energySplit[0].compareTo("v")==0)
 								{

@@ -172,23 +172,24 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 							if(parameters != null)
 							{
 								String msg = serverLogic.gameAccess(parameters[0]);
-								
-								if(msg.equals("@ok"))
-									this.setIsInGame(true);
 									
 								writer_on_socket.write(msg);
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
 								
-								if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+								if(msg.equals("@ok"))
 								{
-									serverLogic.changeRoundNotify();
-								}
-								else
-								{
-									writer_on_socket.write("@cambioTurno," + serverLogic.getuUsernameOfCurrentPlayer());
-									writer_on_socket.newLine();				
-									writer_on_socket.flush();
+									this.setIsInGame(true);
+									if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+									{
+										serverLogic.changeRoundNotify();
+									}
+									else if(serverLogic.getTokenOfCurrentPlayer() != "")
+									{
+										writer_on_socket.write("@cambioTurno," + serverLogic.getuUsernameOfCurrentPlayer());
+										writer_on_socket.newLine();				
+										writer_on_socket.flush();
+									}
 								}
 							}
 							else
