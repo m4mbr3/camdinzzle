@@ -68,52 +68,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 		
 		Registry registro = null;
 		
-		try
-		{
-			client = new ClientRMI(this.address, this.username, this);
-		}
-	
-		catch(ExportException e)
-		{
-			System.out.println("Port already in use: 1999!!!");
-		}
-		catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			registro = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-			Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
-			//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AlreadyBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			Naming.rebind("rmi://" + address + "/" + username + ":1999",(Remote) client);
-			System.out.println("Client RMI Avviato!");
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 		try 
 		{
 			msg = server.login(username, password);
@@ -124,6 +78,51 @@ public class ConnectionManagerRMI implements ConnectionManager
 			{
 				token = response[1];
 				this.username = username;
+				
+				try
+				{
+					client = new ClientRMI(this.address, this.username, this);
+				}
+			
+				catch(ExportException e)
+				{
+					System.out.println("Port already in use: 1999!!!");
+				}
+				catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				try {
+					registro = LocateRegistry.createRegistry(1999);
+					Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+					//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
+				} catch (AccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (AlreadyBoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					Naming.rebind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+					System.out.println("Client RMI Avviato!");
+				} catch (AccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		} 
 		catch (RemoteException e) 

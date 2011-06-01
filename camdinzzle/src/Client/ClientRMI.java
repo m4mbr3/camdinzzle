@@ -63,7 +63,8 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 	public boolean getIsInGame() {
 		return isInGame;
 	}
-
+	
+	@Override
 	public void setInGame(boolean isInGame) {
 		this.isInGame = isInGame;
 	}

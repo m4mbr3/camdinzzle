@@ -1,13 +1,17 @@
+
 package Server;
 
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import java.io.ObjectInputStream.GetField;
 import java.net.BindException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
@@ -18,6 +22,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import Client.Client;
 import Client.ClientRMIInterface;
@@ -145,6 +150,32 @@ public class Server implements Runnable {
 	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub
 		ServerLogic serverLogic = null;
+		String ip = "localhost";
+		
+		// Cerca l'IP del server
+		try 
+		{
+			for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) 
+			{
+				  NetworkInterface iface = ifaces.nextElement();
+				  for (Enumeration<InetAddress> addresses = iface.getInetAddresses(); addresses.hasMoreElements();) 
+				  {
+					  InetAddress address = addresses.nextElement();
+					  if (address instanceof Inet4Address) 
+					  {
+						  if(!address.getHostAddress().equals("127.0.0.1"))
+						  {
+							  ip = address.getHostAddress();
+						  }
+				    }
+				  }
+				}
+		} 
+		catch (SocketException e) 
+		{
+			System.out.println("IP del server non trovato");
+		}
+		// End ricerca IP del server
 		
 		try
 		{
@@ -155,64 +186,14 @@ public class Server implements Runnable {
 			ex.printStackTrace();
 		}
 		
-		// RMI
-		
-		Registry registro = null;
-		ServerRMI cmRMI = null;
-		
-		try
-		{
-			cmRMI = new ServerRMI(serverLogic);
-		}
-	
-		catch(ExportException e)
-		{
-			System.out.println("Port already in use: 1099!!!");
-		}
-		catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			registro = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-			Naming.bind("rmi://127.0.0.1/server:1099",(Remote) cmRMI);
-			//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AlreadyBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			Naming.rebind("rmi://127.0.0.1/server:1099",(Remote) cmRMI);
-			System.out.println("Server RMI Avviato!");
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		// End RMI
-		
-		
 		try {
 			int port = 4567;
-			(new Thread(new Server(port,serverLogic))).start();
+			
+			Server ss = new Server(port,serverLogic);
+			ServerForClientRMI sfcRMI = new ServerForClientRMI(serverLogic, ip, "server", "1099");
+			
+			(new Thread(ss)).start();
+			(new Thread(sfcRMI)).start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

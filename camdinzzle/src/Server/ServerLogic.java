@@ -1159,6 +1159,11 @@ public class ServerLogic {
 		}
 	}
 	
+	public String getuUsernameOfCurrentPlayer()
+	{
+		return currentSession.getPlayer(tokenOfCurrentPlayer).getUserName();
+	}
+	
 	public void notifyGameAccess(String username)
 	{
 		Server.addClientRMI(username);

@@ -181,7 +181,15 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.flush();
 								
 								if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+								{
 									serverLogic.changeRoundNotify();
+								}
+								else
+								{
+									writer_on_socket.write("@cambioTurno," + serverLogic.getuUsernameOfCurrentPlayer());
+									writer_on_socket.newLine();				
+									writer_on_socket.flush();
+								}
 							}
 							else
 							{
