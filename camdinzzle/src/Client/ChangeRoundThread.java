@@ -69,11 +69,12 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			if (!client.getConnManager().getChangeRound().equals(""))
 			{
 				
+				this.msg.setText("Ora tocca: "+ client.getConnManager().getChangeRound());
 				frameGame.drawRound(client.getConnManager().getChangeRound());
 				if(!client.getConnManager().getUsername().equals(client.getConnManager().getChangeRound()))
 				{
-					this.msg.setText(client.getConnManager().getChangeRound());
-					this.remove (deny);
+					
+					this.remove(deny);
 					this.remove(confirm);
 					this.is_my_turn = false;
 					this.setVisible(true);
@@ -92,7 +93,6 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 				{
 					this.add(confirm);
 					this.add(deny);
-					
 					this.setVisible(true);
 					client.getConnManager().setChangeRound("");
 					this.repaint();
