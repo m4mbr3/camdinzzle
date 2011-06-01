@@ -312,6 +312,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				else
 				{
 					drawMap(client.getConnManager().mappaGenerale());
+					drawDinoList(client.getConnManager().listaDinosauri());
 				}
 			}
 
@@ -437,7 +438,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 							if(!check[0].equals("no"))
 							{
 								drawMap(client.getConnManager().mappaGenerale());
-								drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
 							}
 							else
 							{
@@ -455,6 +455,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				for(int i=0; i<2; i++)
 				{
 					commandDinoButton[i].setEnabled(true);
+					drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
 				}
 				flag=1;
 			}
@@ -594,9 +595,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				int row=startRow;
 				int col=startCol;
 				String[] energySplit = new String [2];
-/*				if(startRow>=this.row)
+				if(startRow>=this.row)
 					startRow=this.row-1;
-				if(startRow<0)
+/*				if(startRow<0)
 					startRow=0;
 				if(startCol<0)
 					startCol=0;
@@ -606,13 +607,13 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 					maxRow=-1;*/
 				int i=4;
 //				for(int i=4; i<mapList.size(); i++)
-				for(row=startRow;row>maxRow;row--)
+				for(row=startRow;row>=maxRow;row--)
 				{
 					for(col=startCol;col<maxCol;col++)
 					{
-	/*					if((row>=0)&&(row<this.row)&&(col>=0)&&(col<this.col))
+						if(i<mapList.size())
 						{
-							if(col==maxCol)
+/*							if(col==maxCol)
 							{
 								col=startCol;
 								row--;
@@ -657,6 +658,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 							}
 							//col++;
 						i++;
+						}
 					}
 				}
 				for(int rowEnable=startRow+1; rowEnable>maxRow-1; rowEnable--)
@@ -718,8 +720,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 					public void valueChanged(ListSelectionEvent e) 
 					{
 						drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
-						panelControl.repaint();
-						
 					}
 				});
 				dinoList.setVisible(true);
@@ -826,14 +826,16 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			newMsgDinoState += "	energy: " + msgDinoState[6] + "\n";
 			newMsgDinoState += "	round lived: " + msgDinoState[7] + "\n";
 		}
-		if(dinoState!=null)
-			panelControlUp.remove(dinoState);
-		dinoState = new JTextArea(newMsgDinoState);
+		if(dinoState==null)
+			dinoState = new JTextArea(newMsgDinoState);
+		else
+			dinoState.setText(newMsgDinoState);
 		dinoState.setVisible(true);
 		dinoState.setPreferredSize(new Dimension(widthControlPanel,(int)screenSize.getHeight()/14*3));
 		dinoState.setFont(fontDinoState);
 		dinoState.setEditable(false);
-		panelControlUp.add(dinoState,BorderLayout.SOUTH);	
+		panelControlUp.add(dinoState,BorderLayout.SOUTH);
+		panelControlUp.repaint();
 	}
 	@Override
 	/**stampa la lista giocatori

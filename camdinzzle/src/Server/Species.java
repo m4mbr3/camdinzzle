@@ -269,14 +269,14 @@ public class Species
 				if((h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
 					k++;
 			}*/
-			if(startRow<0)
-				startRow=0;
-			if(startCol<0)
-				startCol=0;
-			if(endRow>=Game.maxRow)
-				endRow=Game.maxRow;
-			if(endCol>=Game.maxCol)
-				endCol=Game.maxCol;
+			if(startRow < 0)
+				startRow = 0;
+			if(startCol < 0)
+				startCol = 0;
+			if(endRow > Game.maxRow)
+				endRow = Game.maxRow;
+			if(endCol > Game.maxCol)
+				endCol = Game.maxCol;
 			int k=0;
 			for(int i=startRow; i<endRow; i++)
 			{
