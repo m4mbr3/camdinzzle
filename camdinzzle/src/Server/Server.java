@@ -222,7 +222,7 @@ public class Server implements Runnable {
 	public void addClientRMI(String username, String clientIp)
 	{
 		try {
-			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1999");
+			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "199");
 			clientTableRMI.put(username, cmRMI);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

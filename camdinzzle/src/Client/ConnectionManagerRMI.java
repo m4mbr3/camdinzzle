@@ -89,9 +89,9 @@ public class ConnectionManagerRMI implements ConnectionManager
 				}
 				
 				try {
-					registro = LocateRegistry.createRegistry(1999);
+					registro = LocateRegistry.createRegistry(1099);
 					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
-					Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
+					Naming.bind("rmi://127.0.0.1/" + username + ":1099",(Remote) client);
 					//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
@@ -107,7 +107,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 					e.printStackTrace();
 				}
 				try {
-					Naming.rebind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
+					Naming.rebind("rmi://127.0.0.1/" + username + ":1099",(Remote) client);
 					//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 					System.out.println("Client RMI Avviato!");
 					server.notifyLogin(username, "192.168.1.104");
