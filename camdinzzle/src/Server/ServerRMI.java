@@ -230,7 +230,8 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	public void registryClient(String username, String address, ClientRMIInterface client) throws RemoteException 
 	{
 		try {
-			Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+			Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
+			//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 			//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
 		} catch (AccessException e) {
 			// TODO Auto-generated catch block
