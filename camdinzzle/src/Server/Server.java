@@ -236,6 +236,8 @@ public class Server implements Runnable {
 	{
 		if(clientTableRMI.get(username) != null)
 		{
+			clientTableRMI.get(username).unregistryClient();
+			
 			clientTableRMI.remove(username);
 		}
 	}

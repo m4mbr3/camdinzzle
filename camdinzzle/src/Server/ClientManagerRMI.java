@@ -57,7 +57,9 @@ public class ClientManagerRMI implements ClientManager
 		// TODO Auto-generated method stub
 		this.isInGame = isInGame;
 	}
-
 	
-	
+	public void unregistryClient()
+	{
+		this.client = null;
+	}
 }
