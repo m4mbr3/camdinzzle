@@ -266,10 +266,6 @@ public class ClientMessageBroker
 				
 				return dinoList;
 			}
-			else if(!validMessage.contains(","))
-			{
-				return new String[]{"null"};
-			}
 			else
 			{
 				return new String[]{"null"};
