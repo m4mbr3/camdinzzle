@@ -48,9 +48,9 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		msg.setSize(200,20);
 		msg.setLocation(5,50);
-		confirm.setLocation(5, 150);
+		confirm.setLocation(5, 130);
 		confirm.setSize(100,30);
-		deny.setLocation(150,150);
+		deny.setLocation(150,130);
 		deny.setSize(100,30);	
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		this.setLayout(null);
