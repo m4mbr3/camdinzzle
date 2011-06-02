@@ -38,11 +38,10 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	private Registry registro;
 	private ArrayList<String> usernameClient;
 	private ArrayList<ClientManagerRMI> client;
-	private String serverIp;
 	private String serverPort;
 	private Server server;
 
-	public ServerRMI(ServerLogic sv, String serverIp, String serverPort, Server s) throws RemoteException
+	public ServerRMI(ServerLogic sv, String serverPort, Server s) throws RemoteException
 	{
 		super();
 		registro = LocateRegistry.createRegistry(1999);;
@@ -50,7 +49,6 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 		usernameClient = new ArrayList<String>();
 		client = new ArrayList<ClientManagerRMI>();
 		serverLogic = sv;
-		this.serverIp = serverIp;
 		this.serverPort = serverPort;
 	}
 
@@ -225,34 +223,4 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	{
 		return serverLogic.getuUsernameOfCurrentPlayer();
 	}
-
-	@Override
-	public void registryClient(String username, String address, ClientRMIInterface client) throws RemoteException 
-	{
-		
-		try {
-			Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
-			//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
-			//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AlreadyBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			Naming.rebind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
-			System.out.println("Client RMI Avviato!");
-		} catch (AccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}	
 }

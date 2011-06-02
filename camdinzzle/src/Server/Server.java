@@ -50,28 +50,23 @@ public class Server implements Runnable {
 	
 	// ClientManager
 	private ClientManagerSocket clientManagerSocket;
-	private ServerRMI serverRMI;
 	// End ClientManager
 	
 	
-	private ServerRMI cmRMI;
+	private ServerRMI serverRMI;
 	
 	private Hashtable<String, ClientManagerRMI> clientTableRMI;
 	private ArrayList<ClientManagerSocket> clientListSocket;
 	
-	private static String address = "127.0.0.1";
-	
 	private boolean is_run;
 	private int port;
 	private ServerLogic serverLogic;
-	private String serverIp;
 	
-	public Server(int port, ServerLogic serverLogic, String serverIp, String serverPort, String serverName)
+	public Server(int port, ServerLogic serverLogic, String serverPort, String serverName)
 	{
 			this.port = port;
 			
 			serverLogic.setServer(this);
-			this.serverIp = serverIp;
 			
 			try 
 			{
@@ -93,11 +88,11 @@ public class Server implements Runnable {
 			this.is_run = true;
 			this.clientManagerSocket=null;
 			
-			cmRMI = null;
+			serverRMI = null;
 			
 			try
 			{
-				cmRMI = new ServerRMI(serverLogic, serverIp, serverPort, this);
+				serverRMI = new ServerRMI(serverLogic, serverPort, this);
 			}
 		
 			
@@ -108,7 +103,7 @@ public class Server implements Runnable {
 			
 			try {
 				Registry registro = LocateRegistry.createRegistry(Integer.parseInt(serverPort));
-				Naming.bind("rmi://" + serverIp + "/" + serverName + ":" + serverPort,(Remote) cmRMI);
+				Naming.bind("rmi://127.0.0.1/" + serverName + ":" + serverPort,(Remote) serverRMI);
 				//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
 			} catch (AccessException e) {
 				// TODO Auto-generated catch block
@@ -124,7 +119,7 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 			try {
-				Naming.rebind("rmi://" + serverIp + "/" + serverName + ":" + serverPort,(Remote) cmRMI);
+				Naming.rebind("rmi://127.0.0.1/" + serverName + ":" + serverPort,(Remote) serverRMI);
 				System.out.println("Server RMI Avviato!");
 			} catch (AccessException e) {
 				// TODO Auto-generated catch block
@@ -155,7 +150,6 @@ public class Server implements Runnable {
 				new_connection = server.accept();
 				System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
 				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic, this);
-				//clientListSocket.add(clientManagerSocket);
 				System.out.println("<<SERVER DAEMON>>--STARTING CLIENTMANAGER");
 				(new Thread(clientManagerSocket)).start();
 				System.out.println("<<SERVER DAEMON>>--EXECUTION CLIENTMANAGER STARTED");
@@ -222,7 +216,7 @@ public class Server implements Runnable {
 	public void addClientRMI(String username, String clientIp)
 	{
 		try {
-			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1099");
+			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1999");
 			clientTableRMI.put(username, cmRMI);
 			System.out.println("Client scaricato!!");
 		} catch (MalformedURLException e) {
@@ -258,32 +252,6 @@ public class Server implements Runnable {
 	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub
 		ServerLogic serverLogic = null;
-		String ip = "localhost";
-		
-		// Cerca l'IP del server
-		try 
-		{
-			for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) 
-			{
-				  NetworkInterface iface = ifaces.nextElement();
-				  for (Enumeration<InetAddress> addresses = iface.getInetAddresses(); addresses.hasMoreElements();) 
-				  {
-					  InetAddress address = addresses.nextElement();
-					  if (address instanceof Inet4Address) 
-					  {
-						  if(!address.getHostAddress().equals("127.0.0.1"))
-						  {
-							  ip = address.getHostAddress();
-						  }
-				    }
-				  }
-				}
-		} 
-		catch (SocketException e) 
-		{
-			System.out.println("IP del server non trovato");
-		}
-		// End ricerca IP del server
 		
 		try
 		{
@@ -295,9 +263,9 @@ public class Server implements Runnable {
 		}
 		
 		try {
-			int port = 4567;
+			int socketPort = 4567;
 			
-			Server ss = new Server(port, serverLogic, "127.0.0.1", "1099", "server");
+			Server ss = new Server(socketPort, serverLogic, "1099", "server");
 			//ServerForClientRMI sfcRMI = new ServerForClientRMI(serverLogic, ip, "server", "1099");
 
 			(new Thread(ss)).start();

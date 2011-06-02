@@ -211,12 +211,20 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 							if(parameters != null)
 							{
 								String msg = serverLogic.gameExit(parameters[0]);
-								if(msg.equals("@ok"))
-									this.setIsInGame(false);
 								
 								writer_on_socket.write(msg);
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
+								
+								if(msg.equals("@ok"))
+								{
+									this.setIsInGame(false);
+									
+									if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+									{
+										serverLogic.changeRoundNotify();
+									}
+								}
 							}
 							else
 							{
