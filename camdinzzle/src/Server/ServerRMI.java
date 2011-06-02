@@ -244,7 +244,7 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 			e.printStackTrace();
 		}
 		try {
-			Naming.rebind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+			Naming.rebind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
 			System.out.println("Client RMI Avviato!");
 			notifyLogin(username);
 		} catch (AccessException e) {
