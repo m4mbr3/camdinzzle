@@ -15,6 +15,7 @@ import java.net.SocketException;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import Client.Client;
@@ -54,18 +56,22 @@ public class Server implements Runnable {
 	
 	private ServerRMI cmRMI;
 	
-	private static ArrayList<ClientManager> clientList;
+	private Hashtable<String, ClientManagerRMI> clientTableRMI;
+	private ArrayList<ClientManagerSocket> clientListSocket;
+	
 	private static String address = "127.0.0.1";
 	
 	private boolean is_run;
 	private int port;
 	private ServerLogic serverLogic;
+	private String serverIp;
 	
 	public Server(int port, ServerLogic serverLogic, String serverIp, String serverPort, String serverName)
 	{
 			this.port = port;
 			
 			serverLogic.setServer(this);
+			this.serverIp = serverIp;
 			
 			try 
 			{
@@ -81,7 +87,8 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 			this.serverLogic = serverLogic;
-			clientList = new ArrayList<ClientManager>();
+			clientListSocket = new ArrayList<ClientManagerSocket>();
+			clientTableRMI = new Hashtable<String, ClientManagerRMI>();
 			this.new_connection = null;
 			this.is_run = true;
 			this.clientManagerSocket=null;
@@ -90,7 +97,7 @@ public class Server implements Runnable {
 			
 			try
 			{
-				cmRMI = new ServerRMI(serverLogic, serverIp, serverPort);
+				cmRMI = new ServerRMI(serverLogic, serverIp, serverPort, this);
 			}
 		
 			
@@ -147,8 +154,8 @@ public class Server implements Runnable {
 				System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at " + server.getLocalPort());
 				new_connection = server.accept();
 				System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
-				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic);
-				clientList.add(clientManagerSocket);
+				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic, this);
+				//clientListSocket.add(clientManagerSocket);
 				System.out.println("<<SERVER DAEMON>>--STARTING CLIENTMANAGER");
 				(new Thread(clientManagerSocket)).start();
 				System.out.println("<<SERVER DAEMON>>--EXECUTION CLIENTMANAGER STARTED");
@@ -166,9 +173,9 @@ public class Server implements Runnable {
 	 */
 	public void sendBroadcastMessage(String msg)
 	{
-		if(clientList.size() > 0)
+		if(clientListSocket.size() > 0)
 		{
-			for (ClientManager client : clientList) 
+			for (ClientManager client : clientListSocket) 
 			{
 				if(client.getIsInGame())
 				{
@@ -185,39 +192,67 @@ public class Server implements Runnable {
 			}
 		}
 		
-		ArrayList<ClientManagerRMI> clientRMI = null;
-		try {
-			clientRMI = cmRMI.getClient();
+		if(clientTableRMI.size() > 0)
+		{
+			Set set = clientTableRMI.entrySet();
+			Iterator iter = set.iterator();
 			
-			if(clientRMI != null)
+			while(iter.hasNext())
 			{
-				for (ClientManagerRMI cl : clientRMI) 
+				Map.Entry me = (Map.Entry)iter.next();
+				
+				if(((ClientManagerRMI)me.getValue()).getIsInGame())
 				{
-					cl.sendChangeRound(msg);
+					((ClientManagerRMI)me.getValue()).sendChangeRound(msg);
 				}
 			}
-		} catch (RemoteException e) {
+		}
+	}
+	
+	public void addClientSocket(ClientManagerSocket cms)
+	{
+		clientListSocket.add(cms);
+	}
+	
+	public void removeClientSocket(ClientManagerSocket cms)
+	{
+		clientListSocket.remove(cms);
+	}
+	
+	public void addClientRMI(String username)
+	{
+		try {
+			ClientManagerRMI cmRMI = new ClientManagerRMI(username, serverIp, "1999");
+			clientTableRMI.put(username, cmRMI);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void addClientRMI(ClientManagerRMI cmRMI)
+	public void removeClientRMI(String username)
 	{
-		try
+		if(clientTableRMI.get(username) != null)
 		{
-			clientList.add(cmRMI);
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
+			clientTableRMI.remove(username);
 		}
 	}
 	
-	public static void removeClient(ClientManager cm)
+	public void setGameAccessRMI(String username, boolean isInGame)
 	{
-		clientList.remove(cm);
+		if(clientTableRMI.get(username) != null)
+		{
+			clientTableRMI.get(username).setIsInGame(isInGame);
+		}
 	}
+	
 	
 	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub

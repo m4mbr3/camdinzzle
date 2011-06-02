@@ -119,8 +119,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				server.notifyLogin(username);
 			}
 		} 
 		catch (RemoteException e) 

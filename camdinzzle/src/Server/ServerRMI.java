@@ -34,10 +34,12 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	private ArrayList<ClientManagerRMI> client;
 	private String serverIp;
 	private String serverPort;
+	private Server server;
 
-	public ServerRMI(ServerLogic sv, String serverIp, String serverPort) throws RemoteException
+	public ServerRMI(ServerLogic sv, String serverIp, String serverPort, Server s) throws RemoteException
 	{
 		super();
+		this.server = s;
 		usernameClient = new ArrayList<String>();
 		client = new ArrayList<ClientManagerRMI>();
 		serverLogic = sv;
@@ -184,45 +186,19 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	@Override
 	public synchronized void notifyLogin(String username) throws RemoteException
 	{
-		try {
-			ClientManagerRMI cmRMI = new ClientManagerRMI(username, serverIp, "1999");
-			usernameClient.add(username);
-			client.add(cmRMI);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		server.addClientRMI(username);
 	}
 	
 	@Override
 	public synchronized void notifyLogout(String username) throws RemoteException
 	{
-		int index = usernameClient.indexOf(username);
-		usernameClient.remove(username);
-		
-		client.remove(index);
+		server.removeClientRMI(username);
 	}
 
 	@Override
 	public void setGameAccess(boolean isInGame, String username) throws RemoteException
 	{
-		// TODO Auto-generated method stub
-		int index = usernameClient.indexOf(username);
-		
-		client.get(index).setIsInGame(isInGame);
-	}
-	
-	public ArrayList<ClientManagerRMI> getClient() throws RemoteException
-	{
-		if(client.size() > 0)
-		{
-			return client;
-		}
-		else
-			return null;
+		server.setGameAccessRMI(username, isInGame);
 	}
 
 	@Override

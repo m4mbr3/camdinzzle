@@ -27,13 +27,15 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	private String token;
 	private boolean isInGame;
 	private int timeoutRequest;
+	private Server server;
 	
-	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic) {
+	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic, Server s) {
 		// TODO Auto-generated constructor stub
 		token ="";
 		isInGame = false;
 		this.is_run = true;
 		this.connection_with_client = connection_with_client;
+		this.server = s;
 		this.serverLogic = serverLogic;
 		this.read_socket = null;
 		timeoutRequest = 0;
@@ -135,7 +137,10 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								String login = serverLogic.login(parameters[0], parameters[1]);
 								
 								if(login.contains("@ok,"))
+								{
 									this.setToken(login.substring(login.indexOf(",") + 1));
+									server.addClientSocket(this);
+								}
 								
 								writer_on_socket.write(login);
 								writer_on_socket.newLine();				
@@ -265,6 +270,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								{
 									this.setIsInGame(false);
 									token = "";
+									server.removeClientSocket(this);
 								}
 									
 								writer_on_socket.write(msg);

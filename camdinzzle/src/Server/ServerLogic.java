@@ -135,7 +135,6 @@ public class ServerLogic {
 	{
 		try
 		{
-			// TODO : gestione token perso
 			if(players.containsKey(username))
 			{
 				if(!(loggedPlayers.containsValue(players.get(username))))
@@ -251,7 +250,6 @@ public class ServerLogic {
 	{
 		try
 		{
-			// TODO: imposizione sul client di creare la specie prima di avere un accesso alla partita
 			// Chiamata di questo metodo seguita dalla chiamata a changeRound
 			if(this.isLoggedUser(token))
 			{
@@ -369,9 +367,11 @@ public class ServerLogic {
 								counter30s.interrupt();
 						}
 						
-						if(currentSession.numberPlayersInGame() == 0)
-							isTheFirstAccess = true;
-						// TODO: cambiare il tokenOfCurrentPlayer
+						if(token.equals(tokenOfCurrentPlayer))
+						{
+							updatePlayer(token);
+						}
+						
 						return ServerMessageBroker.createOkMessage();
 					}
 				}
@@ -509,7 +509,7 @@ public class ServerLogic {
 				
 				if(currentSession.getPlayer(token) != null)
 					currentSession.removePlayer(token);
-				// TODO: cambio del tokenOfCurrentPlayer
+				
 				return ServerMessageBroker.createOkMessage();
 			}
 			else
@@ -582,13 +582,17 @@ public class ServerLogic {
 			{
 				if(currentSession.getPlayer(token) != null)
 				{
-					Iterator<Dinosaur> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
-					
-					while(dinos.hasNext())
+					if(currentSession.getPlayer(token).getSpecie() != null)
 					{
-						Map.Entry me = (Map.Entry) dinos.next();
-						list.add(((Dinosaur)me.getValue()).getDinoId());
+						Iterator<Dinosaur> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+						
+						while(dinos.hasNext())
+						{
+							Map.Entry me = (Map.Entry) dinos.next();
+							list.add(((Dinosaur)me.getValue()).getDinoId());
+						}
 					}
+					
 					return ServerMessageBroker.createStandardMessage(list);
 				}
 				else
@@ -1199,20 +1203,27 @@ public class ServerLogic {
 				}
 			}
 			
-			if(!currentSession.getPlayer(token).getSpecie().getDinosaurs().hasNext())
+			
+			if(currentSession.getPlayer(token).getSpecie() == null)
 			{
-				currentSession.getPlayer(token).setSpecie(null);
-				currentSession.removePlayer(token);
-			}
-			else
-			{
-				currentSession.getPlayer(token).getSpecie().updateMap();
+				if(currentSession.getPlayer(token).getSpecie().getDinoNumber() == 0)
+				{
+					currentSession.getPlayer(token).setSpecie(null);
+					currentSession.removePlayer(token);
+				}
+				else
+				{
+					currentSession.getPlayer(token).getSpecie().updateMap();
+				}
 			}
 			// End aggiornamento stato giocatore
+			
+			
 			
 			iter = currentSession.getPlayersList();
 			int tableSize = 0;
 			
+			// setta il token del prossimo giocatore a tokenOfCurrentPlayer
 			while(iter.hasNext())
 			{
 				me = (Map.Entry) iter.next();
