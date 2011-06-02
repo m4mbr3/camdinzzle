@@ -258,7 +258,7 @@ public class ClientMessageBroker
 	{
 		if(msg.contains("@listaDinosauri,"))
 		{
-			String validMessage = msg.substring(msg.indexOf(',')+1);
+			String validMessage = msg.substring(1);
 			
 			if(validMessage.contains(","))
 			{
