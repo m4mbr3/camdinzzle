@@ -268,7 +268,7 @@ public class ClientMessageBroker
 			}
 			else if(!validMessage.contains(","))
 			{
-				return new String[]{validMessage};
+				return new String[]{"null"};
 			}
 			else
 			{

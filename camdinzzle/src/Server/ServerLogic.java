@@ -584,12 +584,15 @@ public class ServerLogic {
 				{
 					if(currentSession.getPlayer(token).getSpecie() != null)
 					{
-						Iterator<Dinosaur> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
-						
-						while(dinos.hasNext())
+						if(currentSession.getPlayer(token).getSpecie().getDinoNumber() != 0)
 						{
-							Map.Entry me = (Map.Entry) dinos.next();
-							list.add(((Dinosaur)me.getValue()).getDinoId());
+							Iterator<Dinosaur> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+							
+							while(dinos.hasNext())
+							{
+								Map.Entry me = (Map.Entry) dinos.next();
+								list.add(((Dinosaur)me.getValue()).getDinoId());
+							}
 						}
 					}
 					

@@ -224,6 +224,7 @@ public class Server implements Runnable {
 		try {
 			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1099");
 			clientTableRMI.put(username, cmRMI);
+			System.out.println("Client scaricato!!");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
