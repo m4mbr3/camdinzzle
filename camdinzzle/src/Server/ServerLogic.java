@@ -1286,6 +1286,52 @@ public class ServerLogic {
 				{
 					Object current = Game.getCell(i, j);
 					
+					if(current instanceof Vegetarian)
+					{
+						if(((Vegetarian)current).getVegetation() != null)
+						{
+							if(((Vegetarian)current).getVegetation().getMaxPower() > ((Vegetarian)current).getVegetation().getPower() + ((Vegetarian)current).getVegetation().getMaxPower() / 10)
+							{
+								((Vegetarian)current).getVegetation().rebirth();
+							}
+						}
+						else
+						{
+							if(((Vegetarian)current).getCarrion() != null)
+							{
+								if(((Vegetarian)current).getCarrion().getMaxPower()- ((Vegetarian)current).getCarrion().getMaxPower() / 10 > 0)
+								{
+									((Vegetarian)current).getCarrion().rebirth();
+								}
+								else
+								{
+									int posRig;
+									int posCol;
+									
+									do
+									{
+										posRig = (int) (Math.random() * 40);
+										posCol = (int) (Math.random() * 40);
+									}while(!((Game.getCell(posRig, posCol) instanceof String)&&(((String)Game.getCell(posRig, posCol)).compareTo("t")==0)));
+									
+									((Vegetarian)current).getCarrion().setPower(((Vegetarian)current).getCarrion().getMaxPower());
+									Game.setCellMap(((Vegetarian)current).getCarrion(), posRig, posCol);
+									((Vegetarian)current).setCarrion(null);
+								}
+							}
+						}
+					}
+					else if(current instanceof Carnivorous)
+					{
+						if(((Carnivorous)current).getVegetation() != null)
+						{
+							if(((Carnivorous)current).getVegetation().getMaxPower() > ((Carnivorous)current).getVegetation().getPower() + ((Carnivorous)current).getVegetation().getMaxPower() / 10)
+							{
+								((Carnivorous)current).getVegetation().rebirth();
+							}
+						}
+					}
+					
 					if(current instanceof Vegetation)
 					{
 						if(((Vegetation)current).getMaxPower() > ((Vegetation)current).getPower() + ((Vegetation)current).getMaxPower() / 10)
