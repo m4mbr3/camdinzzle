@@ -100,9 +100,9 @@ public class ConnectionManagerRMI implements ConnectionManager
 								  {
 									  ip = address.getHostAddress();
 								  }
-						    }
+							  }
 						  }
-						}
+					}
 				} 
 				catch (SocketException e) 
 				{
