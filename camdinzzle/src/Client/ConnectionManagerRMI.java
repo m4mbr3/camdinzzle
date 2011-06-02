@@ -29,7 +29,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 	private ClientRMI client;
 	private String changeRound;
 	
-	private static final String port = "1999";
+	private static final String port = "1099";
 	
 	public ConnectionManagerRMI(String address, String port, String serverName) throws Exception
 	{
