@@ -87,7 +87,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+				/*
 				try {
 					registro = LocateRegistry.createRegistry(1999);
 					Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
@@ -118,7 +118,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 			}
 		} 
 		catch (RemoteException e) 

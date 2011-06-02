@@ -75,7 +75,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		address_label = new JLabel("Address :");
 		port = new JTextField("");
 		enable_port = new JCheckBox("enable");
-		address = new JTextField("localhost");
+		address = new JTextField("192.168.1.100");
 		radiogroup = new ButtonGroup();
 		next = new JButton("Continue");
 		next.setLocation(150,310);
@@ -195,6 +195,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 					try{
 						this.connManager = new ConnectionManagerRMI(address.getText(),port.getText(),server_value.getText());
 						login = new FrameLogin("Login",this);
+						System.out.println("Server scaricato!!");
 					}
 					catch(MalformedURLException e)
 					{

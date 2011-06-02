@@ -1,9 +1,14 @@
 package Server;
 
 import java.net.MalformedURLException;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +35,7 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	private static final long serialVersionUID = 1L;
 	private ServerLogic serverLogic;
 	private String serverResponse;
+	private Registry registro;
 	private ArrayList<String> usernameClient;
 	private ArrayList<ClientManagerRMI> client;
 	private String serverIp;
@@ -39,6 +45,7 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	public ServerRMI(ServerLogic sv, String serverIp, String serverPort, Server s) throws RemoteException
 	{
 		super();
+		registro = LocateRegistry.createRegistry(1999);;
 		this.server = s;
 		usernameClient = new ArrayList<String>();
 		client = new ArrayList<ClientManagerRMI>();
@@ -217,5 +224,34 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	public String getUsernameOfCurrentPlayer() throws RemoteException 
 	{
 		return serverLogic.getuUsernameOfCurrentPlayer();
+	}
+
+	@Override
+	public void registryClient(String username, String address, ClientRMIInterface client) throws RemoteException 
+	{
+		try {
+			Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+			//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AlreadyBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Naming.rebind("rmi://" + address + "/" + username + ":1999",(Remote) client);
+			System.out.println("Client RMI Avviato!");
+			notifyLogin(username);
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}	
 }
