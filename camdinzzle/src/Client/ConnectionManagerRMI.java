@@ -6,7 +6,12 @@ package Client;
 import Server.ServerLogic;
 import Server.ServerRMI;
 import Server.ServerRMIInterface;
+
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
@@ -17,6 +22,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 
 public class ConnectionManagerRMI implements ConnectionManager 
@@ -65,6 +71,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 	public String login(String username, String password)
 	{
 		String msg = null;
+		String ip = null;
 		
 		Registry registro = null;
 		
@@ -88,6 +95,31 @@ public class ConnectionManagerRMI implements ConnectionManager
 					e1.printStackTrace();
 				}
 				
+				// Cerca l'IP del client
+				try 
+				{
+					for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) 
+					{
+						  NetworkInterface iface = ifaces.nextElement();
+						  for (Enumeration<InetAddress> addresses = iface.getInetAddresses(); addresses.hasMoreElements();) 
+						  {
+							  InetAddress address = addresses.nextElement();
+							  if (address instanceof Inet4Address) 
+							  {
+								  if(!address.getHostAddress().equals("127.0.0.1"))
+								  {
+									  ip = address.getHostAddress();
+								  }
+						    }
+						  }
+						}
+				} 
+				catch (SocketException e) 
+				{
+					System.out.println("IP del server non trovato");
+				}
+				// End ricerca IP del client
+				
 				try {
 					registro = LocateRegistry.createRegistry(1099);
 					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
@@ -110,7 +142,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 					Naming.rebind("rmi://127.0.0.1/" + username + ":1099",(Remote) client);
 					//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 					System.out.println("Client RMI Avviato!");
-					server.notifyLogin(username, "192.168.1.104");
+					server.notifyLogin(username, ip);
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
