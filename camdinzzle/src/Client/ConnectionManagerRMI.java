@@ -90,8 +90,8 @@ public class ConnectionManagerRMI implements ConnectionManager
 				
 				try {
 					registro = LocateRegistry.createRegistry(1999);
+					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
 					Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
-					//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 					//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
