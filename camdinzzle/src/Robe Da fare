@@ -4,9 +4,12 @@
 		
 		-carogne decrementano troppo
 		-vegetazione cresce troppo
-		
+		-problemi dopo che la razza si è estinta, se provo a ricrearla esconto TANTI errori!!
+		-appena muore l'ultimo dino risulta token non valido e non mi restituisce la lista!!
 		
 		GRAFICA
 		
 		-aggiornamento lista giocatori
 		-aggiornamento lista dinosauri
+		-disabilitare FrameGame in cambioturno
+		-chiudere frameLogin quando apro FrameGame e viceversa

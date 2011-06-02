@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -40,7 +39,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Andrea
  *
  */
-public class FrameGame extends JFrame implements WindowListener, ActionListener, MouseListener,Visual {
+public class FrameGame extends JFrame implements MouseListener,Visual,ActionListener, WindowListener {
 
 	private Dimension screenSize;
 	private JPanel panel;
@@ -110,7 +109,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		this.setLocation(0,0);
 		
 		this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
-		//this.setLayout(new BorderLayout());
 		this.addWindowListener(this);
 		panel = new JPanel();
 		panelControl = new JPanel();
@@ -121,7 +119,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		panelControlUp.setVisible(true);
 		panelControlDown.setVisible(true);
 		panel.setBorder(null);
-//		panelControl.setBorder(null);
 		panel.setPreferredSize(new Dimension((int)screenSize.getWidth()-widthControlPanel, (int)screenSize.getHeight()));
 		panelControl.setPreferredSize(new Dimension(widthControlPanel, (int)screenSize.getHeight()));
 		panelControlUp.setSize(new Dimension(widthControlPanel, (int)screenSize.getHeight()/14*6));
@@ -149,18 +146,14 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 			{
 				buttons[i][j] = new JButton();
 				buttons[i][j].setVisible(true);
-				//buttons[i][j].setBackground(Color.blue);
 				buttons[i][j].setSize(((int)screenSize.getWidth()-widthControlPanel)/col, ((int)screenSize.getHeight()/row));
 				buttons[i][j].setName(i+","+j +";");
 				buttons[i][j].addActionListener(this);
 				buttons[i][j].addMouseListener(this);
 				buttons[i][j].setBorder(null);
-				//buttons[i][j].setToolTipText();
 				buttons[i][j].setIcon(iconLand);
 				buttons[i][j].setEnabled(false);
-//				buttons[i][j].setDisabledIcon(iconLandDisable);
 				panel.add(buttons[i][j]);
-//				System.out.println("Creata la cella "+i+"X"+ j);
 			}
 		}	
 		
@@ -168,7 +161,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		this.add(panelControl, BorderLayout.EAST);	
 		this.validate();
 		this.drawMap(client.getConnManager().mappaGenerale());
-		//TODO gestire lista vuota
 		String[] msgDinoList = client.getConnManager().listaDinosauri();
 		this.drawDinoList(msgDinoList);
 		this.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
@@ -177,14 +169,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		this.repaint();
 	}
 
-	/**
-	 * @param title
-	 * @param gc
-	 */
-	public FrameGame(String title, GraphicsConfiguration gc) 
-	{
-		super(title, gc);
-	}
 
 	public void startFrameGame(Client client)
 	{
@@ -217,46 +201,10 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		}
 	}
 
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		
-	}
-
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		//this.repaint();
-		for(int i = 0; i < row; i++)
-			for(int j =0; j< col;j++)
-				{
-
-				}
-		
-	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) 
 	{
-		//TODO controllare messaggio!!!
 		for(int i=0; i<2; i++)
 		{
 			commandDinoButton[i].setEnabled(false);
@@ -278,6 +226,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				if(growUpDino[0].equals("no"))
 				{
 					errorMessageServer(growUpDino);
+					extinctionSpecies();
 				}
 				else
 				{
@@ -304,6 +253,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				if(newEgg[0].equals("no"))
 				{
 					errorMessageServer(newEgg);
+					extinctionSpecies();
 				}
 				else
 				{
@@ -379,7 +329,6 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 				else
 				{
 					this.setVisible(false);
-					//FrameGameManager gameIntro = new FrameGameManager("ManagerPanel", client);
 				}
 			}
 		}
@@ -439,6 +388,7 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 							else
 							{
 								errorMessageServer(check);
+								extinctionSpecies();
 							}
 						}
 					}
@@ -659,9 +609,9 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 						}
 					}
 				}
-				for(int rowEnable=startRow+1; rowEnable>maxRow-1; rowEnable--)
+				for(int rowEnable=startRow; rowEnable>maxRow; rowEnable--)
 				{
-					for(int colEnable=startCol-1; colEnable<maxCol+1; colEnable++)
+					for(int colEnable=startCol; colEnable<maxCol; colEnable++)
 					{
 						if((rowEnable>=0)&&(rowEnable<this.row)&&(colEnable>=0)&&(colEnable<this.col))
 						{
@@ -820,30 +770,44 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 */
 	public void drawDinoState(String dinoId, String[] msgDinoState) 
 	{
-		String newMsgDinoState="";
-		
-		newMsgDinoState += "Dinosaur's state " + dinoId + "\n   of player " + msgDinoState[0] + ":\n";
-		newMsgDinoState += "	race: " + msgDinoState[1] + "\n";
-		newMsgDinoState += "	type: " + msgDinoState[2] + "\n";
-		newMsgDinoState += "	dinosaur's position: \n          	    row:" + msgDinoState[3] + "\n          	    col:" + msgDinoState[4] + "\n";
-		newMsgDinoState += "	dimension: " + msgDinoState[5] + "\n";
-		
-		// Se il dinosauro appartiene al giocatore allora ci sono delle informazioni aggiuntive
-		if(msgDinoState.length > 6)
+		if(msgDinoState!=null)
 		{
-			newMsgDinoState += "	energy: " + msgDinoState[6] + "\n";
-			newMsgDinoState += "	round lived: " + msgDinoState[7] + "\n";
+			if(!msgDinoState[0].equals("no"))
+			{
+				String newMsgDinoState="";
+				
+				newMsgDinoState += "Dinosaur's state " + dinoId + "\n   of player " + msgDinoState[0] + ":\n";
+				newMsgDinoState += "	race: " + msgDinoState[1] + "\n";
+				newMsgDinoState += "	type: " + msgDinoState[2] + "\n";
+				newMsgDinoState += "	dinosaur's position: \n          	    row:" + msgDinoState[3] + "\n          	    col:" + msgDinoState[4] + "\n";
+				newMsgDinoState += "	dimension: " + msgDinoState[5] + "\n";
+				
+				// Se il dinosauro appartiene al giocatore allora ci sono delle informazioni aggiuntive
+				if(msgDinoState.length > 6)
+				{
+					newMsgDinoState += "	energy: " + msgDinoState[6] + "\n";
+					newMsgDinoState += "	round lived: " + msgDinoState[7] + "\n";
+				}
+				if(dinoState==null)
+					dinoState = new JTextArea(newMsgDinoState);
+				else
+					dinoState.setText(newMsgDinoState);
+				dinoState.setVisible(true);
+				dinoState.setPreferredSize(new Dimension(widthControlPanel,(int)screenSize.getHeight()/14*3));
+				dinoState.setFont(fontDinoState);
+				dinoState.setEditable(false);
+				panelControlUp.add(dinoState,BorderLayout.SOUTH);
+				panelControlUp.repaint();
+			}
+			else
+			{
+				errorMessageServer(msgDinoState);
+			}
 		}
-		if(dinoState==null)
-			dinoState = new JTextArea(newMsgDinoState);
 		else
-			dinoState.setText(newMsgDinoState);
-		dinoState.setVisible(true);
-		dinoState.setPreferredSize(new Dimension(widthControlPanel,(int)screenSize.getHeight()/14*3));
-		dinoState.setFont(fontDinoState);
-		dinoState.setEditable(false);
-		panelControlUp.add(dinoState,BorderLayout.SOUTH);
-		panelControlUp.repaint();
+		{
+			errorMessage();
+		}	
 	}
 	@Override
 	/**stampa la lista giocatori
@@ -851,21 +815,35 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 	 */
 	public void drawPlayerList(String[] msgPlayerList)
 	{
-		if(playerList!=null)
-			panelControl.remove(scrollPlayerList);
-		String[] newMsgPlayerList = new String[8];
-		for(int i=0;i<msgPlayerList.length-1; i++)
-			newMsgPlayerList[i]=msgPlayerList[i+1];
-		playerList = new JList(newMsgPlayerList);
-		playerList.setVisibleRowCount(visibleRowCountPlayerList);
-		playerList.setVisible(true);
-		playerList.setPreferredSize(new Dimension(widthControlPanel-20,(int)screenSize.getHeight()/14*2));
-		playerList.setFont(fontPlayerState);
-		scrollPlayerList = new JScrollPane(playerList);
-		scrollPlayerList.setVisible(true);
-		scrollPlayerList.setPreferredSize(new Dimension(widthControlPanel-5,(int)screenSize.getHeight()/14*2));
-		panelControlDown.add(scrollPlayerList,BorderLayout.CENTER);
-		panelControlDown.validate();
+		if(msgPlayerList!=null)
+		{
+			if(!msgPlayerList[0].equals("no"))
+			{
+				if(playerList!=null)
+					panelControl.remove(scrollPlayerList);
+				String[] newMsgPlayerList = new String[8];
+				for(int i=0;i<msgPlayerList.length-1; i++)
+					newMsgPlayerList[i]=msgPlayerList[i+1];
+				playerList = new JList(newMsgPlayerList);
+				playerList.setVisibleRowCount(visibleRowCountPlayerList);
+				playerList.setVisible(true);
+				playerList.setPreferredSize(new Dimension(widthControlPanel-20,(int)screenSize.getHeight()/14*2));
+				playerList.setFont(fontPlayerState);
+				scrollPlayerList = new JScrollPane(playerList);
+				scrollPlayerList.setVisible(true);
+				scrollPlayerList.setPreferredSize(new Dimension(widthControlPanel-5,(int)screenSize.getHeight()/14*2));
+				panelControlDown.add(scrollPlayerList,BorderLayout.CENTER);
+				panelControlDown.validate();
+			}
+			else
+			{
+				errorMessageServer(msgPlayerList);
+			}
+		}
+		else
+		{
+			errorMessage();
+		}
 	}
 	/**
 	 * istanzia i bottoni per comandare i dinosauri e il gioco
@@ -950,4 +928,57 @@ public class FrameGame extends JFrame implements WindowListener, ActionListener,
 		 JOptionPane.showMessageDialog(panel, msg);
 	 }
 	 
+	 private void extinctionSpecies()
+	 {
+		 String[] listaDino = client.getConnManager().listaDinosauri();
+		 if(listaDino[0]=="null")
+		 {
+			 this.setVisible(false);
+			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si  estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
+			 client.getConnManager().passaTurno();
+			 client.getConnManager().uscitaPartita();
+		 }
+	 }
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
