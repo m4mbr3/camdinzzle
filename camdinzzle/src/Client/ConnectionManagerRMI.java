@@ -3,8 +3,6 @@
  */
 package Client;
 
-import Server.ServerLogic;
-import Server.ServerRMI;
 import Server.ServerRMIInterface;
 
 import java.net.Inet4Address;
@@ -15,12 +13,10 @@ import java.net.SocketException;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -28,21 +24,17 @@ import java.util.Enumeration;
 public class ConnectionManagerRMI implements ConnectionManager 
 {
 	private String username;
-	private String address;
-	private String serverName;
-	private String port;
 	private ServerRMIInterface server;
 	private String token;
 	private ClientRMI client;
 	private String changeRound;
 	
+	private static final String port = "1999";
+	
 	public ConnectionManagerRMI(String address, String port, String serverName) throws Exception
 	{
 		this.username = "";
 		changeRound = "";
-		this.address = address;
-		this.serverName = serverName;
-		this.port = port;
 		this.token = "";
 		
 		server = (ServerRMIInterface)Naming.lookup("rmi://" + address + "/" + serverName + ":" + port);
@@ -73,8 +65,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 		String msg = null;
 		String ip = null;
 		
-		Registry registro = null;
-		
 		try 
 		{
 			msg = server.login(username, password);
@@ -87,7 +77,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 				this.username = username;
 				
 				try{
-					client = new ClientRMI(this.address, this.username, this);
+					client = new ClientRMI(this);
 				}
 			
 				catch (RemoteException e1) {
@@ -119,13 +109,19 @@ public class ConnectionManagerRMI implements ConnectionManager
 					System.out.println("IP del server non trovato");
 				}
 				// End ricerca IP del client
-				/*
+				
 				try {
-					registro = LocateRegistry.createRegistry(1999);
+					
+					@SuppressWarnings("unused")
+					Registry registro = LocateRegistry.createRegistry(Integer.parseInt(port));
 					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
-					Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
+					Naming.bind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 					//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
-				} catch (AccessException e) {
+				} 
+				catch (AlreadyBoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (RemoteException e) {
@@ -134,12 +130,14 @@ public class ConnectionManagerRMI implements ConnectionManager
 				}  catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				try {
-					Naming.rebind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
+					Naming.rebind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 					//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 					System.out.println("Client RMI Avviato!");
-					server.notifyLogin(username, "127.0.0.1");
+					// per andare sulla stessa macchina:
+					// ip = "127.0.0.1";
+					server.notifyLogin(username, ip);
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -296,8 +294,8 @@ public class ConnectionManagerRMI implements ConnectionManager
 				msg = server.logout(token);
 			if(ClientMessageBroker.manageLogout(msg)[0].equals("ok"))
 			{
+				server.notifyLogout(username);
 				client = null;
-				
 			}
 		} 
 		catch (RemoteException e) 

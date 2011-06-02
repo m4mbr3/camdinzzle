@@ -1,31 +1,8 @@
 package Server;
 
-import java.net.MalformedURLException;
-import java.rmi.AccessException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.omg.CORBA.Any;
-import org.omg.CORBA.Object;
-import org.omg.CORBA.Policy;
-import org.omg.CORBA.TypeCode;
-import org.omg.Dynamic.Parameter;
-import org.omg.IOP.ServiceContext;
-import org.omg.PortableInterceptor.InvalidSlot;
-import org.omg.PortableInterceptor.ServerRequestInfoOperations;
-
-import Client.ClientRMIInterface;;
 
 public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterface 
 {
@@ -35,21 +12,13 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	private static final long serialVersionUID = 1L;
 	private ServerLogic serverLogic;
 	private String serverResponse;
-	private Registry registro;
-	private ArrayList<String> usernameClient;
-	private ArrayList<ClientManagerRMI> client;
-	private String serverPort;
 	private Server server;
 
 	public ServerRMI(ServerLogic sv, String serverPort, Server s) throws RemoteException
 	{
 		super();
-		registro = LocateRegistry.createRegistry(1999);;
 		this.server = s;
-		usernameClient = new ArrayList<String>();
-		client = new ArrayList<ClientManagerRMI>();
 		serverLogic = sv;
-		this.serverPort = serverPort;
 	}
 
 	@Override
@@ -87,7 +56,7 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	@Override
 	public synchronized String uscitaPartita(String token) throws RemoteException
 	{
-		serverResponse = serverLogic.gameAccess(token);
+		serverResponse = serverLogic.gameExit(token);
 		
 		return serverResponse;
 	}

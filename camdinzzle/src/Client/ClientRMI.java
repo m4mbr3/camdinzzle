@@ -17,19 +17,13 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 {
 	private static final long serialVersionUID = 1L;
-	private ClientRMI client;
-	private String address;
-	private String username;
 	private boolean isInGame;
-	private static final String port = "1999";
 	private ConnectionManagerRMI cmRMI;
 	
-	public ClientRMI(String address, String username, ConnectionManagerRMI cmRMI) throws RemoteException 
+	public ClientRMI(ConnectionManagerRMI cmRMI) throws RemoteException 
 	{
 		super();
 		this.cmRMI = cmRMI;
-		this.address = address;
-		this.username = username;
 		isInGame = true;
 	}
 
