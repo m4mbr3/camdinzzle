@@ -21,8 +21,8 @@ public class Counter implements Runnable {
 			Thread.sleep(timeToLive); // da considerare il roundtriptime di rete
 			System.out.println("Scaduti i " + timeToLive + " secondi!!");
 			server.updatePlayer(server.getTokenOfCurrentPlayer());
-			server.changeRound();
 			server.changeRoundNotify();
+			server.changeRound();
 		} 
 		catch (InterruptedException e) 
 		{

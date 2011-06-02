@@ -119,7 +119,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 					System.out.println("IP del server non trovato");
 				}
 				// End ricerca IP del client
-				
+				/*
 				try {
 					registro = LocateRegistry.createRegistry(1999);
 					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
@@ -131,18 +131,15 @@ public class ConnectionManagerRMI implements ConnectionManager
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (AlreadyBoundException e) {
+				}  catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				}*/
 				try {
 					Naming.rebind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
 					//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 					System.out.println("Client RMI Avviato!");
-					server.notifyLogin(username, ip);
+					server.notifyLogin(username, "127.0.0.1");
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
