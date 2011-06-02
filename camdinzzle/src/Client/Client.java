@@ -63,8 +63,12 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	
 	public Client(String Name) {
 		super (Name);
-		this.setVisible(true);
 		this.setResizable(false);
+		this.setVisible(true);
+		
+		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		nome_server = new JLabel("NameServer: ");
 		server_value = new JTextField("server");
 		nome_server.setSize(90,20);
@@ -104,8 +108,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		radiogroup.add(local);
 		radiogroup.add(rmi);
 		radiogroup.add(socket);
-		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
+		
 		camdinzzle.setLocation(20,15);
 		choice.setLocation(20,40);
 		local.setLocation(20, 80);
@@ -143,8 +146,9 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		this.add(panel);
 		this.addWindowListener(this);
 		next.addActionListener(this);
-		this.repaint();
+		this.setResizable(false);
 		this.validate();
+		this.repaint();
 	}
 	public ConnectionManager getConnManager() {
 		

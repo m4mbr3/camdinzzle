@@ -75,7 +75,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private JScrollPane scrollPlayerList;
 	private int timeGlobal;
 	
-	
+	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=6;
 	private final int visibleRowCountPlayerList=8;
@@ -91,7 +91,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 * 
 	 */
 	
-	public FrameGame(String title,Client client) throws HeadlessException{
+	public FrameGame(String title,Client client, FrameGameManager frameGameManager) throws HeadlessException{
 		super(title);
 		this.client=client;
 		buttons = new JButton[row][col];
@@ -107,6 +107,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.setVisible(true);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0,0);
+		this.frameGameManager = frameGameManager;
 		
 		this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
 		this.addWindowListener(this);
@@ -196,7 +197,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			}
 			else
 			{
+				
+				ChangeRoundThread.stop();
 				this.setVisible(false);
+				frameGameManager.setVisible(true);
 			}
 		}
 	}
@@ -328,6 +332,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 				else
 				{
+					ChangeRoundThread.stop();
+					frameGameManager.setVisible(true);
 					this.setVisible(false);
 				}
 			}
@@ -722,7 +728,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	}
 	public void drawRound(String user)
 	{
-		time.setText("ora è il turno di:\n" + user);
+		time.setText("ora √® il turno di:\n" + user);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
@@ -934,7 +940,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 if(listaDino[0]=="null")
 		 {
 			 this.setVisible(false);
-			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si è estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
+			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si ÔøΩ estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
 			 client.getConnManager().passaTurno();
 			 client.getConnManager().uscitaPartita();
 		 }
@@ -958,7 +964,25 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+		String check = client.getConnManager().uscitaPartita();
+		if(check==null)
+		{
+			errorMessage();
+		}
+		else
+		{
+			if(check.equals("no"))
+			{
+				errorMessageServer(check);
+			}
+			else
+			{
+				
+				ChangeRoundThread.stop();
+				this.setVisible(false);
+				frameGameManager.setVisible(true);
+			}
+		}
 	}
 
 
