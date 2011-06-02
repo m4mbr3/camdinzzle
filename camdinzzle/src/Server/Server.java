@@ -219,10 +219,10 @@ public class Server implements Runnable {
 		clientListSocket.remove(cms);
 	}
 	
-	public void addClientRMI(String username)
+	public void addClientRMI(String username, String clientIp)
 	{
 		try {
-			ClientManagerRMI cmRMI = new ClientManagerRMI(username, serverIp, "1999");
+			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1999");
 			clientTableRMI.put(username, cmRMI);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

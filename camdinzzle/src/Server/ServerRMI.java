@@ -191,9 +191,9 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	}
 	
 	@Override
-	public synchronized void notifyLogin(String username) throws RemoteException
+	public synchronized void notifyLogin(String username, String clientIp) throws RemoteException
 	{
-		server.addClientRMI(username);
+		server.addClientRMI(username, clientIp);
 	}
 	
 	@Override
@@ -229,6 +229,7 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	@Override
 	public void registryClient(String username, String address, ClientRMIInterface client) throws RemoteException 
 	{
+		/*
 		try {
 			Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
 			//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
@@ -253,6 +254,6 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}	
 }
