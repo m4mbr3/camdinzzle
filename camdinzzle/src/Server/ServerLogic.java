@@ -319,8 +319,8 @@ public class ServerLogic
 				}
 				else
 				{
-					if(currentSession.removePlayer(token))
-					{					
+					if(currentSession.isPlayerInGame(token))
+					{						
 						if(loggedPlayers.get(token).getSpecie().getDinosaurs() != null)
 						{
 							// Tolgo i dinosauri del giocatore dalla mappa
@@ -353,12 +353,13 @@ public class ServerLogic
 							if(counter30s != null)
 								counter30s.interrupt();
 						}
-						/*
+						
 						if(token.equals(tokenOfCurrentPlayer))
 						{
 							updatePlayer(token);
 						}
-						*/
+						
+						currentSession.removePlayer(token);
 						return ServerMessageBroker.createOkMessage();
 					}
 				}

@@ -956,5 +956,20 @@ public class Game {
 		
 		setCellMap(getCell(row, col), posRow, posCol);
 	}
+	
+	public boolean isPlayerInGame(String token)
+	{
+		synchronized (playersInGame) 
+		{
+			if(playersInGame.containsKey(token))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
 
 }

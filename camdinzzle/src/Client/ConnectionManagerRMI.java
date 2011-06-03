@@ -229,7 +229,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 				
 				if(token.equals(server.getTokenOfCurrentPlayer()))
 				{
-					server.updatePlayer(token);
 					server.changeRoundNotify();
 				}
 			}
