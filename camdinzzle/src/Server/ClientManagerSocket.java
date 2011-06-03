@@ -29,7 +29,8 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	private int timeoutRequest;
 	private Server server;
 	
-	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic, Server s) {
+	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic, Server s)
+	{
 		// TODO Auto-generated constructor stub
 		token ="";
 		isInGame = false;
