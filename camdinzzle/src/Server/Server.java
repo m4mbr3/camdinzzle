@@ -169,7 +169,7 @@ public class Server implements Runnable {
 	{
 		if(clientListSocket.size() > 0)
 		{
-			for (ClientManager client : clientListSocket) 
+			for (ClientManagerSocket client : clientListSocket) 
 			{
 				if(client.getIsInGame())
 				{
