@@ -818,22 +818,27 @@ public class ServerLogic
 														((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
 														
 															
-														if((dino instanceof Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))		//controlla se il dino � vegetariano e se nella cella c'� vegetazione
+														if(dino instanceof Vegetarian)		//controlla se il dino � vegetariano
 														{
-															dino.eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia
+															if(Game.getCell(dinoRow, dinoCol) instanceof Vegetation)
+															{
+																dino.eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia
+															}
+															else if(Game.getCell(dinoRow, dinoCol) instanceof Carrion)
+															{
+																((Vegetarian)dino).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
+															}
 														}
-														if((dino instanceof Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))	//controlla se il dino � carnivoro e se nella cella c'� carogna
+														if(dino instanceof Carnivorous)	//controlla se il dino � carnivoro
 														{
-															dino.eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
-														}
-														
-														if((dino instanceof Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
-														{
-															((Vegetarian)dino).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
-														}
-														if((dino instanceof Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
-														{
-															((Carnivorous)dino).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+															if(Game.getCell(dinoRow, dinoCol) instanceof Carrion)
+															{
+																dino.eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
+															}
+															else if(Game.getCell(dinoRow, dinoCol) instanceof Vegetation)
+															{
+																((Carnivorous)dino).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+															}
 														}
 														
 														Game.setCellMap(dino, dinoRow, dinoCol);
@@ -848,33 +853,39 @@ public class ServerLogic
 												}
 												else
 												{
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))		//controlla se il dino � vegetariano e se nella cella c'� vegetazione
+													if(dino instanceof Vegetarian)						//controlla se il dino
 													{
-														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia													
-														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
-														
+														if(Game.getCell(dinoRow, dinoCol) instanceof Vegetation)
+														{
+															((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia													
+															((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+														}
+														else if(Game.getCell(dinoRow, dinoCol) instanceof Carrion)
+														{
+															((Vegetarian)dino).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
+														}
+												
 													}
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))	//controlla se il dino � carnivoro e se nella cella c'� carogna
+													if(dino instanceof Carnivorous)	//controlla se il dino � carnivoro
 													{
-														((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
-														currentSession.repositionCarrion(dinoRow, dinoCol);																					//riposiziona carogna
+														if(Game.getCell(dinoRow, dinoCol) instanceof Carrion)
+														{
+															((Carnivorous)dino).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
+															currentSession.repositionCarrion(dinoRow, dinoCol);																					//riposiziona carogna
+														}
+														else if(Game.getCell(dinoRow, dinoCol) instanceof Vegetation)
+														{
+															((Carnivorous)dino).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
+														}
 													}
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Vegetarian)&&(Game.getCell(dinoRow, dinoCol) instanceof Carrion))		//controlla se il dino � vegetariano e se nella cella c'� carogna
-													{
-														((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
-													}
-													if(((currentSession.getPlayer(token).getSpecie()).getType() == type.Carnivorous)&&(Game.getCell(dinoRow, dinoCol) instanceof Vegetation))	//controlla se il dino � carnivoro e se nella cella c'� vegetazione
-													{
-														((Carnivorous)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
-													}
-													Game.setCellMap(currentSession.getPlayer(token).getSpecie().getDino(dinoId), dinoRow, dinoCol);
-													currentSession.getPlayer(token).getSpecie().getDino(dinoId).setLocalMap();
+													Game.setCellMap(dino, dinoRow, dinoCol);
+													dino.setLocalMap();
 													return ServerMessageBroker.createOkMessage();
 												}
 											}
 											else
 											{
-												currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+												currentSession.getPlayer(token).getSpecie().killDino(dino);
 												return ServerMessageBroker.createErroMessage("mortePerInedia");
 											}
 										}
