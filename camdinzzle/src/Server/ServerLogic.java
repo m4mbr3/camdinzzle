@@ -818,7 +818,7 @@ public class ServerLogic
 														((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
 														
 															
-														if(dino instanceof Vegetarian)		//controlla se il dino � vegetariano
+														if(dino instanceof Vegetarian)		//controlla se il dino e' vegetariano
 														{
 															if(Game.getCell(dinoRow, dinoCol) instanceof Vegetation)
 															{
@@ -829,7 +829,7 @@ public class ServerLogic
 																((Vegetarian)dino).setCarrion((Carrion)Game.getCell(dinoRow, dinoCol));
 															}
 														}
-														if(dino instanceof Carnivorous)	//controlla se il dino � carnivoro
+														if(dino instanceof Carnivorous)	//controlla se il dino e' carnivoro
 														{
 															if(Game.getCell(dinoRow, dinoCol) instanceof Carrion)
 															{
