@@ -567,6 +567,10 @@ public class ServerLogic
 			
 			if(isLoggedUser(token))
 			{
+				if(loggedPlayers.get(token).getSpecie() == null)
+				{
+					return ServerMessageBroker.createStandardMessage(list);
+				}
 				if(currentSession.getPlayer(token) != null)
 				{
 					if(currentSession.getPlayer(token).getSpecie() != null)
