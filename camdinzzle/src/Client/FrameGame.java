@@ -74,6 +74,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private int flag=0;
 	private JScrollPane scrollPlayerList;
 	private int timeGlobal;
+	private boolean flagStop;
 	
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
@@ -108,6 +109,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0,0);
 		this.frameGameManager = frameGameManager;
+		flagStop = false;
 		
 		this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
 		this.addWindowListener(this);
@@ -276,7 +278,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else
 				{
 					drawDinoState(dinoId,client.getConnManager().statoDinosauro(dinoId));
-					drawMap(client.getConnManager().mappaGenerale());
+					upDateFrameGame();
 				}
 			}	
 		}
@@ -302,8 +304,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 				else
 				{
-					drawMap(client.getConnManager().mappaGenerale());
-					drawDinoList(client.getConnManager().listaDinosauri());
+					upDateFrameGame();
 				}
 			}
 
@@ -341,7 +342,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		if(arg0.getComponent().equals(commandGameButton[1]))
 		{
 			String[] check = client.getConnManager().passaTurno();
-			drawDinoList(client.getConnManager().listaDinosauri());
 			if(check==null)
 			{
 				errorMessage();
@@ -351,6 +351,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				if(check[0].equals("no"))
 				{
 					errorMessageServer(check);
+				}
+				else
+				{
+					upDateFrameGame();
 				}
 			}
 		}
@@ -995,16 +999,23 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 if(listaDino[0]=="null")
 		 {
 			 this.setVisible(false);
+			 frameGameManager.setVisible(true);
 			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
+			 ChangeRoundThread.stop();
 			 client.getConnManager().uscitaPartita();
+			 flagStop = true;
 		 }
 	 }
 	 
 	 public void upDateFrameGame()
 	 {
-		this.drawMap(client.getConnManager().mappaGenerale());
-		this.drawDinoList(client.getConnManager().listaDinosauri());
-		this.drawPlayerList(client.getConnManager().listaGiocatori());
+		extinctionSpecies();
+		if(!flagStop)
+		{
+			this.drawMap(client.getConnManager().mappaGenerale());
+			this.drawDinoList(client.getConnManager().listaDinosauri());
+			this.drawPlayerList(client.getConnManager().listaGiocatori());
+		}
 	 }
 
 }
