@@ -211,6 +211,8 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 							
 							if(parameters != null)
 							{
+								String tokenBeforeUpdatePlayer = serverLogic.getTokenOfCurrentPlayer();
+								
 								String msg = serverLogic.gameExit(parameters[0]);
 								
 								writer_on_socket.write(msg);
@@ -221,7 +223,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								{
 									this.setIsInGame(false);
 									
-									if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+									if(token.equals(tokenBeforeUpdatePlayer))
 									{
 										serverLogic.changeRoundNotify();
 									}
