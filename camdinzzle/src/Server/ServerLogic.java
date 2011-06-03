@@ -564,7 +564,7 @@ public class ServerLogic
 				{
 					if(currentSession.getPlayer(token).getSpecie() != null)
 					{
-						if(currentSession.getPlayer(token).getSpecie().getDinoNumber() != 0)
+						if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
 						{
 							Iterator<Dinosaur> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 							
@@ -1174,7 +1174,7 @@ public class ServerLogic
 			 *   possibile saperlo fare l'update di tutte le mappe di tutti i giocatori
 			 */
 			// Inizio aggiornamento stato giocatore
-			if(currentSession.getPlayer(token).getSpecie().getDinoNumber() != 0)
+			if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
 			{
 				currentSession.getPlayer(token).getSpecie().upDateDinosaurStatus();
 				iter = currentSession.getPlayer(token).getSpecie().getDinosaurs();
@@ -1194,7 +1194,7 @@ public class ServerLogic
 			
 			if(currentSession.getPlayer(token).getSpecie() != null)
 			{
-				if(currentSession.getPlayer(token).getSpecie().getDinoNumber() == 0)
+				if(currentSession.getPlayer(token).getSpecie().getDinosaurs() == null)
 				{
 					currentSession.getPlayer(token).setSpecie(null);
 					currentSession.removePlayer(token);

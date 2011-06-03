@@ -2,7 +2,6 @@
 		
 		LOGICA
 		
-		-appena muore l'ultimo dino risulta token non valido e non mi restituisce la lista!!
 		-trovare errore trasformazione dinosauri da Carnivori a Vegetariani e viceversa (controllare custom x controllo nel movimento!!!)
 		
 		GRAFICA

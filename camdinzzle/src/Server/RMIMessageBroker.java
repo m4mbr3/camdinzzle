@@ -73,6 +73,9 @@ public class RMIMessageBroker
 	public static String[] convertCreateSpecies(String msg)
 	{
 		String[] ret = new String[2];
+		ret[0] = null;
+		ret[1] = null;
+		
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";

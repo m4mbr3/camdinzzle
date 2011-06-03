@@ -73,6 +73,9 @@ public class ClientMessageBroker
 	public static String[] manageCreateSpecies(String msg)
 	{
 		String[] ret = new String[2];
+		ret[0] = null;
+		ret[1] = null;
+		
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";
