@@ -313,7 +313,11 @@ public class ServerLogic
 		{
 			if(this.isLoggedUser(token))
 			{
-				if(currentSession.getPlayer(token) != null)
+				if(currentSession.getPlayer(token) == null)
+				{
+					return ServerMessageBroker.createOkMessage();
+				}
+				else
 				{
 					if(currentSession.removePlayer(token))
 					{					
