@@ -259,7 +259,11 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageDinoList(String msg)
 	{
-		if(msg.contains("@listaDinosauri,"))
+		if(msg.equals("@listaDinosauri,"))
+		{
+			return new String[]{"null"};
+		}
+		else if(msg.contains("@listaDinosauri,"))
 		{
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			
@@ -271,12 +275,7 @@ public class ClientMessageBroker
 			}
 			else
 			{
-				if(msg.length() == 16)
-				{
-					return new String[]{"null"};
-				}
-				
-				return validMessage.split(",");
+				return new String[]{validMessage};
 			}
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))
