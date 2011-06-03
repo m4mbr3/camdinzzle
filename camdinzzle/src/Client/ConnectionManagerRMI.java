@@ -218,16 +218,21 @@ public class ConnectionManagerRMI implements ConnectionManager
 	public String uscitaPartita() 
 	{
 		String msg = null;
+		String tokenBeforeUpdatePlayer = "";
 		
 		try 
 		{
 			if(!token.equals(""))
+			{
+				tokenBeforeUpdatePlayer = server.getTokenOfCurrentPlayer();
+				
 				msg = server.uscitaPartita(token);
+			}
 			if(ClientMessageBroker.manageGameExit(msg)[0].equals("ok"))
 			{
 				server.setGameAccess(false, username);
 				
-				if(token.equals(server.getTokenOfCurrentPlayer()))
+				if(token.equals(tokenBeforeUpdatePlayer))
 				{
 					server.changeRoundNotify();
 				}

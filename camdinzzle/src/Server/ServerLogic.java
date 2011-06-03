@@ -359,7 +359,7 @@ public class ServerLogic
 							updatePlayer(token);
 						}
 						
-						//currentSession.removePlayer(token);
+						currentSession.removePlayer(token);
 						return ServerMessageBroker.createOkMessage();
 					}
 				}
