@@ -347,6 +347,10 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageDinoState(String msg)
 	{
+		if(msg.equals("@statoDinosauro,"))
+		{
+			return new String[]{"null"};
+		}
 		if(msg.contains("@statoDinosauro,"))
 		{
 			String validMessage = msg.substring(msg.indexOf(',')+1);

@@ -666,16 +666,23 @@ public class ServerMessageBroker
 	 */
 	public static String createDinoState(ArrayList<String> state)
 	{
-		String dinoState = new String("");
-		dinoState += "@statoDinosauro," + state.get(0) + "," + state.get(1) + "," + state.get(2) + ",";
-		dinoState += "{" + state.get(3) + "," + state.get(4) + "}";
-		
-		for(int i = 5; i<state.size(); i++)
+		if(state.size() > 0)
 		{
-			dinoState += "," + state.get(i);
+			String dinoState = new String("");
+			dinoState += "@statoDinosauro," + state.get(0) + "," + state.get(1) + "," + state.get(2) + ",";
+			dinoState += "{" + state.get(3) + "," + state.get(4) + "}";
+			
+			for(int i = 5; i<state.size(); i++)
+			{
+				dinoState += "," + state.get(i);
+			}
+			
+			return dinoState;
 		}
-		
-		return dinoState;
+		else
+		{
+			return "@statoDinosauro,";
+		}
 	}
 	
 	/**
