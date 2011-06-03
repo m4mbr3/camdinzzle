@@ -250,25 +250,6 @@ public class Species
 			int endRow = startRow + sizeRow-1;
 			int startCol = dino.getPosCol() - sizeCol/2;
 			int endCol = startCol + sizeCol-1;
-/*			int k=0;
-			for(int i=posRow-sizeRow/2; i<=posRow+sizeRow/2; i++)
-			{
-				int h=0;
-				for(int j=posCol-sizeCol/2; j<=posCol+sizeCol/2; j++)
-				{
-					if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
-					{
-						map[i][j] = null;
-						map[i][j] = localMap[k][h].toString();
-						if((h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
-							h++;
-						else
-							h=0;
-					}
-				}
-				if((h>=0)&&(h<sizeCol)&&(k>=0)&&(k<sizeRow))
-					k++;
-			}*/
 			if(startRow < 0)
 				startRow = 0;
 			if(startCol < 0)

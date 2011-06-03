@@ -170,20 +170,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.repaint();
 	}
 
-
-	public void startFrameGame(Client client)
-	{
-
-		 
-	}
-
 	@Override
-	public void windowActivated(WindowEvent arg0) {
+	public void windowActivated(WindowEvent arg0) 
+	{
 		this.repaint();
 	}
 
 	@Override
-	public void windowClosed(WindowEvent arg0) {
+	public void windowClosed(WindowEvent arg0) 
+	{
 		String check = client.getConnManager().uscitaPartita();
 		if(check==null)
 		{
@@ -204,6 +199,52 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			}
 		}
 	}
+	
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {}
+
+
+	@Override
+	public void windowOpened(WindowEvent e) {}
+
+
+	@Override
+	public void windowClosing(WindowEvent e) 
+	{
+		String check = client.getConnManager().uscitaPartita();
+		if(check==null)
+		{
+			errorMessage();
+		}
+		else
+		{
+			if(check.equals("no"))
+			{
+				errorMessageServer(check);
+			}
+			else
+			{
+				
+				ChangeRoundThread.stop();
+				this.setVisible(false);
+				frameGameManager.setVisible(true);
+			}
+		}
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
 
 
 	@Override
@@ -496,15 +537,29 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else if(mapList.get(i).compareTo("d")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dinosaur");
-						buttons[j][z].setDisabledIcon(iconDino);
+						buttons[j][z].setDisabledIcon(iconLandDisable);
 						buttons[j][z].setToolTipText(null);
 					}
 				z++;
 			}
-			String[] msgDinoList = client.getConnManager().listaDinosauri();		
-			for(int i=0; i<msgDinoList.length; i++)
+			String[] msgDinoList = client.getConnManager().listaDinosauri();
+			if(!msgDinoList[0].equals("null"))
 			{
-				drawDinoZoom(msgDinoList[i], client.getConnManager().vistaLocale(msgDinoList[i]));
+				if(msgDinoList[0].equals("no"))
+				{
+					errorMessageServer(msgDinoList);
+				}
+				else
+				{
+					for(int i=0; i<msgDinoList.length; i++)
+					{
+						drawDinoZoom(msgDinoList[i], client.getConnManager().vistaLocale(msgDinoList[i]));
+					}
+				}
+			}
+			else
+			{
+				errorMessageServer();
 			}
 			
 		}
@@ -720,7 +775,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		String timeString = String.valueOf(timeInt);
 		time.setText(timeString);
 		time.setVisible(true);
-		panelControlDown.repaint();	
+		panelControlDown.repaint();
 	}
 	public int getTime()
 	{
@@ -728,7 +783,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	}
 	public void drawRound(String user)
 	{
-		time.setText("ora è il turno di:\n" + user);
+		time.setText("ora e' il turno di:\n" + user);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
@@ -940,69 +995,16 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 if(listaDino[0]=="null")
 		 {
 			 this.setVisible(false);
-			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si � estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
-			 client.getConnManager().passaTurno();
+			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
 			 client.getConnManager().uscitaPartita();
 		 }
 	 }
+	 
+	 public void upDateFrameGame()
+	 {
+		this.drawMap(client.getConnManager().mappaGenerale());
+		this.drawDinoList(client.getConnManager().listaDinosauri());
+		this.drawPlayerList(client.getConnManager().listaGiocatori());
+	 }
 
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		String check = client.getConnManager().uscitaPartita();
-		if(check==null)
-		{
-			errorMessage();
-		}
-		else
-		{
-			if(check.equals("no"))
-			{
-				errorMessageServer(check);
-			}
-			else
-			{
-				
-				ChangeRoundThread.stop();
-				this.setVisible(false);
-				frameGameManager.setVisible(true);
-			}
-		}
-	}
-
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 }
