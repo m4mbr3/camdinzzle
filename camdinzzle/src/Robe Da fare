@@ -10,3 +10,14 @@
 		-aggiornamento lista dinosauri
 		-disabilitare FrameGame in cambioturno
 		-sistemare immagine carogne e dino furoi vista
+		
+		
+		
+		
+		
+		
+		-quando un erbovoro va sulla casella di un carnivoro, l'erbivoro va in errore perchè viene chiesto
+		lo stato del dinosauro e il clientMessageBroker restituisce in prima posizione dell'array
+		"null" in quanto l'unico dinosauro erbivoro del giocatore è morto.
+		 Non viene fatto il controllo che sia "null" la prima posizione.
+	
