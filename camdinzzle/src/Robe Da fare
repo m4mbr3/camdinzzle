@@ -20,4 +20,8 @@
 		lo stato del dinosauro e il clientMessageBroker restituisce in prima posizione dell'array
 		"null" in quanto l'unico dinosauro erbivoro del giocatore è morto.
 		 Non viene fatto il controllo che sia "null" la prima posizione.
+		-CARLO: giocando un pò mi sono accorto che è meglio per il giocatore che è in attesa del suo turno
+		 non fare comparire sempre il popup con scritto di chi è il turno, ma solo visualizzare di chi
+		 è il turno in basso a destra. Il popup viene fuori solo quando bisogna confermare il turno.
+		 (da discutere)
 	
