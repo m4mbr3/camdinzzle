@@ -681,7 +681,7 @@ public class ServerMessageBroker
 		}
 		else
 		{
-			return "@statoDinosauro,";
+			return "@no";
 		}
 	}
 	

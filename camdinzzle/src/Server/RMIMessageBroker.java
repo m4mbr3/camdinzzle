@@ -347,7 +347,7 @@ public class RMIMessageBroker
 	 */
 	public static String[] convertDinoState(String msg)
 	{
-		if(msg.equals("@statoDinosauro,"))
+		if(msg.equals("@no"))
 		{
 			return new String[]{"null"};
 		}
