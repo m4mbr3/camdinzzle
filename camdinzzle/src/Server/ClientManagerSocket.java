@@ -223,6 +223,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 									
 									if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
 									{
+										serverLogic.updatePlayer(token);
 										serverLogic.changeRoundNotify();
 									}
 								}

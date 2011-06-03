@@ -192,4 +192,10 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	{
 		return serverLogic.getuUsernameOfCurrentPlayer();
 	}
+
+	@Override
+	public void updatePlayer(String token) throws RemoteException 
+	{
+		serverLogic.updatePlayer(token);
+	}
 }

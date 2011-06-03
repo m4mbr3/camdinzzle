@@ -353,12 +353,12 @@ public class ServerLogic
 							if(counter30s != null)
 								counter30s.interrupt();
 						}
-						
+						/*
 						if(token.equals(tokenOfCurrentPlayer))
 						{
 							updatePlayer(token);
 						}
-						
+						*/
 						return ServerMessageBroker.createOkMessage();
 					}
 				}
