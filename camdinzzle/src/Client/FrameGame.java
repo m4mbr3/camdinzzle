@@ -996,7 +996,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 private void extinctionSpecies()
 	 {
 		 String[] listaDino = client.getConnManager().listaDinosauri();
-		 if(listaDino[0]=="null")
+		 if(listaDino[0].equals("null"))
 		 {
 			 this.setVisible(false);
 			 frameGameManager.setVisible(true);
