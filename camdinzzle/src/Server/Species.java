@@ -199,7 +199,7 @@ public class Species
 		return type.Vegetarian;
 	}
 	
-	public static type getType()
+	public type getType()
 	{
 		return speciesType;
 	}
