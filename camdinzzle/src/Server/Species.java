@@ -21,7 +21,7 @@ public class Species
 	private Hashtable<String, Dinosaur> myDinosaurs;
 	
 	protected static enum type {Carnivorous, Vegetarian}
-	private static type speciesType;
+	private type speciesType;
 	private int  dinoNumber;
 	private Object[][] map;
 	private int score;
@@ -38,7 +38,7 @@ public class Species
 		myDinosaurs = new Hashtable<String, Dinosaur>();
 		
 		this.name = name;
-		Species.speciesType = speciesType;
+		this.speciesType = speciesType;
 		timeOfLive = 120;
 		dinoNumber = 0;
 		score = 0;
