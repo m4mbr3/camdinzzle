@@ -373,7 +373,7 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageDinoMove(String msg)
 	{
-		if(msg.contains("@ok"))
+		if(msg.equals("@ok"))
 		{
 			return new String[]{"ok"};
 		}
