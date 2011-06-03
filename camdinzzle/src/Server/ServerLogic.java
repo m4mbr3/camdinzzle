@@ -1220,32 +1220,56 @@ public class ServerLogic
 			}
 			// End aggiornamento stato giocatore
 			
+			// Aggiornamento stato di altri giocatori
 			
-			
-			iter = currentSession.getPlayersList();
-			int tableSize = 0;
-			
-			// setta il token del prossimo giocatore a tokenOfCurrentPlayer
-			while(iter.hasNext())
+			if(currentSession.numberPlayersInGame() > 0)
 			{
-				me = (Map.Entry) iter.next();
-				tableSize++;
+				iter = currentSession.getPlayersList();
 				
-				if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame()))
+				while(iter.hasNext())
+				{
+					me = (Map.Entry)iter.next();
+					
+					if(((Player)me.getValue()).getSpecie() != null)
+					{
+						if(((Player)me.getValue()).getSpecie().getDinosaurs() == null)
+						{
+							((Player)me.getValue()).setSpecie(null);
+							currentSession.removePlayer(((Player)me.getValue()).getToken());
+						}
+					}
+				}
+			}
+			
+			// End
+			
+			if(currentSession.numberPlayersInGame() > 0)
+			{
+				iter = currentSession.getPlayersList();
+				int tableSize = 0;
+				
+				// setta il token del prossimo giocatore a tokenOfCurrentPlayer
+				while(iter.hasNext())
 				{
 					me = (Map.Entry) iter.next();
-					tokenOfCurrentPlayer = (String)me.getKey();
-					break;
-				}
-				else if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
-				{
-					// TODO : gestione del null ritornato
-					tokenOfCurrentPlayer = currentSession.getFirstPlayer();
-					/* TODO : se arrivato qui significa che tutti i giocatori hanno giocato il server
-					 * deve eseguire il metodo updateGame()
-					 */
-					this.updateGame(token);
-					break;
+					tableSize++;
+					
+					if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame()))
+					{
+						me = (Map.Entry) iter.next();
+						tokenOfCurrentPlayer = (String)me.getKey();
+						break;
+					}
+					else if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
+					{
+						// TODO : gestione del null ritornato
+						tokenOfCurrentPlayer = currentSession.getFirstPlayer();
+						/* TODO : se arrivato qui significa che tutti i giocatori hanno giocato il server
+						 * deve eseguire il metodo updateGame()
+						 */
+						this.updateGame(token);
+						break;
+					}
 				}
 			}
 		}
