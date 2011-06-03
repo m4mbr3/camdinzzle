@@ -433,8 +433,21 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 						{
 							if(!check[0].equals("no"))
 							{
-								drawMap(client.getConnManager().mappaGenerale());
-								drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+								if(check.length==3)
+								{
+									String result;
+									if(check[2].equals("v"))
+										result = "vinto!";
+									else
+										result = "perso!";
+									JOptionPane.showMessageDialog(panel, "Combattimento" + result, "Combattimento", JOptionPane.INFORMATION_MESSAGE, null);
+								}
+								extinctionSpecies();
+								if(!flagStop)
+								{
+									drawMap(client.getConnManager().mappaGenerale());
+									drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+								}
 							}
 							else
 							{
@@ -544,6 +557,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 						buttons[j][z].setDisabledIcon(iconLandDisable);
 						buttons[j][z].setToolTipText(null);
 					}
+				else
+					{
+						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "land");
+						buttons[j][z].setDisabledIcon(iconLandDisable);
+						buttons[j][z].setToolTipText(null);
+					}
 				z++;
 			}
 			String[] msgDinoList = client.getConnManager().listaDinosauri();
@@ -610,27 +629,18 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					startRow=this.row-1;
 				if(startCol<0)
 					startCol=0;
-/*				if(startRow<0)
-					startRow=0;
-				if(startCol<0)
-					startCol=0;
+				if(maxRow<0)
+					maxRow=0;
 				if(maxCol>=this.col)
 					maxCol=this.col-1;
-				if(maxRow<0)
-					maxRow=-1;*/
 				int i=4;
-//				for(int i=4; i<mapList.size(); i++)
+
 				for(row=startRow;row>=maxRow;row--)
 				{
 					for(col=startCol;col<maxCol;col++)
 					{
 						if(i<mapList.size())
 						{
-/*							if(col==maxCol)
-							{
-								col=startCol;
-								row--;
-							}*/
 							if(mapList.get(i).compareTo("b")==0)
 							{
 								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "dark");
@@ -674,9 +684,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 						}
 					}
 				}
-				for(int rowEnable=startRow; rowEnable>maxRow; rowEnable--)
+				for(int rowEnable=startRow; rowEnable>=maxRow; rowEnable--)
 				{
-					for(int colEnable=startCol; colEnable<maxCol; colEnable++)
+					for(int colEnable=startCol; colEnable<=maxCol; colEnable++)
 					{
 						if((rowEnable>=0)&&(rowEnable<this.row)&&(colEnable>=0)&&(colEnable<this.col))
 						{
@@ -777,7 +787,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	{
 		timeGlobal = timeInt;
 		String timeString = String.valueOf(timeInt);
-		time.setText(timeString);
+		time.setText("Mancano " + timeString + " sec allo scadere del turno");
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
@@ -787,7 +797,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	}
 	public void drawRound(String user)
 	{
-		time.setText("ora e' il turno di:\n" + user);
+		time.setText("      ora e' il turno di:\n" + user);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
@@ -853,6 +863,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					newMsgDinoState += "	energy: " + msgDinoState[6] + "\n";
 					newMsgDinoState += "	round lived: " + msgDinoState[7] + "\n";
 				}
+				
+				newMsgDinoState+="per muoversi selezionare il dinosauro\n";
+				newMsgDinoState+="        e poi la destinazione";
 				if(dinoState==null)
 					dinoState = new JTextArea(newMsgDinoState);
 				else
@@ -885,7 +898,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			if(!msgPlayerList[0].equals("no"))
 			{
 				if(playerList!=null)
-					panelControl.remove(scrollPlayerList);
+				{
+					scrollPlayerList.remove(playerList);
+					panelControlDown.remove(scrollPlayerList);
+				}
 				String[] newMsgPlayerList = new String[8];
 				for(int i=0;i<msgPlayerList.length-1; i++)
 					newMsgPlayerList[i]=msgPlayerList[i+1];
@@ -916,9 +932,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 public void drawCommandButtons()
 	 {
 		 commandDinoButton = new JButton[2];
-		 commandDinoButton[0] = new JButton("Cresci Dinosauro");
+		 commandDinoButton[0] = new JButton("Cresci Dinosauro (Dimensione*500)");
 		 commandDinoButton[0].setName("Cresci Dinosauro");
-		 commandDinoButton[1] = new JButton("Deponi Uovo");
+		 commandDinoButton[1] = new JButton("Deponi Uovo (1500)");
 		 commandDinoButton[1].setName("Deponi Uovo");
 		 commandGameButton = new JButton[4];
 		 commandGameButton[0] = new JButton("Classifica");
@@ -998,11 +1014,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 String[] listaDino = client.getConnManager().listaDinosauri();
 		 if(listaDino[0].equals("null"))
 		 {
-			 this.setVisible(false);
-			 frameGameManager.setVisible(true);
-			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
 			 ChangeRoundThread.stop();
 			 client.getConnManager().uscitaPartita();
+			 this.setVisible(false);
+			 frameGameManager.setVisible(true);
+			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null); 
 			 flagStop = true;
 		 }
 	 }

@@ -675,6 +675,7 @@ public class ServerLogic
 	 */
 	public String dinoState(String token, String dinoId)
 	{
+		Dinosaur dino;
 		try
 		{
 			ArrayList<String> state = new ArrayList<String>();			
@@ -685,9 +686,27 @@ public class ServerLogic
 			{
 				if(currentSession.getPlayer(token) != null)
 				{
-					if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
+
+					dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
+					if( dino != null)
 					{
-						Dinosaur dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
+						state.add(currentSession.getPlayer(token).getUserName());
+						state.add(currentSession.getPlayer(token).getSpecie().getName());
+						state.add(currentSession.getPlayer(token).getSpecie().getType().toString());
+						state.add(String.valueOf(dino.getPosRow()));
+						state.add(String.valueOf(dino.getPosCol()));
+						state.add(String.valueOf(dino.getDinoDimension()));
+						state.add(String.valueOf(dino.getEnergy()));
+						state.add(String.valueOf(dino.getTimeOfLive()));
+						
+						return ServerMessageBroker.createDinoState(state);
+					}
+					else
+
+					if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
+
+					{
+						dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
 						if( dino != null)
 						{
 							state.add(currentSession.getPlayer(token).getUserName());

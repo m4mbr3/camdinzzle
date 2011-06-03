@@ -24,6 +24,7 @@ public abstract class Dinosaur
 	private int distMax;
 	private boolean moveTake=false;
 	private boolean actionTake=false;
+	private int timeOfLive;
 	
 	public abstract boolean eat(Object cell);
 	public abstract boolean fight(Object dino);
@@ -39,6 +40,7 @@ public abstract class Dinosaur
 	 */
 	public Dinosaur(String dinoId, int posRow, int posCol, Species nameSpecie)
 	{
+		timeOfLive=0;
 		age = (int) (Math.random() * 13 + 24);
 		dimension = 1;
 		energy = 1000;
@@ -148,6 +150,7 @@ public abstract class Dinosaur
 	 */
 	public void updateDinosaurAge()
 	{
+		timeOfLive += 1;
 		age -= 1;
 		setMoveTake(false);
 		setActionTake(false);
@@ -190,12 +193,20 @@ public abstract class Dinosaur
 	}
 	
 	/**
-	 * turni vissuti dal dinosauro
+	 * turni di vita mancanti al dinosauro
 	 * @return int
 	 */
 	public int getAge()
 	{
 		return age;
+	}
+	
+	/**
+	 * turni vissuti dal dinosauro
+	 */
+	public int getTimeOfLive()
+	{
+		return timeOfLive;
 	}
 	
 	/**

@@ -1,14 +1,13 @@
 
 		
 		LOGICA
-		
-		-trovare errore trasformazione dinosauri da Carnivori a Vegetariani e viceversa (controllare custom x controllo nel movimento!!!)
+		-carogne che spariscono dopo che c'è stato sopra un erbivoro
 		
 		GRAFICA
 		
-		-aggiornamento lista giocatori
-		-aggiornamento lista dinosauri
 		-disabilitare FrameGame in cambioturno
+		-sistemare immagine carogne e dino furoi vista
+		-estremi vista locale e abilitazione bottoni
 		-sistemare immagine carogne e dino furoi vista
 		
 		
@@ -24,4 +23,4 @@
 		 non fare comparire sempre il popup con scritto di chi Ë il turno, ma solo visualizzare di chi
 		 Ë il turno in basso a destra. Il popup viene fuori solo quando bisogna confermare il turno.
 		 (da discutere)
-	
+

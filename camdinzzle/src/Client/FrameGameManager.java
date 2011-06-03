@@ -333,7 +333,22 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+		int ritorno = JOptionPane.showConfirmDialog(
+			    this,
+			    "Do you really want to exit from Camdinzzle?",
+			    "Exit Question",
+			    JOptionPane.YES_NO_OPTION);
+		if (ritorno == 0){
+			String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
+			if(response[0].compareTo("ok")==0)
+			{
+				System.exit(0);
+			}
+			if(response[0].compareTo("no")==0)
+			{
+				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	@Override
