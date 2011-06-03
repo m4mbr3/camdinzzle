@@ -317,25 +317,28 @@ public class ServerLogic
 				{
 					if(currentSession.removePlayer(token))
 					{					
-						// Tolgo i dinosauri del giocatore dalla mappa
-						Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
-						while(dinosaurs.hasNext())
+						if(loggedPlayers.get(token).getSpecie().getDinosaurs() != null)
 						{
-							Map.Entry me = (Map.Entry) dinosaurs.next();
-							
-							if(me.getValue() instanceof Carnivorous)
+							// Tolgo i dinosauri del giocatore dalla mappa
+							Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
+							while(dinosaurs.hasNext())
 							{
-								if(((Carnivorous)me.getValue()).getVegetation() != null)
-									Game.setCellMap(((Carnivorous)me.getValue()).getVegetation(), ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
+								Map.Entry me = (Map.Entry) dinosaurs.next();
+								
+								if(me.getValue() instanceof Carnivorous)
+								{
+									if(((Carnivorous)me.getValue()).getVegetation() != null)
+										Game.setCellMap(((Carnivorous)me.getValue()).getVegetation(), ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
+									else
+										Game.setCellMap("t", ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
+								}
 								else
-									Game.setCellMap("t", ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
-							}
-							else
-							{
-								if(((Vegetarian)me.getValue()).getCarrion() != null)
-									Game.setCellMap(((Vegetarian)me.getValue()).getCarrion(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
-								else
-									Game.setCellMap("t", ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+								{
+									if(((Vegetarian)me.getValue()).getCarrion() != null)
+										Game.setCellMap(((Vegetarian)me.getValue()).getCarrion(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+									else
+										Game.setCellMap("t", ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+								}
 							}
 						}
 						
@@ -1174,10 +1177,10 @@ public class ServerLogic
 			 *   possibile saperlo fare l'update di tutte le mappe di tutti i giocatori
 			 */
 			// Inizio aggiornamento stato giocatore
-			if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
+			if(loggedPlayers.get(token).getSpecie().getDinosaurs() != null)
 			{
-				currentSession.getPlayer(token).getSpecie().upDateDinosaurStatus();
-				iter = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+				loggedPlayers.get(token).getSpecie().upDateDinosaurStatus();
+				iter = loggedPlayers.get(token).getSpecie().getDinosaurs();
 				
 				// kill dei dinosauri con age = 0
 				while(iter.hasNext())
@@ -1186,22 +1189,21 @@ public class ServerLogic
 					
 					if(((Dinosaur)me.getValue()).getAge() == 0)
 					{
-						currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me.getValue()));
+						loggedPlayers.get(token).getSpecie().killDino(((Dinosaur)me.getValue()));
 					}
 				}
 			}
 			
 			
-			if(currentSession.getPlayer(token).getSpecie() != null)
+			if(loggedPlayers.get(token).getSpecie() != null)
 			{
-				if(currentSession.getPlayer(token).getSpecie().getDinosaurs() == null)
+				if(loggedPlayers.get(token).getSpecie().getDinosaurs() == null)
 				{
-					currentSession.getPlayer(token).setSpecie(null);
-					currentSession.removePlayer(token);
+					loggedPlayers.get(token).setSpecie(null);
 				}
 				else
 				{
-					currentSession.getPlayer(token).getSpecie().updateMap();
+					loggedPlayers.get(token).getSpecie().updateMap();
 				}
 			}
 			// End aggiornamento stato giocatore
