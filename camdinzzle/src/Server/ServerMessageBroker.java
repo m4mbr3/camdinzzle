@@ -570,7 +570,7 @@ public class ServerMessageBroker
 	 */
 	public static String createOkMessageWithTwoParameter(String parameter1, String parameter2)
 	{
-		return "@ok," + parameter1 + parameter2;
+		return "@ok," + parameter1 + "," + parameter2;
 	}
 	
 	/**
