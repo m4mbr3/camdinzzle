@@ -1001,9 +1001,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			 this.setVisible(false);
 			 frameGameManager.setVisible(true);
 			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null);
-			 client.getConnManager().uscitaPartita();
 			 ChangeRoundThread.stop();
-			 //client.getConnManager().uscitaPartita();
+			 client.getConnManager().uscitaPartita();
 			 flagStop = true;
 		 }
 	 }
