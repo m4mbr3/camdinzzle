@@ -266,13 +266,14 @@ public class RMIMessageBroker
 				
 				return dinoList;
 			}
-			else if(!validMessage.contains(","))
-			{
-				return new String[]{validMessage};
-			}
 			else
 			{
-				return new String[]{"null"};
+				if(msg.length() == 16)
+				{
+					return new String[]{"null"};
+				}
+				
+				return validMessage.split(",");
 			}
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))

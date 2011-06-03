@@ -260,15 +260,20 @@ public class ClientMessageBroker
 		{
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			
-			if(msg.length() == 16)
-			{
-				return new String[]{"null"};
-			}
 			if(validMessage.contains(","))
 			{
-				String[] dinoList = msg.substring(1).split(",");
+				String[] dinoList = validMessage.split(",");
 				
 				return dinoList;
+			}
+			else
+			{
+				if(msg.length() == 16)
+				{
+					return new String[]{"null"};
+				}
+				
+				return validMessage.split(",");
 			}
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))

@@ -1,38 +1,18 @@
 package Server;
 
-import java.net.MalformedURLException;
-import java.rmi.AccessException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.Naming;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.management.timer.Timer;
-import javax.management.timer.TimerNotification;
-
 import Server.Species.type;
-import Client.ClientRMIInterface;
 
-/**
- * @author Andrea
- * 
- */
-public class ServerLogic {
+public class ServerLogic 
+{
 
-	/**
-	 * @author Andrea
-	 * 
-	 */
 	// oggetti per sincronizzare i metodi sugli arraylist
 
 	private Server server = null;
@@ -1184,6 +1164,9 @@ public class ServerLogic {
 	 */
 	public void updatePlayer(String token)
 	{
+		Iterator iter = null;
+		Map.Entry me = null;
+		
 		try
 		{
 			/* TODO forse
@@ -1191,23 +1174,25 @@ public class ServerLogic {
 			 *   possibile saperlo fare l'update di tutte le mappe di tutti i giocatori
 			 */
 			// Inizio aggiornamento stato giocatore
-			currentSession.getPlayer(token).getSpecie().upDateDinosaurStatus();
-			Iterator iter = currentSession.getPlayer(token).getSpecie().getDinosaurs();
-			Map.Entry me;
-			
-			// kill dei dinosauri con age = 0
-			while(iter.hasNext())
+			if(currentSession.getPlayer(token).getSpecie().getDinoNumber() != 0)
 			{
-				me = (Map.Entry) iter.next();
+				currentSession.getPlayer(token).getSpecie().upDateDinosaurStatus();
+				iter = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 				
-				if(((Dinosaur)me.getValue()).getAge() == 0)
+				// kill dei dinosauri con age = 0
+				while(iter.hasNext())
 				{
-					currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me.getValue()));
+					me = (Map.Entry) iter.next();
+					
+					if(((Dinosaur)me.getValue()).getAge() == 0)
+					{
+						currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me.getValue()));
+					}
 				}
 			}
 			
 			
-			if(currentSession.getPlayer(token).getSpecie() == null)
+			if(currentSession.getPlayer(token).getSpecie() != null)
 			{
 				if(currentSession.getPlayer(token).getSpecie().getDinoNumber() == 0)
 				{
