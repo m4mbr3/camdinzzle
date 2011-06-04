@@ -14,7 +14,7 @@
 		
 		
 		
-		
+		-passaggio del tipo della specie deve essere c oppue e 
 		-quando un erbovoro va sulla casella di un carnivoro, l'erbivoro va in errore perchè viene chiesto
 		lo stato del dinosauro e il clientMessageBroker restituisce in prima posizione dell'array
 		"null" in quanto l'unico dinosauro erbivoro del giocatore è morto.
