@@ -1,7 +1,7 @@
 
 		
 		LOGICA
-		-carogne che spariscono dopo che c'è stato sopra un erbivoro
+		-carogne che spariscono dopo che c'ÔøΩ stato sopra un erbivoro
 		
 		GRAFICA
 		
@@ -9,18 +9,18 @@
 		-sistemare immagine carogne e dino furoi vista
 		-estremi vista locale e abilitazione bottoni
 		-sistemare immagine carogne e dino furoi vista
+		-posizione dinosauro non corretta in centro.
 		
 		
 		
 		
 		
-		
-		-quando un erbovoro va sulla casella di un carnivoro, l'erbivoro va in errore perchË viene chiesto
+		-quando un erbovoro va sulla casella di un carnivoro, l'erbivoro va in errore perch√® viene chiesto
 		lo stato del dinosauro e il clientMessageBroker restituisce in prima posizione dell'array
-		"null" in quanto l'unico dinosauro erbivoro del giocatore Ë morto.
+		"null" in quanto l'unico dinosauro erbivoro del giocatore √® morto.
 		 Non viene fatto il controllo che sia "null" la prima posizione.
-		-CARLO: giocando un pÚ mi sono accorto che Ë meglio per il giocatore che Ë in attesa del suo turno
-		 non fare comparire sempre il popup con scritto di chi Ë il turno, ma solo visualizzare di chi
-		 Ë il turno in basso a destra. Il popup viene fuori solo quando bisogna confermare il turno.
+		-CARLO: giocando un p√≤ mi sono accorto che √® meglio per il giocatore che √® in attesa del suo turno
+		 non fare comparire sempre il popup con scritto di chi √® il turno, ma solo visualizzare di chi
+		 √® il turno in basso a destra. Il popup viene fuori solo quando bisogna confermare il turno.
 		 (da discutere)
 
