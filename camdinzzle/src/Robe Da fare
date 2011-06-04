@@ -13,6 +13,9 @@
 		
 		
 		
+		-modifica della virgola nei comandi di risposta del server vuoti
+		
+		
 		
 		-passaggio del tipo della specie deve essere c oppue e 
 		-quando un erbovoro va sulla casella di un carnivoro, l'erbivoro va in errore perchè viene chiesto
