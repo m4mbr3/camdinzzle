@@ -538,6 +538,10 @@ public class ServerMessageBroker
 		String returnMessage = new String("");
 		boolean isFor = false;
 		
+		if(parameters.size() == 0)
+		{
+			return "@" + parameters.get(0);
+		}
 		if(parameters.size() > 0)
 		{
 			returnMessage = returnMessage + "@" + parameters.get(0);

@@ -259,7 +259,7 @@ public class ClientMessageBroker
 	 */
 	public static String[] manageDinoList(String msg)
 	{
-		if(msg.equals("@listaDinosauri,"))
+		if(msg.equals("@listaDinosauri"))
 		{
 			return new String[]{"null"};
 		}
@@ -526,7 +526,7 @@ public class ClientMessageBroker
 	 */
 	public static String[] managePlayerList(String msg)
 	{
-		if(msg.contains("@listaGiocatori,"))
+		if(msg.contains("@listaGiocatori"))
 		{			
 			String validMessage = msg.substring(1);
 			
@@ -554,6 +554,13 @@ public class ClientMessageBroker
 	 */
 	public static ArrayList<String> manageRanking(String msg)
 	{
+		if(msg.equals("@classifica"))
+		{
+			ArrayList<String> arr = new ArrayList<String>();
+			arr.add("null");
+			
+			return arr;
+		}
 		if(msg.contains("@classifica,"))
 		{
 			ArrayList<String> rankingList = new ArrayList<String>();
