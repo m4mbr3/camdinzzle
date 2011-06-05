@@ -652,7 +652,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				if(maxRow<0)
 					maxRow=0;
 				if(maxCol>=this.col)
-					maxCol=this.col-1;
+					maxCol=this.col;
 				int i=4;
 
 				for(row=startRow;row>=maxRow;row--)

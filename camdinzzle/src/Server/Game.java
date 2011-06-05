@@ -651,7 +651,7 @@ public class Game {
 			h=startCol;
 			for(int j=0; j<sizeCol; j++)
 			{
-				if((k>=0)&&(k<Game.maxRow)&&(h>=0)&&(h<Game.maxCol))
+				if((k>=0)&&(k<maxRow)&&(h>=0)&&(h<maxCol)&&(i>=0)&&(i<maxRow)&&(j>=0)&&(j<maxCol))
 				{
 					localMap[i][j] = map [k][h];
 				}
