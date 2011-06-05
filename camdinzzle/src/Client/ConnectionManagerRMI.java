@@ -13,6 +13,7 @@ import java.net.SocketException;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -28,6 +29,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 	private String token;
 	private ClientRMI client;
 	private String changeRound;
+	private String ip;
 	
 	private static final String port = "1099";
 	
@@ -63,7 +65,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	public String login(String username, String password)
 	{
 		String msg = null;
-		String ip = null;
 		
 		try 
 		{
@@ -300,6 +301,15 @@ public class ConnectionManagerRMI implements ConnectionManager
 			if(ClientMessageBroker.manageLogout(msg)[0].equals("ok"))
 			{
 				server.notifyLogout(username);
+				try {
+					Naming.unbind("rmi://127.0.0.1/" + username + ":1099");
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotBoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				client = null;
 			}
 		} 

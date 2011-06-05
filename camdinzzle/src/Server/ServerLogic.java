@@ -63,7 +63,8 @@ public class ServerLogic
 	
 	
 	
-	public ServerLogic() throws RemoteException {
+	public ServerLogic()
+	{
 		players = new Hashtable<String, Player>();
 		loggedPlayers = new Hashtable<String, Player>();
 		rank = new Hashtable<String, Species>();
@@ -686,25 +687,7 @@ public class ServerLogic
 			{
 				if(currentSession.getPlayer(token) != null)
 				{
-
-					dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
-					if( dino != null)
-					{
-						state.add(currentSession.getPlayer(token).getUserName());
-						state.add(currentSession.getPlayer(token).getSpecie().getName());
-						state.add(currentSession.getPlayer(token).getSpecie().getType().toString());
-						state.add(String.valueOf(dino.getPosRow()));
-						state.add(String.valueOf(dino.getPosCol()));
-						state.add(String.valueOf(dino.getDinoDimension()));
-						state.add(String.valueOf(dino.getEnergy()));
-						state.add(String.valueOf(dino.getTimeOfLive()));
-						
-						return ServerMessageBroker.createDinoState(state);
-					}
-					else
-
 					if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
-
 					{
 						dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
 						if( dino != null)

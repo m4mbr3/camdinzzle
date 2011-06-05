@@ -67,69 +67,76 @@ public class Server implements Runnable {
 			this.port = port;
 			
 			serverLogic.setServer(this);
+			this.serverLogic = serverLogic;
 			
 			try 
 			{
-				this.server = new ServerSocket(this.port) ;
+				this.server = new ServerSocket(this.port);
+				clientListSocket = new ArrayList<ClientManagerSocket>();
+				this.is_run = true;
+				this.new_connection = null;
+				this.clientManagerSocket=null;
 			} 
 			catch (BindException e)
 			{
-				System.out.println("Another server is already running");
+				System.out.println("ERROR: Another server is already running.");
 			}
 			catch (IOException e) 
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("ERROR: Creation socket not occured.");
 			}
-			this.serverLogic = serverLogic;
-			clientListSocket = new ArrayList<ClientManagerSocket>();
-			clientTableRMI = new Hashtable<String, ClientManagerRMI>();
-			this.new_connection = null;
-			this.is_run = true;
-			this.clientManagerSocket=null;
 			
 			serverRMI = null;
 			
 			try
 			{
 				serverRMI = new ServerRMI(serverLogic, serverPort, this);
+				clientTableRMI = new Hashtable<String, ClientManagerRMI>();
 			}
-		
-			
-			catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			catch (RemoteException e1) 
+			{
+				System.out.println("ERROR: Creation server RMI not occured.");
 			}
 			
-			try {
+			try 
+			{
 				Registry registro = LocateRegistry.createRegistry(Integer.parseInt(serverPort));
 				Naming.bind("rmi://127.0.0.1/" + serverName + ":" + serverPort,(Remote) serverRMI);
-				//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
-			} catch (AccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (AlreadyBoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} 
+			catch (AccessException e) 
+			{
+				System.out.println("ERROR: The server do not have permission to perform the action requested by the method call.");
+			} 
+			catch (RemoteException e) 
+			{
+				System.out.println("ERROR: Remote.");
+			} 
+			catch (AlreadyBoundException e)
+			{
+				System.out.println("ERROR: AlreadyBoundException in registry server RMI.");
 			}
-			try {
+			catch (MalformedURLException e) 
+			{
+				System.out.println("ERROR: Check the URL to bind the server RMI.");
+			}
+			try 
+			{
 				Naming.rebind("rmi://127.0.0.1/" + serverName + ":" + serverPort,(Remote) serverRMI);
 				System.out.println("Server RMI Avviato!");
-			} catch (AccessException e) {
+			}
+			catch (AccessException e) 
+			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (RemoteException e) {
+			} 
+			catch (RemoteException e) 
+			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} 
+			catch (MalformedURLException e)
+			{
+				System.out.println("Check the URL to bind the server RMI.");
 			}
 	}
 	

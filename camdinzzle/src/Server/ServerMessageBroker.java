@@ -538,7 +538,7 @@ public class ServerMessageBroker
 		String returnMessage = new String("");
 		boolean isFor = false;
 		
-		if(parameters.size() == 0)
+		if(parameters.size() == 1)
 		{
 			return "@" + parameters.get(0);
 		}
@@ -585,7 +585,12 @@ public class ServerMessageBroker
 	public static String createRankingList(ArrayList<String> ranking)
 	{
 		String returnMessage = new String("");
-		returnMessage += "@classifica,";
+		returnMessage += "@classifica";
+		
+		if(ranking.size() > 0)
+		{
+			returnMessage += ",";
+		}
 		
 		for(int i = 0; i<ranking.size(); i+=4)
 		{
