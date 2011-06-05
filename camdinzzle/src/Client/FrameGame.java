@@ -41,7 +41,7 @@ import javax.swing.event.ListSelectionListener;
  */
 public class FrameGame extends JFrame implements MouseListener,Visual,ActionListener, WindowListener {
 
-	private Dimension screenSize;
+
 	private JPanel panel;
 	private JPanel panelControl;
 	private JPanel panelControlUp;
@@ -84,6 +84,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 18);
 	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
+	private Dimension screenSize;
+	private int screenHeight;
+	private int screenWidth;
+
 	
 	
 	/**
@@ -94,6 +98,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	
 	public FrameGame(String title,Client client, FrameGameManager frameGameManager) throws HeadlessException{
 		super(title);
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenHeight = (int)screenSize.getHeight();
+		screenWidth = (int)screenSize.getWidth();
 		this.client=client;
 		buttons = new JButton[row][col];
 		iconVegetation = new ImageIcon("Images/vege.jpg");
@@ -106,12 +113,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
 		iconDino = new ImageIcon("Images/dino.jpg");
 		this.setVisible(true);
-		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0,0);
 		this.frameGameManager = frameGameManager;
 		flagStop = false;
 		
-		this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
+		this.setSize(screenWidth, screenHeight);
 		this.addWindowListener(this);
 		panel = new JPanel();
 		panelControl = new JPanel();
@@ -122,10 +128,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		panelControlUp.setVisible(true);
 		panelControlDown.setVisible(true);
 		panel.setBorder(null);
-		panel.setPreferredSize(new Dimension((int)screenSize.getWidth()-widthControlPanel, (int)screenSize.getHeight()));
-		panelControl.setPreferredSize(new Dimension(widthControlPanel, (int)screenSize.getHeight()));
-		panelControlUp.setSize(new Dimension(widthControlPanel, (int)screenSize.getHeight()/14*6));
-		panelControlDown.setSize(new Dimension(widthControlPanel, (int)screenSize.getHeight()/14*8));
+		panel.setPreferredSize(new Dimension(screenWidth-widthControlPanel, screenHeight));
+		panelControl.setPreferredSize(new Dimension(widthControlPanel, screenHeight));
+		panelControlUp.setSize(new Dimension(widthControlPanel, screenHeight/14*6));
+		panelControlDown.setSize(new Dimension(widthControlPanel, screenHeight/14*8));
 		panel.setLayout(new GridLayout(row,col));
 		panelControl.setLayout(new BorderLayout());
 		panelControlUp.setLayout(new BorderLayout());
@@ -138,9 +144,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		commandButtons = new JPanel();
 		commandButtons.setVisible(true);
 		commandButtons.setBorder(null);
-		commandButtons.setPreferredSize(new Dimension(widthControlPanel-10, ((int)screenSize.getHeight()/14*4)));
+		commandButtons.setPreferredSize(new Dimension(widthControlPanel-10, (screenHeight/14*4)));
 		time = new JLabel();
-		time.setPreferredSize(new Dimension(widthControlPanel-10, (int)screenSize.getHeight()/14));
+		time.setPreferredSize(new Dimension(widthControlPanel-10, screenHeight/14));
 		time.setVisible(true);
 		panelControlDown.add(time,BorderLayout.SOUTH);
 		for (int i=0; i < row; i++)
@@ -149,7 +155,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			{
 				buttons[i][j] = new JButton();
 				buttons[i][j].setVisible(true);
-				buttons[i][j].setSize(((int)screenSize.getWidth()-widthControlPanel)/col, ((int)screenSize.getHeight()/row));
+				buttons[i][j].setSize((screenWidth-widthControlPanel)/col, (screenHeight/row));
 				buttons[i][j].setName(i+","+j +";");
 				buttons[i][j].addActionListener(this);
 				buttons[i][j].addMouseListener(this);
@@ -165,11 +171,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.validate();
 		this.drawMap(client.getConnManager().mappaGenerale());
 		String[] msgDinoList = client.getConnManager().listaDinosauri();
-		this.drawDinoList(msgDinoList);
-		this.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
-		this.drawCommandButtons();
-		this.drawPlayerList(client.getConnManager().listaGiocatori());
-		this.repaint();
+		extinctionSpecies(msgDinoList);
+		if(!flagStop)
+		{
+			this.drawDinoList(msgDinoList);
+			this.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
+			this.drawCommandButtons();
+			this.drawPlayerList(client.getConnManager().listaGiocatori());
+			this.repaint();
+		}
 	}
 
 	@Override
@@ -536,30 +546,35 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else if(mapList.get(i).compareTo("v")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "vegetation");
+						buttons[j][z].setIcon(iconVegetationDisable);
 						buttons[j][z].setDisabledIcon(iconVegetationDisable);
 						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("t")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "land");
+						buttons[j][z].setIcon(iconLandDisable);
 						buttons[j][z].setDisabledIcon(iconLandDisable);
 						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("a")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "water");
+						buttons[j][z].setIcon(iconWaterDisable);
 						buttons[j][z].setDisabledIcon(iconWaterDisable);
 						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("d")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dinosaur");
+						buttons[j][z].setIcon(iconLandDisable);
 						buttons[j][z].setDisabledIcon(iconLandDisable);
 						buttons[j][z].setToolTipText(null);
 					}
 				else
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "land");
+						buttons[j][z].setIcon(iconLandDisable);
 						buttons[j][z].setDisabledIcon(iconLandDisable);
 						buttons[j][z].setToolTipText(null);
 					}
@@ -582,8 +597,13 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			}
 			else
 			{
-				errorMessageServer();
+				extinctionSpecies(msgDinoList);
+				if(!flagStop)
+				{
+					errorMessageServer();
+				}
 			}
+			this.validate();
 			
 		}
 		else
@@ -684,9 +704,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 						}
 					}
 				}
-				for(int rowEnable=startRow; rowEnable>=maxRow; rowEnable--)
+				for(int rowEnable=startRow; rowEnable>maxRow; rowEnable--)
 				{
-					for(int colEnable=startCol; colEnable<=maxCol; colEnable++)
+					for(int colEnable=startCol; colEnable<maxCol; colEnable++)
 					{
 						if((rowEnable>=0)&&(rowEnable<this.row)&&(colEnable>=0)&&(colEnable<this.col))
 						{
@@ -751,7 +771,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setPreferredSize(new Dimension(widthControlPanel-25,(int)screenSize.getHeight()/14*4));
+				dinoList.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*4));
 				dinoList.setFont(fontDinoList);	
 				if(flagDinoList)
 				{
@@ -836,7 +856,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			ranking1.setVisible(true);
 			ranking2.getViewport().add(ranking1);
 			ranking.add(ranking2);
-			ranking.setLocation((int)screenSize.getWidth()/2-175, (int)screenSize.getHeight()/2-250);
+			ranking.setLocation(screenWidth/2-175, screenHeight/2-250);
 	}
 
 	@Override
@@ -849,6 +869,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		{
 			if(!msgDinoState[0].equals("no"))
 			{
+				if(msgDinoState[2].equals("c"))
+					msgDinoState[2]="Carnivorous";
+				else
+					msgDinoState[2]="Vegetarian";
 				String newMsgDinoState="";
 				
 				newMsgDinoState += "Dinosaur's state " + dinoId + "\n   of player " + msgDinoState[0] + ":\n";
@@ -871,7 +895,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else
 					dinoState.setText(newMsgDinoState);
 				dinoState.setVisible(true);
-				dinoState.setPreferredSize(new Dimension(widthControlPanel,(int)screenSize.getHeight()/14*3));
+				dinoState.setPreferredSize(new Dimension(widthControlPanel,screenHeight/14*3));
 				dinoState.setFont(fontDinoState);
 				dinoState.setEditable(false);
 				panelControlUp.add(dinoState,BorderLayout.SOUTH);
@@ -908,11 +932,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				playerList = new JList(newMsgPlayerList);
 				playerList.setVisibleRowCount(visibleRowCountPlayerList);
 				playerList.setVisible(true);
-				playerList.setPreferredSize(new Dimension(widthControlPanel-20,(int)screenSize.getHeight()/14*2));
+				playerList.setPreferredSize(new Dimension(widthControlPanel-20,screenHeight/14*2));
 				playerList.setFont(fontPlayerState);
 				scrollPlayerList = new JScrollPane(playerList);
 				scrollPlayerList.setVisible(true);
-				scrollPlayerList.setPreferredSize(new Dimension(widthControlPanel-5,(int)screenSize.getHeight()/14*2));
+				scrollPlayerList.setPreferredSize(new Dimension(widthControlPanel-5,screenHeight/14*2));
 				panelControlDown.add(scrollPlayerList,BorderLayout.CENTER);
 				panelControlDown.validate();
 			}
@@ -948,7 +972,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 
 		 for(int i=0;i<2;i++)
 		 {
-			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-10,(int)screenSize.getHeight()/14/5*3));
+			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-10,screenHeight/14/5*3));
 			 commandDinoButton[i].setVisible(true);
 			 commandDinoButton[i].setEnabled(false);
 			 commandDinoButton[i].addMouseListener(this);
@@ -956,7 +980,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 }
 		 for(int i=0;i<4;i++)
 		 {
-			 commandGameButton[i].setPreferredSize(new Dimension(widthControlPanel - 10, (int)screenSize.getHeight()/14/5*3));
+			 commandGameButton[i].setPreferredSize(new Dimension(widthControlPanel - 10, screenHeight/14/5*3));
 			 commandGameButton[i].setVisible(true);
 			 commandGameButton[i].setEnabled(true);
 			 commandGameButton[i].addMouseListener(this);
@@ -1012,6 +1036,18 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 private void extinctionSpecies()
 	 {
 		 String[] listaDino = client.getConnManager().listaDinosauri();
+		 if(listaDino[0].equals("null"))
+		 {
+			 ChangeRoundThread.stop();
+			 client.getConnManager().uscitaPartita();
+			 this.setVisible(false);
+			 frameGameManager.setVisible(true);
+			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null); 
+			 flagStop = true;
+		 }
+	 }
+	 private void extinctionSpecies(String[] listaDino)
+	 {
 		 if(listaDino[0].equals("null"))
 		 {
 			 ChangeRoundThread.stop();

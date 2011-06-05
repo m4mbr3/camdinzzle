@@ -1,5 +1,6 @@
 package Server;
 
+import java.net.Proxy.Type;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -589,7 +590,7 @@ public class ServerLogic
 						}
 					}
 					
-					return ServerMessageBroker.createStandardMessage(list);
+					return ServerMessageBroker.createDinoList(list);
 				}
 				else
 					return ServerMessageBroker.createErroMessage("nonInPartita");
@@ -687,6 +688,25 @@ public class ServerLogic
 			{
 				if(currentSession.getPlayer(token) != null)
 				{
+					dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
+					if( dino != null)
+					{
+						state.add(currentSession.getPlayer(token).getUserName());
+						state.add(currentSession.getPlayer(token).getSpecie().getName());
+						if(currentSession.getPlayer(token).getSpecie().getType().toString().equals("Vegetarian"))
+							state.add("e");
+						else
+							state.add("c");
+						state.add(String.valueOf(dino.getPosRow()));
+						state.add(String.valueOf(dino.getPosCol()));
+						state.add(String.valueOf(dino.getDinoDimension()));
+						state.add(String.valueOf(dino.getEnergy()));
+						state.add(String.valueOf(dino.getTimeOfLive()));
+						
+						return ServerMessageBroker.createDinoState(state);
+					}
+					else
+
 					if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
 					{
 						dino = loggedPlayers.get(token).getSpecie().getDino(dinoId);
@@ -694,7 +714,10 @@ public class ServerLogic
 						{
 							state.add(currentSession.getPlayer(token).getUserName());
 							state.add(currentSession.getPlayer(token).getSpecie().getName());
-							state.add(currentSession.getPlayer(token).getSpecie().getType().toString());
+							if(currentSession.getPlayer(token).getSpecie().getType().toString().equals("Vegetarian"))
+								state.add("e");
+							else
+								state.add("c");
 							state.add(String.valueOf(dino.getPosRow()));
 							state.add(String.valueOf(dino.getPosCol()));
 							state.add(String.valueOf(dino.getDinoDimension()));

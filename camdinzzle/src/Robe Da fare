@@ -1,14 +1,11 @@
 
 		
 		LOGICA
-		-carogne che spariscono dopo che c'� stato sopra un erbivoro
 		
 		GRAFICA
 		
 		-disabilitare FrameGame in cambioturno
-		-sistemare immagine carogne e dino furoi vista
 		-estremi vista locale e abilitazione bottoni
-		-sistemare immagine carogne e dino furoi vista
 		-posizione dinosauro non corretta in centro.
 		
 		
@@ -18,7 +15,6 @@
 		
 		
 		
-		-passaggio del tipo della specie deve essere c oppue e 
 		-quando un erbovoro va sulla casella di un carnivoro, l'erbivoro va in errore perchè viene chiesto
 		lo stato del dinosauro e il clientMessageBroker restituisce in prima posizione dell'array
 		"null" in quanto l'unico dinosauro erbivoro del giocatore è morto.
