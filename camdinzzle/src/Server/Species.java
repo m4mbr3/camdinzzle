@@ -1,4 +1,5 @@
 package Server;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 /**
  * gruppo di dinosauri appartenenti a un giocatore
  */
-public class Species 
+public class Species implements Serializable
 {
 	private String name;
 	private int timeOfLive;

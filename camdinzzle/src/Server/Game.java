@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,7 +18,8 @@ import java.util.concurrent.SynchronousQueue;
  * @author Andrea
  *
  */
-public class Game {
+public class Game implements Serializable
+{
 
 	/**
 	 * 
@@ -39,11 +41,21 @@ public class Game {
 	private static int[][][][] mapReach;
 
 	
-	public Game() {
+	public Game(Object[][] mapFromFile) 
+	{
 		// TODO Auto-generated constructor stub
 		playersInGame = new LinkedHashMap<String, Player>();
 		maxPlayers = 8;
-		this.createMap();
+		
+		if(mapFromFile == null)
+		{
+			this.createMap();
+		}
+		else
+		{
+			this.map = mapFromFile;
+		}
+		
 		this.startMapReach();
 	}
 	

@@ -151,7 +151,8 @@ public class Server implements Runnable {
 		
 		while(is_run)
 		{
-			try {
+			try 
+			{
 				//waiting for connection
 				System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at " + server.getLocalPort());
 				new_connection = server.accept();

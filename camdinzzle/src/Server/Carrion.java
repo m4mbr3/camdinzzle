@@ -1,11 +1,14 @@
 package Server;
+
+import java.io.Serializable;
+
 /**
  * @author Forme
  * created 			28/04/2011
  * last modified	28/04/2011 
  */
 
-public class Carrion implements Food
+public class Carrion implements Food, Serializable
 {
 
 	private int power;

@@ -1,12 +1,14 @@
 package Server;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Marco
  *
  */
 
-public class Carnivorous extends Dinosaur
+public class Carnivorous extends Dinosaur implements Serializable
 {
 	
 	private Vegetation vegetation=null;

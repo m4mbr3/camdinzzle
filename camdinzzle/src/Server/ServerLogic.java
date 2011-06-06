@@ -1,5 +1,13 @@
 package Server;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Proxy.Type;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -11,7 +19,7 @@ import java.util.Set;
 
 import Server.Species.type;
 
-public class ServerLogic 
+public class ServerLogic implements Serializable
 {
 
 	// oggetti per sincronizzare i metodi sugli arraylist
@@ -66,10 +74,48 @@ public class ServerLogic
 	
 	public ServerLogic()
 	{
-		players = new Hashtable<String, Player>();
+		// PROVA DESERIALIZZAZIONE
+		File f = new File("server.ser");
+		boolean isCorrectLoadingFromFile = true;
+		
+		if(f.exists())
+		{
+			try {
+				FileInputStream input = new FileInputStream("server.ser");
+				ObjectInputStream ois = new ObjectInputStream(input);
+				
+				players = (Hashtable<String, Player>)ois.readObject();
+				rank = (Hashtable<String, Species>)ois.readObject();
+				currentSession = new Game((Object[][])ois.readObject());
+				
+				ois.close(); 
+			} 
+			catch (FileNotFoundException e) 
+			{
+				isCorrectLoadingFromFile = false;
+				e.printStackTrace();
+			}
+			catch (ClassNotFoundException e) 
+			{
+				isCorrectLoadingFromFile = false;
+				e.printStackTrace();
+			}
+			catch (IOException e) 
+			{
+				isCorrectLoadingFromFile = false;
+				e.printStackTrace();
+			}
+			// END DESERIALIZZAZIONE
+		}
+		
+		else if((!f.exists()) || (!isCorrectLoadingFromFile))
+		{
+			players = new Hashtable<String, Player>();
+			rank = new Hashtable<String, Species>();
+			currentSession = new Game(null);
+		}
+		
 		loggedPlayers = new Hashtable<String, Player>();
-		rank = new Hashtable<String, Species>();
-		currentSession = new Game();
 		isTheFirstAccess = true;
 		tokenOfCurrentPlayer = "";
 		// Inizializzazione chiave per generazione del token
@@ -1580,5 +1626,31 @@ public class ServerLogic
 			token = token.replaceAll("@", "#");
 			
 		return token;
+	}
+	
+	public void saveServer()
+	{
+		try 
+		{
+			FileOutputStream out = new FileOutputStream("server.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(out);
+			Object[][] map = currentSession.getGeneralMap();
+			
+			oos.writeObject(this.players);
+			oos.writeObject(rank);
+			oos.writeObject(map);
+			
+			oos.close();
+		}
+		catch (FileNotFoundException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

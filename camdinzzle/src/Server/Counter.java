@@ -1,6 +1,9 @@
 package Server;
 
-public class Counter implements Runnable {
+import java.io.Serializable;
+
+public class Counter implements Runnable, Serializable 
+{
 
 	private ServerLogic server;
 	private boolean setIsJustUpdate;

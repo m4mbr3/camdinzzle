@@ -1,4 +1,6 @@
 package Server;
+
+import java.io.Serializable;
 /**
  * 
  */
@@ -7,7 +9,8 @@ package Server;
  * @author Andrea
  *
  */
-public class Player {
+public class Player implements Serializable
+{
 
 	/**
 	 * 
