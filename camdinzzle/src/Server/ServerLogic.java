@@ -612,7 +612,7 @@ public class ServerLogic
 						}
 					}
 					
-					return ServerMessageBroker.createDinoList(list);
+					return ServerMessageBroker.createStandardMessage(list);
 				}
 				else
 					return ServerMessageBroker.createErroMessage("nonInPartita");
@@ -860,21 +860,7 @@ public class ServerLogic
 												{
 													if(dino.fight(Game.getCell(dinoRow, dinoCol)))		//combatte
 													{
-														
-		/*		ricerca dino avversario						String specie = ((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie();
-															boolean check=false;
-															Iterator iter = currentSession.getPlayersList();
-															Map.Entry me;	
-															do
-															{
-																me = (Map.Entry) iter.next();
-																if((specie.compareTo(((Player)me.getValue()).getSpecie().getName()))==0)
-																{
-																	check=true;
-																}
-															}while(!check);
-															
-		*/													
+												
 														((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
 														
 															

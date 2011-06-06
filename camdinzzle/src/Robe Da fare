@@ -9,23 +9,17 @@
 		
 		-disabilitare FrameGame in cambioturno
 		-estremi vista locale e abilitazione bottoni
-		-posizione dinosauro non corretta in centro.
 		-mettere bordo cella selezionata se tuo dino
 		-sistemare immgagini dinosauri
 		-dare la possibilità di scegliere immagine dino
 		-cambiare sfondo avversari
+		-quando seleziono il dino di un altro non posso muoverlo
 		
 		
 		
 		
-		-modificata la virgola nei comandi di risposta del server vuoti
-		-ricontrollo comandi con non virgola possibile tipo statodinosauro, classifica...
-		
-		-CARLO: giocando un pò mi sono accorto che è meglio per il giocatore che è in attesa del suo turno
-		 non fare comparire sempre il popup con scritto di chi è il turno, ma solo visualizzare di chi
-		 è il turno in basso a destra. Il popup viene fuori solo quando bisogna confermare il turno.
-		 (da discutere)
-
+		-modificata la virgola nei comandi di risposta del server vuoti   (RMI)
+		-ricontrollo comandi con non virgola possibile tipo statodinosauro, classifica...    (RMI)
 
 		-JUNIT
 		-JML

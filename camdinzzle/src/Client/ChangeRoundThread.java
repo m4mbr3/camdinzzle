@@ -74,21 +74,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 				if(!client.getConnManager().getUsername().equals(client.getConnManager().getChangeRound()))
 				{
 					frameGame.upDateFrameGame();
-					this.msg.setText("Ora tocca: "+ client.getConnManager().getChangeRound());
-					this.remove(deny);
-					this.remove(confirm);
-					this.repaint();
-					this.validate();
 					this.is_my_turn = false;
-					this.setVisible(true);
-					
-						try {
-							Thread.sleep(3000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					this.setVisible(false);
 					client.getConnManager().setChangeRound("");
 				}
 				

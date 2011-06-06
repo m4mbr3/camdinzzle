@@ -67,6 +67,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private JButton[] commandDinoButton;
 	private JButton[] commandGameButton;
 	private JLabel time;
+	private int timeMin;
+	private int timeSec;
 	private JFrame ranking;
 	private JTable ranking1;
 	private JScrollPane ranking2;
@@ -76,6 +78,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private JScrollPane scrollPlayerList;
 	private int timeGlobal;
 	private boolean flagStop;
+	private String nameSpecie;
 	
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
@@ -107,7 +110,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconVegetation = new ImageIcon("Images/vege.jpg");
 		iconLand = new ImageIcon("Images/terra.jpg");
 		iconWater = new ImageIcon("Images/acqua.jpg");
-		iconDark = new ImageIcon("Images/red.jpg");
+		iconDark = new ImageIcon("Images/buio.jpg");
 		iconCarrion = new ImageIcon("Images/carrion.jpg");
 		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
 		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
@@ -175,6 +178,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		extinctionSpecies(msgDinoList);
 		if(!flagStop)
 		{
+			nameSpecie = msgDinoList[0].substring(msgDinoList[0].indexOf("-")+1);
 			this.drawDinoList(msgDinoList);
 			this.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
 			this.drawCommandButtons();
@@ -707,7 +711,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 						}
 					}
 				}
-				for(int rowEnable=startRow; rowEnable>maxRow; rowEnable--)
+				for(int rowEnable=startRow; rowEnable>=maxRow; rowEnable--)
 				{
 					for(int colEnable=startCol; colEnable<maxCol; colEnable++)
 					{
@@ -809,8 +813,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	public void drawTime(int timeInt) 
 	{
 		timeGlobal = timeInt;
-		String timeString = String.valueOf(timeInt);
-		time.setText("Mancano " + timeString + " sec allo scadere del turno");
+		timeMin = timeInt/60;
+		timeSec = timeInt%60;
+		String timeStringMin = String.valueOf(timeMin);
+		String timeStringSec = String.valueOf(timeSec);
+		time.setText("Tempo allo scadere del turno" + timeStringMin +":"+ timeStringSec);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}

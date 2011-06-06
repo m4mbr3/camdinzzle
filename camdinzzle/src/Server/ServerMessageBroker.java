@@ -542,7 +542,7 @@ public class ServerMessageBroker
 		{
 			return "@" + parameters.get(0);
 		}
-		if(parameters.size() > 0)
+		if(parameters.size() > 1)
 		{
 			returnMessage = returnMessage + "@" + parameters.get(0);
 			for(int i = 1; i<parameters.size(); i++)
@@ -577,29 +577,6 @@ public class ServerMessageBroker
 		return "@ok," + "@" + parameter1 + "," + parameter2;
 	}
 	
-	public static String createDinoList(ArrayList<String> parameters)
-	{
-		String returnMessage = new String("");
-		boolean isFor = false;
-		
-		if(parameters.size() == 1)
-		{
-			return "@" + parameters.get(0);
-		}
-		if(parameters.size() > 1)
-		{
-			returnMessage = returnMessage + "@" + parameters.get(0);
-			for(int i = 1; i<parameters.size(); i++)
-			{
-				returnMessage = returnMessage + "," + parameters.get(i);
-				isFor = true;
-			}
-			
-			if(!isFor)
-				returnMessage += ",";
-		}
-		return returnMessage;
-	}
 	
 	/**
 	 * Crea il messaggio contenente la classifica generale della partita
