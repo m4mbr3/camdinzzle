@@ -2,11 +2,19 @@
 		
 		LOGICA
 		
+		-salvataggi
+		-sistemare ritorno da eccezione (token non valido)
+		
 		GRAFICA
 		
 		-disabilitare FrameGame in cambioturno
 		-estremi vista locale e abilitazione bottoni
 		-posizione dinosauro non corretta in centro.
+		-mettere bordo cella selezionata se tuo dino
+		-sistemare immgagini dinosauri
+		-dare la possibilità di scegliere immagine dino
+		-cambiare sfondo avversari
+		
 		
 		
 		
@@ -18,3 +26,7 @@
 		 è il turno in basso a destra. Il popup viene fuori solo quando bisogna confermare il turno.
 		 (da discutere)
 
+
+		-JUNIT
+		-JML
+		-JDOC

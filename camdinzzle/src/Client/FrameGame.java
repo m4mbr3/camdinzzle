@@ -31,6 +31,7 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
 import javax.swing.JFrame;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -82,7 +83,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private final int visibleRowCountPlayerList=8;
 	private final int maxAttempt = 5;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
-	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 18);
+	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
 	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
 	private Dimension screenSize;
 	private int screenHeight;
@@ -111,7 +112,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
 		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
 		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
-		iconDino = new ImageIcon("Images/dino.jpg");
+		iconDino = new ImageIcon("Images/T_REX.jpg");
 		this.setVisible(true);
 		this.setLocation(0,0);
 		this.frameGameManager = frameGameManager;
@@ -432,6 +433,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					int opt = JOptionPane.showOptionDialog(panel, "Vuoi muovere il dinosauro", "Muovi Dinosauro", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
 					if(opt==0)
 					{
+						((JButton)arg0.getComponent()).setBorder(null);
 						String[] nameDest = nameCell.split(";");
 						String[] newNameDest = nameDest[0].split(",");
 						String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
@@ -477,6 +479,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				{
 					commandDinoButton[i].setEnabled(true);
 					drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+					((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue));
 				}
 				flag=1;
 			}
@@ -771,7 +774,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*4));
+				dinoList.setPreferredSize(new Dimension(widthControlPanel-35,screenHeight/14*4));
 				dinoList.setFont(fontDinoList);	
 				if(flagDinoList)
 				{
@@ -895,7 +898,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else
 					dinoState.setText(newMsgDinoState);
 				dinoState.setVisible(true);
-				dinoState.setPreferredSize(new Dimension(widthControlPanel,screenHeight/14*3));
+				dinoState.setPreferredSize(new Dimension(widthControlPanel-20,screenHeight/14*3));
 				dinoState.setFont(fontDinoState);
 				dinoState.setEditable(false);
 				panelControlUp.add(dinoState,BorderLayout.SOUTH);
@@ -972,7 +975,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 
 		 for(int i=0;i<2;i++)
 		 {
-			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-10,screenHeight/14/5*3));
+			 commandDinoButton[i].setPreferredSize(new Dimension(widthControlPanel-20,screenHeight/14/5*3));
 			 commandDinoButton[i].setVisible(true);
 			 commandDinoButton[i].setEnabled(false);
 			 commandDinoButton[i].addMouseListener(this);
@@ -980,7 +983,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 }
 		 for(int i=0;i<4;i++)
 		 {
-			 commandGameButton[i].setPreferredSize(new Dimension(widthControlPanel - 10, screenHeight/14/5*3));
+			 commandGameButton[i].setPreferredSize(new Dimension(widthControlPanel - 20, screenHeight/14/5*3));
 			 commandGameButton[i].setVisible(true);
 			 commandGameButton[i].setEnabled(true);
 			 commandGameButton[i].addMouseListener(this);
