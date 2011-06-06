@@ -170,31 +170,31 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	}
 
 	@Override
-	public void setGameAccess(boolean isInGame, String username) throws RemoteException
+	public synchronized void setGameAccess(boolean isInGame, String username) throws RemoteException
 	{
 		server.setGameAccessRMI(username, isInGame);
 	}
 
 	@Override
-	public String getTokenOfCurrentPlayer() throws RemoteException 
+	public synchronized String getTokenOfCurrentPlayer() throws RemoteException 
 	{
 		return serverLogic.getTokenOfCurrentPlayer();
 	}
 
 	@Override
-	public void changeRoundNotify() throws RemoteException 
+	public synchronized void changeRoundNotify() throws RemoteException 
 	{
 		serverLogic.changeRoundNotify();
 	}
 
 	@Override
-	public String getUsernameOfCurrentPlayer() throws RemoteException 
+	public synchronized String getUsernameOfCurrentPlayer() throws RemoteException 
 	{
 		return serverLogic.getuUsernameOfCurrentPlayer();
 	}
 
 	@Override
-	public void updatePlayer(String token) throws RemoteException 
+	public synchronized void updatePlayer(String token) throws RemoteException 
 	{
 		serverLogic.updatePlayer(token);
 	}
