@@ -1069,7 +1069,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 }
 	 }
 	 
-	 public synchronized void upDateFrameGame()
+	 public void upDateFrameGame()
 	 {
 		extinctionSpecies();
 		if(!flagStop)
