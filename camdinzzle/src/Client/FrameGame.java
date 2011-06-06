@@ -779,7 +779,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setSize(new Dimension(widthControlPanel-55,screenHeight/14*4));
+				dinoList.setSize(new Dimension(widthControlPanel-55,screenHeight/14*3));
 				dinoList.setFont(fontDinoList);	
 				if(flagDinoList)
 				{
@@ -816,9 +816,13 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		timeGlobal = timeInt;
 		timeMin = timeInt/60;
 		timeSec = timeInt%60;
+		String timeStringSec;
+		if(timeSec==0)
+			timeStringSec = "00";
+		else
+			timeStringSec = String.valueOf(timeSec);
 		String timeStringMin = String.valueOf(timeMin);
-		String timeStringSec = String.valueOf(timeSec);
-		time.setText("Tempo allo scadere del turno" + timeStringMin +":"+ timeStringSec);
+		time.setText("Tempo allo scadere del turno  " + timeStringMin +":"+ timeStringSec);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
