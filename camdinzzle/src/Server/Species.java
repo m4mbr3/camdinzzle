@@ -257,13 +257,13 @@ public class Species
 			int sizeRow = dino.getSizeRowLocalMap();
 			int sizeCol = dino.getSizeColLocalMap();
 			int startRow = dino.getPosRow() - sizeRow/2;
-			int endRow = startRow + sizeRow-1;
-			int startCol = dino.getPosCol() - sizeCol/2;
-			int endCol = startCol + sizeCol-1;
 			if(startRow < 0)
 				startRow = 0;
+			int endRow = startRow + sizeRow-1;
+			int startCol = dino.getPosCol() - sizeCol/2;
 			if(startCol < 0)
 				startCol = 0;
+			int endCol = startCol + sizeCol-1;
 			if(endRow > Game.maxRow)
 				endRow = Game.maxRow;
 			if(endCol > Game.maxCol)
