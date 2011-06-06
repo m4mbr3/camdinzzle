@@ -161,6 +161,16 @@ public class Species
 			return null;
 	}
 	
+	public boolean existDinos()
+	{
+		if(myDinosaurs.size() > 0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	/**
 	 * riconosce l'id del dinosauro e restituisce l'oggetto
 	 */
@@ -298,7 +308,7 @@ public class Species
 	
 	public void killDino(Dinosaur dinoId)
 	{
-		if(!(Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Vegetarian || Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Carnivorous))
+		if((Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Vegetarian || Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Carnivorous))
 		{
 			if(speciesType==type.Carnivorous)
 			{

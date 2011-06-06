@@ -266,16 +266,33 @@ public class ServerLogic
 								 * libera partendo dall'inizio della sua vista in alto a sinistra. Viene assunto che 
 								 * sicuramente una casella libera nella sua vista c'è!!!!!!!
 								 */
+								boolean isPositionated = false;
 								for(int i = current.getPosRow() - current.getSizeRowLocalMap(); i<current.getPosRow() + current.getSizeRowLocalMap(); i++)
 								{
 									for(int j = current.getPosCol() - current.getSizeColLocalMap(); j<current.getPosCol() + current.getSizeColLocalMap(); j++)
 									{
 										if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur) == false)
+										{
 											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+											isPositionated = true;
+											break;
+										}
 										else if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Food) == false)
+										{
 											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+											isPositionated = true;
+											break;
+										}
 										else if(((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof String) &&(Game.getCell(current.getPosRow(), current.getPosCol()).equals("a"))) == false)
+										{
 											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+											isPositionated = true;
+											break;
+										}
+									}
+									if(isPositionated)
+									{
+										break;
 									}
 								}
 							}	
@@ -463,8 +480,13 @@ public class ServerLogic
 						ranking.add(usernameMaxScore);
 						ranking.add(speciesMaxScore);
 						ranking.add(String.valueOf(maxScore));
-						if(currentSession.getPlayer(players.get(usernameMaxScore).getToken()) != null)
-							ranking.add("s");
+						if(players.get(usernameMaxScore).getSpecie() != null)
+						{
+							if(players.get(usernameMaxScore).getSpecie().getName().equals(speciesMaxScore))
+								ranking.add("s");
+							else
+								ranking.add("n");
+						}
 						else
 							ranking.add("n");
 					}
