@@ -69,12 +69,12 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
-		nome_server = new JLabel("NameServer: ");
+		nome_server = new JLabel("Server: ");
 		server_value = new JTextField("server");
 		nome_server.setSize(90,20);
 		server_value.setSize(160, 20);
 		nome_server.setLocation(50,280);
-		server_value.setLocation(150,280);
+		server_value.setLocation(140,280);
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
 		port = new JTextField("");
@@ -123,12 +123,12 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		nome_server.setVisible(true);
 		address.setEnabled(false);
 		server_value.setEnabled(false);
-		nome_server.setEnabled(false);
+		nome_server.setEnabled(true);
 		enable_port.setEnabled(false);
 		port.setEnabled(false);
 		address.setEditable(false);
-		port_label.setEnabled(false);
-		address_label.setEnabled(false);
+		port_label.setEnabled(true);
+		address_label.setEnabled(true);
 		
 		panel.add(nome_server);
 		panel.add(server_value);
@@ -352,13 +352,14 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 			{
 				port.setText("4567");
 				enable_port.setEnabled(true);
+				address.setEnabled(true);
 				address.setEditable(true);
-				address.setVisible(true);
 				port_label.setEnabled(true);
 				address_label.setEnabled(true);
-				nome_server.setEnabled(false);
 				server_value.setEnabled(false);
 				server_value.setEditable(true);
+				this.validate();
+				this.repaint();
 			}
 			if(rmi.isSelected())
 			{
@@ -368,24 +369,23 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				address.setEnabled(true);
 				port_label.setEnabled(true);
 				address_label.setEnabled(true);
-				nome_server.setEnabled(true);
 				server_value.setEnabled(true);
-				address.setEditable(true);
 				server_value.setEditable(true);
+				this.validate();
+				this.repaint();
 			}
 			if(local.isSelected())
 			{
 				port.setText("");
+				enable_port.setEnabled(false);
 				address.setEditable(false);
 				server_value.setEditable(false);
-				enable_port.setEnabled(false);
 				port.setEnabled(false);
 				address.setEditable(false);
 				address.setEnabled(true);
-				port_label.setEnabled(false);
-				address_label.setEnabled(false);
-				nome_server.setEnabled(false);
 				server_value.setEnabled(false);
+				this.validate();
+				this.repaint();
 			}
 		}
 	}
