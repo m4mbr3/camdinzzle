@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -31,7 +32,6 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
 import javax.swing.JFrame;
-import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -103,9 +103,14 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	
 	public FrameGame(String title,Client client, FrameGameManager frameGameManager) throws HeadlessException{
 		super(title);
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		screenHeight = (int)screenSize.getHeight();
-		screenWidth = (int)screenSize.getWidth();
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+//		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//		screenHeight = (int)screenSize.getHeight();
+//		screenWidth = (int)screenSize.getWidth();
+		screenHeight = (int)g.getMaximumWindowBounds().getHeight();
+		screenWidth = (int)g.getMaximumWindowBounds().getWidth();
 		this.client=client;
 		buttons = new JButton[row][col];
 		iconVegetation = new ImageIcon("Images/vege.jpg");
@@ -779,7 +784,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setSize(new Dimension(widthControlPanel-55,screenHeight/14*3));
+				dinoList.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*2));
 				dinoList.setFont(fontDinoList);	
 				if(flagDinoList)
 				{
