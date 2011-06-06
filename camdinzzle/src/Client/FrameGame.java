@@ -779,7 +779,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*4));
+				dinoList.setSize(new Dimension(widthControlPanel-55,screenHeight/14*4));
 				dinoList.setFont(fontDinoList);	
 				if(flagDinoList)
 				{
@@ -908,11 +908,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 				dinoState = new JTextArea(newMsgDinoState);
 				dinoState.setVisible(true);
-				dinoState.setPreferredSize(new Dimension(widthControlPanel-50,screenHeight/14*3));
+				dinoState.setSize(new Dimension(widthControlPanel-50,screenHeight/14*3));
 				dinoState.setFont(fontDinoState);
 				dinoState.setEditable(false);
 				scrollDinoState = new JScrollPane(dinoState);
-				scrollDinoState.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*3));
+				scrollDinoState.setSize(new Dimension(widthControlPanel-25,screenHeight/14*3));
 				scrollDinoState.setVisible(true);
 				scrollDinoState.validate();
 				panelControlUp.add(scrollDinoState,BorderLayout.SOUTH);
