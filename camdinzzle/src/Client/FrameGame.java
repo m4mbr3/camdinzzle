@@ -62,6 +62,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private JList dinoList;
 	private boolean flagDinoList;
 	private JTextArea dinoState;
+	private JScrollPane scrollDinoState;
 	private JList playerList;
 	private JPanel commandButtons;
 	private JButton[] commandDinoButton;
@@ -778,7 +779,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setPreferredSize(new Dimension(widthControlPanel-35,screenHeight/14*4));
+				dinoList.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*4));
 				dinoList.setFont(fontDinoList);	
 				if(flagDinoList)
 				{
@@ -900,16 +901,22 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				
 				newMsgDinoState+="per muoversi selezionare il dinosauro\n";
 				newMsgDinoState+="        e poi la destinazione";
-				if(dinoState==null)
-					dinoState = new JTextArea(newMsgDinoState);
-				else
-					dinoState.setText(newMsgDinoState);
+				if(scrollDinoState!=null)
+				{
+					scrollDinoState.remove(dinoState);
+					panelControlUp.remove(scrollDinoState);
+				}
+				dinoState = new JTextArea(newMsgDinoState);
 				dinoState.setVisible(true);
-				dinoState.setPreferredSize(new Dimension(widthControlPanel-20,screenHeight/14*3));
+				dinoState.setPreferredSize(new Dimension(widthControlPanel-50,screenHeight/14*3));
 				dinoState.setFont(fontDinoState);
 				dinoState.setEditable(false);
-				panelControlUp.add(dinoState,BorderLayout.SOUTH);
-				panelControlUp.repaint();
+				scrollDinoState = new JScrollPane(dinoState);
+				scrollDinoState.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*3));
+				scrollDinoState.setVisible(true);
+				scrollDinoState.validate();
+				panelControlUp.add(scrollDinoState,BorderLayout.SOUTH);
+				panelControlUp.validate();
 			}
 			else
 			{
@@ -942,11 +949,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				playerList = new JList(newMsgPlayerList);
 				playerList.setVisibleRowCount(visibleRowCountPlayerList);
 				playerList.setVisible(true);
-				playerList.setPreferredSize(new Dimension(widthControlPanel-20,screenHeight/14*2));
+				playerList.setPreferredSize(new Dimension(widthControlPanel-50,screenHeight/14*2));
 				playerList.setFont(fontPlayerState);
 				scrollPlayerList = new JScrollPane(playerList);
 				scrollPlayerList.setVisible(true);
-				scrollPlayerList.setPreferredSize(new Dimension(widthControlPanel-5,screenHeight/14*2));
+				scrollPlayerList.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*2));
 				panelControlDown.add(scrollPlayerList,BorderLayout.CENTER);
 				panelControlDown.validate();
 			}
