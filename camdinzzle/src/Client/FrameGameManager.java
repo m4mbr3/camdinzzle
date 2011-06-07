@@ -209,8 +209,13 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			{
 				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE);
 			}
+			else if (response[0].compareTo("null") == 0)
+			{
+				JOptionPane.showMessageDialog(this,"No players in game", "Lista Giocatori", JOptionPane.INFORMATION_MESSAGE);
+			}
 			else if (response[0].compareTo("listaGiocatori")==0)
 			{
+				
 				listaGiocatori = new JFrame("List of Players");
 				listaGiocatori.setLayout(new BorderLayout());
 				listaGiocatori.setVisible(true);
@@ -224,18 +229,15 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				listaGiocatori.add(pannelloGiocatori,BorderLayout.CENTER);
 				pannelloGiocatori.setLayout(new GridLayout(8,1));
 				int j;
+				
 				for (int i=1; i < response.length; i++)
 				{
+					postiGiocatori[i-1] = new JLabel();
 					postiGiocatori[i-1].setText(response[i]);
-				}
-				for (int i=0; i < postiGiocatori.length; i++)
-				{
-					if(postiGiocatori[i] == null)
-						postiGiocatori[i] = new JLabel();
-					
-					if (postiGiocatori[i].getText() == "") postiGiocatori[i].setText("Spot Empty");
-					pannelloGiocatori.add(postiGiocatori[i]);
-				}
+					pannelloGiocatori.add(postiGiocatori[i-1]);
+				}	
+				
+				
 				listaGiocatori.repaint();
 			}
 			else if (response[0].compareTo("no")==0)
@@ -250,10 +252,17 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			{
 				if(!classifica.contains("no"))
 				{
-					ranking = new JFrame("Classifica");
+					if(ranking==null)
+					{
+						ranking = new JFrame("Classifica");
+						ranking2 = new JScrollPane();
+					}
+					else
+					{
+						ranking1 = null;
+					}
 					ranking.setVisible(true);
 					ranking.setSize(new Dimension(350, 500));
-					ranking2 = new JScrollPane();
 					String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
 					String[][] rowData = new String [classifica.size()/4][4];
 					int j=0,z=0;
@@ -271,6 +280,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					ranking1.setVisible(true);
 					ranking2.getViewport().add(ranking1);
 					ranking.add(ranking2);
+					ranking.setLocation(((int)(screenSize.getWidth())/2-175),((int)(screenSize.getHeight())/2-250));
 				
 				}
 				else
