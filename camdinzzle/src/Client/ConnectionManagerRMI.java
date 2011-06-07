@@ -77,18 +77,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 				token = response[1];
 				this.username = username;
 				
-				try{
-					client = new ClientRMI(this);
-				}
-			
-				catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				// Cerca l'IP del client
-				try 
+				try
 				{
+					client = new ClientRMI(this);
+					
+					// Cerca l'IP del client
+					
 					for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) 
 					{
 						  NetworkInterface iface = ifaces.nextElement();
@@ -104,57 +98,44 @@ public class ConnectionManagerRMI implements ConnectionManager
 							  }
 						  }
 					}
-				} 
-				catch (SocketException e) 
-				{
-					System.out.println("IP del server non trovato");
-				}
-				// End ricerca IP del client
-				
-				try {
-					
+						
 					@SuppressWarnings("unused")
 					Registry registro = LocateRegistry.createRegistry(Integer.parseInt(port));
 					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
 					Naming.bind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 					//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
-				} 
-				catch (AlreadyBoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}catch (AccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				try {
+					
 					Naming.rebind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 					//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
 					System.out.println("Client RMI Avviato!");
 					// per andare sulla stessa macchina:
 					// ip = "127.0.0.1";
 					server.notifyLogin(username, ip);
-				} catch (AccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				}
+				catch (AlreadyBoundException e) 
+				{
+					return null;
+				}
+				catch (AccessException e) 
+				{
+					return null;
+				}
+				catch (RemoteException e) 
+				{
+					return null;
+				}  
+				catch (MalformedURLException e) 
+				{
+					return null;
+				}
+				catch (SocketException e) 
+				{
+					return null;
 				}
 			}
 		} 
 		catch (RemoteException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return null;
 		}
 		

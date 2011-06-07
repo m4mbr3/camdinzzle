@@ -19,11 +19,8 @@ import java.util.Set;
 
 import Server.Species.type;
 
-public class ServerLogic implements Serializable
+public class ServerLogic
 {
-
-	// oggetti per sincronizzare i metodi sugli arraylist
-
 	private Server server = null;
 	
 	Thread counter30s;
@@ -300,45 +297,64 @@ public class ServerLogic implements Serializable
 						currentSession.addPlayer(token, loggedPlayers.get(token));
 						// Aggiungo i dinosauri del giocatore alla mappa
 						Iterator dinosaurs = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+						boolean isPositionated = false;
 						while(dinosaurs.hasNext())
 						{
 							Map.Entry me = (Map.Entry)dinosaurs.next();
 							
 							Dinosaur current = ((Dinosaur)me.getValue());
-							
+							if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur))
+							{
+								if(((Dinosaur)Game.getCell(current.getPosRow(), current.getPosCol())).getDinoId().equals(current.getDinoId()))
+								{
+									Game.setCellMap(current, current.getPosRow(), current.getPosCol());
+									isPositionated = true;
+									break;
+								}
+							}
 							if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur) || (Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Food) || ((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof String) &&(Game.getCell(current.getPosRow(), current.getPosCol()).equals("a"))))
 							{
-								/* Se la cella in cui c'era il dinosauro è occupata allora viene messo in una posizione
-								 * libera partendo dall'inizio della sua vista in alto a sinistra. Viene assunto che 
-								 * sicuramente una casella libera nella sua vista c'è!!!!!!!
-								 */
-								boolean isPositionated = false;
-								for(int i = current.getPosRow() - current.getSizeRowLocalMap(); i<current.getPosRow() + current.getSizeRowLocalMap(); i++)
+								if(isPositionated == false)
 								{
-									for(int j = current.getPosCol() - current.getSizeColLocalMap(); j<current.getPosCol() + current.getSizeColLocalMap(); j++)
+									/* Se la cella in cui c'era il dinosauro è occupata allora viene messo in una posizione
+									 * libera partendo dall'inizio della sua vista in alto a sinistra. Viene assunto che 
+									 * sicuramente una casella libera nella sua vista c'è!!!!!!!
+									 */
+									isPositionated = false;
+									for(int i = current.getPosRow() - current.getSizeRowLocalMap()/2; i<current.getPosRow() + current.getSizeRowLocalMap()/2; i++)
 									{
-										if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur) == false)
+										// TODO: aggiornamento mappa locale nel caso il dinosauro non si sia posizionato dove era precedentemente
+										for(int j = current.getPosCol() - current.getSizeColLocalMap()/2; j<current.getPosCol() + current.getSizeColLocalMap()/2; j++)
 										{
-											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
-											isPositionated = true;
+											if((Game.getCell(i, j) instanceof Dinosaur) == false)
+											{
+												Game.setCellMap(current, i, j);
+												current.posRow = i;
+												current.posCol = j;
+												isPositionated = true;
+												break;
+											}
+											else if((Game.getCell(i, j) instanceof Food) == false)
+											{
+												Game.setCellMap(current, i, j);
+												current.posRow = i;
+												current.posCol = j;
+												isPositionated = true;
+												break;
+											}
+											else if(((Game.getCell(i, j) instanceof String) &&(Game.getCell(i, j).equals("a"))) == false)
+											{
+												Game.setCellMap(current, i, j);
+												current.posRow = i;
+												current.posCol = j;
+												isPositionated = true;
+												break;
+											}
+										}
+										if(isPositionated)
+										{
 											break;
 										}
-										else if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Food) == false)
-										{
-											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
-											isPositionated = true;
-											break;
-										}
-										else if(((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof String) &&(Game.getCell(current.getPosRow(), current.getPosCol()).equals("a"))) == false)
-										{
-											Game.setCellMap(current, current.getPosRow(), current.getPosCol());
-											isPositionated = true;
-											break;
-										}
-									}
-									if(isPositionated)
-									{
-										break;
 									}
 								}
 							}	

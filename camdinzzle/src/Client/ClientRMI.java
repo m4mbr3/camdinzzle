@@ -28,7 +28,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 	}
 
 	@Override
-	public synchronized boolean sendMessage(String msg) throws RemoteException 
+	public boolean sendMessage(String msg) throws RemoteException 
 	{
 		if(ClientMessageBroker.manageChangeRound(msg) != null)
 		{
@@ -54,12 +54,12 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 	}
 
 	@Override
-	public synchronized boolean getIsInGame() {
+	public boolean getIsInGame() {
 		return isInGame;
 	}
 	
 	@Override
-	public synchronized void setInGame(boolean isInGame) {
+	public void setInGame(boolean isInGame) {
 		this.isInGame = isInGame;
 	}
 
