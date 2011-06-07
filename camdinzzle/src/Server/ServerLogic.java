@@ -320,42 +320,49 @@ public class ServerLogic
 									 * libera partendo dall'inizio della sua vista in alto a sinistra. Viene assunto che 
 									 * sicuramente una casella libera nella sua vista c'è!!!!!!!
 									 */
-									isPositionated = false;
-									for(int i = current.getPosRow() - current.getSizeRowLocalMap()/2; i<current.getPosRow() + current.getSizeRowLocalMap()/2; i++)
+									int offset = 1;
+									do
 									{
-										// TODO: aggiornamento mappa locale nel caso il dinosauro non si sia posizionato dove era precedentemente
-										for(int j = current.getPosCol() - current.getSizeColLocalMap()/2; j<current.getPosCol() + current.getSizeColLocalMap()/2; j++)
+										for(int i = current.getPosRow() - offset; i<current.getPosRow() + offset; i++)
 										{
-											if((Game.getCell(i, j) instanceof Dinosaur) == false)
+											// TODO: aggiornamento mappa locale nel caso il dinosauro non si sia posizionato dove era precedentemente
+											for(int j = current.getPosCol() - offset; j<current.getPosCol() + offset; j++)
 											{
-												Game.setCellMap(current, i, j);
-												current.posRow = i;
-												current.posCol = j;
-												isPositionated = true;
-												break;
+												if((i >= 0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
+												{
+													if((Game.getCell(i, j) instanceof Dinosaur) == false)
+													{
+														Game.setCellMap(current, i, j);
+														current.posRow = i;
+														current.posCol = j;
+														isPositionated = true;
+														break;
+													}
+													else if((Game.getCell(i, j) instanceof Food) == false)
+													{
+														Game.setCellMap(current, i, j);
+														current.posRow = i;
+														current.posCol = j;
+														isPositionated = true;
+														break;
+													}
+													else if(((Game.getCell(i, j) instanceof String) &&(Game.getCell(i, j).equals("a"))) == false)
+													{
+														Game.setCellMap(current, i, j);
+														current.posRow = i;
+														current.posCol = j;
+														isPositionated = true;
+														break;
+													}
+												}
 											}
-											else if((Game.getCell(i, j) instanceof Food) == false)
+											if(isPositionated)
 											{
-												Game.setCellMap(current, i, j);
-												current.posRow = i;
-												current.posCol = j;
-												isPositionated = true;
-												break;
-											}
-											else if(((Game.getCell(i, j) instanceof String) &&(Game.getCell(i, j).equals("a"))) == false)
-											{
-												Game.setCellMap(current, i, j);
-												current.posRow = i;
-												current.posCol = j;
-												isPositionated = true;
 												break;
 											}
 										}
-										if(isPositionated)
-										{
-											break;
-										}
-									}
+										offset++;
+									}while(!isPositionated);
 								}
 							}	
 							else
@@ -413,14 +420,25 @@ public class ServerLogic
 								if(me.getValue() instanceof Carnivorous)
 								{
 									if(((Carnivorous)me.getValue()).getVegetation() != null)
+									{
 										Game.setCellMap(((Carnivorous)me.getValue()).getVegetation(), ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
+										((Carnivorous)me.getValue()).setVegetation(null);
+									}
 									else
 										Game.setCellMap("t", ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
 								}
 								else
 								{
 									if(((Vegetarian)me.getValue()).getCarrion() != null)
+									{
 										Game.setCellMap(((Vegetarian)me.getValue()).getCarrion(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+										((Vegetarian)me.getValue()).setCarrion(null);
+									}
+									else if(((Vegetarian)me.getValue()).getVegetation() != null)
+									{
+										Game.setCellMap(((Vegetarian)me.getValue()).getVegetation(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+										((Vegetarian)me.getValue()).setVegetation(null);
+									}
 									else
 										Game.setCellMap("t", ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
 								}
