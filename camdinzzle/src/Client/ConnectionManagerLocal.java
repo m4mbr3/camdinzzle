@@ -76,10 +76,10 @@ public class ConnectionManagerLocal implements ConnectionManager
 		// TODO Auto-generated method stub
 		if(!token.equals(""))
 		{
-			/*String retStr = server.gameAccess(token);
+		/*	String retStr = manager.getServerLogic().gameAccess(token);
 			if(ClientMessageBroker.manageGameAccess(retStr)[0].equals("ok"))
 			{
-				server.setGameAccess(true, username);
+				manager.getServerLogic().setGameAccess(true, username);
 				
 				if(token.equals(server.getTokenOfCurrentPlayer()))
 				{
