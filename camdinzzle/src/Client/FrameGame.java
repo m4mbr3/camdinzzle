@@ -443,9 +443,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				{
 					String[] option = {"yes","no"};
 					int opt = JOptionPane.showOptionDialog(panel, "Vuoi muovere il dinosauro", "Muovi Dinosauro", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
+					((JButton)arg0.getComponent()).setBorder(null);
 					if(opt==0)
 					{
-						((JButton)arg0.getComponent()).setBorder(null);
 						cellClicked.setBorder(null);
 						String[] nameDest = nameCell.split(";");
 						String[] newNameDest = nameDest[0].split(",");
@@ -495,10 +495,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 						cellClicked = (JButton)arg0.getComponent();
 						commandDinoButton[i].setEnabled(true);
 						drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
-						((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue));
+						((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
 					}
 					flag=1;
 				}
+			}
+			else
+			{
+				if(cellClicked!=null)
+					cellClicked.setBorder(null);
 			}
 		}
 	}
@@ -872,28 +877,35 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 */
 	public void drawRanking(ArrayList<String> classifica) 
 	{
+		if(ranking==null)
+		{
 			ranking = new JFrame("Classifica");
-			ranking.setVisible(true);
-			ranking.setSize(new Dimension(350, 500));
 			ranking2 = new JScrollPane();
-			String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
-			String[][] rowData = new String [classifica.size()/4][4];
-			int j=0,z=0;
-			for(int i=1;i<classifica.size();i++)
+		}
+		else
+		{
+			ranking1 = null;
+		}
+		ranking.setVisible(true);
+		ranking.setSize(new Dimension(350, 500));
+		String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
+		String[][] rowData = new String [classifica.size()/4][4];
+		int j=0,z=0;
+		for(int i=1;i<classifica.size();i++)
+		{
+			if(z>=4)
 			{
-				if(z>=4)
-				{
-					j++;
-					z=0;
-				}
-				rowData[j][z] = classifica.get(i);
-				z++;
+				j++;
+				z=0;
 			}
-			ranking1 = new JTable(rowData, columnNames);
-			ranking1.setVisible(true);
-			ranking2.getViewport().add(ranking1);
-			ranking.add(ranking2);
-			ranking.setLocation(screenWidth/2-175, screenHeight/2-250);
+			rowData[j][z] = classifica.get(i);
+			z++;
+		}
+		ranking1 = new JTable(rowData, columnNames);
+		ranking1.setVisible(true);
+		ranking2.getViewport().add(ranking1);
+		ranking.add(ranking2);
+		ranking.setLocation(screenWidth/2-175, screenHeight/2-250);
 	}
 
 	@Override

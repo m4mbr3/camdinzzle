@@ -974,6 +974,7 @@ public class ServerLogic
 														if(Game.getCell(dinoRow, dinoCol) instanceof Vegetation)
 														{
 															((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).eat(Game.getCell(dinoRow, dinoCol));								//quindi mangia													
+															((Vegetation)Game.getCell(dinoRow, dinoCol)).setPower(10);
 															((Vegetarian)currentSession.getPlayer(token).getSpecie().getDino(dinoId)).setVegetation((Vegetation)Game.getCell(dinoRow, dinoCol));
 														}
 														else if(Game.getCell(dinoRow, dinoCol) instanceof Carrion)
