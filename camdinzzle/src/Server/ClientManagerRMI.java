@@ -10,6 +10,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import Client.Client;
 import Client.ClientRMIInterface;
 
 /**
@@ -91,9 +92,23 @@ public class ClientManagerRMI implements ClientManager
 	{
 		this.client = null;
 	}
-	
+
+
+	@Override
+	public Client getClient() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setClient(Client client) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public String getUsername()
 	{
 		return username;
 	}
+
 }

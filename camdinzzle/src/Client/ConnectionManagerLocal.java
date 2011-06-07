@@ -23,7 +23,9 @@ public class ConnectionManagerLocal implements ConnectionManager
 	private int port;
 	private String command;
 	private boolean run;
-	private ClientListener clientListener;
+	private Client client;
+	
+
 	private String changeRound;
 	public ConnectionManagerLocal(ClientManagerLocal manager)
 	{
@@ -85,6 +87,7 @@ public class ConnectionManagerLocal implements ConnectionManager
 				{
 					manager.sendMessage("@cambioTurno," + manager.getUsernameOfCurrentPlayer());
 				}
+				return retStr;
 			}
 		}
 		return null;
@@ -185,13 +188,13 @@ public class ConnectionManagerLocal implements ConnectionManager
 	public String getChangeRound() {
 		// TODO Auto-generated method stub
 		
-		return null;
+		return changeRound;
 	}
 
 	@Override
 	public void setChangeRound(String msg) {
 		// TODO Auto-generated method stub
-		
+		changeRound = msg;
 	}
 
 	@Override
@@ -205,7 +208,16 @@ public class ConnectionManagerLocal implements ConnectionManager
 		// TODO Auto-generated method stub
 		return username;
 	}
-
+	@Override
+	public Client getClient() {
+		// TODO Auto-generated method stub
+		return this.client;
+	}
+	@Override
+	public void setClient(Client client) {
+		// TODO Auto-generated method stub
+		this.client = client;
+	}
 	
 
 }

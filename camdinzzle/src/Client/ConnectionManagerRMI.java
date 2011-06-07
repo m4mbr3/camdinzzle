@@ -605,5 +605,17 @@ public class ConnectionManagerRMI implements ConnectionManager
 		return username;
 	}
 
+	@Override
+	public Client getClient() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setClient(Client client) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

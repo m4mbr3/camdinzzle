@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import Client.Client;
 import Client.ClientMessageBroker;
 /**
  * @author Andrea
@@ -537,7 +538,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	}
 	
 	/**
-	 * @return true se il Player corrispondente a questo Client è in partita, false altrimenti
+	 * @return true se il Player corrispondente a questo Client ï¿½ in partita, false altrimenti
 	 */
 	public boolean getIsInGame()
 	{
@@ -547,5 +548,17 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	public void setIsInGame(boolean isInGame)
 	{
 		this.isInGame = isInGame;
+	}
+
+	@Override
+	public Client getClient() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setClient(Client client) {
+		// TODO Auto-generated method stub
+		
 	}
 }

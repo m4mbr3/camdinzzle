@@ -6,6 +6,8 @@ package Server;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import Client.Client;
+
 /**
  * @author Andrea
  *
@@ -14,6 +16,7 @@ public class ClientManagerLocal implements ClientManager{
 
 	private ServerLogic serverLogic;
 	private boolean isInGame;
+	Client client;
 	/**
 	 * 
 	 */
@@ -21,6 +24,7 @@ public class ClientManagerLocal implements ClientManager{
 		// TODO Auto-generated constructor stub
 		this.serverLogic = serverLogic;
 		isInGame = false;
+		this.client = null;
 	}
 
 	@Override
@@ -121,7 +125,7 @@ public class ClientManagerLocal implements ClientManager{
 	
 	public synchronized String getUsernameOfCurrentPlayer() 
 	{
-		return serverLogic.getuUsernameOfCurrentPlayer();
+		return serverLogic.getUsernameOfCurrentPlayer();
 	}
 
 	
@@ -136,9 +140,21 @@ public class ClientManagerLocal implements ClientManager{
 	public void setServerLogic(ServerLogic serverLogic) {
 		this.serverLogic = serverLogic;
 	}
-	public void sendMessage(String string)
+	public void sendMessage(String msg)
 	{
-		
+		client.getConnManager().setChangeRound(msg);
+	}
+
+	@Override
+	public Client getClient() {
+		// TODO Auto-generated method stub
+		return client;
+	}
+
+	@Override
+	public void setClient(Client client) {
+		// TODO Auto-generated method stub
+		this.client = client;
 	}
 	
 

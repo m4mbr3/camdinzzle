@@ -72,6 +72,7 @@ public class Server implements Runnable {
 			this.serverLogic = serverLogic;
 			clientLocal = new ClientManagerLocal(serverLogic);
 			client = new Client(clientLocal);
+			clientLocal.setClient(client);
 			try 
 			{
 				this.server = new ServerSocket(this.port);
