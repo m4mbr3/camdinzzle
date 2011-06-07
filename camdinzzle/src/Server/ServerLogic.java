@@ -330,29 +330,15 @@ public class ServerLogic
 											{
 												if((i >= 0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
 												{
-													if((Game.getCell(i, j) instanceof Dinosaur) == false)
+													if((Game.getCell(i, j) instanceof String)&&(((String)Game.getCell(i, j)).compareTo("t")==0))
 													{
+														
 														Game.setCellMap(current, i, j);
 														current.posRow = i;
 														current.posCol = j;
 														isPositionated = true;
 														break;
-													}
-													else if((Game.getCell(i, j) instanceof Food) == false)
-													{
-														Game.setCellMap(current, i, j);
-														current.posRow = i;
-														current.posCol = j;
-														isPositionated = true;
-														break;
-													}
-													else if(((Game.getCell(i, j) instanceof String) &&(Game.getCell(i, j).equals("a"))) == false)
-													{
-														Game.setCellMap(current, i, j);
-														current.posRow = i;
-														current.posCol = j;
-														isPositionated = true;
-														break;
+														
 													}
 												}
 											}
