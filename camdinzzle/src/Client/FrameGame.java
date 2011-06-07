@@ -32,6 +32,7 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
 import javax.swing.JFrame;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -80,6 +81,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private int timeGlobal;
 	private boolean flagStop;
 	private String nameSpecie;
+	private JButton cellClicked;
 	
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
@@ -444,6 +446,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					if(opt==0)
 					{
 						((JButton)arg0.getComponent()).setBorder(null);
+						cellClicked.setBorder(null);
 						String[] nameDest = nameCell.split(";");
 						String[] newNameDest = nameDest[0].split(",");
 						String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
@@ -459,9 +462,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 								{
 									String result;
 									if(check[2].equals("v"))
-										result = "vinto!";
+										result = " vinto!";
 									else
-										result = "perso!";
+										result = " perso!";
 									JOptionPane.showMessageDialog(panel, "Combattimento" + result, "Combattimento", JOptionPane.INFORMATION_MESSAGE, null);
 								}
 								extinctionSpecies();
@@ -483,15 +486,19 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			}
 			else if(((String)arg0.getComponent().getName()).contains("-"))
 			{
-				String[] idDino = arg0.getComponent().getName().split(";");
-				dinoId = idDino[1];
-				for(int i=0; i<2; i++)
+				if(((String)arg0.getComponent().getName()).contains(nameSpecie))
 				{
-					commandDinoButton[i].setEnabled(true);
-					drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
-					((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue));
+					String[] idDino = arg0.getComponent().getName().split(";");
+					dinoId = idDino[1];
+					for(int i=0; i<2; i++)
+					{
+						cellClicked = (JButton)arg0.getComponent();
+						commandDinoButton[i].setEnabled(true);
+						drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+						((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue));
+					}
+					flag=1;
 				}
-				flag=1;
 			}
 		}
 	}
@@ -503,7 +510,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	public void mouseEntered(MouseEvent arg0) 
 	{
 		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[3])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
-			((JButton) arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.black));
+			{
+				if(!arg0.getComponent().equals(cellClicked))
+				{
+					((JButton) arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.black));
+				}
+			}
 	}
 
 	@Override
@@ -513,7 +525,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	public void mouseExited(MouseEvent arg0) 
 	{
 		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[3])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
-			((JButton) arg0.getComponent()).setBorder(null);
+			{
+				if(!arg0.getComponent().equals(cellClicked))
+				{
+					((JButton) arg0.getComponent()).setBorder(null);
+				}
+			}
 	}
 
 	@Override
