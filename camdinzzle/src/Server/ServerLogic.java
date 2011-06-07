@@ -739,11 +739,19 @@ public class ServerLogic
 					{
 						int row = dino.getPosRow()+dino.getSizeRowLocalMap()/2;
 						if(row>Game.maxRow)
-							row=Game.maxRow;	
+							row=Game.maxRow;
+						if((row-dino.getSizeRowLocalMap()+1)<0)
+						{
+							row -= row-dino.getSizeRowLocalMap()+1;
+						}
 						zoom.add(String.valueOf(row));
 						int col = dino.getPosCol()-dino.getSizeColLocalMap()/2;
 						if(col<0)
 							col=0;
+						if((col+dino.getSizeColLocalMap()-1)>=Game.maxCol)
+						{
+							col += Game.maxCol - (col+dino.getSizeColLocalMap());
+						}
 						zoom.add(String.valueOf(col));
 						zoom.add(String.valueOf(dino.getSizeRowLocalMap()));
 						zoom.add(String.valueOf(dino.getSizeColLocalMap()));

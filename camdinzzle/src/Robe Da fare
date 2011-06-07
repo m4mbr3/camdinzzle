@@ -2,23 +2,19 @@
 		
 		LOGICA
 		
-		-salvataggi
+		-salvataggi---> thread che legge da riga di comando
 		-sistemare ritorno da eccezione (token non valido)
 		
 		GRAFICA
 		
 		-disabilitare FrameGame in cambioturno
-		-estremi vista locale e abilitazione bottoni
+		-estremi vista locale
 		-sistemare immgagini dinosauri
 		-dare la possibilità di scegliere immagine dino
 		-cambiare sfondo avversari
 		-quando seleziono il dino di un altro non posso muoverlo
 		
-		
-		
-		
-		-modificata la virgola nei comandi di risposta del server vuoti   (RMI)
-		-ricontrollo comandi con non virgola possibile tipo statodinosauro, classifica...    (RMI)
+
 
 		-JUNIT
 		-JML

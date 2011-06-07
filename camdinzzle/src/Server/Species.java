@@ -258,17 +258,24 @@ public class Species implements Serializable
 			int sizeRow = dino.getSizeRowLocalMap();
 			int sizeCol = dino.getSizeColLocalMap();
 			int startRow = dino.getPosRow() - sizeRow/2;
+			int startCol = dino.getPosCol() - sizeCol/2;
+
 			if(startRow < 0)
 				startRow = 0;
 			int endRow = startRow + sizeRow-1;
-			int startCol = dino.getPosCol() - sizeCol/2;
 			if(startCol < 0)
 				startCol = 0;
 			int endCol = startCol + sizeCol-1;
-			if(endRow > Game.maxRow)
-				endRow = Game.maxRow;
-			if(endCol > Game.maxCol)
-				endCol = Game.maxCol;
+			if(endRow >= Game.maxRow)
+			{
+				startRow += Game.maxRow - endRow - 1;
+				endRow = Game.maxRow - 1;
+			}
+			if(endCol >=Game.maxCol)
+			{
+				startCol += Game.maxCol - endCol - 1;
+				endCol = Game.maxCol - 1;
+			}
 			int k=0;
 			for(int i=startRow; i<=endRow; i++)
 			{
