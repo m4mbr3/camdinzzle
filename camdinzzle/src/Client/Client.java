@@ -219,8 +219,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 					} 
 					catch (Exception e) 
 					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						JOptionPane.showMessageDialog(this, "Error during contact the remote server", "Remote Exception", JOptionPane.ERROR_MESSAGE);
 					}
 		
 					

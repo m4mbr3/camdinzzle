@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import java.io.ObjectInputStream.GetField;
 import java.net.BindException;
+import java.net.ConnectException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -237,6 +238,15 @@ public class Server implements Runnable {
 		catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			String token = serverLogic.getTokenFromUsername(username);
+			if(token != null)
+			{
+				serverLogic.logout(token);
+			}
 		}
 	}
 	

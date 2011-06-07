@@ -1673,4 +1673,13 @@ public class ServerLogic
 			e.printStackTrace();
 		}
 	}
+	
+	public String getTokenFromUsername(String username)
+	{
+		if(players.get(username) != null)
+		{
+			return players.get(username).getToken();
+		}
+		return null;
+	}
 }

@@ -4,6 +4,7 @@
 package Server;
 
 import java.net.MalformedURLException;
+import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,7 +24,7 @@ public class ClientManagerRMI implements ClientManager
 	private boolean isInGame;
 	
 	public ClientManagerRMI(String username, String address, String port) throws MalformedURLException,
-	NotBoundException, RemoteException
+	NotBoundException, RemoteException, ConnectException
 	{
 		this.username = username;
 		this.port = port;

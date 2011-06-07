@@ -3,6 +3,7 @@
  */
 package Client;
 
+import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -17,8 +18,9 @@ public interface ConnectionManager {
 	 * Invia il messaggio di creazione utente al Server e attende la risposta
 	 * @param msg : messaggio da inviare al Server
 	 * @return Risposta del Server, se va in errore ritorna null
+	 * @throws ConnectException 
 	 */
-	public String creaUtente(String username, String password) ;
+	public String creaUtente(String username, String password) throws ConnectException ;
 	
 	/**
 	 * Invia il messaggio di login al Server e attende la risposta
