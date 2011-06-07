@@ -255,7 +255,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 					else
 					{
 						this.setVisible(true);
-						JOptionPane.showMessageDialog(this,"MessageIncorrect", "Message Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,"Generic Error during Login. Try Again!!!", "Message Error", JOptionPane.ERROR_MESSAGE);
 					}
 					//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
 			
