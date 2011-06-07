@@ -61,6 +61,10 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	private JLabel nome_server;
 	private JTextField server_value;
 	
+	public Client(Server server)
+	{
+		
+	}
 	public Client(String Name) {
 		super (Name);
 		this.setResizable(false);
