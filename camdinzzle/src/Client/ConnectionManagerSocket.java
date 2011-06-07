@@ -75,7 +75,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return null;
 				}
 			}
 			
@@ -100,8 +100,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	public synchronized String creaUtente(String username, String password) 
 	{
 		String msg = ClientMessageBroker.createUser(username, password);
+		String writerSuccess = sendMessage(msg);
 		
-		String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+		if(writerSuccess == null)
+		{
+			return null;
+		}
+		
+		String retStr = String.copyValueOf(writerSuccess.toCharArray());
 		mm.setMessage("");
 		
 		System.out.println(retStr);
@@ -113,8 +119,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	public synchronized String login(String username, String password) 
 	{
 		String msg = ClientMessageBroker.createLogin(username, password);
+		String writerSuccess = sendMessage(msg);
 		
-		String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+		if(writerSuccess == null)
+		{
+			return null;
+		}
+		
+		String retStr = String.copyValueOf(writerSuccess.toCharArray());
 		mm.setMessage("");
 		
 		if(ClientMessageBroker.manageLogin(retStr)[0].equals("ok"))
@@ -134,9 +146,15 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	{
 		if(!token.equals(""))
 		{
-			
 			String msg = ClientMessageBroker.createRace(token, name, type);
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			String writerSuccess = sendMessage(msg);
+			
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -153,7 +171,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createGameAccess(token);
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			String writerSuccess = sendMessage(msg);
+			
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -170,7 +195,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createGameExit(token);	
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			String writerSuccess = sendMessage(msg);
+			
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -187,7 +219,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createPlayerList(token);
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			String writerSuccess = sendMessage(msg);
+			
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -204,7 +243,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createRanking(token);
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			String writerSuccess = sendMessage(msg);
+			
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -221,8 +267,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createLogout(token);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -241,8 +293,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createGeneralMap(token);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -259,8 +317,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createDinoList(token);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -277,8 +341,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createDinoZoom(token, dinoId);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -295,8 +365,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createDinoState(token, dinoId);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -313,8 +389,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createDinoMove(token, dinoId, row, col);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -333,8 +415,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createDinoGrowUp(token, dinoId);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -353,8 +441,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{	
 			String msg = ClientMessageBroker.createNewEgg(token, dinoId);
+			String writerSuccess = sendMessage(msg);
+			
+			if(writerSuccess == null)
+			{
+				return null;
+			}
 				
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -373,8 +467,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createRoundConfirmation(token);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
@@ -393,8 +493,14 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		if(!token.equals(""))
 		{
 			String msg = ClientMessageBroker.createPassOffRound(token);
+			String writerSuccess = sendMessage(msg);
 			
-			String retStr = String.copyValueOf(sendMessage(msg).toCharArray());
+			if(writerSuccess == null)
+			{
+				return null;
+			}
+			
+			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
 			System.out.println(retStr);
