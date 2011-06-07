@@ -33,16 +33,17 @@ public class ConnectionManagerLocal implements ConnectionManager
 		this.token = "";
 	}
 	@Override
-	public String creaUtente(String username, String password) {
+	public String creaUtente(String username, String password) 
+	{
 		// TODO Auto-generated method stub
-		return manager.getServerLogic().add_new_user(username, password);
-		
+		return manager.creaUtente(username, password);
 	}
 
 	@Override
-	public String login(String username, String password) {
+	public String login(String username, String password) 
+	{
 		// TODO Auto-generated method stub
-		String retStr = manager.getServerLogic().login(username, password);
+		String retStr = manager.Login(username, password);
 		String[] response = ClientMessageBroker.manageLogin(retStr);
 		
 		if(response !=  null)
@@ -58,28 +59,27 @@ public class ConnectionManagerLocal implements ConnectionManager
 	}
 
 	@Override
-	public String creaRazza(String name, String type) {
+	public String creaRazza(String name, String type) 
+	{
 		// TODO Auto-generated method stub
 		if (!token.equals(""))
 		{
-			String retStr = manager.getServerLogic().addNewSpecies(token, name, type);
+			String retStr = manager.creaRazza(token, name, type);
 			return retStr;
 		}
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see Client.ConnectionManager#accessoPartita()
-	 */
+	
 	@Override
 	public String accessoPartita() {
 		// TODO Auto-generated method stub
-		if(!token.equals(""))
+		/*if(!token.equals(""))
 		{
-		/*	String retStr = manager.getServerLogic().gameAccess(token);
+			String retStr = manager.accessoPartita(token);
 			if(ClientMessageBroker.manageGameAccess(retStr)[0].equals("ok"))
 			{
-				manager.getServerLogic().setGameAccess(true, username);
+				manager(true, username);
 				
 				if(token.equals(server.getTokenOfCurrentPlayer()))
 				{
@@ -89,92 +89,106 @@ public class ConnectionManagerLocal implements ConnectionManager
 				{
 					client.sendMessage("@cambioTurno," + server.getUsernameOfCurrentPlayer());
 				}
-			}*/
-		}
+			}
+		}*/
 		return null;
 	}
 
 	@Override
 	public String uscitaPartita() {
 		// TODO Auto-generated method stub
-		return null;
+		if (!token.equals(""))return manager.uscitaPartita(token);
+		else return null;
 	}
 
 	@Override
 	public String[] listaGiocatori() {
 		// TODO Auto-generated method stub
-		return null;
+		if (!token.equals("")) return manager.listaGiocatori(token);
+		else return null;
 	}
 
 	@Override
 	public ArrayList<String> classifica() {
 		// TODO Auto-generated method stub
-		return null;
+		if (!token.equals("")) return manager.Classifica(token);
+		else return null;
 	}
 
 	@Override
 	public String logout() {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return manager.logout(token);
+		else return null;
 	}
 
 	@Override
 	public ArrayList<String> mappaGenerale() {
 		// TODO Auto-generated method stub
+		if(!token.equals("")) return manager.mappaGenerale(token);
 		return null;
 	}
 
 	@Override
 	public String[] listaDinosauri() {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return manager.listaDinosauri(token);
+		else return null;
 	}
 
 	@Override
 	public ArrayList<String> vistaLocale(String dinoId) {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return manager.vistaLocale(token, dinoId);
+		else return null;
 	}
 
 	@Override
 	public String[] statoDinosauro(String dinoId) {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return manager.statoDinosauro(token, dinoId);
+		else return null;
 	}
 
 	@Override
 	public String[] muoviDinosauro(String dinoId, String row, String col) {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return ClientMessageBroker.manageDinoMove(manager.muoviDinosauro(token, dinoId, row, col));
+		else return null;
 	}
 
 	@Override
 	public String[] cresciDinosauro(String dinoId) {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return ClientMessageBroker.manageDinoGrowUp(manager.cresciDinosauro(token, dinoId));
+		else return null;
 	}
 
 	@Override
 	public String[] deponiUovo(String dinoId) {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return ClientMessageBroker.manageNewEgg(manager.deponiUovo(token, dinoId));
+		else return null;
 	}
 
 	@Override
 	public String[] confermaTurno() {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return ClientMessageBroker.manageRoundConfirm(manager.confermaTurno(token));
+		else return null;
 	}
 
 	@Override
 	public String[] passaTurno() {
 		// TODO Auto-generated method stub
-		return null;
+		if(!token.equals("")) return ClientMessageBroker.managePlayerChangeRound(manager.passaTurno(token));
+		else return null;
 	}
 
 	@Override
 	public String getChangeRound() {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -187,13 +201,13 @@ public class ConnectionManagerLocal implements ConnectionManager
 	@Override
 	public String getToken() {
 		// TODO Auto-generated method stub
-		return null;
+		return token;
 	}
 
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return null;
+		return username;
 	}
 
 	

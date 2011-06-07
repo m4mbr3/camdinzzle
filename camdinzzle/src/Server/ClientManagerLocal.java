@@ -90,6 +90,10 @@ public class ClientManagerLocal implements ClientManager{
 	{
 		return serverLogic.dinoMove(token, dinoId, row, col);
 	}
+	public synchronized String cresciDinosauro(String token, String dinoId) 
+	{
+		return  serverLogic.dinoGrowUp(token, dinoId);
+	}
 	public synchronized String deponiUovo(String token, String dinoId)
 	{
 		return serverLogic.dinoNewEgg(token, dinoId);
