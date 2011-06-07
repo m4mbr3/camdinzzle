@@ -289,14 +289,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.flush();
 								
 								writer_on_socket = null;
-								connection_with_client.close();
-								
-								/*
-								// PROVA SALVATAGGIO
-								serverLogic.saveServer();
-								// END PROVA SALVATAGGIO
-								*/
-								
+								connection_with_client.close();								
 								
 								this.stop();
 							}

@@ -77,13 +77,14 @@ public class ServerLogic
 		
 		if(f.exists())
 		{
-			try {
+			try 
+			{
 				FileInputStream input = new FileInputStream("server.ser");
 				ObjectInputStream ois = new ObjectInputStream(input);
 				
+				currentSession = new Game((Object[][])ois.readObject());
 				players = (Hashtable<String, Player>)ois.readObject();
 				rank = (Hashtable<String, Species>)ois.readObject();
-				currentSession = new Game((Object[][])ois.readObject());
 				
 				ois.close(); 
 			} 
@@ -110,6 +111,27 @@ public class ServerLogic
 			players = new Hashtable<String, Player>();
 			rank = new Hashtable<String, Species>();
 			currentSession = new Game(null);
+			
+			try 
+			{
+				FileOutputStream out = new FileOutputStream("server.ser");
+				ObjectOutputStream oos = new ObjectOutputStream(out);
+				Object[][] map = currentSession.getGeneralMap();
+			
+				oos.writeObject(map);
+				
+				oos.close();
+			}
+			catch (FileNotFoundException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		loggedPlayers = new Hashtable<String, Player>();
@@ -1653,17 +1675,15 @@ public class ServerLogic
 		return token;
 	}
 	
-	public void saveServer()
+	public void saveServerState()
 	{
 		try 
 		{
 			FileOutputStream out = new FileOutputStream("server.ser");
 			ObjectOutputStream oos = new ObjectOutputStream(out);
-			Object[][] map = currentSession.getGeneralMap();
-			
+		
 			oos.writeObject(this.players);
 			oos.writeObject(rank);
-			oos.writeObject(map);
 			
 			oos.close();
 		}
