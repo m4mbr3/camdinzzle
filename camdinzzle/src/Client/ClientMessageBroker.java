@@ -62,6 +62,11 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
+		else if(msg.equals("@no"))
+		{
+			ret[0] = "no";
+			ret[1] = "COMANDO NON ESEGUITO";
+		}
 		return null;
 	}
 	
@@ -82,13 +87,17 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
-		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no,@tokenNonValido")) 
-				|| (msg.equals("@no")))
+		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no")))
 		{
 			ret[0] = "no";
 			if(msg.contains(","))
 				ret[1] = msg.substring(msg.indexOf(",") + 2);
 			return ret;
+		}
+		else if(msg.equals("@no,@tokenNonValido"))
+		{
+			ret[0] = "no";
+			ret[1] = "COMANDO NON ESEGUITO";
 		}
 		return null;
 	}
@@ -115,6 +124,11 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
+		else if(msg.equals("@no"))
+		{
+			ret[0] = "no";
+			ret[1] = "COMANDO NON ESEGUITO";
+		}
 		return null;
 	}
 	
@@ -140,6 +154,11 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
+		else if(msg.equals("@no"))
+		{
+			ret[0] = "no";
+			ret[1] = "COMANDO NON ESEGUITO";
+		}
 		return null;
 	}
 	
@@ -157,6 +176,10 @@ public class ClientMessageBroker
 		else if(msg.equals("@no,@tokenNonValido"))
 		{
 			return new String[]{"no", "tokenNonValido"};
+		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
 		}
 		return null;
 	}
@@ -231,6 +254,13 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
+		else if(msg.equals("@no"))
+		{
+			ArrayList<String> ret = new ArrayList<String>();
+			ret.add("no");
+			ret.add("COMANDO NON ESEGUITO");
+			return ret;
+		}
 		return null;
 	}
 	
@@ -281,6 +311,10 @@ public class ClientMessageBroker
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
 		}
 		return null;
 	}
@@ -337,6 +371,13 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
+		else if(msg.equals("@no"))
+		{
+			ArrayList<String> ret = new ArrayList<String>();
+			ret.add("no");
+			ret.add("COMANDO NON ESEGUITO");
+			return ret;
+		}
 		return null;
 	}
 	
@@ -365,6 +406,10 @@ public class ClientMessageBroker
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")) || (msg.equals("@no,@idNonValido")))
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
 		}
 		return null;
 	}
@@ -395,6 +440,10 @@ public class ClientMessageBroker
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
 		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
+		}
 		return null;
 	}
 	
@@ -410,6 +459,10 @@ public class ClientMessageBroker
 				|| (msg.equals("@no,@nonInPartita")))
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
 		}
 		return null;
 	}
@@ -433,6 +486,10 @@ public class ClientMessageBroker
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
 		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
+		}
 		return null;
 	}
 	
@@ -451,6 +508,10 @@ public class ClientMessageBroker
 				|| (msg.equals("@no,@nonInPartita")))
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
 		}
 		return null;
 	}
@@ -471,6 +532,10 @@ public class ClientMessageBroker
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
 		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
+		}
 		return null;
 	}
 	
@@ -489,6 +554,10 @@ public class ClientMessageBroker
 				|| (msg.equals("@no,@nonInPartita")))
 		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
+		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
 		}
 		return null;
 	}
@@ -516,6 +585,10 @@ public class ClientMessageBroker
 			
 			return ret;
 		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
+		}
 		return null;
 	}
 	
@@ -542,6 +615,10 @@ public class ClientMessageBroker
 		else if(msg.equals("@no,@tokenNonValido"))
 		{
 			return new String[]{"no", "tokenNonValido"};
+		}
+		else if(msg.equals("@no"))
+		{
+			return new String[]{"no", "COMANDO NON ESEGUITO"};
 		}
 		return null;
 	}
@@ -591,6 +668,13 @@ public class ClientMessageBroker
 			ret.add("no");
 			ret.add("tokenNonValido");
 			
+			return ret;
+		}
+		else if(msg.equals("@no"))
+		{
+			ArrayList<String> ret = new ArrayList<String>();
+			ret.add("no");
+			ret.add("COMANDO NON ESEGUITO");
 			return ret;
 		}
 		return null;

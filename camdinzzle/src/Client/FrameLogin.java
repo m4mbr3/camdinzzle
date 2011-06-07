@@ -3,7 +3,6 @@
  */
 package Client;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
@@ -15,13 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JFrame;
@@ -31,13 +24,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
+
 /**
  * @author Andrea
  *
  */
 public class FrameLogin extends JFrame implements ActionListener,WindowListener,ChangeListener, MouseListener{
 
+	private static final long serialVersionUID = 1L;
 	private JLabel username_label;
 	private JLabel password_label;
 	private JLabel camdinzzle;
@@ -58,16 +52,17 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	/**
 	 * @throws HeadlessException
 	 */
-	public FrameLogin() throws HeadlessException {
-		// TODO Auto-generated constructor stub
+	public FrameLogin() throws HeadlessException 
+	{
+		
 	}
 
 	/**
 	 * @param gc
 	 */
-	public FrameLogin(GraphicsConfiguration gc) {
+	public FrameLogin(GraphicsConfiguration gc) 
+	{
 		super(gc);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -76,7 +71,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	 */
 	public FrameLogin(String title, Client client, boolean is_local) throws HeadlessException {
 		super(title);
-		// TODO Auto-generated constructor stub
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		//this.setResizable(false);
 		this.client = client;
@@ -159,26 +153,26 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	 * @param title
 	 * @param gc
 	 */
-	public FrameLogin(String title, GraphicsConfiguration gc) {
+	public FrameLogin(String title, GraphicsConfiguration gc) 
+	{
 		super(title, gc);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent arg0) 
+	{
 	
 	}
 
 	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowActivated(WindowEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowClosed(WindowEvent arg0) 
+	{
 	if(!is_local){
 		System.out.println("Exit clicked");
 		client.setConnManager(null);
@@ -194,8 +188,8 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	}
 
 	@Override
-	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowClosing(WindowEvent arg0) 
+	{
 	if(!is_local){
 		System.out.println("Exit clicked");
 		client.setConnManager(null);
@@ -211,37 +205,37 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowDeactivated(WindowEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowDeiconified(WindowEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowIconified(WindowEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowOpened(WindowEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent arg0) {
-		// TODO Auto-generated method stub
+	public void stateChanged(ChangeEvent arg0) 
+	{
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseClicked(MouseEvent arg0) 
+	{
 		if(arg0.getComponent().equals(back))
 		{
 			new_userframe.setVisible(false);
@@ -334,8 +328,8 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseEntered(MouseEvent arg0) 
+	{
 		if (arg0.getComponent().equals(this.new_user))
 		{
 			new_user.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -348,8 +342,8 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseExited(MouseEvent arg0) 
+	{
 		if (arg0.getComponent().equals(this.new_user))
 		{
 			new_user.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -362,14 +356,14 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mousePressed(MouseEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseReleased(MouseEvent arg0) 
+	{
 		
 	}
 	

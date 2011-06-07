@@ -6,7 +6,6 @@ package Client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -36,6 +35,7 @@ import javax.swing.JTextField;
 
 public class FrameGameManager extends JFrame implements WindowListener, MouseListener{
 
+	private static final long serialVersionUID = 1L;
 	private Dimension screenSize;
 	private JLabel titleframe;
 	private JLabel creaRazza;
@@ -64,7 +64,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JScrollPane ranking2;
 	private JTable ranking1;
 	
-	private JOptionPane exception;
 	private FrameGame frameGame;
 	/**
 	 * @param title
@@ -72,7 +71,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	 */
 	public FrameGameManager(String title, Client client) throws HeadlessException {
 		super(title);
-		// TODO Auto-generated constructor stub
+
 		this.client = client;
 		this.setResizable(false);
 		this.setLayout(null);
@@ -150,7 +149,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		if(arg0.getComponent().equals(creaRazza))
 		{
 			//Frame con i campi per la creazione della razza
@@ -228,7 +226,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				pannelloGiocatori = new JPanel();
 				listaGiocatori.add(pannelloGiocatori,BorderLayout.CENTER);
 				pannelloGiocatori.setLayout(new GridLayout(8,1));
-				int j;
 				
 				for (int i=1; i < response.length; i++)
 				{
@@ -341,14 +338,14 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 	}
 	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowActivated(WindowEvent arg0) 
+	{
 		
 	}
 
 	@Override
-	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowClosed(WindowEvent arg0) 
+	{
 		int ritorno = JOptionPane.showConfirmDialog(
 			    this,
 			    "Do you really want to exit from Camdinzzle?",
@@ -368,8 +365,8 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	}
 
 	@Override
-	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowClosing(WindowEvent arg0) 
+	{
 		int ritorno = JOptionPane.showConfirmDialog(
 			    this,
 			    "Do you really want to exit from Camdinzzle?",
@@ -390,25 +387,25 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
@@ -416,25 +413,25 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 

@@ -3,7 +3,6 @@
 		LOGICA
 		
 		-salvataggi---> thread che legge da riga di comando
-		-sistemare ritorno da eccezione (token non valido)
 		
 		GRAFICA
 		
@@ -12,7 +11,6 @@
 		-dare la possibilità di scegliere immagine dino
 		-cambiare sfondo avversari
 		
-
 
 		-JUNIT
 		-JML

@@ -10,7 +10,6 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -32,7 +32,6 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 
 import javax.swing.JFrame;
-import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -43,7 +42,7 @@ import javax.swing.event.ListSelectionListener;
  */
 public class FrameGame extends JFrame implements MouseListener,Visual,ActionListener, WindowListener {
 
-
+	private static final long serialVersionUID = 1L;
 	private JPanel panel;
 	private JPanel panelControl;
 	private JPanel panelControlUp;
@@ -71,9 +70,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private JLabel time;
 	private int timeMin;
 	private int timeSec;
-	private JFrame ranking;
-	private JTable ranking1;
-	private JScrollPane ranking2;
+	private JFrame rankingFrame;
+	private JTable rankingTable;
+	private JScrollPane rankingScroll;
 	private Client client;
 	private String dinoId;
 	private int flag=0;
@@ -91,7 +90,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
 	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
-	private Dimension screenSize;
 	private int screenHeight;
 	private int screenWidth;
 
@@ -108,9 +106,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-//		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//		screenHeight = (int)screenSize.getHeight();
-//		screenWidth = (int)screenSize.getWidth();
 		screenHeight = (int)g.getMaximumWindowBounds().getHeight();
 		screenWidth = (int)g.getMaximumWindowBounds().getWidth();
 		this.client=client;
@@ -877,17 +872,19 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 */
 	public void drawRanking(ArrayList<String> classifica) 
 	{
-		if(ranking==null)
+		if(rankingFrame==null)
 		{
-			ranking = new JFrame("Classifica");
-			ranking2 = new JScrollPane();
+			rankingFrame = new JFrame("Classifica");
+			rankingScroll = new JScrollPane();
 		}
 		else
 		{
-			ranking1 = null;
+			rankingTable = null;
 		}
-		ranking.setVisible(true);
-		ranking.setSize(new Dimension(350, 500));
+		rankingFrame.setVisible(true);
+		rankingFrame.setSize(new Dimension(350, 500));
+		rankingFrame.validate();
+		rankingFrame.setAlwaysOnTop(true);
 		String[] columnNames = {"USERNAME","NOME SPECIE","PUNTEGGIO","IN PARTITA"};
 		String[][] rowData = new String [classifica.size()/4][4];
 		int j=0,z=0;
@@ -901,11 +898,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			rowData[j][z] = classifica.get(i);
 			z++;
 		}
-		ranking1 = new JTable(rowData, columnNames);
-		ranking1.setVisible(true);
-		ranking2.getViewport().add(ranking1);
-		ranking.add(ranking2);
-		ranking.setLocation(screenWidth/2-175, screenHeight/2-250);
+		rankingTable = new JTable(rowData, columnNames);
+		rankingTable.setVisible(true);
+		rankingScroll.getViewport().add(rankingTable);
+		rankingFrame.add(rankingScroll);
+		rankingFrame.setLocation(screenWidth/2-175, screenHeight/2-250);
 	}
 
 	@Override
