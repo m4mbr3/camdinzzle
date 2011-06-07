@@ -10,6 +10,8 @@
 		-sistemare immgagini dinosauri
 		-dare la possibilità di scegliere immagine dino
 		-cambiare sfondo avversari
+		-quando il server torna per un tot di volte null al posto di dire azione non compiuta disconnettere
+		il client facendo la stop del ClientListener
 		
 
 		-JUNIT

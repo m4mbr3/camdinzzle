@@ -79,6 +79,10 @@ public class ConnectionManagerSocket implements ConnectionManager {
 				}
 			}
 			
+			if(mm.getMessage().equals("null"))
+			{
+				return null;
+			}
 			return mm.getMessage();
 		}
 		catch(IOException e)
@@ -86,8 +90,6 @@ public class ConnectionManagerSocket implements ConnectionManager {
 			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
 			 * di comunicazione col socket 
 			 */
-			
-			e.printStackTrace();
 			return null;
 		} 
 	}

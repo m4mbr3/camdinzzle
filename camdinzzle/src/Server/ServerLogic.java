@@ -73,7 +73,7 @@ public class ServerLogic
 	{
 		// PROVA DESERIALIZZAZIONE
 		File f = new File("server.ser");
-		boolean isCorrectLoadingFromFile = true;
+		boolean isCorrectLoadingFromFile = true;		
 		
 		if(f.exists())
 		{
@@ -81,12 +81,13 @@ public class ServerLogic
 			{
 				FileInputStream input = new FileInputStream("server.ser");
 				ObjectInputStream ois = new ObjectInputStream(input);
-				
+			
 				currentSession = new Game((Object[][])ois.readObject());
 				players = (Hashtable<String, Player>)ois.readObject();
 				rank = (Hashtable<String, Species>)ois.readObject();
 				
 				ois.close(); 
+				input.close();
 			} 
 			catch (FileNotFoundException e) 
 			{
@@ -103,33 +104,14 @@ public class ServerLogic
 				isCorrectLoadingFromFile = false;
 				System.out.println("ERROR: Lecture from file failed.");
 			}
-			// END DESERIALIZZAZIONE
+				// END DESERIALIZZAZIONE
 		}
 		
-		else if((!f.exists()) || (!isCorrectLoadingFromFile))
+		else if((!isCorrectLoadingFromFile) || (!f.exists()))
 		{
 			players = new Hashtable<String, Player>();
 			rank = new Hashtable<String, Species>();
 			currentSession = new Game(null);
-			/*
-			try 
-			{
-				FileOutputStream out = new FileOutputStream("server.ser");
-				ObjectOutputStream oos = new ObjectOutputStream(out);
-				Object[][] map = currentSession.getGeneralMap();
-			
-				oos.writeObject(map);
-				
-				oos.close();
-			}
-			catch (FileNotFoundException e) 
-			{
-				System.out.println("ERROR: File not exist.");
-			}
-			catch (IOException e) 
-			{
-				System.out.println("ERROR: Lecture from file failed.");
-			}*/
 		}
 		
 		loggedPlayers = new Hashtable<String, Player>();
@@ -308,7 +290,7 @@ public class ServerLogic
 					if (currentSession.getPlayer(token) == null)
 					{
 						if(currentSession.numberPlayersInGame() == 0)
-						{
+						{							
 							tokenOfCurrentPlayer = token;
 							this.changeRound();
 							//this.changeRoundNotify();
@@ -478,7 +460,11 @@ public class ServerLogic
 				}
 				
 				if(currentSession.numberPlayersInGame() == 0)
-					isTheFirstAccess = true;
+				{
+					// SALVATAGGIO SERVER
+					saveServerState();
+					// END SALVATAGGIO SERVER
+				}
 			}
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
@@ -1704,11 +1690,14 @@ public class ServerLogic
 		{
 			FileOutputStream out = new FileOutputStream("server.ser");
 			ObjectOutputStream oos = new ObjectOutputStream(out);
-		
+			Object[][] map = currentSession.getGeneralMap();
+			
+			oos.writeObject(map);
 			oos.writeObject(this.players);
 			oos.writeObject(rank);
 			
 			oos.close();
+			out.close();
 		}
 		catch (FileNotFoundException e) 
 		{

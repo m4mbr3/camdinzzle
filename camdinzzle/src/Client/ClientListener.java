@@ -51,14 +51,15 @@ public class ClientListener implements Runnable
 		while(run)
 		{
 			readSocket = null;
-			if(timelineServerNull == 10)
+			if(timelineServerNull == 20)
 			{
-				mm.setMessage(null);
+				mm.setMessage("null");
 				this.stop();
 			}
 			try 
 			{
 				readSocket = reader_on_socket.readLine();
+				timelineServerNull = 0;
 			} 
 			catch (IOException e) 
 			{

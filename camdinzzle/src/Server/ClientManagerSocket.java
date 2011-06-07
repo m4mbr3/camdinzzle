@@ -86,7 +86,6 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 			} 
 			catch (IOException e1) 
 			{
-				System.out.println("ERROR: Lecture from socket failed.");
 				lectureFromSocketError++;
 			}
 			
