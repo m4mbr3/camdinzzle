@@ -65,7 +65,7 @@ public class ClientManagerLocal implements ClientManager{
 	{
 		return ServerMessageBroker.manageRanking(serverLogic.ranking(token));
 	}
-	public synchronized String[]
+	
 	
 	public ServerLogic getServerLogic() {
 		return serverLogic;

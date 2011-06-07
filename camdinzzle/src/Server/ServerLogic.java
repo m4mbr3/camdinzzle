@@ -411,51 +411,55 @@ public class ServerLogic
 			{
 				if(currentSession.getPlayer(token) == null)
 				{
-					return ServerMessageBroker.createOkMessage();
+					return ServerMessageBroker.createTokenNonValidoErrorMessage();
 				}
 				else
 				{
 					if(currentSession.isPlayerInGame(token))
 					{						
-						if(loggedPlayers.get(token).getSpecie().getDinosaurs() != null)
+						if(loggedPlayers.get(token).getSpecie() != null)
 						{
-							// Tolgo i dinosauri del giocatore dalla mappa
-							Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
-							while(dinosaurs.hasNext())
+							if(loggedPlayers.get(token).getSpecie().getDinosaurs() != null)
 							{
-								Map.Entry me = (Map.Entry) dinosaurs.next();
-								
-								if(me.getValue() instanceof Carnivorous)
+								// Tolgo i dinosauri del giocatore dalla mappa
+								Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
+								while(dinosaurs.hasNext())
 								{
-									if(((Carnivorous)me.getValue()).getVegetation() != null)
+									Map.Entry me = (Map.Entry) dinosaurs.next();
+									
+									if(me.getValue() instanceof Carnivorous)
 									{
-										Game.setCellMap(((Carnivorous)me.getValue()).getVegetation(), ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
-										((Carnivorous)me.getValue()).setVegetation(null);
+										if(((Carnivorous)me.getValue()).getVegetation() != null)
+										{
+											Game.setCellMap(((Carnivorous)me.getValue()).getVegetation(), ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
+											((Carnivorous)me.getValue()).setVegetation(null);
+										}
+										else
+											Game.setCellMap("t", ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
 									}
 									else
-										Game.setCellMap("t", ((Carnivorous)me.getValue()).getPosRow(), ((Carnivorous)me.getValue()).getPosCol());
-								}
-								else
-								{
-									if(((Vegetarian)me.getValue()).getCarrion() != null)
 									{
-										Game.setCellMap(((Vegetarian)me.getValue()).getCarrion(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
-										((Vegetarian)me.getValue()).setCarrion(null);
+										if(((Vegetarian)me.getValue()).getCarrion() != null)
+										{
+											Game.setCellMap(((Vegetarian)me.getValue()).getCarrion(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+											((Vegetarian)me.getValue()).setCarrion(null);
+										}
+										else if(((Vegetarian)me.getValue()).getVegetation() != null)
+										{
+											Game.setCellMap(((Vegetarian)me.getValue()).getVegetation(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
+											((Vegetarian)me.getValue()).setVegetation(null);
+										}
+										else
+											Game.setCellMap("t", ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
 									}
-									else if(((Vegetarian)me.getValue()).getVegetation() != null)
-									{
-										Game.setCellMap(((Vegetarian)me.getValue()).getVegetation(), ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
-										((Vegetarian)me.getValue()).setVegetation(null);
-									}
-									else
-										Game.setCellMap("t", ((Vegetarian)me.getValue()).getPosRow(), ((Vegetarian)me.getValue()).getPosCol());
 								}
 							}
+							else
+							{
+								currentSession.getPlayer(token).setSpecie(null);
+							}
 						}
-						else
-						{
-							currentSession.getPlayer(token).setSpecie(null);
-						}
+						
 						
 						if(tokenOfCurrentPlayer.equals(token))
 						{
