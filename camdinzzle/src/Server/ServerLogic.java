@@ -111,7 +111,7 @@ public class ServerLogic
 			players = new Hashtable<String, Player>();
 			rank = new Hashtable<String, Species>();
 			currentSession = new Game(null);
-			
+			/*
 			try 
 			{
 				FileOutputStream out = new FileOutputStream("server.ser");
@@ -131,7 +131,7 @@ public class ServerLogic
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 		
 		loggedPlayers = new Hashtable<String, Player>();

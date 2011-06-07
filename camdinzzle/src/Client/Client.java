@@ -1,4 +1,5 @@
 package Client;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -31,12 +32,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-/**
+import Server.*
+;/**
  * @author Andrea
  *
  */
-public class Client extends JFrame implements ActionListener, WindowListener,MouseListener,ChangeListener, Runnable{
+public class Client extends JFrame implements ActionListener, WindowListener,MouseListener,ChangeListener{
 
 	/**
 	 * 
@@ -46,7 +47,6 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	private JLabel choice;
 	private JPanel panel;
 	private Dimension screenSize;
-	private JRadioButton local;
 	private JRadioButton rmi;
 	private JRadioButton socket;
 	private ButtonGroup radiogroup;
@@ -61,9 +61,10 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	private JLabel nome_server;
 	private JTextField server_value;
 	
-	public Client(Server server)
+	public Client(ServerLogic server)
 	{
-		
+		this.connManager =new ConnectionManagerLocal(server);
+		login = new FrameLogin("Login",this,true);
 	}
 	public Client(String Name) {
 		super (Name);
@@ -88,10 +89,9 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		next = new JButton("Continue");
 		next.setLocation(150,310);
 		next.setSize(150, 40);
-		local = new JRadioButton("Local");
 		rmi = new JRadioButton("rmi");
 		socket = new JRadioButton("socket");
-		camdinzzle = new JLabel("Camdinzzle Project v1.0");
+		camdinzzle = new JLabel("<html> <h3>Camdinzzle Project v1.0</h3>");
 		choice = new JLabel("Select the method of connection to ServerLogic:");
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -99,9 +99,8 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		panel.setSize(400,400);
 		choice.setSize(350,30);
 		camdinzzle.setSize(300,30);
-		local.setSize(300,30);
-		rmi.setSize(300,30);
-		socket.setSize(300,30);
+		rmi.setSize(100,30);
+		socket.setSize(100,30);
 		port_label.setSize(90,20);
 		address_label.setSize(90,20);
 		port.setSize(90,20);
@@ -109,15 +108,13 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		enable_port.setSize(100,20);
 		enable_port.addChangeListener(this);
 		socket.addChangeListener(this);
-		radiogroup.add(local);
 		radiogroup.add(rmi);
 		radiogroup.add(socket);
 		
 		camdinzzle.setLocation(20,15);
-		choice.setLocation(20,40);
-		local.setLocation(20, 80);
-		rmi.setLocation(20, 110);
-		socket.setLocation(20, 140);
+		choice.setLocation(20,60);
+		rmi.setLocation(50, 110);
+		socket.setLocation(170, 110);
 		enable_port.setLocation(230,200);
 		port.setLocation(140,200);
 		address.setLocation(140,240);
@@ -125,12 +122,12 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		address_label.setLocation(50,240);
 		server_value.setVisible(true);
 		nome_server.setVisible(true);
-		address.setEnabled(false);
+		address.setEnabled(true);
 		server_value.setEnabled(false);
 		nome_server.setEnabled(true);
-		enable_port.setEnabled(false);
+		enable_port.setEnabled(true);
 		port.setEnabled(false);
-		address.setEditable(false);
+		address.setEditable(true);
 		port_label.setEnabled(true);
 		address_label.setEnabled(true);
 		
@@ -144,7 +141,6 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		panel.add(camdinzzle);
 		panel.add(choice);
 		panel.add(socket);
-		panel.add(local);
 		panel.add(rmi);
 		panel.add(next);
 		this.add(panel);
@@ -181,48 +177,45 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if(arg0.getSource() instanceof JFrame )
-		{
-			System.exit(0);
-		}
 		if(arg0.getSource() instanceof JButton)
 		{
-			if((local.isSelected()==false)&&(rmi.isSelected()==false)&&(socket.isSelected()==false))
+			if((rmi.isSelected()==false)&&(socket.isSelected()==false))
 			{
 				System.out.println("You Can't Go Next!!!");
 			}
 			else
 			{
-				if(local.isSelected())
-				{
-					this.connManager = new ConnectionManagerLocal();
-				}
-				else if(rmi.isSelected())
-				{
+				 if(rmi.isSelected())
+				 {
 					this.setVisible(false);
 					try{
 						this.connManager = new ConnectionManagerRMI(address.getText(),port.getText(),server_value.getText());
-						login = new FrameLogin("Login",this);
+						login = new FrameLogin("Login",this,false);
 						System.out.println("Server scaricato!!");
 					}
 					catch(MalformedURLException e)
 					{
+						this.setVisible(true);
 						JOptionPane.showMessageDialog(this, "Error in the url...check your data connect", "Malformed URL ", JOptionPane.ERROR_MESSAGE);
 					}
 					catch(AccessException e)
 					{
+						this.setVisible(true);
 						JOptionPane.showMessageDialog(this, "Error during the access", "Access Exception", JOptionPane.ERROR_MESSAGE);
 					}
 					catch(AlreadyBoundException e)
 					{
+						this.setVisible(true);
 						JOptionPane.showMessageDialog(this, "Object already in use", "AlreadyBoundException", JOptionPane.ERROR_MESSAGE);
 					}
 					catch(RemoteException e)
 					{
+						this.setVisible(true);
 						JOptionPane.showMessageDialog(this, "Error during contact the remote server", "Remote Exception", JOptionPane.ERROR_MESSAGE);
 					} 
 					catch (Exception e) 
 					{
+						this.setVisible(true);
 						JOptionPane.showMessageDialog(this, "Error during contact the remote server", "Remote Exception", JOptionPane.ERROR_MESSAGE);
 					}
 		
@@ -234,7 +227,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 					Integer port_i = new Integer(port.getText());
 					try{
 							connManager = new ConnectionManagerSocket(port_i.intValue(), address.getText(), new MonitorMessage());
-							login = new FrameLogin("Login",this);
+							login = new FrameLogin("Login",this, false);
 						}
 					catch(ConnectException e)
 					{
@@ -255,10 +248,12 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 					catch(NumberFormatException e)
 					{
 						JOptionPane.showMessageDialog(this, "Check you port!!!", "Port Error", JOptionPane.ERROR_MESSAGE);
+						this.setVisible(true);
 					}
 					catch(IOException e)
 					{
 						JOptionPane.showMessageDialog(this, "Generic IOError ", "IOException", JOptionPane.ERROR_MESSAGE);
+						this.setVisible(true);
 					}
 					
 						
@@ -308,10 +303,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		// TODO Auto-generated method stub
 		
 	}
-	public void run()
-	{
-		
-	}
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -354,39 +346,16 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 			if(socket.isSelected())
 			{
 				port.setText("4567");
-				enable_port.setEnabled(true);
-				address.setEnabled(true);
-				address.setEditable(true);
-				port_label.setEnabled(true);
-				address_label.setEnabled(true);
 				server_value.setEnabled(false);
-				server_value.setEditable(true);
+				server_value.setEditable(false);
 				this.validate();
 				this.repaint();
 			}
 			if(rmi.isSelected())
 			{
 				port.setText("1099");
-				enable_port.setEnabled(true);
-				address.setEditable(true);
-				address.setEnabled(true);
-				port_label.setEnabled(true);
-				address_label.setEnabled(true);
 				server_value.setEnabled(true);
 				server_value.setEditable(true);
-				this.validate();
-				this.repaint();
-			}
-			if(local.isSelected())
-			{
-				port.setText("");
-				enable_port.setEnabled(false);
-				address.setEditable(false);
-				server_value.setEditable(false);
-				port.setEnabled(false);
-				address.setEditable(false);
-				address.setEnabled(true);
-				server_value.setEnabled(false);
 				this.validate();
 				this.repaint();
 			}

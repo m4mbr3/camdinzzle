@@ -4,13 +4,20 @@
 package Client;
 
 import java.util.ArrayList;
+import Server.ServerLogic;
 
 /**
  * @author Andrea
  *
  */
+
 public class ConnectionManagerLocal implements ConnectionManager 
 {	
+	ServerLogic server;
+	public ConnectionManagerLocal(ServerLogic server)
+	{
+		this.server = server;
+	}
 	@Override
 	public String creaUtente(String username, String password) {
 		// TODO Auto-generated method stub
