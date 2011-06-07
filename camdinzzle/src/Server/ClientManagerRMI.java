@@ -22,13 +22,15 @@ public class ClientManagerRMI implements ClientManager
 	private ClientRMIInterface client;
 	private String port;
 	private boolean isInGame;
+	private ServerRMI serverRMI;
 	
-	public ClientManagerRMI(String username, String address, String port) throws MalformedURLException,
+	public ClientManagerRMI(String username, String address, String port, ServerRMI serverRMI) throws MalformedURLException,
 	NotBoundException, RemoteException, ConnectException
 	{
 		this.username = username;
 		this.port = port;
 		this.isInGame = false;
+		this.serverRMI =serverRMI;
 		
 		client = (ClientRMIInterface)Naming.lookup("rmi://" + address + "/" + username + ":" + port);
 		
@@ -37,11 +39,37 @@ public class ClientManagerRMI implements ClientManager
 	@Override
 	public boolean sendChangeRound(String msg) 
 	{
-		try {
-			return client.sendMessage(msg);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		boolean isSend = false;
+		int sendCounter = 0;
+		
+		do
+		{
+			try
+			{
+				if(client.sendMessage(msg))
+					isSend = true;
+			} 
+			catch (RemoteException e) 
+			{
+				System.out.println("ERROR: " + e.getMessage());
+				sendCounter++;
+			}
+		}while((!isSend) && (sendCounter <= 2));
+		if(isSend)
+		{
+			return true;
+		}
+		else
+		{
+			try 
+			{
+				serverRMI.uscitaPartita(serverRMI.getTokenOfPlayer(username));
+				serverRMI.logout(serverRMI.getTokenOfPlayer(username));
+			}
+			catch (RemoteException e) 
+			{
+				System.out.println("ERROR: " + e.getMessage());
+			}
 			return false;
 		}
 	}
@@ -62,5 +90,10 @@ public class ClientManagerRMI implements ClientManager
 	public void unregistryClient()
 	{
 		this.client = null;
+	}
+	
+	public String getUsername()
+	{
+		return username;
 	}
 }

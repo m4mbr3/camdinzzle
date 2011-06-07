@@ -91,17 +91,17 @@ public class ServerLogic
 			catch (FileNotFoundException e) 
 			{
 				isCorrectLoadingFromFile = false;
-				e.printStackTrace();
+				System.out.println("ERROR: File not exist.");
 			}
 			catch (ClassNotFoundException e) 
 			{
 				isCorrectLoadingFromFile = false;
-				e.printStackTrace();
+				System.out.println("ERROR: Loading from file failed.");
 			}
 			catch (IOException e) 
 			{
 				isCorrectLoadingFromFile = false;
-				e.printStackTrace();
+				System.out.println("ERROR: Lecture from file failed.");
 			}
 			// END DESERIALIZZAZIONE
 		}
@@ -124,13 +124,11 @@ public class ServerLogic
 			}
 			catch (FileNotFoundException e) 
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("ERROR: File not exist.");
 			}
 			catch (IOException e) 
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("ERROR: Lecture from file failed.");
 			}*/
 		}
 		
@@ -169,7 +167,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createErroMessage("usernameOccupato");
+			return "@no";
 		}
 	}
 
@@ -205,7 +203,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createErroMessage("autenticazioneFallita");
+			return "@no";
 		}
 	}
 
@@ -394,7 +392,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 
@@ -487,7 +485,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -523,7 +521,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -597,7 +595,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -626,7 +624,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -670,7 +668,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -719,7 +717,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -792,7 +790,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -930,7 +928,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -1083,7 +1081,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -1139,7 +1137,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -1196,7 +1194,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -1241,7 +1239,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -1287,7 +1285,7 @@ public class ServerLogic
 		catch(Exception ex)
 		{
 			System.out.println(ex.getMessage());
-			return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			return "@no";
 		}
 	}
 	
@@ -1320,9 +1318,17 @@ public class ServerLogic
 		}
 	}
 	
-	public String getuUsernameOfCurrentPlayer()
+	public String getUsernameOfCurrentPlayer()
 	{
-		return currentSession.getPlayer(tokenOfCurrentPlayer).getUserName();
+		try
+		{
+			return currentSession.getPlayer(tokenOfCurrentPlayer).getUserName();
+		}
+		catch(Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}
+		return null;
 	}
 	
 	/**
@@ -1706,13 +1712,11 @@ public class ServerLogic
 		}
 		catch (FileNotFoundException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR: File not exist.");
 		}
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR: Loading from file failed.");
 		}
 	}
 	

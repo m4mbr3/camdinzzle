@@ -27,9 +27,11 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	private String token;
 	private boolean isInGame;
 	private int timeoutRequest;
+	private int lectureFromSocketError;
 	private Server server;
 	
 	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic, Server s)
+		throws IOException
 	{
 		// TODO Auto-generated constructor stub
 		token ="";
@@ -40,25 +42,11 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 		this.serverLogic = serverLogic;
 		this.read_socket = null;
 		timeoutRequest = 0;
+		lectureFromSocketError = 0;
 		
-		try 
-		{
-			writer_on_socket = new BufferedWriter(new OutputStreamWriter(this.connection_with_client.getOutputStream()));
-		} 
-		catch (IOException e1) 
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try 
-		{
-			reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_client.getInputStream()));
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		writer_on_socket = new BufferedWriter(new OutputStreamWriter(this.connection_with_client.getOutputStream()));
+		reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_client.getInputStream()));
+		
 	}
 	
 	public void stop()
@@ -69,19 +57,20 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	
 	public void run()
 	{
-		//this is the daemon for one specify user that manage the processes "not in game" like "create Dinosaur "
 		while(is_run)
 		{
-			if(timeoutRequest == 40)
+			if((timeoutRequest == 40) || (lectureFromSocketError == 40))
 			{
 				serverLogic.gameExit(token);
 				serverLogic.logout(token);
 				
 				writer_on_socket = null;
-				try {
+				try 
+				{
 					connection_with_client.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} 
+				catch (IOException e) 
+				{
 					this.stop();
 				}
 				
@@ -96,7 +85,8 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 			} 
 			catch (IOException e1) 
 			{
-				
+				System.out.println("ERROR: Lecture from socket failed.");
+				lectureFromSocketError++;
 			}
 			
 			if(read_socket != null)
@@ -104,14 +94,11 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				System.out.println("MESSAGGIO CLIENT ->" + read_socket);
 				command = ServerMessageBroker.manageMessageType(read_socket);
 				System.out.println("COMMAND ->" + command);
-				//in this point there is a call to another static method for split and check a new string
 				
 				try
 				{
-					// TODO: gestione connessioni null quando client si disconnette
 					synchronized(writer_on_socket)
 					{
-						//control of login parameters 
 						if(command.compareTo("creaUtente")==0)
 						{
 							String[] parameters = ServerMessageBroker.manageCreateUser(read_socket);
@@ -192,7 +179,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 									}
 									else if(serverLogic.getTokenOfCurrentPlayer() != "")
 									{
-										writer_on_socket.write("@cambioTurno," + serverLogic.getuUsernameOfCurrentPlayer());
+										writer_on_socket.write("@cambioTurno," + serverLogic.getUsernameOfCurrentPlayer());
 										writer_on_socket.newLine();				
 										writer_on_socket.flush();
 									}
@@ -485,10 +472,11 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				}
 				catch(IOException e)
 				{
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("ERROR: " + e.getMessage());
+				} 
+				catch (InterruptedException e) 
+				{
+					System.out.println("ERROR: " + e.getMessage());
 				}
 			
 				read_socket = null;
@@ -502,19 +490,35 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 
 	public boolean sendChangeRound(String msg)
 	{
-		try
+		boolean isSend = false;
+		int sendCounter = 0;
+		
+		do
 		{
-			synchronized(writer_on_socket)
+			try
 			{
-				writer_on_socket.write(msg);
-				writer_on_socket.newLine();				
-				writer_on_socket.flush();
-				return true;
+				synchronized(writer_on_socket)
+				{
+					writer_on_socket.write(msg);
+					writer_on_socket.newLine();				
+					writer_on_socket.flush();
+					isSend = true;
+				}
 			}
-		}
-		catch(IOException e)
+			catch(IOException e)
+			{
+				System.out.println("ERROR: " + e.getMessage());
+				sendCounter++;
+			}
+		}while((!isSend) && (sendCounter <= 5));
+		if(isSend)
 		{
-			e.printStackTrace();
+			return true;
+		}
+		else
+		{
+			serverLogic.gameExit(token);
+			serverLogic.logout(token);
 			return false;
 		}
 	}

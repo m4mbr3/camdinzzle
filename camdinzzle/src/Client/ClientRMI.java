@@ -37,7 +37,6 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 			cmRMI.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
 			
 			return true;
-			
 		}
 		
 		return false;

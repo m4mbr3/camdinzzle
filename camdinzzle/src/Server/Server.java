@@ -112,11 +112,11 @@ public class Server implements Runnable {
 			} 
 			catch (RemoteException e) 
 			{
-				System.out.println("ERROR: Remote.");
+				System.out.println("ERROR: Server RMI is down.");
 			} 
 			catch (AlreadyBoundException e)
 			{
-				System.out.println("ERROR: AlreadyBoundException in registry server RMI.");
+				System.out.println("ERROR: Server is just registrated.");
 			}
 			catch (MalformedURLException e) 
 			{
@@ -129,17 +129,15 @@ public class Server implements Runnable {
 			}
 			catch (AccessException e) 
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("ERROR: The server do not have permission to perform the action requested by the method call.");
 			} 
 			catch (RemoteException e) 
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("ERROR: Server RMI is down.");
 			} 
 			catch (MalformedURLException e)
 			{
-				System.out.println("Check the URL to bind the server RMI.");
+				System.out.println("ERROR: Check the URL to bind the server RMI.");
 			}
 	}
 	
@@ -164,9 +162,10 @@ public class Server implements Runnable {
 				System.out.println("<<SERVER DAEMON>>--STARTING CLIENTMANAGER");
 				(new Thread(clientManagerSocket)).start();
 				System.out.println("<<SERVER DAEMON>>--EXECUTION CLIENTMANAGER STARTED");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} 
+			catch (IOException e) 
+			{
+				System.out.println("ERROR: " + e.getMessage());
 			}
 		}
 		
@@ -178,27 +177,26 @@ public class Server implements Runnable {
 	 */
 	public void sendBroadcastMessage(String msg)
 	{
+		boolean isSend;
+		
 		if(clientListSocket.size() > 0)
 		{
 			for (ClientManagerSocket client : clientListSocket) 
 			{
 				if(client.getIsInGame())
 				{
-					try
+					isSend = client.sendChangeRound(msg);
+					if(!isSend)
 					{
-						// TODO: gestione se messaggio non inviato ad un client
-						boolean result = client.sendChangeRound(msg);
-					}
-					catch(Exception ex)
-					{
-						//clientList.remove(client);
+						clientListSocket.remove(client);
+						client.stop();
 					}
 				}
 			}
 		}
 		
 		if(clientTableRMI.size() > 0)
-		{
+		{			
 			Set set = clientTableRMI.entrySet();
 			Iterator iter = set.iterator();
 			
@@ -208,7 +206,12 @@ public class Server implements Runnable {
 				
 				if(((ClientManagerRMI)me.getValue()).getIsInGame())
 				{
-					((ClientManagerRMI)me.getValue()).sendChangeRound(msg);
+					isSend = ((ClientManagerRMI)me.getValue()).sendChangeRound(msg);
+					
+					if(!isSend)
+					{
+						removeClientRMI(((ClientManagerRMI)me.getValue()).getUsername());
+					}
 				}
 			}
 		}
@@ -216,34 +219,47 @@ public class Server implements Runnable {
 	
 	public void addClientSocket(ClientManagerSocket cms)
 	{
-		clientListSocket.add(cms);
+		try
+		{
+			clientListSocket.add(cms);
+		}
+		catch(Exception ex)
+		{
+			System.out.println("ERROR: " + ex.getMessage());
+		}
 	}
 	
 	public void removeClientSocket(ClientManagerSocket cms)
 	{
-		clientListSocket.remove(cms);
+		try
+		{
+			clientListSocket.remove(cms);
+		}
+		catch(Exception ex)
+		{
+			System.out.println("ERROR: " + ex.getMessage());
+		}
 	}
 	
 	public void addClientRMI(String username, String clientIp)
 	{
-		try {
-			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1099");
+		try 
+		{
+			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1099", serverRMI);
 			clientTableRMI.put(username, cmRMI);
 			System.out.println("Client scaricato!!");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} 
+		catch (MalformedURLException e) 
+		{
+			System.out.println("ERROR: Check the URL to bind the server RMI.");
 		}
-		catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		catch (RemoteException e) 
+		{
+			System.out.println("ERROR: Client RMI is down.");
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: " + e.getMessage());
 			String token = serverLogic.getTokenFromUsername(username);
 			if(token != null)
 			{
@@ -254,19 +270,33 @@ public class Server implements Runnable {
 	
 	public void removeClientRMI(String username)
 	{
-		if(clientTableRMI.get(username) != null)
+		try
 		{
-			clientTableRMI.get(username).unregistryClient();
-			
-			clientTableRMI.remove(username);
+			if(clientTableRMI.get(username) != null)
+			{
+				clientTableRMI.get(username).unregistryClient();
+				
+				clientTableRMI.remove(username);
+			}
+		}
+		catch(Exception ex)
+		{
+			System.out.println("ERROR: " + ex.getMessage());
 		}
 	}
 	
 	public void setGameAccessRMI(String username, boolean isInGame)
 	{
-		if(clientTableRMI.get(username) != null)
+		try
 		{
-			clientTableRMI.get(username).setIsInGame(isInGame);
+			if(clientTableRMI.get(username) != null)
+			{
+				clientTableRMI.get(username).setIsInGame(isInGame);
+			}
+		}
+		catch(Exception ex)
+		{
+			System.out.println("ERROR: " + ex.getMessage());
 		}
 	}
 	
@@ -278,27 +308,22 @@ public class Server implements Runnable {
 		try
 		{
 			serverLogic = new ServerLogic();
+			
+			try 
+			{
+				int socketPort = 4567;
+				
+				Server ss = new Server(socketPort, serverLogic, "1099", "server");
+				(new Thread(ss)).start();
+			} 
+			catch (Exception e) 
+			{
+				System.out.println("ERROR: " + e.getMessage());
+			}
 		}
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			System.out.println("ERROR: serverLogic is not create.\n" + ex.getMessage());
 		}
-		
-		try {
-			int socketPort = 4567;
-			
-			Server ss = new Server(socketPort, serverLogic, "1099", "server");
-			//ServerForClientRMI sfcRMI = new ServerForClientRMI(serverLogic, ip, "server", "1099");
-
-			(new Thread(ss)).start();
-			//(new Thread(sfcRMI)).start();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 	}
-
-	
 }

@@ -102,7 +102,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			}
 			catch(InterruptedException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: " + e.getMessage());
 			}
 		}
 	}

@@ -22,7 +22,7 @@ public class ClientListener implements Runnable
 	private boolean run;
 	private ConnectionManagerSocket cms;
 	
-	public ClientListener(MonitorMessage mm, Socket soc, ConnectionManagerSocket cms)
+	public ClientListener(MonitorMessage mm, Socket soc, ConnectionManagerSocket cms) throws IOException
 	{
 		// TODO Auto-generated constructor stub
 		this.cms = cms;
@@ -33,12 +33,8 @@ public class ClientListener implements Runnable
 		timelineServerNull = 0;
 		run = true;
 		
-		try {
-			reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
+		
 		System.out.println("<<CONN MANAGER>>--STARTING THREAD " );
 		(new Thread(this)).start();
 		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
@@ -55,15 +51,18 @@ public class ClientListener implements Runnable
 		while(run)
 		{
 			readSocket = null;
-			
+			if(timelineServerNull == 10)
+			{
+				mm.setMessage(null);
+				this.stop();
+			}
 			try 
 			{
 				readSocket = reader_on_socket.readLine();
 			} 
 			catch (IOException e) 
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				timelineServerNull++;
 			}
 			
 			if(readSocket != null)

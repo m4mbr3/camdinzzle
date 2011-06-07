@@ -32,4 +32,5 @@ public interface ServerRMIInterface extends Remote {
 	public void changeRoundNotify() throws RemoteException;
 	public String getUsernameOfCurrentPlayer() throws RemoteException;
 	public void updatePlayer(String token) throws RemoteException;
+	public String getTokenOfPlayer(String username) throws RemoteException;
 }
