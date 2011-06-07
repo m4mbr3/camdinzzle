@@ -168,34 +168,37 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		}
 		else if (arg0.getComponent().equals(accPartita))
 		{
-			
-			String[] response = ClientMessageBroker.manageGameAccess(client.getConnManager().accessoPartita());
-			if(response == null)
+			String gameAccess = client.getConnManager().accessoPartita();
+			if(gameAccess != null)
 			{
-				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
-			}
-			else if(response[0].compareTo("ok")==0)
-			{
-				
-				this.setVisible(false);
-				frameGame = new FrameGame("Isola dei Dinosauri",client, this);
-				ChangeRoundThread changeRoundThread = new ChangeRoundThread("Change Round", client, frameGame);
-					
-				(new Thread(changeRoundThread)).start();
-//				frameGame.startFrameGame(client);
-				
-				
-				
-			}
-			else if (response[0].compareTo("no")==0)
-			{
-				if (response[1].compareTo("troppiGiocatori")==0)
+				String[] response = ClientMessageBroker.manageGameAccess(gameAccess);
+				if(response == null)
 				{
-					JOptionPane.showMessageDialog(this,"There aren't free spot!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
 				}
-				else if(response[1].compareTo("tokenNonValido")==0)
+				else if(response[0].compareTo("ok")==0)
 				{
-					JOptionPane.showMessageDialog(this,"Before access to game you must create a new specie!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+					
+					this.setVisible(false);
+					frameGame = new FrameGame("Isola dei Dinosauri",client, this);
+					ChangeRoundThread changeRoundThread = new ChangeRoundThread("Change Round", client, frameGame);
+						
+					(new Thread(changeRoundThread)).start();
+	//				frameGame.startFrameGame(client);
+					
+					
+					
+				}
+				else if (response[0].compareTo("no")==0)
+				{
+					if (response[1].compareTo("troppiGiocatori")==0)
+					{
+						JOptionPane.showMessageDialog(this,"There aren't free spot!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+					}
+					else if(response[1].compareTo("tokenNonValido")==0)
+					{
+						JOptionPane.showMessageDialog(this,"Before access to game you must create a new specie!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		}
@@ -306,22 +309,25 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			 if(Vege.isSelected()) type = new String("e");
 			 else  type = new String("c");
 			 System.out.println("sonoprima");
-			 String[] response = ClientMessageBroker.manageCreateSpecies(client.getConnManager().creaRazza(razza_valore.getText(), type));	 
-			 if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
-			 else if(response[0].compareTo("ok")==0)
+			 String newRace = client.getConnManager().creaRazza(razza_valore.getText(), type);
+			 if(newRace != null)
 			 {
-				 JOptionPane.showMessageDialog(this,"New Specie's been created!!!", "New Species", JOptionPane.INFORMATION_MESSAGE);
-			 }
-			 else if (response[0].compareTo("no")==0)
-			 {
-				 if(response[1] != null)
+				 String[] response = ClientMessageBroker.manageCreateSpecies(newRace);	 
+				 if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+				 else if(response[0].compareTo("ok")==0)
 				 {
-					 if(response[1].compareTo("nomeRazzaOccupato")==0) JOptionPane.showMessageDialog(this,"Name busy!!! try with another name", "New Species Error", JOptionPane.ERROR_MESSAGE);
-					 else if(response[1].compareTo("tokenNonValido")==0)JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+					 JOptionPane.showMessageDialog(this,"New Specie's been created!!!", "New Species", JOptionPane.INFORMATION_MESSAGE);
 				 }
-				 else JOptionPane.showMessageDialog(this,"You already have created another specie !!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+				 else if (response[0].compareTo("no")==0)
+				 {
+					 if(response[1] != null)
+					 {
+						 if(response[1].compareTo("nomeRazzaOccupato")==0) JOptionPane.showMessageDialog(this,"Name busy!!! try with another name", "New Species Error", JOptionPane.ERROR_MESSAGE);
+						 else if(response[1].compareTo("tokenNonValido")==0)JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+					 }
+					 else JOptionPane.showMessageDialog(this,"You already have created another specie !!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+				 }
 			 }
-			 
 		}
 	}
 	@Override

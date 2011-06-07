@@ -242,41 +242,49 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		{
 			
 					this.setVisible(false);
-					if (ClientMessageBroker.manageLogin(client.getConnManager().login(username.getText(), password.getText()))[0].compareTo("ok")==0)
+					String login = client.getConnManager().login(username.getText(), password.getText());
+					if(login != null)
 					{
-						managerframe = new FrameGameManager("ManagerPanel",client);
-						
+						if (ClientMessageBroker.manageLogin(login)[0].compareTo("ok")==0)
+						{
+							managerframe = new FrameGameManager("ManagerPanel",client);
+							
+						}
+						else if (ClientMessageBroker.manageLogin(login)[0].compareTo("no")==0)
+						{
+							this.setVisible(true);
+							JOptionPane.showMessageDialog(this,"Authentication Failed!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
+						}
+						else
+						{
+							this.setVisible(true);
+							JOptionPane.showMessageDialog(this,"Generic Error during Login. Try Again!!!", "Message Error", JOptionPane.ERROR_MESSAGE);
+						}
+						//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
 					}
-					else if (ClientMessageBroker.manageLogin(client.getConnManager().login(username.getText(), password.getText()))[0].compareTo("no")==0)
-					{
-						this.setVisible(true);
-						JOptionPane.showMessageDialog(this,"Authentication Failed!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
-					}
-					else
-					{
-						this.setVisible(true);
-						JOptionPane.showMessageDialog(this,"Generic Error during Login. Try Again!!!", "Message Error", JOptionPane.ERROR_MESSAGE);
-					}
-					//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
 			
 		}
 		if (arg0.getComponent().equals(send_newUser))
 		{
 			
 				new_userframe.setVisible(false);
-				if (ClientMessageBroker.manageMessageType(client.getConnManager().creaUtente(username.getText(), password.getText())).compareTo("ok")==0)
-				{	
-					this.setVisible(true);
-					panel.remove(send_newUser);
-					panel.add(this.new_user);
-					panel.remove(back);
-					panel.add(send);
-					this.add(panel);
-				}
-				else
+				String newUser = client.getConnManager().creaUtente(username.getText(), password.getText());
+				if(newUser!=null)
 				{
-					JOptionPane.showMessageDialog(this,"Username already exist", "NewUser Error", JOptionPane.ERROR_MESSAGE);
-					new_userframe.setVisible(true);
+					if (ClientMessageBroker.manageMessageType(newUser).compareTo("ok")==0)
+					{	
+						this.setVisible(true);
+						panel.remove(send_newUser);
+						panel.add(this.new_user);
+						panel.remove(back);
+						panel.add(send);
+						this.add(panel);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(this,"Username already exist", "NewUser Error", JOptionPane.ERROR_MESSAGE);
+						new_userframe.setVisible(true);
+					}
 				}
 		}
 		
