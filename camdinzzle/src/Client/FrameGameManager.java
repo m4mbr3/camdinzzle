@@ -294,7 +294,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
 				if(response[0].compareTo("ok")==0)
 				{
-					System.exit(0);
+					
 				}
 				if(response[0].compareTo("no")==0)
 				{

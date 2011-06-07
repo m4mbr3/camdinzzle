@@ -4,6 +4,7 @@
 package Client;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
@@ -30,7 +31,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+import java.awt.*;
 /**
  * @author Andrea
  *
@@ -325,18 +326,27 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		// TODO Auto-generated method stub
 		if (arg0.getComponent().equals(this.new_user))
 		{
+			new_user.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			
 		}
 		if (arg0.getComponent().equals(this.back))
 		{
-			
+			back.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+		if (arg0.getComponent().equals(this.new_user))
+		{
+			new_user.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			
+		}
+		if (arg0.getComponent().equals(this.back))
+		{
+			back.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		}
 	}
 
 	@Override
