@@ -3,8 +3,10 @@
  */
 package Client;
 
+import java.io.BufferedWriter;
+import java.net.Socket;
 import java.util.ArrayList;
-import Server.ServerLogic;
+import Server.ClientManagerLocal;
 
 /**
  * @author Andrea
@@ -13,32 +15,79 @@ import Server.ServerLogic;
 
 public class ConnectionManagerLocal implements ConnectionManager 
 {	
-	ServerLogic server;
-	public ConnectionManagerLocal(ServerLogic server)
+	private ClientManagerLocal manager;
+	private String address;
+	private String username;
+	private String password;
+	private String token;
+	private int port;
+	private String command;
+	private boolean run;
+	private ClientListener clientListener;
+	private String changeRound;
+	public ConnectionManagerLocal(ClientManagerLocal manager)
 	{
-		this.server = server;
+		this.manager = manager;
+		this.username = "";
+		changeRound = "";
+		this.token = "";
 	}
 	@Override
 	public String creaUtente(String username, String password) {
 		// TODO Auto-generated method stub
-		return null;
+		return manager.add_new_user(username, password);
+		
 	}
 
 	@Override
 	public String login(String username, String password) {
 		// TODO Auto-generated method stub
-		return null;
+		String retStr = server.login(username, password);
+		String[] response = ClientMessageBroker.manageLogin(retStr);
+		
+		if(response !=  null)
+		{
+			if(response[0].equals("ok"))
+			{
+				token = response[1];
+				this.username = username;
+			}
+		}
+		else return null;
+		return retStr;
 	}
 
 	@Override
 	public String creaRazza(String name, String type) {
 		// TODO Auto-generated method stub
+		if (!token.equals(""))
+		{
+			String retStr = server.addNewSpecies(token, name, type);
+			return retStr;
+		}
 		return null;
 	}
 
 	@Override
 	public String accessoPartita() {
 		// TODO Auto-generated method stub
+		if(!token.equals(""))
+		{
+			String retStr = server.gameAccess(token);
+			if(ClientMessageBroker.manageGameAccess(retStr)[0].equals("ok"))
+			{
+				server.setGameAccess(true, username);
+				
+				if(token.equals(server.getTokenOfCurrentPlayer()))
+				{
+					server.changeRoundNotify();
+				}
+				else if(server.getTokenOfCurrentPlayer() != "")
+				{
+					client.sendMessage("@cambioTurno," + server.getUsernameOfCurrentPlayer());
+				}
+			}
+		}
 		return null;
 	}
 

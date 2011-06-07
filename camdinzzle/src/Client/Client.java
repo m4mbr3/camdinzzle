@@ -61,9 +61,9 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	private JLabel nome_server;
 	private JTextField server_value;
 	
-	public Client(ServerLogic server)
+	public Client(ClientManagerLocal clientLocal)
 	{
-		this.connManager =new ConnectionManagerLocal(server);
+		this.connManager =new ConnectionManagerLocal();
 		login = new FrameLogin("Login",this,true);
 	}
 	public Client(String Name) {

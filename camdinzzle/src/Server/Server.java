@@ -62,14 +62,16 @@ public class Server implements Runnable {
 	private boolean is_run;
 	private int port;
 	private ServerLogic serverLogic;
-	
+	private ClientManagerLocal clientLocal;
+	private Client client;
 	public Server(int port, ServerLogic serverLogic, String serverPort, String serverName)
 	{
 			this.port = port;
 			
 			serverLogic.setServer(this);
 			this.serverLogic = serverLogic;
-			
+			clientLocal = new ClientManagerLocal(serverLogic);
+			client = new Client(clientLocal);
 			try 
 			{
 				this.server = new ServerSocket(this.port);
@@ -294,7 +296,8 @@ public class Server implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Client client  = new Client(serverLogic);
+		
+		
 	}
 
 	

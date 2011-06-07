@@ -81,7 +81,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		//this.setResizable(false);
 		this.client = client;
 		this.setVisible(true);
-		
 		this.setSize(330,335);
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		this.validate();

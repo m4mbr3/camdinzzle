@@ -120,22 +120,23 @@ public class ConnectionManagerSocket implements ConnectionManager {
 	{
 		String msg = ClientMessageBroker.createLogin(username, password);
 		String writerSuccess = sendMessage(msg);
-		
 		if(writerSuccess == null)
 		{
 			return null;
 		}
-		
 		String retStr = String.copyValueOf(writerSuccess.toCharArray());
+		String[] login =  ClientMessageBroker.manageLogin(retStr);
 		mm.setMessage("");
 		
-		if(ClientMessageBroker.manageLogin(retStr)[0].equals("ok"))
+		if(login != null)
 		{
-			token = ClientMessageBroker.manageLogin(retStr)[1];
-			this.username = username;
-			clientListener.setUsername(this.username);
-		}
-		
+			if(login[0].equals("ok"))
+			{
+				token = ClientMessageBroker.manageLogin(retStr)[1];
+				this.username = username;
+				clientListener.setUsername(this.username);
+			}
+		}	
 		System.out.println(retStr);
 		
 		return retStr;
