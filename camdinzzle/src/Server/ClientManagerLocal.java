@@ -3,6 +3,7 @@
  */
 package Server;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
@@ -59,14 +60,69 @@ public class ClientManagerLocal implements ClientManager{
 	}
 	public synchronized String[] listaGiocatori(String token)
 	{
-		return ServerMessageBroker.managePlayerList(serverLogic.playerList(token));
+		return RMIMessageBroker.convertPlayerList(serverLogic.playerList(token));
 	}
-	public synchronized String[] Classifica (String token)
+	public synchronized ArrayList<String> Classifica (String token)
 	{
-		return ServerMessageBroker.manageRanking(serverLogic.ranking(token));
+		return RMIMessageBroker.convertRanking(serverLogic.ranking(token));
+	}
+	public synchronized String logout (String token)
+	{
+		return serverLogic.logout(token);
+	}
+	public synchronized ArrayList<String> mappaGenerale(String token)
+	{
+		return RMIMessageBroker.convertGeneralMap(serverLogic.generalMap(token));
+	}
+	public synchronized String[] listaDinosauri(String token)
+	{
+		return RMIMessageBroker.convertDinoList(serverLogic.dinosaursList(token));
+	}
+	public synchronized ArrayList<String> vistaLocale(String token, String dinoId)
+	{
+		return RMIMessageBroker.convertDinoZoom(serverLogic.dinoZoom(token, dinoId));
+	}
+	public synchronized String[] statoDinosauro(String token, String dinoId)
+	{
+		return RMIMessageBroker.convertDinoState(serverLogic.dinoState(token, dinoId));
+	}
+	public synchronized String muoviDinosauro(String token, String dinoId, String row, String col)
+	{
+		return serverLogic.dinoMove(token, dinoId, row, col);
+	}
+	public synchronized String deponiUovo(String token, String dinoId)
+	{
+		return serverLogic.dinoNewEgg(token, dinoId);
+	}
+	public synchronized String confermaTurno(String token)
+	{
+		return serverLogic.roundConfirm(token);
+	}
+	public synchronized String passaTurno(String token)
+	{
+		return serverLogic.playerRoundSwitch(token);
+	}	
+	public synchronized String getTokenOfCurrentPlayer()  
+	{
+		return serverLogic.getTokenOfCurrentPlayer();
 	}
 	
+	public synchronized void changeRoundNotify() 
+	{
+		serverLogic.changeRoundNotify();
+	}
+
 	
+	public synchronized String getUsernameOfCurrentPlayer() 
+	{
+		return serverLogic.getuUsernameOfCurrentPlayer();
+	}
+
+	
+	public synchronized void updatePlayer(String token)  
+	{
+		serverLogic.updatePlayer(token);
+	}
 	public ServerLogic getServerLogic() {
 		return serverLogic;
 	}
