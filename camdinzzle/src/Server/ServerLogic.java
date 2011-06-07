@@ -1343,6 +1343,11 @@ public class ServerLogic
 						loggedPlayers.get(token).getSpecie().killDino(((Dinosaur)me.getValue()));
 					}
 				}
+				
+				if(loggedPlayers.get(token).getSpecie().getDinosaurs() == null)
+				{
+					loggedPlayers.get(token).setSpecie(null);
+				}
 			}
 			
 			
