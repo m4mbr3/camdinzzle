@@ -55,11 +55,13 @@ public class ConnectionManagerRMI implements ConnectionManager
 		catch (RemoteException e) 
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("REMOTE EXCEPTION");
+//			e.printStackTrace();
 			return null;
 		}
 		catch (Exception e) 
 		{
+			System.out.println("EX");
 			return null;
 		}
 		

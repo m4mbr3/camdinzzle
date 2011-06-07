@@ -286,6 +286,10 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 						new_userframe.setVisible(true);
 					}
 				}
+				else
+				{
+					JOptionPane.showMessageDialog(this,"TIME OUT", "NewUser Error", JOptionPane.ERROR_MESSAGE);
+				}
 		}
 		
 	}
