@@ -426,6 +426,10 @@ public class ServerLogic
 								}
 							}
 						}
+						else
+						{
+							currentSession.getPlayer(token).setSpecie(null);
+						}
 						
 						if(tokenOfCurrentPlayer.equals(token))
 						{
