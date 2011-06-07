@@ -455,15 +455,16 @@ public class ServerLogic
 						}
 						
 						currentSession.removePlayer(token);
+						
+						if(currentSession.numberPlayersInGame() == 0)
+						{
+							// SALVATAGGIO SERVER
+							saveServerState();
+							// END SALVATAGGIO SERVER
+						}
+						
 						return ServerMessageBroker.createOkMessage();
 					}
-				}
-				
-				if(currentSession.numberPlayersInGame() == 0)
-				{
-					// SALVATAGGIO SERVER
-					saveServerState();
-					// END SALVATAGGIO SERVER
 				}
 			}
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
