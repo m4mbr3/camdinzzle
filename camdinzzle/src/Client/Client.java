@@ -63,7 +63,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	
 	public Client(ClientManagerLocal clientLocal)
 	{
-		this.connManager =new ConnectionManagerLocal();
+		this.connManager =new ConnectionManagerLocal(clientLocal);
 		login = new FrameLogin("Login",this,true);
 	}
 	public Client(String Name) {

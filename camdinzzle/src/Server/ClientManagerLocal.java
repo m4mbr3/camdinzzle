@@ -36,4 +36,13 @@ public class ClientManagerLocal implements ClientManager{
 		
 	}
 
+	public ServerLogic getServerLogic() {
+		return serverLogic;
+	}
+
+	public void setServerLogic(ServerLogic serverLogic) {
+		this.serverLogic = serverLogic;
+	}
+	
+
 }

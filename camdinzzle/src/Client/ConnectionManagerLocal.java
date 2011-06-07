@@ -35,14 +35,14 @@ public class ConnectionManagerLocal implements ConnectionManager
 	@Override
 	public String creaUtente(String username, String password) {
 		// TODO Auto-generated method stub
-		return manager.add_new_user(username, password);
+		return manager.getServerLogic().add_new_user(username, password);
 		
 	}
 
 	@Override
 	public String login(String username, String password) {
 		// TODO Auto-generated method stub
-		String retStr = server.login(username, password);
+		String retStr = manager.getServerLogic().login(username, password);
 		String[] response = ClientMessageBroker.manageLogin(retStr);
 		
 		if(response !=  null)
@@ -62,18 +62,21 @@ public class ConnectionManagerLocal implements ConnectionManager
 		// TODO Auto-generated method stub
 		if (!token.equals(""))
 		{
-			String retStr = server.addNewSpecies(token, name, type);
+			String retStr = manager.getServerLogic().addNewSpecies(token, name, type);
 			return retStr;
 		}
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see Client.ConnectionManager#accessoPartita()
+	 */
 	@Override
 	public String accessoPartita() {
 		// TODO Auto-generated method stub
 		if(!token.equals(""))
 		{
-			String retStr = server.gameAccess(token);
+			/*String retStr = server.gameAccess(token);
 			if(ClientMessageBroker.manageGameAccess(retStr)[0].equals("ok"))
 			{
 				server.setGameAccess(true, username);
@@ -86,7 +89,7 @@ public class ConnectionManagerLocal implements ConnectionManager
 				{
 					client.sendMessage("@cambioTurno," + server.getUsernameOfCurrentPlayer());
 				}
-			}
+			}*/
 		}
 		return null;
 	}
