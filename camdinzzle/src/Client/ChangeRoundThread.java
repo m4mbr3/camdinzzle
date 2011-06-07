@@ -98,7 +98,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 					frameGame.drawTime(frameGame.getTime()-1);
 			}
 			try{
-				Thread.sleep(950);
+				Thread.sleep(980);
 			}
 			catch(InterruptedException e)
 			{
