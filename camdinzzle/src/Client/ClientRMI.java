@@ -10,7 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-/* Da generare dopo che è stato fatto il login e quindi passare l'username e come address l'indirizzo del
+/* Da generare dopo che ï¿½ stato fatto il login e quindi passare l'username e come address l'indirizzo del
  * server
  */
 
@@ -37,17 +37,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 			cmRMI.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
 			
 			return true;
-			/*
-			if(ClientMessageBroker.manageChangeRound(msg).equals(username))
-			{
-				//TODO: chiamata al metodo del Client che mi lancia il popup di conferma del turno
-			}
-			else
-			{
-				//TODO: chiamata al metodo del Client che mi notifica il cambio del turno e mi evidenzia il giocatore
-			}
-			return true;
-			*/
+			
 		}
 		
 		return false;

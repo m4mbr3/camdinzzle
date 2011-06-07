@@ -13,12 +13,14 @@ import java.util.ArrayList;
 public class ClientManagerLocal implements ClientManager{
 
 	private ServerLogic serverLogic;
+	private boolean isInGame;
 	/**
 	 * 
 	 */
 	public ClientManagerLocal(ServerLogic serverLogic) {
 		// TODO Auto-generated constructor stub
 		this.serverLogic = serverLogic;
+		isInGame = false;
 	}
 
 	@Override
@@ -133,6 +135,10 @@ public class ClientManagerLocal implements ClientManager{
 
 	public void setServerLogic(ServerLogic serverLogic) {
 		this.serverLogic = serverLogic;
+	}
+	public void sendMessage(String string)
+	{
+		
 	}
 	
 

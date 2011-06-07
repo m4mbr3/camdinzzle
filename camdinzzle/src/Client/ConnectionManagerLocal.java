@@ -62,35 +62,31 @@ public class ConnectionManagerLocal implements ConnectionManager
 	public String creaRazza(String name, String type) 
 	{
 		// TODO Auto-generated method stub
-		if (!token.equals(""))
-		{
-			String retStr = manager.creaRazza(token, name, type);
-			return retStr;
-		}
-		return null;
+		if (!token.equals("")) return  manager.creaRazza(token, name, type);
+		else return null;
 	}
 
 	
 	@Override
 	public String accessoPartita() {
 		// TODO Auto-generated method stub
-		/*if(!token.equals(""))
+		if(!token.equals(""))
 		{
 			String retStr = manager.accessoPartita(token);
 			if(ClientMessageBroker.manageGameAccess(retStr)[0].equals("ok"))
 			{
-				manager(true, username);
+				manager.setIsInGame(true);
 				
-				if(token.equals(server.getTokenOfCurrentPlayer()))
+				if(token.equals(manager.getTokenOfCurrentPlayer()))
 				{
-					server.changeRoundNotify();
+					manager.changeRoundNotify();
 				}
-				else if(server.getTokenOfCurrentPlayer() != "")
+				else if(manager.getTokenOfCurrentPlayer() != "")
 				{
-					client.sendMessage("@cambioTurno," + server.getUsernameOfCurrentPlayer());
+					manager.sendMessage("@cambioTurno," + manager.getUsernameOfCurrentPlayer());
 				}
 			}
-		}*/
+		}
 		return null;
 	}
 
