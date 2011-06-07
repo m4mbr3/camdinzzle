@@ -839,11 +839,29 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		timeMin = timeInt/60;
 		timeSec = timeInt%60;
 		String timeStringSec;
+		String timeStringMin;
 		if(timeSec==0)
 			timeStringSec = "00";
 		else
-			timeStringSec = String.valueOf(timeSec);
-		String timeStringMin = String.valueOf(timeMin);
+		{
+			if(timeSec < 10)
+			{
+				timeStringSec = "0" + String.valueOf(timeSec);
+			}
+			else
+			{
+				timeStringSec = String.valueOf(timeSec);
+			}
+		}
+		if(timeMin == 0)
+		{
+			timeStringMin = "00";
+		}
+		else
+		{
+			timeStringMin = "0" + String.valueOf(timeMin);
+		}
+		
 		time.setText("Tempo allo scadere del turno  " + timeStringMin +":"+ timeStringSec);
 		time.setVisible(true);
 		panelControlDown.repaint();
