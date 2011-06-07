@@ -186,7 +186,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		extinctionSpecies(msgDinoList);
 		if(!flagStop)
 		{
-			nameSpecie = msgDinoList[0].substring(msgDinoList[0].indexOf("-")+1);
+			nameSpecie = msgDinoList[0].substring(0,msgDinoList[0].indexOf("-")+1);
 			this.drawDinoList(msgDinoList);
 			this.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
 			this.drawCommandButtons();
@@ -486,17 +486,17 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			}
 			else if(((String)arg0.getComponent().getName()).contains("-"))
 			{
+				String[] idDino = arg0.getComponent().getName().split(";");
+				dinoId = idDino[1];
+				drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
 				if(((String)arg0.getComponent().getName()).contains(nameSpecie))
 				{
-					String[] idDino = arg0.getComponent().getName().split(";");
-					dinoId = idDino[1];
+					cellClicked = (JButton)arg0.getComponent();
 					for(int i=0; i<2; i++)
 					{
-						cellClicked = (JButton)arg0.getComponent();
-						commandDinoButton[i].setEnabled(true);
-						drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
-						((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
+						commandDinoButton[i].setEnabled(true);	
 					}
+					((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
 					flag=1;
 				}
 			}
@@ -739,7 +739,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 						}
 					}
 				}
-				for(int rowEnable=startRow; rowEnable>=maxRow; rowEnable--)
+				for(int rowEnable=startRow; rowEnable>maxRow; rowEnable--)
 				{
 					for(int colEnable=startCol; colEnable<maxCol; colEnable++)
 					{
