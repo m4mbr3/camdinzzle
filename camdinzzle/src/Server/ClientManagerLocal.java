@@ -70,18 +70,27 @@ public class ClientManagerLocal implements ClientManager{
 			if (RMIMessageBroker.convertGameAccess(msg)[0].equals("ok"))
 			{
 				setIsInGame(true);
+				if(token.equals(serverLogic.getTokenOfCurrentPlayer()))
+				{
+					serverLogic.changeRoundNotify();
+				}
 			}
 		}
 		return msg;
 	}
 	public String uscitaPartita (String token)
 	{
+		String tokenBeforeUpdatePlayer = serverLogic.getTokenOfCurrentPlayer();
 		String msg = serverLogic.gameExit(token);
 		if (RMIMessageBroker.convertGameExit(msg) != null)
-		{
+		{			
 			if (RMIMessageBroker.convertGameExit(msg)[0].equals("ok"))
 			{
 				setIsInGame(false);
+				if(token.equals(tokenBeforeUpdatePlayer))
+				{
+					serverLogic.changeRoundNotify();
+				}
 			}
 		}
 		return msg;

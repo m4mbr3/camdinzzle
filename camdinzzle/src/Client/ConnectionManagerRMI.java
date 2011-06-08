@@ -646,7 +646,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 				
 			}
 			
-			JOptionPane.showMessageDialog(new JFrame(), "The server is down", "Server error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "The server RMI is down", "Server error", JOptionPane.ERROR_MESSAGE);
 			
 			for(int i = 0; i<Frame.getFrames().length; i++)
 			{
