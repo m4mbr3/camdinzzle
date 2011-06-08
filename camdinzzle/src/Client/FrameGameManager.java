@@ -65,11 +65,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JScrollPane ranking2;
 	private JTable ranking1;
 	
-	private JFrame dinoChosenFrame;
-	private JPanel dinoChosenPanel;
 	private ImageIcon[] iconChosenDino;
-	private JButton[] buttonDino;
-	private boolean setImage;
 	
 	private FrameGame frameGame;
 	/**
@@ -115,14 +111,13 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		razza_button.setLocation(10,190);
 		razza_button.addMouseListener(this);
 		
-		iconChosenDino = new ImageIcon[7];
+		iconChosenDino = new ImageIcon[6];
 		iconChosenDino[0] = new ImageIcon("Images/sauro.jpg");
 		iconChosenDino[1] = new ImageIcon("Images/T_REX.jpg");
 		iconChosenDino[2] = new ImageIcon("Images/Saurolophus.jpg");
 		iconChosenDino[3] = new ImageIcon("Images/stegosauro.jpg");
 		iconChosenDino[4] = new ImageIcon("Images/triceratopo.jpg");
 		iconChosenDino[5] = new ImageIcon("Images/velociraptor.jpg");
-		iconChosenDino[6] = new ImageIcon("Images/brontosauro.jpg");
 		
 		
 		creaRazza.setSize(300, 76);

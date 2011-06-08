@@ -59,6 +59,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private ImageIcon iconVegetationDisable;
 	private ImageIcon iconWaterDisable;
 	private ImageIcon iconLandDisable;
+	private ImageIcon iconDinoEnemy;
 	private JList dinoList;
 	private JTextArea dinoState;
 	private JScrollPane scrollDinoState;
@@ -117,6 +118,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
 		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
 		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
+		iconDinoEnemy = new ImageIcon("Images/brontosauro.jpg");
 		iconDino = imageDino;
 
 		this.setVisible(true);
@@ -176,7 +178,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.add(panel,BorderLayout.WEST);
 		this.add(panelControl, BorderLayout.EAST);	
 		this.validate();
-		this.drawMap(client.getConnManager().mappaGenerale());
 		String[] msgDinoList = client.getConnManager().listaDinosauri();
 		extinctionSpecies(msgDinoList);
 		if(!flagStop)
@@ -187,6 +188,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			this.drawCommandButtons();
 			this.repaint();
 		}
+
+		this.drawMap(client.getConnManager().mappaGenerale());
 	}
 
 	@Override
@@ -737,7 +740,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 								{
 									buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + energySplit[1]);
 									buttons[row][col].setToolTipText("id dinosauro: " + energySplit[1]);
-									buttons[row][col].setIcon(iconDino);
+									String name = buttons[row][col].getName();
+									if(name.contains(nameSpecie))
+											buttons[row][col].setIcon(iconDino);
+									else
+										buttons[row][col].setIcon(iconDinoEnemy);
 								}
 								else if(energySplit[0].compareTo("v")==0)
 								{
