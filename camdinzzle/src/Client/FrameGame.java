@@ -10,7 +10,6 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -61,6 +60,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private ImageIcon iconLandDisable;
 	private ImageIcon iconDinoEnemy;
 	private JList dinoList;
+	private JScrollPane dinoListScroll;
 	private JTextArea dinoState;
 	private JScrollPane scrollDinoState;
 	private JFrame listaGiocatori;
@@ -86,12 +86,13 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
-	private final int visibleRowCountDinoList=3;
+	private int visibleRowCountDinoList=6;
 	private final int maxAttempt = 5;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
 	private int screenHeight;
 	private int screenWidth;
+	private int screenHeightState;
 
 	
 	
@@ -104,10 +105,22 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	public FrameGame(String title,Client client, FrameGameManager frameGameManager, ImageIcon imageDino) throws HeadlessException{
 		super(title);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setResizable(false);
 		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
 		screenHeight = (int)g.getMaximumWindowBounds().getHeight();
 		screenWidth = (int)g.getMaximumWindowBounds().getWidth();
+		screenHeightState = screenHeight/14*3;
+		System.out.println(screenHeight);
+		/*if(screenHeight<450)
+		{
+			visibleRowCountDinoList=2;
+			//screenHeightState = screenHeight/14;
+		}
+		else if(screenHeight<550)
+			visibleRowCountDinoList=3;
+		else if(screenHeight<650)
+			visibleRowCountDinoList=4;*/
 		this.client=client;
 		buttons = new JButton[row][col];
 		iconVegetation = new ImageIcon("Images/vege.jpg");
@@ -839,9 +852,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*3));
 				dinoList.setFont(fontDinoList);
-				panelControlUp.add(new JScrollPane(dinoList),BorderLayout.NORTH);
+				dinoListScroll = new JScrollPane(dinoList);
+				dinoListScroll.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*3));
+				panelControlUp.add(dinoListScroll,BorderLayout.NORTH);
 				panelControlUp.repaint();
 			}
 			else
@@ -996,11 +1010,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 				dinoState = new JTextArea(newMsgDinoState);
 				dinoState.setVisible(true);
-				dinoState.setSize(new Dimension(widthControlPanel-50,screenHeight/14*3));
 				dinoState.setFont(fontDinoState);
 				dinoState.setEditable(false);
 				scrollDinoState = new JScrollPane(dinoState);
-				scrollDinoState.setSize(new Dimension(widthControlPanel-25,screenHeight/14*3));
+				scrollDinoState.setPreferredSize(new Dimension(widthControlPanel-25,screenHeightState));
 				scrollDinoState.setVisible(true);
 				scrollDinoState.validate();
 				panelControlUp.add(scrollDinoState,BorderLayout.SOUTH);

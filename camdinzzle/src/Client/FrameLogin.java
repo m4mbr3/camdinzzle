@@ -72,7 +72,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	public FrameLogin(String title, Client client, boolean is_local) throws HeadlessException {
 		super(title);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		//this.setResizable(false);
 		this.client = client;
 		this.setVisible(true);
 		this.setSize(330,335);
@@ -284,7 +283,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 							this.setVisible(true);
 							JOptionPane.showMessageDialog(this,"Generic Error during Login. Try Again!!!", "Message Error", JOptionPane.ERROR_MESSAGE);
 						}
-						//JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
 					}
 			
 		}

@@ -8,6 +8,7 @@
 		GRAFICA	
 		-sistemare immgagini dinosauri
 		-mettere caricamento da immagini con get directory
+		-togliere rettangolo blu quando clicco su altra cella
 		
 
 		-JUNIT
