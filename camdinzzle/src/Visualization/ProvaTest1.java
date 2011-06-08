@@ -1,4 +1,4 @@
-package Visualization;
+/*package Visualization;
 
 
 import Client.*;
@@ -24,12 +24,11 @@ import javax.xml.soap.Text;
 
 
 public class ProvaTest1 {
-	/**
+	*//**
 	 * @param args
 	 * @throws Exception 
-	 */
+	 *//*
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
 		//cms cms = new cms(); 
 		Textual text = new Textual();
 		ConnectionManagerSocket cms = null;
@@ -118,7 +117,6 @@ public class ProvaTest1 {
 					}
 					else if(scelta.equals("AP"))
 					{
-						// TODO: prima di accedere all partia, imporre la creazione di una razza
 						msg = ClientMessageBroker.createGameAccess(token);
 						
 						requestQueue.add("accessoPartita");
@@ -289,7 +287,7 @@ public class ProvaTest1 {
 						
 						System.out.println("Turno del giocatore: " + msg);
 					}
-					/*
+					
 					else if(scelta.equals("MC"))
 						Game.stampa();
 					
@@ -307,7 +305,7 @@ public class ProvaTest1 {
 					
 					else if(scelta.equals("E"))
 						System.out.println("Uscita dal gioco");
-					*/
+					
 					System.out.println("*****FINE INTERAZIONE*****\n");
 				}
 				
@@ -327,7 +325,7 @@ public class ProvaTest1 {
 		// End RMI
 		
 		
-		/*
+		
 		do
 		{
 			System.out.println("Possibilità di azioni:\n");
@@ -400,7 +398,6 @@ public class ProvaTest1 {
 					}
 					else if(scelta.equals("AP"))
 					{
-						// TODO: prima di accedere all partia, imporre la creazione di una razza
 						msg = ClientMessageBroker.createGameAccess(token);
 						
 						requestQueue.add("accessoPartita");
@@ -600,6 +597,7 @@ public class ProvaTest1 {
 				&& (!scelta.equals("E")));
 		}
 		while(!scelta.equals("E")); 
-		*/
+		
 	}
 }
+*/

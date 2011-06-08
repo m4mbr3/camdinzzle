@@ -1,4 +1,4 @@
-package Client;
+/*package Client;
 
 
 import Client.*;
@@ -7,33 +7,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Generated;
-import javax.xml.soap.Text;
 
 
 public class ProvaTest1 {
-	/**
-	 * @param args
-	 */
+	/*
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		//cms cms = new cms(); 
 		Textual text = new Textual();
 		ConnectionManagerSocket cms = null;
@@ -53,7 +39,6 @@ public class ProvaTest1 {
 		try {
 			port = dataInput.readLine();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -61,7 +46,6 @@ public class ProvaTest1 {
 		try {
 			server = new ConnectionManagerRMI("localhost", "1099", "server");
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String username = null;
@@ -137,7 +121,6 @@ public class ProvaTest1 {
 					}
 					else if(scelta.equals("AP"))
 					{
-						// TODO: prima di accedere all partia, imporre la creazione di una razza
 						msg = ClientMessageBroker.createGameAccess(token);
 						
 						
@@ -150,29 +133,23 @@ public class ProvaTest1 {
 							Naming.bind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 							//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
 						} catch (AccessException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (AlreadyBoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (MalformedURLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						try {
 							Naming.rebind("rmi://127.0.0.1/carlo:1999",(Remote) client);
 							System.out.println("Server RMI Avviato!");
 						} catch (AccessException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (MalformedURLException e) {
-							// TODO Auto-generated catch block
+						
 							e.printStackTrace();
 						}
 						
@@ -345,7 +322,7 @@ public class ProvaTest1 {
 						
 						System.out.println("Turno del giocatore: " + msg);
 					}
-					/*
+					
 					else if(scelta.equals("MC"))
 						Game.stampa();
 					
@@ -363,7 +340,7 @@ public class ProvaTest1 {
 					
 					else if(scelta.equals("E"))
 						System.out.println("Uscita dal gioco");
-					*/
+					
 					System.out.println("*****FINE INTERAZIONE*****\n");
 				}
 				
@@ -383,7 +360,7 @@ public class ProvaTest1 {
 		// End RMI
 		
 		
-		/*
+		
 		do
 		{
 			System.out.println("Possibilità di azioni:\n");
@@ -456,7 +433,6 @@ public class ProvaTest1 {
 					}
 					else if(scelta.equals("AP"))
 					{
-						// TODO: prima di accedere all partia, imporre la creazione di una razza
 						msg = ClientMessageBroker.createGameAccess(token);
 						
 						requestQueue.add("accessoPartita");
@@ -656,6 +632,7 @@ public class ProvaTest1 {
 				&& (!scelta.equals("E")));
 		}
 		while(!scelta.equals("E")); 
-		*/
+		
 	}
 }
+*/
