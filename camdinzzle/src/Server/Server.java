@@ -62,17 +62,18 @@ public class Server implements Runnable {
 	private boolean is_run;
 	private int port;
 	private ServerLogic serverLogic;
-	private ClientManagerLocal clientLocal;
+	private ArrayList<ClientManagerLocal> clientLocal;
 	private Client client;
 	public Server(int port, ServerLogic serverLogic, String serverPort, String serverName)
 	{
+			clientLocal = new ArrayList<ClientManagerLocal>();
 			this.port = port;
-			
 			serverLogic.setServer(this);
 			this.serverLogic = serverLogic;
-			clientLocal = new ClientManagerLocal(serverLogic);
-			client = new Client(clientLocal);
-			clientLocal.setClient(client);
+			
+			clientLocal.add(new ClientManagerLocal(serverLogic));
+			client = new Client(clientLocal.get(0));
+			clientLocal.get(0).setClient(client);
 			try 
 			{
 				this.server = new ServerSocket(this.port);
@@ -196,7 +197,16 @@ public class Server implements Runnable {
 				}
 			}
 		}
-		
+		if (clientLocal.size() > 0)
+		{
+			for (ClientManagerLocal client : clientLocal) 
+			{
+				if(client.getIsInGame())
+				{
+					client.sendChangeRound(msg);
+				}
+			}
+		}
 		if(clientTableRMI.size() > 0)
 		{			
 			Set set = clientTableRMI.entrySet();
@@ -314,7 +324,6 @@ public class Server implements Runnable {
 			try 
 			{
 				int socketPort = 4567;
-				
 				Server ss = new Server(socketPort, serverLogic, "1099", "server");
 				(new Thread(ss)).start();
 			} 

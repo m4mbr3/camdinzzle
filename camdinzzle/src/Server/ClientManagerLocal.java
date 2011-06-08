@@ -59,11 +59,27 @@ public class ClientManagerLocal implements ClientManager{
 	}
 	public synchronized String accessoPartita (String token)
 	{
-		return serverLogic.gameAccess(token);
+		String msg = serverLogic.gameAccess(token);
+		if (RMIMessageBroker.convertGameAccess(msg) !=  null)
+		{
+			if (RMIMessageBroker.convertGameAccess(msg)[0].equals("ok"))
+			{
+				setIsInGame(true);
+			}
+		}
+		return msg;
 	}
 	public synchronized String uscitaPartita (String token)
 	{
-		return serverLogic.gameExit(token);
+		String msg = serverLogic.gameExit(token);
+		if (RMIMessageBroker.convertGameExit(msg) != null)
+		{
+			if (RMIMessageBroker.convertGameExit(msg)[0].equals("ok"))
+			{
+				setIsInGame(false);
+			}
+		}
+		return msg;
 	}
 	public synchronized String[] listaGiocatori(String token)
 	{
@@ -111,7 +127,6 @@ public class ClientManagerLocal implements ClientManager{
 	}
 	public synchronized String passaTurno(String token)
 	{
-		System.out.println("PassaTurno");
 		return serverLogic.playerRoundSwitch(token);
 	}	
 	public synchronized String getTokenOfCurrentPlayer()  

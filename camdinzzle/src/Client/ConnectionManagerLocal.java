@@ -194,7 +194,11 @@ public class ConnectionManagerLocal implements ConnectionManager
 	@Override
 	public void setChangeRound(String msg) {
 		// TODO Auto-generated method stub
-		changeRound = msg;
+		msg = ClientMessageBroker.manageChangeRound(msg);
+		if(msg != null)
+			changeRound = msg;
+		else 
+			changeRound = "";
 	}
 
 	@Override
