@@ -111,14 +111,23 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		razza_button.setLocation(10,190);
 		razza_button.addMouseListener(this);
 		
-		ClassLoader cldr = this.getClass().getClassLoader();
+/*		ClassLoader cldr = this.getClass().getClassLoader();
 		iconChosenDino = new ImageIcon[6];
-		iconChosenDino[0] = new ImageIcon(cldr.getResource("Images/sauro.jpg"));
+		iconChosenDino[0] = new ImageIcon(ClassLoader.getSystemResource("Images/sauro.jpg"));
 		iconChosenDino[1] = new ImageIcon(cldr.getResource("Images/T_REX.jpg"));
 		iconChosenDino[2] = new ImageIcon(cldr.getResource("Images/Saurolophus.jpg"));
 		iconChosenDino[3] = new ImageIcon(cldr.getResource("Images/stegosauro.jpg"));
 		iconChosenDino[4] = new ImageIcon(cldr.getResource("Images/triceratopo.jpg"));
-		iconChosenDino[5] = new ImageIcon(cldr.getResource("Images/velociraptor.jpg"));
+		iconChosenDino[5] = new ImageIcon(cldr.getResource("Images/velociraptor.jpg"));*/
+		
+		iconChosenDino = new ImageIcon[6];
+		iconChosenDino[0] = new ImageIcon("Images/sauro.jpg");
+		iconChosenDino[1] = new ImageIcon("Images/T_REX.jpg");
+		iconChosenDino[2] = new ImageIcon("Images/Saurolophus.jpg");
+		iconChosenDino[3] = new ImageIcon("Images/stegosauro.jpg");
+		iconChosenDino[4] = new ImageIcon("Images/triceratopo.jpg");
+		iconChosenDino[5] = new ImageIcon("Images/velociraptor.jpg");
+		
 		
 		
 		creaRazza.setSize(300, 76);

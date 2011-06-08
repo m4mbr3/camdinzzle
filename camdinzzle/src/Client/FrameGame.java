@@ -112,7 +112,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.client=client;
 		buttons = new JButton[row][col];
 		
-		ClassLoader cldr = this.getClass().getClassLoader();
+/*		ClassLoader cldr = this.getClass().getClassLoader();
 		iconVegetation = new ImageIcon(cldr.getResource("Images/vege.jpg"));
 		iconLand = new ImageIcon(cldr.getResource("Images/terra.jpg"));
 		iconWater = new ImageIcon(cldr.getResource("Images/acqua.jpg"));
@@ -121,7 +121,18 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconLandDisable  = new ImageIcon(cldr.getResource("Images/terraDisable.jpg"));
 		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
 		iconVegetationDisable  = new ImageIcon(cldr.getResource("Images/vegeDisable.jpg"));
-		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));
+		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));*/
+		
+		iconVegetation = new ImageIcon("Images/vege.jpg");
+		iconLand = new ImageIcon("Images/terra.jpg");
+		iconWater = new ImageIcon("Images/acqua.jpg");
+		iconDark = new ImageIcon("Images/buio.jpg");
+		iconCarrion = new ImageIcon("Images/carrion.jpg");
+		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
+		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
+		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
+		iconDinoEnemy = new ImageIcon("Images/brontosauro.jpg");
+		
 		iconDino = imageDino;
 
 		this.setVisible(true);
