@@ -60,7 +60,7 @@ public class Textual implements Visual
 		{
 			//ArrayList<String> dinoZoomList = ClientMessageBroker.manageDinoZoom(msg);
 			// Alla posizione 2 dell'arraylist c'è il numero delle righe della vista
-			int rowsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
+//			int rowsNumber = Integer.parseInt(dinoZoomList.get(2).trim());
 			// Alla posizione 3 dell'arraylist c'è il numero delle colonne della vista
 			int columnsNumber = Integer.parseInt(dinoZoomList.get(3).trim());
 			int columnsCount = 0;

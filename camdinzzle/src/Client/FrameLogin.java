@@ -45,7 +45,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private Client client;
 	private JLabel new_user;
 	private JLabel back;
-	private FrameGameManager managerframe;
 	private JFrame new_userframe;
 	private JButton exit;
 	private boolean is_local;
@@ -270,7 +269,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 					{
 						if (ClientMessageBroker.manageLogin(login)[0].compareTo("ok")==0)
 						{
-							managerframe = new FrameGameManager("ManagerPanel",client);
+							new FrameGameManager("ManagerPanel",client);
 							
 						}
 						else if (ClientMessageBroker.manageLogin(login)[0].compareTo("no")==0)

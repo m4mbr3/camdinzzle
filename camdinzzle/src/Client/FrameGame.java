@@ -92,7 +92,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
 	private int screenHeight;
 	private int screenWidth;
-	private int screenHeightState;
 
 	
 	
@@ -110,28 +109,19 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 
 		screenHeight = (int)g.getMaximumWindowBounds().getHeight();
 		screenWidth = (int)g.getMaximumWindowBounds().getWidth();
-		screenHeightState = screenHeight/14*3;
-		System.out.println(screenHeight);
-		/*if(screenHeight<450)
-		{
-			visibleRowCountDinoList=2;
-			//screenHeightState = screenHeight/14;
-		}
-		else if(screenHeight<550)
-			visibleRowCountDinoList=3;
-		else if(screenHeight<650)
-			visibleRowCountDinoList=4;*/
 		this.client=client;
 		buttons = new JButton[row][col];
-		iconVegetation = new ImageIcon("Images/vege.jpg");
-		iconLand = new ImageIcon("Images/terra.jpg");
-		iconWater = new ImageIcon("Images/acqua.jpg");
-		iconDark = new ImageIcon("Images/buio.jpg");
-		iconCarrion = new ImageIcon("Images/carrion.jpg");
-		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
-		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
-		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
-		iconDinoEnemy = new ImageIcon("Images/brontosauro.jpg");
+		
+		ClassLoader cldr = this.getClass().getClassLoader();
+		iconVegetation = new ImageIcon(cldr.getResource("Images/vege.jpg"));
+		iconLand = new ImageIcon(cldr.getResource("Images/terra.jpg"));
+		iconWater = new ImageIcon(cldr.getResource("Images/acqua.jpg"));
+		iconDark = new ImageIcon(cldr.getResource("Images/buio.jpg"));
+		iconCarrion = new ImageIcon(cldr.getResource("Images/carrion.jpg"));
+		iconLandDisable  = new ImageIcon(cldr.getResource("Images/terraDisable.jpg"));
+		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
+		iconVegetationDisable  = new ImageIcon(cldr.getResource("Images/vegeDisable.jpg"));
+		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));
 		iconDino = imageDino;
 
 		this.setVisible(true);
@@ -1013,7 +1003,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				dinoState.setFont(fontDinoState);
 				dinoState.setEditable(false);
 				scrollDinoState = new JScrollPane(dinoState);
-				scrollDinoState.setPreferredSize(new Dimension(widthControlPanel-25,screenHeightState));
+				scrollDinoState.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*3));
 				scrollDinoState.setVisible(true);
 				scrollDinoState.validate();
 				panelControlUp.add(scrollDinoState,BorderLayout.SOUTH);

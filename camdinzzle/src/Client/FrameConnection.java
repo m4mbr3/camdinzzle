@@ -17,21 +17,23 @@ import javax.swing.JPanel;
  */
 public class FrameConnection extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private Dimension screenSize;
 	private JPanel pannello;
 	/**
 	 * @throws HeadlessException
 	 */
-	public FrameConnection() throws HeadlessException {
-		// TODO Auto-generated constructor stub
+	public FrameConnection() throws HeadlessException 
+	{
+		
 	}
 
 	/**
 	 * @param gc
 	 */
-	public FrameConnection(GraphicsConfiguration gc) {
+	public FrameConnection(GraphicsConfiguration gc) 
+	{
 		super(gc);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -40,7 +42,6 @@ public class FrameConnection extends JFrame {
 	 */
 	public FrameConnection(String title) throws HeadlessException {
 		super(title);
-		// TODO Auto-generated constructor stub
 		
 		this.setVisible(true);
 		this.setSize(300,300);
@@ -55,9 +56,9 @@ public class FrameConnection extends JFrame {
 	 * @param title
 	 * @param gc
 	 */
-	public FrameConnection(String title, GraphicsConfiguration gc) {
+	public FrameConnection(String title, GraphicsConfiguration gc) 
+	{
 		super(title, gc);
-		// TODO Auto-generated constructor stub
 	}
 
 }
