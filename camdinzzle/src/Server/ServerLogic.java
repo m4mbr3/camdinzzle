@@ -19,7 +19,7 @@ import java.util.Set;
 
 import Server.Species.type;
 
-public class ServerLogic
+public class ServerLogic 
 {
 	private Server server = null;
 	
@@ -1332,40 +1332,36 @@ public class ServerLogic
 			 * - Fare l'update della mappa dei dinosauri coinvolti nei movimenti del giocatore in turno oppure se non 
 			 *   possibile saperlo fare l'update di tutte le mappe di tutti i giocatori
 			 */
-			// Inizio aggiornamento stato giocatore
-			if(loggedPlayers.get(token).getSpecie().getDinosaurs() != null)
+			if(currentSession.getPlayer(token).getSpecie() != null)
 			{
-				loggedPlayers.get(token).getSpecie().upDateDinosaurStatus();
-				iter = loggedPlayers.get(token).getSpecie().getDinosaurs();
-				
-				// kill dei dinosauri con age = 0
-				while(iter.hasNext())
+				// Inizio aggiornamento stato giocatore
+				if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
 				{
-					me = (Map.Entry) iter.next();
+					currentSession.getPlayer(token).getSpecie().upDateDinosaurStatus();
+					iter = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 					
-					if(((Dinosaur)me.getValue()).getAge() == 0)
+					// kill dei dinosauri con age = 0
+					while(iter.hasNext())
 					{
-						loggedPlayers.get(token).getSpecie().killDino(((Dinosaur)me.getValue()));
+						me = (Map.Entry) iter.next();
+						
+						if(((Dinosaur)me.getValue()).getAge() == 0)
+						{
+							currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me.getValue()));
+						}
 					}
-				}
-				
-				if(loggedPlayers.get(token).getSpecie().getDinosaurs() == null)
-				{
-					loggedPlayers.get(token).setSpecie(null);
+					
+					if(loggedPlayers.get(token).getSpecie().getDinosaurs() == null)
+					{
+						currentSession.getPlayer(token).setSpecie(null);
+					}
 				}
 			}
 			
 			
-			if(loggedPlayers.get(token).getSpecie() != null)
+			if(currentSession.getPlayer(token).getSpecie() != null)
 			{
-				if(loggedPlayers.get(token).getSpecie().getDinosaurs() == null)
-				{
-					loggedPlayers.get(token).setSpecie(null);
-				}
-				else
-				{
-					loggedPlayers.get(token).getSpecie().updateMap();
-				}
+				currentSession.getPlayer(token).getSpecie().updateMap();
 			}
 			// End aggiornamento stato giocatore
 			

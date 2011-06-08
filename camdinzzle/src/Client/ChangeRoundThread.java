@@ -2,6 +2,8 @@ package Client;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -9,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /**
  * 
@@ -18,7 +21,7 @@ import javax.swing.JOptionPane;
  * @author Andrea
  *
  */
-public class ChangeRoundThread extends JFrame implements Runnable, MouseListener {
+public class ChangeRoundThread extends JFrame implements Runnable {
 
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
@@ -43,8 +46,8 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		this.is_my_turn=false;
 		confirm = new JButton("Confirm");
 		deny = new JButton("Deny");
-		confirm.addMouseListener(this);
-		deny.addMouseListener(this);
+		//confirm.addMouseListener(this);
+		//deny.addMouseListener(this);
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		msg.setSize(200,20);
 		msg.setLocation(5,50);
@@ -54,7 +57,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		deny.setSize(100,30);	
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		this.setLayout(null);
-		this.add(msg);
+		this.add(msg);		
 		this.repaint();
 	}
 	public static void stop()
@@ -81,6 +84,10 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 				else
 				{
 					frameGame.upDateFrameGame();
+					int response = TimeOutOptionPane.showTimeoutDialog(this, "Vuoi utilizzare il turno?", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
+					optionpaneClicked(response);
+					client.getConnManager().setChangeRound("");
+					/*
 					this.msg.setText("Ora tocca: "+ client.getConnManager().getChangeRound());
 					this.add(confirm);
 					this.add(deny);
@@ -88,7 +95,8 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 					this.validate();
 					this.setVisible(true);
 					client.getConnManager().setChangeRound("");
-					this.repaint();
+					this.repaint();*/
+					
 				}
 				client.getConnManager().setChangeRound("");
 			}
@@ -107,12 +115,10 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 		}
 	}
 
-	
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void optionpaneClicked(int chosedOption) {
 		// TODO Auto-generated method stub
 		String[] response;
-		if(arg0.getComponent().equals(confirm))
+		if(chosedOption == 0)
 		{ 
 			this.setVisible(false);
 			response=client.getConnManager().confermaTurno();
@@ -144,7 +150,7 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			
 				
 		}
-		else if (arg0.getComponent().equals(deny))
+		else
 		{
 			this.setVisible(false);
 			response=client.getConnManager().passaTurno();
@@ -173,25 +179,5 @@ public class ChangeRoundThread extends JFrame implements Runnable, MouseListener
 			}
 			
 		}
-	}
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 }

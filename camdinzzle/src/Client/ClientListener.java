@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import Server.ClientManagerSocket;
 
 public class ClientListener implements Runnable 
@@ -54,6 +57,8 @@ public class ClientListener implements Runnable
 			if(timelineServerNull == 20)
 			{
 				mm.setMessage("null");
+				JOptionPane.showMessageDialog(new JFrame(), "The server is down", "Server error", JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
 				this.stop();
 			}
 			try 

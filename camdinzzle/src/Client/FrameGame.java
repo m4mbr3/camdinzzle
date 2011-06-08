@@ -872,7 +872,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	}
 	public void drawRound(String user)
 	{
-		time.setText("      ora e' il turno di:\n" + user);
+		time.setText("      ora e' il turno di: \n" + user);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
@@ -1141,5 +1141,4 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			this.drawPlayerList(client.getConnManager().listaGiocatori());
 		}
 	 }
-
 }
