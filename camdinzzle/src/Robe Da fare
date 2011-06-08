@@ -4,16 +4,21 @@
 		
 		-salvataggi---> thread che legge da riga di comando
 		
-		GRAFICA
-		
+		GRAFICA		
 		-disabilitare FrameGame in cambioturno
 		-sistemare immgagini dinosauri
 		-dare la possibilità di scegliere immagine dino
 		-cambiare sfondo avversari
 		-quando il server torna per un tot di volte null al posto di dire azione non compiuta disconnettere
 		il client facendo la stop del ClientListener
-		
+		-cliccando sul FrameGameManager la x per chiudere la finestra non viene fatto il logout
+		-Fare gestione FrameGameManager su caduta del server
 
 		-JUNIT
 		-JML
 		-JDOC
+		
+		
+		
+		-se un dinosauro combatte e perde allora viene tolto il dinosauro del vincitore dalla mappa
+		-uovo in posizione lontana
