@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 public class Vegetarian extends Dinosaur implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private Carrion carrion=null;
 	private Vegetation vegetation=null;
 

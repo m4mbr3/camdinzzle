@@ -5,9 +5,12 @@ import java.awt.Component;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-public class TimeOutOptionPane extends JOptionPane {
+public class TimeOutOptionPane extends JOptionPane
+{
 
-    public TimeOutOptionPane() {
+	private static final long serialVersionUID = 1L;
+
+	public TimeOutOptionPane() {
         super();
     }
 

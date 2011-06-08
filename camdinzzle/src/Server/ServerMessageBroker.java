@@ -18,18 +18,6 @@ public class ServerMessageBroker
 	// Gestione messaggi in entrata
 	
 	/**
-	 * Divide il messaggio in parametri
-	 * @param msg
-	 * @return array contenente il messaggio diviso per parametri
-	 */
-	private static String[] splitMessage(String msg)
-	{
-		String[] splittedMessage = msg.split(",");
-		
-		return splittedMessage;
-	}
-	
-	/**
 	 * Gestisce il nome del comando ricevuto
 	 * @param msg
 	 * @return nome del comando ricevuto

@@ -1,18 +1,7 @@
 package Client;
 
-import java.net.MalformedURLException;
-import java.rmi.AccessException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.Naming;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-
-/* Da generare dopo che � stato fatto il login e quindi passare l'username e come address l'indirizzo del
- * server
- */
 
 public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 {

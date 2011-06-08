@@ -4,8 +4,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import Client.ClientRMIInterface;
-
 public interface ServerRMIInterface extends Remote {
 
 	public String creaUtente(String username, String password) throws RemoteException;

@@ -1,19 +1,12 @@
 package Client;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-import Server.ClientManagerSocket;
 
 public class ClientListener implements Runnable 
 {
@@ -97,16 +90,6 @@ public class ClientListener implements Runnable
 			System.out.println("--> CAMBIO TURNO: " + msg);
 			
 			cms.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
-			/*
-			if(ClientMessageBroker.manageChangeRound(msg).equals(username))
-			{
-				throw new IsMyRoundException(this.username);
-			}
-			else
-			{
-				throw new ChangeRoundException(ClientMessageBroker.manageChangeRound(msg));
-			}
-			*/
 		}
 	}
 	

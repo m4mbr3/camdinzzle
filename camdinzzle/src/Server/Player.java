@@ -1,20 +1,10 @@
 package Server;
 
 import java.io.Serializable;
-/**
- * 
- */
 
-/**
- * @author Andrea
- *
- */
 public class Player implements Serializable
 {
-
-	/**
-	 * 
-	 */
+	private static final long serialVersionUID = 1L;
 	private String password;
 	private String userName;
 	private Species specie;

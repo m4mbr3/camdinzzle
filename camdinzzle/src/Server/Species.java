@@ -1,22 +1,13 @@
 package Server;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-/**
- * 
- * @author Marco
- *
- */
-import java.util.HashMap;
 
-/**
- * gruppo di dinosauri appartenenti a un giocatore
- */
 public class Species implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private int timeOfLive;
 	private Hashtable<String, Dinosaur> myDinosaurs;

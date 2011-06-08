@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class Carnivorous extends Dinosaur implements Serializable
 {
-	
+	private static final long serialVersionUID = 1L;
 	private Vegetation vegetation=null;
 
 	public Carnivorous(String dinoId, int posRow, int posCol, Species specie) 

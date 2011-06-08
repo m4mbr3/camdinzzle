@@ -1,8 +1,6 @@
 package Server;
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * 
@@ -12,6 +10,7 @@ import java.util.Map;
 
 public abstract class Dinosaur implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private String dinoId;
 	private int age;
 	protected Species nameSpecie;

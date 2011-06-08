@@ -3,38 +3,20 @@
  */
 package Client;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import javax.management.monitor.Monitor;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-/**
- * @author Andrea
- *
- */
-public class ConnectionManagerSocket implements ConnectionManager {
-	//Class for client logging
-	/**
-	 * Socket for Managing the connection by socket with server
-	 */
+public class ConnectionManagerSocket implements ConnectionManager 
+{
+	
 	private Socket connection_with_server;
 	private BufferedWriter writer_on_socket;
-	private String address;
 	private String username;
-	private String password;
 	private String token;
-	private int port;
-	private String command;
 	private MonitorMessage mm;
-	private boolean run;
 	private ClientListener clientListener;
 	private String changeRound;
 	
@@ -43,14 +25,10 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		// TODO Auto-generated constructor stub
 		this.mm = mm;
 		changeRound = "";
-		this.address = address;
  		token = "";
 		changeRound = "";
-		this.port = port;
-		command = new String();
 		connection_with_server = new Socket(address,port);
 		clientListener = new ClientListener(mm, this.connection_with_server, this);
-		run = true;
 		
 		writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
 		

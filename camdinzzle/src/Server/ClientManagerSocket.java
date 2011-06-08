@@ -11,11 +11,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 import Client.Client;
-import Client.ClientMessageBroker;
-/**
- * @author Andrea
- *
- */
+
 public class ClientManagerSocket implements ClientManager, Runnable {
 
 	private Socket connection_with_client;

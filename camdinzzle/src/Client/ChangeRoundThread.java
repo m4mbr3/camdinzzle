@@ -1,31 +1,15 @@
 package Client;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 
-/**
- * 
- */
-
-/**
- * @author Andrea
- *
- */
-public class ChangeRoundThread extends JFrame implements Runnable {
-
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 	*/
+public class ChangeRoundThread extends JFrame implements Runnable 
+{
+	private static final long serialVersionUID = 1L;
 	private static boolean is_run;
 	private Client client;
 	private FrameGame frameGame;
@@ -34,6 +18,7 @@ public class ChangeRoundThread extends JFrame implements Runnable {
 	private JButton confirm;
 	private JButton deny;
 	private boolean is_my_turn;
+	
 	public ChangeRoundThread(String name,Client client,FrameGame frameGame)
 	{
 		super (name);

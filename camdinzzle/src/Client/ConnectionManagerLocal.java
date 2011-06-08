@@ -3,8 +3,6 @@
  */
 package Client;
 
-import java.io.BufferedWriter;
-import java.net.Socket;
 import java.util.ArrayList;
 import Server.ClientManagerLocal;
 
@@ -16,13 +14,8 @@ import Server.ClientManagerLocal;
 public class ConnectionManagerLocal implements ConnectionManager 
 {	
 	private ClientManagerLocal manager;
-	private String address;
 	private String username;
-	private String password;
 	private String token;
-	private int port;
-	private String command;
-	private boolean run;
 	private Client client;
 	
 

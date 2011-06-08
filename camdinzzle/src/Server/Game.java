@@ -1,30 +1,13 @@
 package Server;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.SynchronousQueue;
 
 
-/**
- * 
- */
-
-/**
- * @author Andrea
- *
- */
-public class Game implements Serializable
+public class Game
 {
-
-	/**
-	 * 
-	 */
-	private String gameid;
 	private static Object[][] map;
 	public static final int maxRow=40;
 	public static final int maxCol=40;
@@ -53,7 +36,7 @@ public class Game implements Serializable
 		}
 		else
 		{
-			this.map = mapFromFile;
+			map = mapFromFile;
 		}
 		
 		this.startMapReach();

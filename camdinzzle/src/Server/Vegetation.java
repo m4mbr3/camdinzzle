@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class Vegetation implements Food, Serializable
 {
-
+	private static final long serialVersionUID = 1L;
 	private int power;
 	private int maxPower;
 	

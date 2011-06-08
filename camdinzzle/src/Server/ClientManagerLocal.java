@@ -3,7 +3,6 @@
  */
 package Server;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import Client.Client;
