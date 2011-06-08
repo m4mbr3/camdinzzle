@@ -11,7 +11,11 @@
 		-JML
 		-JDOC
 		
+<<<<<<< .mine
+		--file di sicurezza RMI
+=======
 		
 		-file di sicurezza RMI
 		-uovo in posizione lontana
 	  
+>>>>>>> .r352

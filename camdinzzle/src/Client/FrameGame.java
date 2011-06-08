@@ -86,7 +86,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
-	private final int visibleRowCountDinoList=6;
+	private final int visibleRowCountDinoList=3;
 	private final int maxAttempt = 5;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);

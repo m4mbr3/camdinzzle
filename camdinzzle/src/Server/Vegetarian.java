@@ -30,7 +30,6 @@ public class Vegetarian extends Dinosaur implements Serializable
 			{
 				energy = energyMax;
 			}
-			this.setActionTake(true);
 			return true;
 		}
 		return false;
