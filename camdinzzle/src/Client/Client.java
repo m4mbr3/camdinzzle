@@ -18,7 +18,6 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -32,17 +31,16 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import Server.*
-;/**
+import Server.*;
+
+/**
  * @author Andrea
  *
  */
-public class Client extends JFrame implements ActionListener, WindowListener,MouseListener,ChangeListener{
+public class Client extends JFrame implements ActionListener, WindowListener,MouseListener,ChangeListener
+{
 
-	/**
-	 * 
-	 */
-	
+	private static final long serialVersionUID = 1L;
 	private JLabel camdinzzle;
 	private JLabel choice;
 	private JPanel panel;
