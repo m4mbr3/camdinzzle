@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -62,7 +61,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private JList dinoList;
 	private JTextArea dinoState;
 	private JScrollPane scrollDinoState;
-//	private JList playerList;
 	private JFrame listaGiocatori;
 	private JLabel titoloGiocatori;
 	private JLabel[] postiGiocatori;
@@ -79,7 +77,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private Client client;
 	private String dinoId;
 	private int flag=0;
-//	private JScrollPane scrollPlayerList;
 	private int timeGlobal;
 	private boolean flagStop;
 	private String nameSpecie;
@@ -87,12 +84,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
-	private final int visibleRowCountDinoList=4;
-//	private final int visibleRowCountPlayerList=8;
+	private final int visibleRowCountDinoList=6;
 	private final int maxAttempt = 5;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
-//	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
 	private int screenHeight;
 	private int screenWidth;
 
@@ -827,7 +822,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 				});
 				dinoList.setVisible(true);
-				dinoList.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*2));
+				dinoList.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*3));
 				dinoList.setFont(fontDinoList);
 				panelControlUp.add(new JScrollPane(dinoList),BorderLayout.NORTH);
 				panelControlUp.repaint();
