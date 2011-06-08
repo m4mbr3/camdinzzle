@@ -52,8 +52,8 @@ public class ClientListener implements Runnable
 			{
 				mm.setMessage("null");
 				JOptionPane.showMessageDialog(new JFrame(), "The server is down", "Server error", JOptionPane.ERROR_MESSAGE);
-				System.exit(0);
 				this.stop();
+				System.exit(0);
 			}
 			try 
 			{
