@@ -62,7 +62,7 @@ public class Server implements Runnable
 			this.serverLogic = serverLogic;
 			this.registro = null;
 			
-			ClientManagerLocal cmLocal = new ClientManagerLocal(serverLogic);
+			ClientManagerLocal cmLocal = new ClientManagerLocal(serverLogic, this);
 			client = new Client(cmLocal);
 			clientLocal.add(cmLocal);
 			clientLocal.get(0).setClient(client);
@@ -306,6 +306,17 @@ public class Server implements Runnable
 		}
 	}
 	
+	public void removeClientLocal(ClientManagerLocal cmLocal)
+	{
+		try
+		{
+			clientLocal.remove(cmLocal);
+		}
+		catch(Exception ex)
+		{
+			System.out.println("ERROR: " + ex.getMessage());
+		}
+	}
 	
 	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub

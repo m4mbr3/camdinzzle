@@ -19,12 +19,14 @@ public class ClientManagerLocal implements ClientManager{
 	private boolean isInGame;
 	private Client client;
 	private ConnectionManagerLocal cmLocal;
+	private Server server;
 	/**
 	 * 
 	 */
-	public ClientManagerLocal(ServerLogic serverLogic) {
+	public ClientManagerLocal(ServerLogic serverLogic, Server server) {
 		// TODO Auto-generated constructor stub
 		this.serverLogic = serverLogic;
+		this.server = server;
 		isInGame = false;
 		this.client = null;
 	}
@@ -94,7 +96,16 @@ public class ClientManagerLocal implements ClientManager{
 	}
 	public String logout (String token)
 	{
-		return serverLogic.logout(token);
+		String msg = serverLogic.logout(token);
+		
+		if(msg.equals("@ok"))
+		{
+			this.setIsInGame(false);
+			token = "";
+			server.removeClientLocal(this);
+		}
+		
+		return msg;
 	}
 	public ArrayList<String> mappaGenerale(String token)
 	{
@@ -130,7 +141,14 @@ public class ClientManagerLocal implements ClientManager{
 	}
 	public String passaTurno(String token)
 	{
-		return serverLogic.playerRoundSwitch(token);
+		String msg = serverLogic.playerRoundSwitch(token);
+		
+		if(msg.equals("@ok"))
+		{
+			serverLogic.changeRoundNotify();
+		}
+		
+		return msg;
 	}	
 	public String getTokenOfCurrentPlayer()  
 	{

@@ -77,7 +77,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		this.validate();
 		this.repaint();
-		new_user = new JLabel("<html> <u>Are you a new user? Click here!</u>");
+		new_user = new JLabel("<html> <u> Are you a new user? Click here!</u>");
 		this.is_local = is_local;
 		back = new JLabel("<html> <u>Come back to login</u>");
 		camdinzzle = new JLabel("<html> <h3>Camdinzzle on Socket v1.0</h3>");
