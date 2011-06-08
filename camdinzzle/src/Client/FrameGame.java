@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -99,7 +100,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 * 
 	 */
 	
-	public FrameGame(String title,Client client, FrameGameManager frameGameManager) throws HeadlessException{
+	public FrameGame(String title,Client client, FrameGameManager frameGameManager, ImageIcon imageDino) throws HeadlessException{
 		super(title);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -116,7 +117,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
 		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
 		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
-		iconDino = new ImageIcon("Images/T_REX.jpg");
+		iconDino = imageDino;
+
 		this.setVisible(true);
 		this.setLocation(0,0);
 		this.frameGameManager = frameGameManager;
@@ -1174,4 +1176,5 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			this.drawDinoList(client.getConnManager().listaDinosauri());
 		}
 	 }
+
 }

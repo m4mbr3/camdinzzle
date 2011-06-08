@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -64,6 +65,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JScrollPane ranking2;
 	private JTable ranking1;
 	
+	private JFrame dinoChosenFrame;
+	private JPanel dinoChosenPanel;
+	private ImageIcon[] iconChosenDino;
+	private JButton[] buttonDino;
+	private boolean setImage;
+	
 	private FrameGame frameGame;
 	/**
 	 * @param title
@@ -107,6 +114,15 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		Carn.setSelected(false);
 		razza_button.setLocation(10,190);
 		razza_button.addMouseListener(this);
+		
+		iconChosenDino = new ImageIcon[7];
+		iconChosenDino[0] = new ImageIcon("Images/sauro.jpg");
+		iconChosenDino[1] = new ImageIcon("Images/T_REX.jpg");
+		iconChosenDino[2] = new ImageIcon("Images/Saurolophus.jpg");
+		iconChosenDino[3] = new ImageIcon("Images/stegosauro.jpg");
+		iconChosenDino[4] = new ImageIcon("Images/triceratopo.jpg");
+		iconChosenDino[5] = new ImageIcon("Images/velociraptor.jpg");
+		iconChosenDino[6] = new ImageIcon("Images/brontosauro.jpg");
 		
 		
 		creaRazza.setSize(300, 76);
@@ -180,13 +196,13 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					
 					this.setVisible(false);
 					this.validate();
-					frameGame = new FrameGame("Isola dei Dinosauri",client, this);
+					int opt = chosenDinoImage();
+					if(opt==-1)
+						opt=0;
+					frameGame = new FrameGame("Isola dei Dinosauri",client, this,iconChosenDino[opt]);
 					ChangeRoundThread changeRoundThread = new ChangeRoundThread("Change Round", client, frameGame);
 						
 					(new Thread(changeRoundThread)).start();
-	//				frameGame.startFrameGame(client);
-					
-					
 					
 				}
 				else if (response[0].compareTo("no")==0)
@@ -339,6 +355,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			 }
 		}
 	}
+	
+	public int chosenDinoImage()
+	{
+		 return JOptionPane.showOptionDialog(this, "                                        scegli l'icona del dinosauro                                               ", "Chosen Icon Dinosaur", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, iconChosenDino, null);	
+	}
+	
 	@Override
 	public void windowActivated(WindowEvent arg0) 
 	{
