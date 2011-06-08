@@ -46,23 +46,7 @@ public class ServerLogic
 	 */
 	private String tokenOfCurrentPlayer;
 	
-	private boolean isTheFirstAccess;
-	/**
-	 * Integer that contains the default port of login daemon
-	 */
-	private int port_login;
-
-	/**
-	 * Integer that contains the default port of new user daemon
-	 */
-	private int port_newuser;
-
-	/**
-	 * 
-	 */
 	private String keyForToken;
-	
-	
 	
 	public ServerLogic()
 	{
@@ -78,8 +62,26 @@ public class ServerLogic
 				ObjectInputStream ois = new ObjectInputStream(input);
 			
 				currentSession = new Game((Object[][])ois.readObject());
-				players = (Hashtable<String, Player>)ois.readObject();
-				rank = (Hashtable<String, Species>)ois.readObject();
+				players = new Hashtable<String, Player>();
+				rank = new Hashtable<String, Species>();
+				
+				// Deserializzazione PlayerTable
+				Object[][] playerMatrix = (Object[][])ois.readObject();
+				
+				for(int i = 0; i<playerMatrix.length; i++)
+				{
+					players.put((String)playerMatrix[i][0], (Player)playerMatrix[i][1]);
+				}
+				// End Deserializzazione playerTable
+				
+				// Deserializzazione RankTable
+				Object[][] rankMatrix = (Object[][])ois.readObject();
+				
+				for(int i = 0; i<rankMatrix.length; i++)
+				{
+					rank.put((String)rankMatrix[i][0], (Species)rankMatrix[i][1]);
+				}
+				// End Deserializzazione RankTable
 				
 				ois.close(); 
 				input.close();
@@ -110,7 +112,6 @@ public class ServerLogic
 		}
 		
 		loggedPlayers = new Hashtable<String, Player>();
-		isTheFirstAccess = true;
 		tokenOfCurrentPlayer = "";
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
@@ -293,11 +294,11 @@ public class ServerLogic
 						
 						currentSession.addPlayer(token, loggedPlayers.get(token));
 						// Aggiungo i dinosauri del giocatore alla mappa
-						Iterator dinosaurs = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+						Iterator<Map.Entry<String, Dinosaur>> dinosaurs = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 						boolean isPositionated = false;
 						while(dinosaurs.hasNext())
 						{
-							Map.Entry me = (Map.Entry)dinosaurs.next();
+							Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>)dinosaurs.next();
 							
 							Dinosaur current = ((Dinosaur)me.getValue());
 							if((Game.getCell(current.getPosRow(), current.getPosCol()) instanceof Dinosaur))
@@ -397,10 +398,10 @@ public class ServerLogic
 							if(loggedPlayers.get(token).getSpecie().getDinosaurs() != null)
 							{
 								// Tolgo i dinosauri del giocatore dalla mappa
-								Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
+								Iterator<Map.Entry<String, Dinosaur>> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
 								while(dinosaurs.hasNext())
 								{
-									Map.Entry me = (Map.Entry) dinosaurs.next();
+									Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) dinosaurs.next();
 									
 									if(me.getValue() instanceof Carnivorous)
 									{
@@ -487,11 +488,11 @@ public class ServerLogic
 			{
 				if(loggedPlayers.get(token) != null)
 				{
-					Iterator<Player> iter = currentSession.getPlayersList();
+					Iterator<Map.Entry<String, Player>> iter = currentSession.getPlayersList();
 					
 					while(iter.hasNext())
 					{
-						Map.Entry me = (Map.Entry) iter.next();
+						Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
 						parameters.add(((Player)me.getValue()).getUserName());
 					}
 					
@@ -516,7 +517,7 @@ public class ServerLogic
 	{
 		try
 		{
-			ArrayList<String> parameters = new ArrayList<String>();
+			//ArrayList<String> parameters = new ArrayList<String>();
 			// TODO: gestione specie estinte e cambio punteggio nel player
 			
 			Hashtable<String, String> alreadySpeciesRead = new Hashtable<String, String>();
@@ -524,19 +525,18 @@ public class ServerLogic
 			int maxScore;
 			String speciesMaxScore = "";
 			String usernameMaxScore = "";
-			Map.Entry me = null;
 			
 			if(isLoggedUser(token))
 			{
 				for(int i = 0; i<rank.size(); i++)
 				{
-					Set set = rank.entrySet();
-					Iterator  iter = set.iterator();
+					Set<Map.Entry<String, Species>> set = rank.entrySet();
+					Iterator<Map.Entry<String, Species>>  iter = set.iterator();
 					maxScore = -10;
 					
 					while(iter.hasNext())
 					{
-						me = (Map.Entry) iter.next();
+						Map.Entry<String, Species> me = (Map.Entry<String, Species>) iter.next();
 						
 						if(((Species)me.getValue()).getScore() > maxScore)
 						{
@@ -678,11 +678,11 @@ public class ServerLogic
 					{
 						if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
 						{
-							Iterator<Dinosaur> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+							Iterator<Map.Entry<String, Dinosaur>> dinos = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 							
 							while(dinos.hasNext())
 							{
-								Map.Entry me = (Map.Entry) dinos.next();
+								Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) dinos.next();
 								list.add(((Dinosaur)me.getValue()).getDinoId());
 							}
 						}
@@ -838,14 +838,14 @@ public class ServerLogic
 							 * del giocatore
 							 */
 							
-							Iterator<Dinosaur> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
+							Iterator<Map.Entry<String, Dinosaur>> dinosaurs = loggedPlayers.get(token).getSpecie().getDinosaurs();
 							// Itera i dinosauri del giocatore
 							while (dinosaurs.hasNext()) 
 							{
 								if(isPossibleDino)
 									break;
 								
-								Map.Entry me = (Map.Entry) dinosaurs.next();
+								Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) dinosaurs.next();
 								/* TODO : da fare o no l'updateMap
 								loggedPlayers.get(token).getSpecie().updateMap();
 								*/
@@ -873,11 +873,11 @@ public class ServerLogic
 							if((isPossibleDino) &&(possibleDino != null))
 							{
 								// cercare il dinosauro nei dinosauri di tutti gli altri utenti
-								Iterator<Player> iter = currentSession.getPlayersList();
+								Iterator<Map.Entry<String, Player>> iter = currentSession.getPlayersList();
 								
 								while (iter.hasNext()) 
 								{
-									Map.Entry me = (Map.Entry) iter.next();
+									Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
 									dino = ((Player)me.getValue()).getSpecie().getDino(dinoId);
 									
 									if((dino != null) && (dino.equals(possibleDino)))
@@ -1317,10 +1317,7 @@ public class ServerLogic
 	 * Esegue il cambio del turno da un giocatore al prossimo e esegue le update su un giocatore(notifica in partita)
 	 */
 	public void updatePlayer(String token)
-	{
-		Iterator iter = null;
-		Map.Entry me = null;
-		
+	{		
 		try
 		{
 			/* TODO forse
@@ -1333,16 +1330,16 @@ public class ServerLogic
 				if(currentSession.getPlayer(token).getSpecie().getDinosaurs() != null)
 				{
 					currentSession.getPlayer(token).getSpecie().upDateDinosaurStatus();
-					iter = currentSession.getPlayer(token).getSpecie().getDinosaurs();
+					Iterator<Map.Entry<String, Dinosaur>> iter1 = currentSession.getPlayer(token).getSpecie().getDinosaurs();
 					
 					// kill dei dinosauri con age = 0
-					while(iter.hasNext())
+					while(iter1.hasNext())
 					{
-						me = (Map.Entry) iter.next();
+						Map.Entry<String, Dinosaur> me1 = (Map.Entry<String, Dinosaur>) iter1.next();
 						
-						if(((Dinosaur)me.getValue()).getAge() == 0)
+						if(((Dinosaur)me1.getValue()).getAge() == 0)
 						{
-							currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me.getValue()));
+							currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me1.getValue()));
 						}
 					}
 					
@@ -1364,18 +1361,18 @@ public class ServerLogic
 			
 			if(currentSession.numberPlayersInGame() > 0)
 			{
-				iter = currentSession.getPlayersList();
+				Iterator<Map.Entry<String, Player>> iter2 = currentSession.getPlayersList();
 				
-				while(iter.hasNext())
+				while(iter2.hasNext())
 				{
-					me = (Map.Entry)iter.next();
+					Map.Entry<String, Player> me2 = (Map.Entry<String, Player>)iter2.next();
 					
-					if(((Player)me.getValue()).getSpecie() != null)
+					if(((Player)me2.getValue()).getSpecie() != null)
 					{
-						if(((Player)me.getValue()).getSpecie().getDinosaurs() == null)
+						if(((Player)me2.getValue()).getSpecie().getDinosaurs() == null)
 						{
-							((Player)me.getValue()).setSpecie(null);
-							currentSession.removePlayer(((Player)me.getValue()).getToken());
+							((Player)me2.getValue()).setSpecie(null);
+							currentSession.removePlayer(((Player)me2.getValue()).getToken());
 						}
 					}
 				}
@@ -1385,22 +1382,22 @@ public class ServerLogic
 			
 			if(currentSession.numberPlayersInGame() > 0)
 			{
-				iter = currentSession.getPlayersList();
+				Iterator<Map.Entry<String, Player>> iter3 = currentSession.getPlayersList();
 				int tableSize = 0;
 				
 				// setta il token del prossimo giocatore a tokenOfCurrentPlayer
-				while(iter.hasNext())
+				while(iter3.hasNext())
 				{
-					me = (Map.Entry) iter.next();
+					Map.Entry<String, Player> me3 = (Map.Entry<String, Player>) iter3.next();
 					tableSize++;
 					
-					if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame()))
+					if((((String) me3.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize < currentSession.numberPlayersInGame()))
 					{
-						me = (Map.Entry) iter.next();
-						tokenOfCurrentPlayer = (String)me.getKey();
+						me3 = (Map.Entry<String, Player>) iter3.next();
+						tokenOfCurrentPlayer = (String)me3.getKey();
 						break;
 					}
-					else if((((String) me.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
+					else if((((String) me3.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
 					{
 						// TODO : gestione del null ritornato
 						tokenOfCurrentPlayer = currentSession.getFirstPlayer();
@@ -1435,11 +1432,11 @@ public class ServerLogic
 			 * - Diminuzione energia carogne.
 			 * - Aggiornamento score dei tutte le specie in partita
 			 */
-			Iterator iter = currentSession.getPlayersList();
+			Iterator<Map.Entry<String, Player>> iter = currentSession.getPlayersList();
 			
 			while(iter.hasNext())
 			{
-				Map.Entry me = (Map.Entry)iter.next();
+				Map.Entry<String, Player> me = (Map.Entry<String, Player>)iter.next();
 				Player currentPlayer = (Player)me.getValue();
 				Species currentSpecie = currentPlayer.getSpecie();			
 				currentSpecie.updateTimeOfLive();
@@ -1685,8 +1682,42 @@ public class ServerLogic
 			Object[][] map = currentSession.getGeneralMap();
 			
 			oos.writeObject(map);
-			oos.writeObject(this.players);
-			oos.writeObject(rank);
+			
+			// Salvataggio PlayerTable
+			Object[][] playerMatrix = new Object[players.size()][2];
+			
+			Set<Map.Entry<String, Player>> setPlayers = players.entrySet();
+			Iterator<Map.Entry<String, Player>> iterPlayers = setPlayers.iterator();
+			
+			int i = 0;
+			while(iterPlayers.hasNext())
+			{
+				Map.Entry<String, Player> mePlayers = (Map.Entry<String, Player>) iterPlayers.next();
+				playerMatrix[i][0] = mePlayers.getKey();
+				playerMatrix[i][1] = mePlayers.getValue();
+				
+				i++;
+			}
+			oos.writeObject(playerMatrix);
+			// End salvataggio playerTable
+			
+			// Salvataggio rank
+			Object[][] rankList = new Object[rank.size()][2];
+			
+			Set<Map.Entry<String, Species>> setRank = rank.entrySet();
+			Iterator<Map.Entry<String, Species>> iterRank = setRank.iterator();
+			
+			i = 0;
+			while(iterRank.hasNext())
+			{
+				Map.Entry<String, Species> meRank = (Map.Entry<String, Species>) iterRank.next();
+				rankList[i][0] = meRank.getKey();
+				rankList[i][1] = meRank.getValue();
+				
+				i++;
+			}
+			oos.writeObject(rankList);
+			// End salvataggio rank
 			
 			oos.close();
 			out.close();

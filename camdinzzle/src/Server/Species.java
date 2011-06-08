@@ -67,12 +67,11 @@ public class Species implements Serializable
 	
 	public void increaseScore()
 	{
-		// TODO: aumentare lo score dove ogni dinosauro vale 1+D punti dove D è la sua dimensione
-		Iterator iter = this.getDinosaurs();
+		Iterator<Map.Entry<String, Dinosaur>> iter = this.getDinosaurs();
 		
 		while(iter.hasNext())
 		{
-			Map.Entry me =(Map.Entry)iter.next();
+			Map.Entry<String, Dinosaur> me =(Map.Entry<String, Dinosaur>)iter.next();
 			score = score + 1 + ((Dinosaur)me.getValue()).getDinoDimension();
 		}
 	}
@@ -141,11 +140,11 @@ public class Species implements Serializable
 	/**
 	 * @return Un iteratore contenente i dinosauri delle specie
 	 */
-	public Iterator getDinosaurs()
+	public Iterator<Map.Entry<String, Dinosaur>> getDinosaurs()
 	{
 		if(myDinosaurs.size() > 0)
 		{
-			Set set = myDinosaurs.entrySet();
+			Set<Map.Entry<String, Dinosaur>> set = myDinosaurs.entrySet();
 			
 			return set.iterator();
 		}
@@ -178,12 +177,12 @@ public class Species implements Serializable
 	 */
 	public void upDateDinosaurStatus()
 	{
-		Set set = myDinosaurs.entrySet();
-		Iterator iter = set.iterator();
+		Set<Map.Entry<String, Dinosaur>> set = myDinosaurs.entrySet();
+		Iterator<Map.Entry<String, Dinosaur>> iter = set.iterator();
 		
 		while(iter.hasNext())
 		{
-			Map.Entry me = (Map.Entry) iter.next();
+			Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) iter.next();
 			((Dinosaur)me.getValue()).updateDinosaurAge();
 		}
 		
@@ -238,8 +237,8 @@ public class Species implements Serializable
 	 */
 	public void updateMap()
 	{
-		Set set = myDinosaurs.entrySet();
-		Iterator iter = set.iterator();
+		Set<Map.Entry<String, Dinosaur>> set = myDinosaurs.entrySet();
+		Iterator<Map.Entry<String, Dinosaur>> iter = set.iterator();
 		Dinosaur dino;
 		while(iter.hasNext())
 		{

@@ -52,12 +52,15 @@ public class Server implements Runnable
 	private ServerLogic serverLogic;
 	private ArrayList<ClientManagerLocal> clientLocal;
 	private Client client;
+	private Registry registro;
+	
 	public Server(int port, ServerLogic serverLogic, String serverPort, String serverName)
 	{
 			clientLocal = new ArrayList<ClientManagerLocal>();
 			this.port = port;
 			serverLogic.setServer(this);
 			this.serverLogic = serverLogic;
+			this.registro = null;
 			
 			ClientManagerLocal cmLocal = new ClientManagerLocal(serverLogic);
 			client = new Client(cmLocal);
@@ -96,7 +99,8 @@ public class Server implements Runnable
 			try 
 			{
 				//System.setSecurityManager(new RMISecurityManager());
-				Registry registro = LocateRegistry.createRegistry(Integer.parseInt(serverPort));
+				registro = LocateRegistry.createRegistry(Integer.parseInt(serverPort));
+				registro.hashCode();
 				Naming.bind("rmi://127.0.0.1/" + serverName + ":" + serverPort,(Remote) serverRMI);
 			} 
 			catch (AccessException e) 
@@ -199,12 +203,12 @@ public class Server implements Runnable
 		}
 		if(clientTableRMI.size() > 0)
 		{			
-			Set set = clientTableRMI.entrySet();
-			Iterator iter = set.iterator();
+			Set<Map.Entry<String, ClientManagerRMI>> set = clientTableRMI.entrySet();
+			Iterator<Map.Entry<String, ClientManagerRMI>> iter = set.iterator();
 			
 			while(iter.hasNext())
 			{
-				Map.Entry me = (Map.Entry)iter.next();
+				Map.Entry<String, ClientManagerRMI> me = (Map.Entry<String, ClientManagerRMI>)iter.next();
 				
 				if(((ClientManagerRMI)me.getValue()).getIsInGame())
 				{

@@ -125,11 +125,11 @@ public class Game
 	 * Lista dei giocatori in partita
 	 * @return Iterator con la lista dei giocatori in partita
 	 */
-	public Iterator<Player> getPlayersList()
+	public Iterator<Map.Entry<String, Player>> getPlayersList()
 	{
 		synchronized (playersInGame) 
 		{
-			Set set = playersInGame.entrySet();
+			Set<Map.Entry<String, Player>> set = playersInGame.entrySet();
 			
 			return set.iterator();
 		}
@@ -146,9 +146,9 @@ public class Game
 		{
 			if(!playersInGame.isEmpty())
 			{
-				Set set = playersInGame.entrySet();
-				Iterator  iter = set.iterator();
-				Map.Entry me = (Map.Entry) iter.next();
+				Set<Map.Entry<String, Player>> set = playersInGame.entrySet();
+				Iterator<Map.Entry<String, Player>>  iter = set.iterator();
+				Map.Entry<String, Player> me = (Map.Entry<String, Player>) iter.next();
 				
 				return me.getKey().toString();
 			}
@@ -871,7 +871,7 @@ public class Game
 		
 		
 	}
-	
+	/*
 	private boolean controlWater(int startRow, int startCol, int destRow, int destCol)
 	{
 		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxRow)&&(destRow>=0)&&(destRow<maxRow)&&(destCol>=0)&&(destCol<maxRow))
@@ -933,7 +933,7 @@ public class Game
 		else
 			return false;
 		
-	}
+	}*/
 	/**
 	 * riposiziona nella mappa in modo casuale la carogna
 	 * @param row : podizione iniziale
