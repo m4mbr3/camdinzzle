@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -52,8 +53,14 @@ public class ClientListener implements Runnable
 			{
 				mm.setMessage("null");
 				JOptionPane.showMessageDialog(new JFrame(), "The server is down", "Server error", JOptionPane.ERROR_MESSAGE);
+				
+				for(int i = 0; i<Frame.getFrames().length; i++)
+				{
+					Frame.getFrames()[i].setVisible(false);
+				}
+				new Client("Cliente");
 				this.stop();
-				System.exit(0);
+				//System.exit(0);
 			}
 			try 
 			{

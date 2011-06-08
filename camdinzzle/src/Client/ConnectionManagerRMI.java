@@ -5,6 +5,7 @@ package Client;
 
 import Server.ServerRMIInterface;
 
+import java.awt.Frame;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -646,7 +647,14 @@ public class ConnectionManagerRMI implements ConnectionManager
 			}
 			
 			JOptionPane.showMessageDialog(new JFrame(), "The server is down", "Server error", JOptionPane.ERROR_MESSAGE);
-			System.exit(0);
+			
+			for(int i = 0; i<Frame.getFrames().length; i++)
+			{
+				Frame.getFrames()[i].setVisible(false);
+			}
+			new Client("Cliente");
+			
+			//System.exit(0);
 		}
 	}
 	
