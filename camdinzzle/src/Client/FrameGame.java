@@ -60,10 +60,13 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private ImageIcon iconWaterDisable;
 	private ImageIcon iconLandDisable;
 	private JList dinoList;
-	private boolean flagDinoList;
 	private JTextArea dinoState;
 	private JScrollPane scrollDinoState;
-	private JList playerList;
+//	private JList playerList;
+	private JFrame listaGiocatori;
+	private JLabel titoloGiocatori;
+	private JLabel[] postiGiocatori;
+	private JPanel pannelloGiocatori;
 	private JPanel commandButtons;
 	private JButton[] commandDinoButton;
 	private JButton[] commandGameButton;
@@ -76,7 +79,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private Client client;
 	private String dinoId;
 	private int flag=0;
-	private JScrollPane scrollPlayerList;
+//	private JScrollPane scrollPlayerList;
 	private int timeGlobal;
 	private boolean flagStop;
 	private String nameSpecie;
@@ -85,11 +88,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
 	private final int visibleRowCountDinoList=4;
-	private final int visibleRowCountPlayerList=8;
+//	private final int visibleRowCountPlayerList=8;
 	private final int maxAttempt = 5;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
-	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
+//	private final Font fontPlayerState = new Font("Serif", Font.PLAIN, 24);
 	private int screenHeight;
 	private int screenWidth;
 
@@ -151,7 +154,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		commandButtons = new JPanel();
 		commandButtons.setVisible(true);
 		commandButtons.setBorder(null);
-		commandButtons.setPreferredSize(new Dimension(widthControlPanel-10, (screenHeight/14*4)));
+		commandButtons.setPreferredSize(new Dimension(widthControlPanel-10, (screenHeight/14*5)));
 		time = new JLabel();
 		time.setPreferredSize(new Dimension(widthControlPanel-10, screenHeight/14));
 		time.setVisible(true);
@@ -185,7 +188,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			this.drawDinoList(msgDinoList);
 			this.drawDinoState(msgDinoList[0], client.getConnManager().statoDinosauro(msgDinoList[0]));
 			this.drawCommandButtons();
-			this.drawPlayerList(client.getConnManager().listaGiocatori());
 			this.repaint();
 		}
 	}
@@ -401,8 +403,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 			}
 		}
-		/*AGGIORNAMENTO LISTA GIOCATORI
-		 * dopo aver cliccato si aggiorna la lista giocatori
+		/*LISTA GIOCATORI
+		 * dopo aver cliccato si apre la lista giocatori
 		 * se @no viene creato un popup
 		 */
 		if(arg0.getComponent().equals(commandGameButton[3]))
@@ -422,6 +424,30 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else
 				{	
 					drawPlayerList(check);				
+				}
+			}
+		}
+		/*AGGIORNA MAPPA
+		 * dopo aver cliccato si aggiorna la mappa
+		 * se @no viene creato un popup
+		 */
+		if(arg0.getComponent().equals(commandGameButton[4]))
+		{
+			ArrayList<String> check = client.getConnManager().mappaGenerale();
+
+			if(check==null)
+			{
+				errorMessage();
+			}
+			else
+			{
+				if(check.equals("no"))
+				{
+					errorMessageServer(check);
+				}
+				else
+				{	
+					drawMap(check);				
 				}
 			}
 		}
@@ -509,7 +535,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 */
 	public void mouseEntered(MouseEvent arg0) 
 	{
-		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[3])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
+		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[3])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2])))&&(!(arg0.getComponent().equals(commandGameButton[4]))))
 			{
 				if(!arg0.getComponent().equals(cellClicked))
 				{
@@ -524,7 +550,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 */
 	public void mouseExited(MouseEvent arg0) 
 	{
-		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[3])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2]))))
+		if ((arg0.getComponent() instanceof JButton)&&(!(arg0.getComponent().equals(commandDinoButton[0])))&&(!(arg0.getComponent().equals(commandDinoButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[3])))&&(!(arg0.getComponent().equals(commandGameButton[0])))&&(!(arg0.getComponent().equals(commandGameButton[1])))&&(!(arg0.getComponent().equals(commandGameButton[2])))&&(!(arg0.getComponent().equals(commandGameButton[4]))))
 			{
 				if(!arg0.getComponent().equals(cellClicked))
 				{
@@ -781,12 +807,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		{
 			if(!msgDinoList[0].equals("no"))
 			{
-				if(dinoList==null)
+				if(dinoList!=null)
 				{
-					dinoList = new JList(msgDinoList);
-					flagDinoList=true;
+					panelControlUp.remove(dinoList);
+					dinoList = null;
 				}
-				dinoList.setListData(msgDinoList);
+				dinoList = new JList(msgDinoList);
 				dinoList.setVisibleRowCount(visibleRowCountDinoList);
 				dinoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				dinoList.addListSelectionListener(new ListSelectionListener() {
@@ -802,12 +828,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				});
 				dinoList.setVisible(true);
 				dinoList.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*2));
-				dinoList.setFont(fontDinoList);	
-				if(flagDinoList)
-				{
-					panelControlUp.add(new JScrollPane(dinoList),BorderLayout.NORTH);
-					flagDinoList=false;
-				}
+				dinoList.setFont(fontDinoList);
+				panelControlUp.add(new JScrollPane(dinoList),BorderLayout.NORTH);
 				panelControlUp.repaint();
 			}
 			else
@@ -990,25 +1012,39 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		if(msgPlayerList!=null)
 		{
 			if(!msgPlayerList[0].equals("no"))
-			{
-				if(playerList!=null)
+			{	
+				if(listaGiocatori==null)
 				{
-					scrollPlayerList.remove(playerList);
-					panelControlDown.remove(scrollPlayerList);
+					listaGiocatori = new JFrame("List of Players");
 				}
-				String[] newMsgPlayerList = new String[8];
-				for(int i=0;i<msgPlayerList.length-1; i++)
-					newMsgPlayerList[i]=msgPlayerList[i+1];
-				playerList = new JList(newMsgPlayerList);
-				playerList.setVisibleRowCount(visibleRowCountPlayerList);
-				playerList.setVisible(true);
-				playerList.setPreferredSize(new Dimension(widthControlPanel-50,screenHeight/14*2));
-				playerList.setFont(fontPlayerState);
-				scrollPlayerList = new JScrollPane(playerList);
-				scrollPlayerList.setVisible(true);
-				scrollPlayerList.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*2));
-				panelControlDown.add(scrollPlayerList,BorderLayout.CENTER);
-				panelControlDown.validate();
+				else
+				{
+					listaGiocatori.removeAll();
+					postiGiocatori = null;
+					titoloGiocatori = null;
+					pannelloGiocatori = null;
+				}
+				listaGiocatori.setLayout(new BorderLayout());
+				listaGiocatori.setVisible(true);
+				listaGiocatori.setSize(300, 600);
+				listaGiocatori.setLocation((screenWidth-300)/2,(int)(screenHeight-600)/2);
+				titoloGiocatori = new JLabel("<html><h2>Players of this Game:</h2></html>");
+				listaGiocatori.add(titoloGiocatori, BorderLayout.NORTH);
+				titoloGiocatori.setSize(300,20);
+				postiGiocatori = new JLabel[8];
+				pannelloGiocatori = new JPanel();
+				listaGiocatori.add(pannelloGiocatori,BorderLayout.CENTER);
+				pannelloGiocatori.setLayout(new GridLayout(8,1));
+				
+				for (int i=1; i < msgPlayerList.length; i++)
+				{
+					postiGiocatori[i-1] = new JLabel();
+					postiGiocatori[i-1].setText(msgPlayerList[i]);
+					pannelloGiocatori.add(postiGiocatori[i-1]);
+				}	
+				
+				
+				listaGiocatori.repaint();
 			}
 			else
 			{
@@ -1030,15 +1066,17 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 commandDinoButton[0].setName("Cresci Dinosauro");
 		 commandDinoButton[1] = new JButton("Deponi Uovo (1500)");
 		 commandDinoButton[1].setName("Deponi Uovo");
-		 commandGameButton = new JButton[4];
+		 commandGameButton = new JButton[5];
 		 commandGameButton[0] = new JButton("Classifica");
 		 commandGameButton[0].setName("Classifica");
 		 commandGameButton[1] = new JButton("Passa Turno");
 		 commandGameButton[1].setName("Passa Turno");
 		 commandGameButton[2] = new JButton("Esci dalla Partita");
 		 commandGameButton[2].setName("Esci dalla Partita");
-		 commandGameButton[3] = new JButton("Aggiorna lista giocatori");
-		 commandGameButton[3].setName("Aggiorna lista giocatori");
+		 commandGameButton[3] = new JButton("Lista giocatori");
+		 commandGameButton[3].setName("Lista giocatori");
+		 commandGameButton[4] = new JButton("Aggiorna Mappa");
+		 commandGameButton[4].setName("Aggiorna Mappa");
 		 
 		 for(int i=0;i<2;i++)
 		 {
@@ -1048,7 +1086,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			 commandDinoButton[i].addMouseListener(this);
 			 commandButtons.add(commandDinoButton[i]);
 		 }
-		 for(int i=0;i<4;i++)
+		 for(int i=0;i<5;i++)
 		 {
 			 commandGameButton[i].setPreferredSize(new Dimension(widthControlPanel - 20, screenHeight/14/5*3));
 			 commandGameButton[i].setVisible(true);
@@ -1138,7 +1176,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		{
 			this.drawMap(client.getConnManager().mappaGenerale());
 			this.drawDinoList(client.getConnManager().listaDinosauri());
-			this.drawPlayerList(client.getConnManager().listaGiocatori());
 		}
 	 }
 }
