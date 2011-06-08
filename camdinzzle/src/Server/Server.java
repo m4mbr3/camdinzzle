@@ -84,6 +84,7 @@ public class Server implements Runnable {
 			catch (BindException e)
 			{
 				System.out.println("ERROR: Another server is already running.");
+				System.exit(0);
 			}
 			catch (IOException e) 
 			{

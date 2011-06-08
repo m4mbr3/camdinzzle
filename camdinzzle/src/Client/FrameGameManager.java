@@ -137,6 +137,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		lisGiocatori.addMouseListener(this);
 		classifica.addMouseListener(this);
 		logout.addMouseListener(this);
+		this.addWindowListener(this);
 		
 		this.add(titleframe);
 		this.add( creaRazza);
@@ -178,6 +179,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				{
 					
 					this.setVisible(false);
+					this.validate();
 					frameGame = new FrameGame("Isola dei Dinosauri",client, this);
 					ChangeRoundThread changeRoundThread = new ChangeRoundThread("Change Round", client, frameGame);
 						

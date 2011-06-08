@@ -30,19 +30,20 @@ public class ClientManagerLocal implements ClientManager{
 	@Override
 	public boolean sendChangeRound(String msg) {
 		// TODO Auto-generated method stub
-		return false;
+		client.getConnManager().setChangeRound(msg);
+		return true;
 	}
 
 	@Override
 	public boolean getIsInGame() {
 		// TODO Auto-generated method stub
-		return false;
+		return isInGame;
 	}
 
 	@Override
 	public void setIsInGame(boolean isInGame) {
 		// TODO Auto-generated method stub
-		
+		this.isInGame = isInGame;
 	}
 	public synchronized String creaUtente(String username, String password)
 	{
@@ -110,6 +111,7 @@ public class ClientManagerLocal implements ClientManager{
 	}
 	public synchronized String passaTurno(String token)
 	{
+		System.out.println("PassaTurno");
 		return serverLogic.playerRoundSwitch(token);
 	}	
 	public synchronized String getTokenOfCurrentPlayer()  

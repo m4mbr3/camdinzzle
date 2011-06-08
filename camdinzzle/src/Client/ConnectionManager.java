@@ -140,4 +140,5 @@ public interface ConnectionManager {
 	public String getUsername();
 	public Client getClient();
 	public void setClient(Client client);
+	
 }
