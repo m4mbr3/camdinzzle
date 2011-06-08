@@ -827,7 +827,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					 */
 					public void valueChanged(ListSelectionEvent e) 
 					{
-						drawDinoState(dinoList.getSelectedValue().toString(), client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString()));
+						if(dinoList.getSelectedValue() != null)
+						{
+							String[] msg = client.getConnManager().statoDinosauro(dinoList.getSelectedValue().toString());
+							if(msg != null)
+							{
+								if(msg[0] != null)
+									drawDinoState(dinoList.getSelectedValue().toString(), msg);
+							}
+						}
 					}
 				});
 				dinoList.setVisible(true);
