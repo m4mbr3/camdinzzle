@@ -937,6 +937,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		rankingTable.setVisible(true);
 		rankingScroll.getViewport().add(rankingTable);
 		rankingFrame.add(rankingScroll);
+		rankingFrame.setEnabled(false);
 		rankingFrame.setLocation(screenWidth/2-175, screenHeight/2-250);
 	}
 

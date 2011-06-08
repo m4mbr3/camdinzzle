@@ -75,7 +75,8 @@ public class ConnectionManagerLocal implements ConnectionManager
 		if(!token.equals(""))
 		{
 			String retStr = manager.accessoPartita(token);
-			if(ClientMessageBroker.manageGameAccess(retStr)[0].equals("ok"))
+			String[] ret = ClientMessageBroker.manageGameAccess(retStr);
+			if(ret[0].equals("ok"))
 			{
 				manager.setIsInGame(true);
 				
@@ -89,6 +90,13 @@ public class ConnectionManagerLocal implements ConnectionManager
 				}
 				return retStr;
 			}
+			else if(!((ret[0].equals("no"))&&(ret[1].equals("COMANDO NON ESEGUITO"))))
+			{
+				return retStr;
+				
+			}
+			else
+				return null;
 		}
 		return null;
 	}

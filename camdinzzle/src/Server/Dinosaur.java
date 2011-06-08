@@ -96,9 +96,9 @@ public abstract class Dinosaur implements Serializable
 			boolean positioned = false;
 			do
 			{
-				for(int i=posRow-offSet; i<=posRow+offSet; i++ )
+				for(int i=posRow-offSet; i<posRow+offSet+1; i++ )
 				{
-					for(int j=posCol-offSet; i<=posCol+offSet; j++)
+					for(int j=posCol-offSet; i<posCol+offSet+1; j++)
 					{
 						if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
 						{					
