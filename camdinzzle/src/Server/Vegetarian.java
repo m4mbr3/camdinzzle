@@ -51,10 +51,10 @@ public class Vegetarian extends Dinosaur implements Serializable
 
 		if(powerAttack >= powerDefense)
 		{
-			if(((Carnivorous) dino).getVegetation()!=null)
+/*			if(((Carnivorous) dino).getVegetation()!=null)
 			{
 				Game.setCellMap(((Carnivorous) dino).getVegetation(), ((Dinosaur)dino).getPosRow(), ((Dinosaur)dino).getPosCol());
-			}
+			}*/
 			return true;
 		}
 		else
