@@ -17,6 +17,7 @@ import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -107,6 +108,7 @@ public class Server implements Runnable {
 			
 			try 
 			{
+				//System.setSecurityManager(new RMISecurityManager());
 				Registry registro = LocateRegistry.createRegistry(Integer.parseInt(serverPort));
 				Naming.bind("rmi://127.0.0.1/" + serverName + ":" + serverPort,(Remote) serverRMI);
 			} 

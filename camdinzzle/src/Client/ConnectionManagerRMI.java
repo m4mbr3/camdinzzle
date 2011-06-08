@@ -15,6 +15,7 @@ import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -45,6 +46,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		this.token = "";
 		timelineRemoteRequest = 0;
 		
+		//System.setSecurityManager(new RMISecurityManager());
 		server = (ServerRMIInterface)Naming.lookup("rmi://" + address + "/" + serverName + ":" + port);
 	}
 	
