@@ -109,7 +109,7 @@ public class ChangeRoundThread extends JFrame implements Runnable
 			{
 				JOptionPane.showMessageDialog(this,"MessageIncorrect", "Turn Error", JOptionPane.ERROR_MESSAGE);
 			}
-			if(response[0].equals("ok"))
+			else if(response[0].equals("ok"))
 			{
 				this.is_my_turn=true;
 				frameGame.drawTime(120);
