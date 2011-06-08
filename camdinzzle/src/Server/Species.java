@@ -316,34 +316,34 @@ public class Species implements Serializable
 	
 	public void killDino(Dinosaur dinoId)
 	{
-		if((Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Vegetarian || Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Carnivorous))
+		if(!(Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Vegetarian || Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Carnivorous))
 		{
-			if(speciesType==type.Carnivorous)
-			{
-				if(((Carnivorous)dinoId).getVegetation()!=null)
+				if(speciesType==type.Carnivorous)
 				{
-					Game.setCellMap(((Carnivorous)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
+					if(((Carnivorous)dinoId).getVegetation()!=null)
+					{
+						Game.setCellMap(((Carnivorous)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
+					}
+					else
+					{
+						Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
+					}
 				}
 				else
 				{
-					Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
+					if(((Vegetarian)dinoId).getCarrion()!=null)
+					{
+						Game.setCellMap(((Vegetarian)dinoId).getCarrion(), dinoId.getPosRow(), dinoId.getPosCol());
+					}
+					else if(((Vegetarian)dinoId).getVegetation()!=null)
+					{
+						Game.setCellMap(((Vegetarian)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
+					}
+					else
+					{
+						Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
+					}
 				}
-			}
-			else
-			{
-				if(((Vegetarian)dinoId).getCarrion()!=null)
-				{
-					Game.setCellMap(((Vegetarian)dinoId).getCarrion(), dinoId.getPosRow(), dinoId.getPosCol());
-				}
-				else if(((Vegetarian)dinoId).getVegetation()!=null)
-				{
-					Game.setCellMap(((Vegetarian)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
-				}
-				else
-				{
-					Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
-				}
-			}
 		}
 		myDinosaurs.remove(dinoId.getDinoId());
 	}

@@ -84,7 +84,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	
 	private FrameGameManager frameGameManager;
 	private final int widthControlPanel=300;
-	private final int visibleRowCountDinoList=6;
+	private final int visibleRowCountDinoList=4;
 	private final int visibleRowCountPlayerList=8;
 	private final int maxAttempt = 5;
 	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
@@ -137,8 +137,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		panel.setBorder(null);
 		panel.setPreferredSize(new Dimension(screenWidth-widthControlPanel, screenHeight));
 		panelControl.setPreferredSize(new Dimension(widthControlPanel, screenHeight));
-		panelControlUp.setSize(new Dimension(widthControlPanel, screenHeight/14*6));
-		panelControlDown.setSize(new Dimension(widthControlPanel, screenHeight/14*8));
+		panelControlUp.setSize(new Dimension(widthControlPanel, screenHeight/14*5));
+		panelControlDown.setSize(new Dimension(widthControlPanel, screenHeight/14*9));
 		panel.setLayout(new GridLayout(row,col));
 		panelControl.setLayout(new BorderLayout());
 		panelControlUp.setLayout(new BorderLayout());
@@ -1122,10 +1122,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 {
 			 ChangeRoundThread.stop();
 			 client.getConnManager().uscitaPartita();
+			 flagStop = true;
 			 this.setVisible(false);
+//			 this.repaint();
+			 this.validate();
 			 frameGameManager.setVisible(true);
 			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null); 
-			 flagStop = true;
 		 }
 	 }
 	 

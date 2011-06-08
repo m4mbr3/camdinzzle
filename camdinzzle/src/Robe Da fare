@@ -12,7 +12,6 @@
 		-quando il server torna per un tot di volte null al posto di dire azione non compiuta disconnettere
 		il client facendo la stop del ClientListener
 		-cliccando sul FrameGameManager la x per chiudere la finestra non viene fatto il logout
-		-Fare gestione FrameGameManager su caduta del server
 
 		-JUNIT
 		-JML
