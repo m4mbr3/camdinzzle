@@ -16,10 +16,12 @@ public class TimeOutOptionPane extends JOptionPane {
     public static int showTimeoutDialog(Component parentComponent, Object message, final String title, int optionType,
             int messageType, Object[] options, final Object initialValue) {
         JOptionPane pane = new JOptionPane(message, messageType, optionType, null, options, initialValue);
-
+         
         pane.setInitialValue(initialValue);
 
         final JDialog dialog = pane.createDialog(parentComponent, title);
+        
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         
         pane.selectInitialValue();
         new Thread() {

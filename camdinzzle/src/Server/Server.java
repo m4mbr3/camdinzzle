@@ -71,8 +71,9 @@ public class Server implements Runnable {
 			serverLogic.setServer(this);
 			this.serverLogic = serverLogic;
 			
-			clientLocal.add(new ClientManagerLocal(serverLogic));
-			client = new Client(clientLocal.get(0));
+			ClientManagerLocal cmLocal = new ClientManagerLocal(serverLogic);
+			client = new Client(cmLocal);
+			clientLocal.add(cmLocal);
 			clientLocal.get(0).setClient(client);
 			try 
 			{

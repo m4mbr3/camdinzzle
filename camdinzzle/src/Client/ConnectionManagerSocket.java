@@ -55,7 +55,7 @@ public class ConnectionManagerSocket implements ConnectionManager {
 		writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
 		
 	}
-	
+	@Override
 	public void setChangeRound(String msg)
 	{
 		this.changeRound = msg;

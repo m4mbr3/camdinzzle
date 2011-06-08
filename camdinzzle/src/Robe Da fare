@@ -12,5 +12,10 @@
 		-JUNIT
 		-JML
 		-JDOC
+		
+		
+		-se un dinosauro combatte e perde allora viene tolto il dinosauro del vincitore dalla mappa
+		--file di sicurezza RMI
+		-uovo in posizione lontana
 	
-		-uovo in posizione lontana   (DA PROVARE)
+		-uovo in posizione lontana  
