@@ -34,6 +34,8 @@ import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import Images.*;
+
 
 /**
  * @author Andrea
@@ -114,15 +116,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		
 		//INIZIO CARICAMENTO IMMAGINI
 		
-		iconVegetation = new ImageIcon(Client.class.getResource("Images/vege.jpg"));
-		iconLand = new ImageIcon(Client.class.getResource("Images/terra.jpg"));
-		iconWater = new ImageIcon(Client.class.getResource("Images/acqua.jpg"));
-		iconDark = new ImageIcon(Client.class.getResource("Images/buio.jpg"));
-		iconCarrion = new ImageIcon(Client.class.getResource("Images/carrion.jpg"));
-		iconLandDisable  = new ImageIcon(Client.class.getResource("Images/terraDisable.jpg"));
-		iconWaterDisable  = new ImageIcon(Client.class.getResource("Images/acquaDisable.jpg"));
-		iconVegetationDisable  = new ImageIcon(Client.class.getResource("Images/vegeDisable.jpg"));
-		iconDinoEnemy = new ImageIcon(Client.class.getResource("Images/brontosauro.jpg"));
+		iconVegetation = new ImageIcon(getClass().getResource("../Images/vege.jpg"));
+		iconLand = new ImageIcon(getClass().getResource("../Images/terra.jpg"));
+		iconWater = new ImageIcon(getClass().getResource("../Images/acqua.jpg"));
+		iconDark = new ImageIcon(getClass().getResource("../Images/buio.jpg"));
+		iconCarrion = new ImageIcon(getClass().getResource("../Images/carrion.jpg"));
+		iconLandDisable  = new ImageIcon(getClass().getResource("../Images/terraDisable.jpg"));
+		iconWaterDisable  = new ImageIcon(getClass().getResource("../Images/acquaDisable.jpg"));
+		iconVegetationDisable  = new ImageIcon(getClass().getResource("../Images/vegeDisable.jpg"));
+		iconDinoEnemy = new ImageIcon(getClass().getResource("../Images/brontosauro.jpg"));
 
 		//FINE CARICAMENTO IMMAGINI
 		
@@ -476,46 +478,66 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				String nameCell = arg0.getComponent().getName();
 				if(nameCell.contains(";"))
 				{
-					String[] option = {"yes","no"};
-					int opt = JOptionPane.showOptionDialog(panel, "Vuoi muovere il dinosauro", "Muovi Dinosauro", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
-					((JButton)arg0.getComponent()).setBorder(null);
-					if(opt==0)
+					if(!((String)arg0.getComponent().getName()).contains(nameSpecie))
 					{
-						String[] nameDest = nameCell.split(";");
-						String[] newNameDest = nameDest[0].split(",");
-						String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
-						cellClicked.setBorder(null);
-						if(check==null)
+						String[] option = {"yes","no"};
+						int opt = JOptionPane.showOptionDialog(panel, "Vuoi muovere il dinosauro", "Muovi Dinosauro", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
+						((JButton)arg0.getComponent()).setBorder(null);
+						if(opt==0)
 						{
-							errorMessage();
-						}
-						else
-						{
-							if(!check[0].equals("no"))
+							String[] nameDest = nameCell.split(";");
+							String[] newNameDest = nameDest[0].split(",");
+							String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
+							cellClicked.setBorder(null);
+							if(check==null)
 							{
-								if(check.length==3)
-								{
-									String result;
-									if(check[2].equals("v"))
-										result = " vinto!";
-									else
-										result = " perso!";
-									JOptionPane.showMessageDialog(panel, "Combattimento" + result, "Combattimento", JOptionPane.INFORMATION_MESSAGE, null);
-								}
-								extinctionSpecies();
-								if(!flagStop)
-								{
-									drawMap(client.getConnManager().mappaGenerale());
-									drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
-								}
+								errorMessage();
 							}
 							else
 							{
-								errorMessageServer(check);
-								extinctionSpecies();
+								if(!check[0].equals("no"))
+								{
+									if(check.length==3)
+									{
+										String result;
+										if(check[2].equals("v"))
+											result = " vinto!";
+										else
+											result = " perso!";
+										JOptionPane.showMessageDialog(panel, "Combattimento" + result, "Combattimento", JOptionPane.INFORMATION_MESSAGE, null);
+									}
+									extinctionSpecies();
+									if(!flagStop)
+									{
+										drawMap(client.getConnManager().mappaGenerale());
+										drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+									}
+								}
+								else
+								{
+									errorMessageServer(check);
+									extinctionSpecies();
+								}
 							}
 						}
 					}
+					else
+					{
+						String[] idDino = arg0.getComponent().getName().split(";");
+						dinoId = idDino[1];
+						drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+						if(((String)arg0.getComponent().getName()).contains(nameSpecie))
+						{
+							cellClicked = (JButton)arg0.getComponent();
+							for(int i=0; i<2; i++)
+							{
+								commandDinoButton[i].setEnabled(true);	
+							}
+							((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
+							flag=1;
+						}
+					}
+						
 				}
 				flag=0;
 			}
