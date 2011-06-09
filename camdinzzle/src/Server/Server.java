@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -370,11 +371,17 @@ public class Server implements Runnable
 			System.out.println("ERROR: serverLogic is not create.\n" + ex.getMessage());
 		}
 		Scanner scan = new Scanner(System.in);
-		String letto;
+		String letto=" ";
 		char command = ' ';
 			do{
 				print_help();
-				letto = scan.nextLine();
+				try{
+					letto = scan.nextLine();
+				}
+				catch(NoSuchElementException e)
+				{
+					System.out.println("See you soon");
+				}
 				command = letto.charAt(0);
 				if(command == 'c' || command == 'C')
 				{
