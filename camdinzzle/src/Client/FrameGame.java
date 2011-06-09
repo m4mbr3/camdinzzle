@@ -116,15 +116,16 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		
 		//INIZIO CARICAMENTO IMMAGINI
 		
-		iconVegetation = new ImageIcon(getClass().getResource("../Images/vege.jpg"));
-		iconLand = new ImageIcon(getClass().getResource("../Images/terra.jpg"));
-		iconWater = new ImageIcon(getClass().getResource("../Images/acqua.jpg"));
-		iconDark = new ImageIcon(getClass().getResource("../Images/buio.jpg"));
-		iconCarrion = new ImageIcon(getClass().getResource("../Images/carrion.jpg"));
-		iconLandDisable  = new ImageIcon(getClass().getResource("../Images/terraDisable.jpg"));
-		iconWaterDisable  = new ImageIcon(getClass().getResource("../Images/acquaDisable.jpg"));
-		iconVegetationDisable  = new ImageIcon(getClass().getResource("../Images/vegeDisable.jpg"));
-		iconDinoEnemy = new ImageIcon(getClass().getResource("../Images/brontosauro.jpg"));
+		ClassLoader cldr = this.getClass().getClassLoader();
+		iconVegetation = new ImageIcon(cldr.getResource("Images/vege.jpg"));
+		iconLand = new ImageIcon(cldr.getResource("Images/terra.jpg"));
+		iconWater = new ImageIcon(cldr.getResource("Images/acqua.jpg"));
+		iconDark = new ImageIcon(cldr.getResource("Images/buio.jpg"));
+		iconCarrion = new ImageIcon(cldr.getResource("Images/carrion.jpg"));
+		iconLandDisable  = new ImageIcon(cldr.getResource("Images/terraDisable.jpg"));
+		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
+		iconVegetationDisable  = new ImageIcon(cldr.getResource("Images/vegeDisable.jpg"));
+		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));
 
 		//FINE CARICAMENTO IMMAGINI
 		

@@ -347,10 +347,12 @@ public class Server implements Runnable
 		System.out.println("****************************************************************************************");
 	}
 	
+	
 	public static void main(String[] args) throws RemoteException {
-		// TODO Auto-generated method stub
+
 		ServerLogic serverLogic = null;
 		Server ss=null;
+		
 		try
 		{
 			serverLogic = new ServerLogic();
@@ -370,6 +372,8 @@ public class Server implements Runnable
 		{
 			System.out.println("ERROR: serverLogic is not create.\n" + ex.getMessage());
 		}
+		
+		
 		Scanner scan = new Scanner(System.in);
 		String letto=" ";
 		boolean check;
@@ -392,36 +396,37 @@ public class Server implements Runnable
 				}
 				while(!check);
 
-				try{
+				try
+				{
 					letto = scan.nextLine();
+					command = letto.charAt(0);
+
+
+					if(command == 'c' || command == 'C')
+					{
+						System.out.println("You have started a new Client in local!!!");
+						ss.newClient();
+					}
+					else if(command == 's' || command == 'S')
+					{
+						if(ss.getPlayerInGame() == 0)
+						{
+							System.out.println("You have saved the server state");
+							serverLogic.saveServerState();
+						}
+						else
+						{
+							System.out.println("There are players in game...Impossible saving");
+						}
+					}
+					else if (command == 'e' || command =='E')
+					{
+						System.exit(0);
+					}
 				}
 				catch(NoSuchElementException e)
 				{
 					System.out.println("See you soon");
-				}
-				command = letto.charAt(0);
-
-
-				if(command == 'c' || command == 'C')
-				{
-					System.out.println("You have started a new Client in local!!!");
-					ss.newClient();
-				}
-				else if(command == 's' || command == 'S')
-				{
-					if(ss.getPlayerInGame() == 0)
-					{
-						System.out.println("You have saved the server state");
-						serverLogic.saveServerState();
-					}
-					else
-					{
-						System.out.println("There are players in game...Impossible saving");
-					}
-				}
-				else if (command == 'e' || command =='E')
-				{
-					System.exit(0);
 				}
 				
 			}while(command != 'e' && command != 'E');
