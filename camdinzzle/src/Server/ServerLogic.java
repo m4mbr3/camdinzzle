@@ -50,7 +50,6 @@ public class ServerLogic
 	
 	public ServerLogic()
 	{
-		// PROVA DESERIALIZZAZIONE
 		File f = new File("server.ser");
 		boolean isCorrectLoadingFromFile = true;		
 		
@@ -115,7 +114,7 @@ public class ServerLogic
 		tokenOfCurrentPlayer = "";
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
-		//System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
+		System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
 	}
 
 	public void controlAction() {
@@ -196,40 +195,11 @@ public class ServerLogic
 		{
 			if (this.isLoggedUser(token)) 
 			{
-				//oolean isRacePresent = false;
-				
-				/* Collection<Player> c = players.values(); 
-				 * Iterator<Player> iter = c.iterator();
-				 */
-				/* Se il giocatore ha giï¿½ una specie ed ï¿½ uguale a quella richiesta
-				 * significa che il giocatore entra in partita con una specie giï¿½ avviata ed ï¿½
-				 * obbligato ad utilizzarla
-				 */
 				if(loggedPlayers.get(token).getSpecie() != null)
 				{
-					/* Dal Client non bisogna permettere di creare una specie se ce ne ï¿½ giï¿½
-					 * una avviata nella partita
-					 */
 					return "@no";
 				}
-				/*	
-				Set set = rank.entrySet();
-				Iterator<Species> iter = set.iterator();
-				isRacePresent = false;
 				
-				while (iter.hasNext()) 
-				{
-					Map.Entry me = (Map.Entry) iter.next();
-					
-					if(me.getValue() != null)
-					{
-						if (((Species)me.getValue()).getName().equals(name))
-						{
-							isRacePresent = true;
-							break;
-						}
-					}
-				}*/
 				if (rank.get(name) == null) 
 				{
 					Species new_specie;
@@ -273,7 +243,6 @@ public class ServerLogic
 	{
 		try
 		{
-			// Chiamata di questo metodo seguita dalla chiamata a changeRound
 			if(this.isLoggedUser(token))
 			{
 				if (currentSession.numberPlayersInGame() < currentSession.getMaxPlayers())
@@ -289,7 +258,6 @@ public class ServerLogic
 						{							
 							tokenOfCurrentPlayer = token;
 							this.changeRound();
-							//this.changeRoundNotify();
 						}
 						
 						currentSession.addPlayer(token, loggedPlayers.get(token));
@@ -314,16 +282,14 @@ public class ServerLogic
 							{
 								if(isPositionated == false)
 								{
-									/* Se la cella in cui c'era il dinosauro è occupata allora viene messo in una posizione
-									 * libera partendo dall'inizio della sua vista in alto a sinistra. Viene assunto che 
-									 * sicuramente una casella libera nella sua vista c'è!!!!!!!
+									/* Se la cella in cui c'era il dinosauro e occupata allora viene messo in una posizione
+									 * libera partendo dall'inizio della sua vista in alto a sinistra.
 									 */
 									int offset = 1;
 									do
 									{
 										for(int i = current.getPosRow() - offset; i<current.getPosRow() + offset; i++)
 										{
-											// TODO: aggiornamento mappa locale nel caso il dinosauro non si sia posizionato dove era precedentemente
 											for(int j = current.getPosCol() - offset; j<current.getPosCol() + offset; j++)
 											{
 												if((i >= 0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
@@ -516,10 +482,7 @@ public class ServerLogic
 	public String ranking(String token)
 	{
 		try
-		{
-			//ArrayList<String> parameters = new ArrayList<String>();
-			// TODO: gestione specie estinte e cambio punteggio nel player
-			
+		{			
 			Hashtable<String, String> alreadySpeciesRead = new Hashtable<String, String>();
 			ArrayList<String> ranking = new ArrayList<String>();
 			int maxScore;
@@ -565,10 +528,9 @@ public class ServerLogic
 						}
 						else
 							ranking.add("n");
-					}
-					
+					}	
 				}
-				
+
 				return ServerMessageBroker.createRankingList(ranking);
 			}
 			
@@ -846,9 +808,7 @@ public class ServerLogic
 									break;
 								
 								Map.Entry<String, Dinosaur> me = (Map.Entry<String, Dinosaur>) dinosaurs.next();
-								/* TODO : da fare o no l'updateMap
-								loggedPlayers.get(token).getSpecie().updateMap();
-								*/
+
 								Object[][] matrixMap = ((Dinosaur)me.getValue()).getLocalMap();
 								// Cicla tutta la mappa e se trova un dinosauro con l'id richiesto esce dal ciclo
 								for(int i = 0; i<matrixMap.length; i++)
@@ -921,9 +881,9 @@ public class ServerLogic
 			int	dinoRow = Integer.parseInt(rowDest);
 			int	dinoCol = Integer.parseInt(colDest);
 			
-			if(isLoggedUser(token))						//controlla se � loggato
+			if(isLoggedUser(token))						
 			{
-				if(currentSession.getPlayer(token) != null)			//controllo se � in partita
+				if(currentSession.getPlayer(token) != null)			
 				{
 					if(tokenOfCurrentPlayer.equals(token))
 					{
@@ -1196,10 +1156,6 @@ public class ServerLogic
 				{
 					if(tokenOfCurrentPlayer.equals(token))
 					{
-						/* Fa in modo che il thread che contava i 30 secondi per dare la conferma non esegue nessuna 
-						 * azione
-						 */
-						//counter30s.setIsJustUpdate(true);
 						/*
 						 * Starta il thread che conta i due minuti dopo i quali esegue il metodo updatePlayer e changeRound
 						 */
@@ -1230,9 +1186,6 @@ public class ServerLogic
 	 * @param msg : messaggio ricevuto dal Client
 	 * @return Messaggio da mandare al Client
 	 */
-	/* La chiamata di questo metodo è seguita dalla chiamata al metodo changeRound che crea il messaggio da mandare 
-	 * in broadcast
-	 */
 	public String playerRoundSwitch(String token)
 	{		
 		try
@@ -1253,7 +1206,6 @@ public class ServerLogic
 							counter30s.interrupt();
 						}
 						this.changeRound();
-						//this.changeRoundNotify();
 						return ServerMessageBroker.createOkMessage();
 					}
 					else
@@ -1320,10 +1272,6 @@ public class ServerLogic
 	{		
 		try
 		{
-			/* TODO forse
-			 * - Fare l'update della mappa dei dinosauri coinvolti nei movimenti del giocatore in turno oppure se non 
-			 *   possibile saperlo fare l'update di tutte le mappe di tutti i giocatori
-			 */
 			if(currentSession.getPlayer(token).getSpecie() != null)
 			{
 				// Inizio aggiornamento stato giocatore
@@ -1399,9 +1347,8 @@ public class ServerLogic
 					}
 					else if((((String) me3.getKey()).equals(tokenOfCurrentPlayer)) && (tableSize == currentSession.numberPlayersInGame()))
 					{
-						// TODO : gestione del null ritornato
 						tokenOfCurrentPlayer = currentSession.getFirstPlayer();
-						/* TODO : se arrivato qui significa che tutti i giocatori hanno giocato il server
+						/* se arrivato qui significa che tutti i giocatori hanno giocato il server
 						 * deve eseguire il metodo updateGame()
 						 */
 						this.updateGame(token);
@@ -1521,7 +1468,6 @@ public class ServerLogic
 						}
 						else
 						{
-							// TODO: controllo se vegetazione interna ad un carnivoro o erbivoro e carogna su erbivoro
 							int posRig;
 							int posCol;
 							
@@ -1552,14 +1498,6 @@ public class ServerLogic
 
 	public void setTokenOfCurrentPlayer(String tokenOfCurrentPlayer) {
 		this.tokenOfCurrentPlayer = tokenOfCurrentPlayer;
-	}
-
-	public void sendCommand() {
-
-	}
-
-	public void takeFog() {
-
 	}
 	
 	/**
@@ -1622,7 +1560,8 @@ public class ServerLogic
 	/**
 	 * @return Chiave generata dal ServerLogic pe generare il token
 	 */
-	public String getKeyForToken() {
+	public String getKeyForToken() 
+	{
 		return keyForToken;
 	}
 	
@@ -1631,7 +1570,8 @@ public class ServerLogic
 	 * @param key : chiave generata dal ServerLogic
 	 * @return Il minimo all'interno della chiave
 	 */
-	private int findMin(String key) {
+	private int findMin(String key) 
+	{
 		int min = key.length() + 1;
 
 		for (int i = 0; i < key.length(); i++) {
@@ -1649,7 +1589,8 @@ public class ServerLogic
 	 * @param username : username del giocatore
 	 * @return Token generato
 	 */
-	private String generateToken(String username, long el) {
+	private String generateToken(String username, long el) 
+	{
 		String key = this.keyForToken;
 		int length = key.length();
 		String concatenateIdentifier = new String(username + el);

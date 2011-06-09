@@ -2,12 +2,6 @@ package Server;
 
 import java.io.Serializable;
 
-/**
- * 
- * @author Marco
- *
- */
-
 public class Carnivorous extends Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;

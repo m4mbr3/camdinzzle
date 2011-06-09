@@ -1,7 +1,8 @@
 package Server;
 import Client.*;
-public interface ClientManager {
-	
+
+public interface ClientManager 
+{	
 	/**
 	 * Scrive sul socket il messaggio del cambio turno
 	 * @param msg : messaggio da mandare al Client
@@ -12,6 +13,4 @@ public interface ClientManager {
 	public boolean getIsInGame();
 	
 	public void setIsInGame(boolean isInGame);
-	public Client getClient();
-	public void setClient(Client client);
 }

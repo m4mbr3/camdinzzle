@@ -9,7 +9,6 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import Client.Client;
 import Client.ClientRMIInterface;
 
 public class ClientManagerRMI implements ClientManager 
@@ -76,27 +75,14 @@ public class ClientManagerRMI implements ClientManager
 	}
 
 	@Override
-	public void setIsInGame(boolean isInGame) {
-		// TODO Auto-generated method stub
+	public void setIsInGame(boolean isInGame) 
+	{
 		this.isInGame = isInGame;
 	}
 	
 	public void unregistryClient()
 	{
 		this.client = null;
-	}
-
-
-	@Override
-	public Client getClient() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setClient(Client client) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public String getUsername()

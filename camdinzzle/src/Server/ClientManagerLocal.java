@@ -9,10 +9,6 @@ import Client.Client;
 import Client.ClientMessageBroker;
 import Client.ConnectionManagerLocal;
 
-/**
- * @author Andrea
- *
- */
 public class ClientManagerLocal implements ClientManager{
 
 	private ServerLogic serverLogic;
@@ -20,11 +16,9 @@ public class ClientManagerLocal implements ClientManager{
 	private Client client;
 	private ConnectionManagerLocal cmLocal;
 	private Server server;
-	/**
-	 * 
-	 */
-	public ClientManagerLocal(ServerLogic serverLogic, Server server) {
-		// TODO Auto-generated constructor stub
+	
+	public ClientManagerLocal(ServerLogic serverLogic, Server server) 
+	{
 		this.serverLogic = serverLogic;
 		this.server = server;
 		isInGame = false;
@@ -40,14 +34,14 @@ public class ClientManagerLocal implements ClientManager{
 	}
 
 	@Override
-	public boolean getIsInGame() {
-		// TODO Auto-generated method stub
+	public boolean getIsInGame() 
+	{
 		return isInGame;
 	}
 
 	@Override
-	public void setIsInGame(boolean isInGame) {
-		// TODO Auto-generated method stub
+	public void setIsInGame(boolean isInGame)
+	{
 		this.isInGame = isInGame;
 	}
 	public String creaUtente(String username, String password)
@@ -192,15 +186,13 @@ public class ClientManagerLocal implements ClientManager{
 		client.getConnManager().setChangeRound(msg);
 	}
 
-	@Override
-	public Client getClient() {
-		// TODO Auto-generated method stub
+	public Client getClient()
+	{
 		return client;
 	}
 
-	@Override
-	public void setClient(Client client) {
-		// TODO Auto-generated method stub
+	public void setClient(Client client) 
+	{
 		this.client = client;
 		cmLocal = (ConnectionManagerLocal)client.getConnManager();
 	}

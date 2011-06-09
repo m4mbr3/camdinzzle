@@ -4,10 +4,6 @@ import java.io.Serializable;
 
 public class Counter implements Runnable, Serializable 
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private ServerLogic server;
 	private int timeToLive;
@@ -23,7 +19,7 @@ public class Counter implements Runnable, Serializable
 	{
 		try 
 		{
-			Thread.sleep(timeToLive); // da considerare il roundtriptime di rete
+			Thread.sleep(timeToLive); 
 			System.out.println("Scaduti i " + timeToLive + " secondi!!");
 			server.updatePlayer(server.getTokenOfCurrentPlayer());
 			server.changeRoundNotify();

@@ -10,8 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import Client.Client;
-
 public class ClientManagerSocket implements ClientManager, Runnable {
 
 	private Socket connection_with_client;
@@ -423,8 +421,6 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.write(serverLogic.roundConfirm(parameters[0]));
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
-								
-								//serverLogic.changeRoundNotify();
 							}
 							else
 							{
@@ -543,17 +539,5 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	public void setIsInGame(boolean isInGame)
 	{
 		this.isInGame = isInGame;
-	}
-
-	@Override
-	public Client getClient() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setClient(Client client) {
-		// TODO Auto-generated method stub
-		
 	}
 }

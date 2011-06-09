@@ -74,5 +74,4 @@ public class TimeOutOptionPane extends JOptionPane
         }
         return CLOSED_OPTION;
     }
-
 }
