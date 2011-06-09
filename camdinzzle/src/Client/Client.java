@@ -33,10 +33,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import Server.*;
 
-/**
- * @author Andrea
- *
- */
 public class Client extends JFrame implements ActionListener, WindowListener,MouseListener,ChangeListener
 {
 

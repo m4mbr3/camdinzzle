@@ -1,5 +1,4 @@
 package Server;
-import Client.*;
 
 public interface ClientManager 
 {	
