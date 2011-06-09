@@ -509,7 +509,10 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 		}
 		else
 		{
-			serverLogic.gameExit(token);
+			if(this.isInGame)
+			{
+				serverLogic.gameExit(token);
+			}
 			serverLogic.logout(token);
 			return false;
 		}

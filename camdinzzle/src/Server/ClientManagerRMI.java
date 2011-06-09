@@ -47,7 +47,7 @@ public class ClientManagerRMI implements ClientManager
 				System.out.println("ERROR: " + e.getMessage());
 				sendCounter++;
 			}
-		}while((!isSend) && (sendCounter <= 2));
+		}while((!isSend) && (sendCounter < 2));
 		if(isSend)
 		{
 			return true;
@@ -56,7 +56,10 @@ public class ClientManagerRMI implements ClientManager
 		{
 			try 
 			{
-				serverRMI.uscitaPartita(serverRMI.getTokenOfPlayer(username));
+				if(this.isInGame)
+				{
+					serverRMI.uscitaPartita(serverRMI.getTokenOfPlayer(username));
+				}
 				serverRMI.logout(serverRMI.getTokenOfPlayer(username));
 			}
 			catch (RemoteException e) 
