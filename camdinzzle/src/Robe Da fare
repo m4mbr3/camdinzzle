@@ -3,12 +3,9 @@
 		LOGICA
 		
 		-salvataggi---> thread che legge da riga di comando
-		-mettere caricamento da file con get directory
 		
 		GRAFICA	
 		-sistemare immgagini dinosauri
-		-mettere caricamento da immagini con get directory
-		-togliere rettangolo blu quando clicco su altra cella
 		
 
 		-JUNIT

@@ -112,26 +112,19 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.client=client;
 		buttons = new JButton[row][col];
 		
-/*		ClassLoader cldr = this.getClass().getClassLoader();
-		iconVegetation = new ImageIcon(cldr.getResource("Images/vege.jpg"));
-		iconLand = new ImageIcon(cldr.getResource("Images/terra.jpg"));
-		iconWater = new ImageIcon(cldr.getResource("Images/acqua.jpg"));
-		iconDark = new ImageIcon(cldr.getResource("Images/buio.jpg"));
-		iconCarrion = new ImageIcon(cldr.getResource("Images/carrion.jpg"));
-		iconLandDisable  = new ImageIcon(cldr.getResource("Images/terraDisable.jpg"));
-		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
-		iconVegetationDisable  = new ImageIcon(cldr.getResource("Images/vegeDisable.jpg"));
-		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));*/
+		//INIZIO CARICAMENTO IMMAGINI
 		
-		iconVegetation = new ImageIcon("Images/vege.jpg");
-		iconLand = new ImageIcon("Images/terra.jpg");
-		iconWater = new ImageIcon("Images/acqua.jpg");
-		iconDark = new ImageIcon("Images/buio.jpg");
-		iconCarrion = new ImageIcon("Images/carrion.jpg");
-		iconLandDisable  = new ImageIcon("Images/terraDisable.jpg");
-		iconWaterDisable  = new ImageIcon("Images/acquaDisable.jpg");
-		iconVegetationDisable  = new ImageIcon("Images/vegeDisable.jpg");
-		iconDinoEnemy = new ImageIcon("Images/brontosauro.jpg");
+		iconVegetation = new ImageIcon(Client.class.getResource("Images/vege.jpg"));
+		iconLand = new ImageIcon(Client.class.getResource("Images/terra.jpg"));
+		iconWater = new ImageIcon(Client.class.getResource("Images/acqua.jpg"));
+		iconDark = new ImageIcon(Client.class.getResource("Images/buio.jpg"));
+		iconCarrion = new ImageIcon(Client.class.getResource("Images/carrion.jpg"));
+		iconLandDisable  = new ImageIcon(Client.class.getResource("Images/terraDisable.jpg"));
+		iconWaterDisable  = new ImageIcon(Client.class.getResource("Images/acquaDisable.jpg"));
+		iconVegetationDisable  = new ImageIcon(Client.class.getResource("Images/vegeDisable.jpg"));
+		iconDinoEnemy = new ImageIcon(Client.class.getResource("Images/brontosauro.jpg"));
+
+		//FINE CARICAMENTO IMMAGINI
 		
 		iconDino = imageDino;
 
@@ -316,6 +309,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 			}	
 		}
+		
 		/*DEPONI UOVO
 		 *  dopo aver cliccato una cella con un dinosauro si attiva il tasto
 		 *  dopo aver inviato la richiesta
@@ -343,6 +337,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			}
 
 		}
+		
 		/*CLASSIFICA
 		 * tasto sempre attivo
 		 * se la risposta non � null e non no, crea un popup con la classifica
@@ -367,6 +362,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				errorMessage();
 			}
 		}
+		
 		/*PASSA TURNO
 		 * tasto sempre attivo
 		 * fa la chiamata a server
@@ -392,6 +388,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 			}
 		}
+		
 		/*ESCI DALLA PARTITA
 		 * fa la chiamata a server
 		 * se la risposta � null o no crea popup con errore
@@ -417,6 +414,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 			}
 		}
+		
 		/*LISTA GIOCATORI
 		 * dopo aver cliccato si apre la lista giocatori
 		 * se @no viene creato un popup
@@ -441,6 +439,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 			}
 		}
+		
 		/*AGGIORNA MAPPA
 		 * dopo aver cliccato si aggiorna la mappa
 		 * se @no viene creato un popup
@@ -465,6 +464,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 			}
 		}
+		
 		/*BOTTONI MAPPA
 		 * se viene cliccato un bottone contenente un dinosauro del giocatore allora
 		 * attiva i pulsanti MOVIMENTO, CRESCI DINOSAURO, DEPONI UOVO
@@ -481,10 +481,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					((JButton)arg0.getComponent()).setBorder(null);
 					if(opt==0)
 					{
-						cellClicked.setBorder(null);
 						String[] nameDest = nameCell.split(";");
 						String[] newNameDest = nameDest[0].split(",");
 						String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
+						cellClicked.setBorder(null);
 						if(check==null)
 						{
 							errorMessage();
