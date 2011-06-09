@@ -204,4 +204,9 @@ public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterfac
 	{
 		return serverLogic.getTokenFromUsername(username);
 	}
+	
+	public synchronized void removeClientRMI(String username)
+	{
+		server.removeClientRMI(username);
+	}
 }

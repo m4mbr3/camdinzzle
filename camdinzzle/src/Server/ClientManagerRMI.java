@@ -61,6 +61,7 @@ public class ClientManagerRMI implements ClientManager
 					serverRMI.uscitaPartita(serverRMI.getTokenOfPlayer(username));
 				}
 				serverRMI.logout(serverRMI.getTokenOfPlayer(username));
+				serverRMI.removeClientRMI(username);
 			}
 			catch (RemoteException e) 
 			{

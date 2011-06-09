@@ -117,7 +117,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		razza_button.addMouseListener(this);
 	
 		//INIZIO CARICAMENTO IMMAGINI
-
+/*
 		iconChosenDino = new ImageIcon[6];
 		iconChosenDino[0] = new ImageIcon(Client.class.getResource("Images/sauro.jpg"));
 		iconChosenDino[1] = new ImageIcon(Client.class.getResource("Images/T_REX.jpg"));
@@ -125,7 +125,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		iconChosenDino[3] = new ImageIcon(Client.class.getResource("Images/stegosauro.jpg"));
 		iconChosenDino[4] = new ImageIcon(Client.class.getResource("Images/triceratopo.jpg"));
 		iconChosenDino[5] = new ImageIcon(Client.class.getResource("Images/velociraptor.jpg"));
-
+*/
 		//FINE CARICAMENTO IMMAGINI
 		
 		

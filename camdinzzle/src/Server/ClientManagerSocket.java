@@ -514,6 +514,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				serverLogic.gameExit(token);
 			}
 			serverLogic.logout(token);
+			server.removeClientSocket(this);
 			return false;
 		}
 	}
