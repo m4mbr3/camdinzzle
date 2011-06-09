@@ -82,11 +82,25 @@ public class ClientManagerRMI implements ClientManager
 	{
 		this.isInGame = isInGame;
 		
-		try {
+		try 
+		{
 			client.setInGame(isInGame);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} 
+		catch (RemoteException e) 
+		{
+			try
+			{
+				if(this.isInGame)
+				{
+					serverRMI.uscitaPartita(serverRMI.getTokenOfPlayer(username));
+				}
+				serverRMI.logout(serverRMI.getTokenOfPlayer(username));
+				serverRMI.removeClientRMI(username);
+			}
+			catch (RemoteException ex) 
+			{
+				System.out.println("ERROR: " + ex.getMessage());
+			}
 		}
 	}
 	

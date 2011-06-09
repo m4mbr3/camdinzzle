@@ -627,7 +627,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 
 	public void checkAccessServerRemote()
 	{
-		if(timelineRemoteRequest == 5)
+		if(timelineRemoteRequest == 1)
 		{
 			try 
 			{
