@@ -82,7 +82,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		server_value.setLocation(140,280);
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
-		port = new JTextField("0000");
+		port = new JTextField("4567");
 		enable_port = new JCheckBox("enable");
 		address = new JTextField("localhost");
 		radiogroup = new ButtonGroup();
@@ -91,6 +91,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		next.setSize(150, 40);
 		rmi = new JRadioButton("rmi");
 		socket = new JRadioButton("socket");
+		socket.setSelected(true);
 		camdinzzle = new JLabel("<html> <h3>Camdinzzle Project v1.0</h3>");
 		choice = new JLabel("Select the method of connection to ServerLogic:");
 		panel = new JPanel();
@@ -125,7 +126,9 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		nome_server.setVisible(true);
 		address.setEnabled(true);
 		server_value.setEnabled(false);
+		server_value.setVisible(false);
 		nome_server.setEnabled(true);
+		nome_server.setVisible(false);
 		enable_port.setEnabled(true);
 		port.setEnabled(false);
 		address.setEditable(true);
@@ -362,16 +365,25 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 			if(socket.isSelected())
 			{
 				port.setText("4567");
-				server_value.setEnabled(false);
-				server_value.setEditable(false);
+				port.setVisible(true);
+				server_value.setVisible(true);
+				enable_port.setVisible(true);
+				server_value.setVisible(false);
+				nome_server.setVisible(false);
+				port_label.setVisible(true);
 				this.validate();
 				this.repaint();
 			}
 			if(rmi.isSelected())
 			{
 				port.setText("1099");
-				server_value.setEnabled(true);
-				server_value.setEditable(true);
+				port.setVisible(false);
+				port_label.setVisible(false);
+				nome_server.setVisible(false);
+				server_value.setVisible(false);
+				enable_port.setVisible(false);
+				//server_value.setEnabled(true);
+				//server_value.setEditable(true);
 				this.validate();
 				this.repaint();
 			}
