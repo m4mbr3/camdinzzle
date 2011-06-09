@@ -54,6 +54,7 @@ public class Server implements Runnable
 	private ArrayList<ClientManagerLocal> clientLocal;
 	private Client client;
 	private Registry registro;
+	private CheckRMIClientConnection checkRMI;
 	
 	public Server(int port, ServerLogic serverLogic, String serverPort, String serverName)
 	{
@@ -88,6 +89,9 @@ public class Server implements Runnable
 			{
 				serverRMI = new ServerRMI(serverLogic, serverPort, this);
 				clientTableRMI = new Hashtable<String, ClientManagerRMI>();
+				
+				checkRMI = new CheckRMIClientConnection(this);
+				(new Thread(checkRMI)).start();
 			}
 			catch (RemoteException e1) 
 			{
@@ -306,6 +310,11 @@ public class Server implements Runnable
 		{
 			System.out.println("ERROR: " + ex.getMessage());
 		}
+	}
+	
+	public Hashtable<String, ClientManagerRMI> getClientRMI()
+	{
+		return clientTableRMI;
 	}
 	
 	public void removeClientLocal(ClientManagerLocal cmLocal)

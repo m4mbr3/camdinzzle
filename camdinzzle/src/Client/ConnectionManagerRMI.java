@@ -51,9 +51,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 	
 	@Override
 	public String creaUtente(String username, String password)
-	{
-		checkAccessServerRemote();
-		
+	{		
 		String msg = null;
 		
 		try 
@@ -62,14 +60,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			System.out.println("REMOTE EXCEPTION");
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			System.out.println("EX");
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -78,9 +74,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 
 	@Override
 	public String login(String username, String password)
-	{
-		checkAccessServerRemote();
-		
+	{		
 		String msg = null;
 		
 		try 
@@ -153,12 +147,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -168,8 +162,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String creaRazza(String name, String type) 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -179,12 +171,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -194,8 +186,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String accessoPartita() 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -219,12 +209,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -234,8 +224,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String uscitaPartita() 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		String tokenBeforeUpdatePlayer = "";
 		
@@ -259,12 +247,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		return msg;
@@ -273,8 +261,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] listaGiocatori() 
 	{
-		checkAccessServerRemote();
-		
 		String[] msg = null;
 		
 		try 
@@ -284,12 +270,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -299,8 +285,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public ArrayList<String> classifica() 
 	{
-		checkAccessServerRemote();
-		
 		ArrayList<String> msg = null;
 		
 		try 
@@ -310,12 +294,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -325,8 +309,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String logout() 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -353,12 +335,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -368,8 +350,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public ArrayList<String> mappaGenerale() 
 	{
-		checkAccessServerRemote();
-		
 		ArrayList<String> msg = null;
 		
 		try 
@@ -379,12 +359,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -394,8 +374,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] listaDinosauri() 
 	{
-		checkAccessServerRemote();
-		
 		String[] msg = null;
 		
 		try 
@@ -405,12 +383,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -420,8 +398,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public ArrayList<String> vistaLocale(String dinoId) 
 	{
-		checkAccessServerRemote();
-		
 		ArrayList<String> msg = null;
 		
 		try 
@@ -431,12 +407,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -446,8 +422,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] statoDinosauro(String dinoId) 
 	{
-		checkAccessServerRemote();
-		
 		String[] msg = null;
 		
 		try 
@@ -457,12 +431,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -472,8 +446,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] muoviDinosauro(String dinoId, String row, String col) 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -483,12 +455,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -502,8 +474,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] cresciDinosauro(String dinoId) 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -513,12 +483,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -532,8 +502,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] deponiUovo(String dinoId) 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -543,12 +511,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -562,8 +530,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] confermaTurno() 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -573,12 +539,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -592,8 +558,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	@Override
 	public String[] passaTurno() 
 	{
-		checkAccessServerRemote();
-		
 		String msg = null;
 		
 		try 
@@ -603,12 +567,12 @@ public class ConnectionManagerRMI implements ConnectionManager
 		} 
 		catch (RemoteException e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		catch (Exception e) 
 		{
-			timelineRemoteRequest++;
+			checkAccessServerRemote();
 			return null;
 		}
 		
@@ -627,35 +591,32 @@ public class ConnectionManagerRMI implements ConnectionManager
 
 	public void checkAccessServerRemote()
 	{
-		if(timelineRemoteRequest == 1)
+		try 
 		{
-			try 
-			{
-				Naming.unbind("rmi://127.0.0.1/" + username + ":1099"); 
-			} 
-			catch (MalformedURLException e) 
-			{
-				
-			}
-			catch (NotBoundException e) 
-			{
-				
-			}
-			catch (RemoteException e) 
-			{
-				
-			}
+			Naming.unbind("rmi://127.0.0.1/" + username + ":1099"); 
+		} 
+		catch (MalformedURLException e) 
+		{
 			
-			JOptionPane.showMessageDialog(new JFrame(), "The server RMI is down", "Server error", JOptionPane.ERROR_MESSAGE);
-			
-			for(int i = 0; i<Frame.getFrames().length; i++)
-			{
-				Frame.getFrames()[i].setVisible(false);
-			}
-			new Client("Cliente");
-			
-			//System.exit(0);
 		}
+		catch (NotBoundException e) 
+		{
+			
+		}
+		catch (RemoteException e) 
+		{
+			
+		}
+		
+		JOptionPane.showMessageDialog(new JFrame(), "The server RMI is down", "Server error", JOptionPane.ERROR_MESSAGE);
+		
+		for(int i = 0; i<Frame.getFrames().length; i++)
+		{
+			Frame.getFrames()[i].setVisible(false);
+		}
+		new Client("Cliente");
+		
+		//System.exit(0);
 	}
 	
 	@Override
