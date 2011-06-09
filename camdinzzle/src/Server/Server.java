@@ -386,8 +386,7 @@ public class Server implements Runnable
 				}
 				else if (command == 'e' || command =='E')
 				{
-					ss.stop();
-					ss = null;
+					System.exit(0);
 				}
 				
 			}while(command != 'e' && command != 'E');

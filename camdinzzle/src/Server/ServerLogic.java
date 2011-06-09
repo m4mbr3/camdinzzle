@@ -1616,7 +1616,8 @@ public class ServerLogic
 	
 	public void saveServerState()
 	{
-			
+		if ( server.getPlayerInGame() == 0)
+		{
 			try 
 			{
 				FileOutputStream out = new FileOutputStream("server.ser");
@@ -1672,6 +1673,7 @@ public class ServerLogic
 			{
 				System.out.println("ERROR: Loading from file failed.");
 			}
+		}
 	}
 	
 	public String getTokenFromUsername(String username)
