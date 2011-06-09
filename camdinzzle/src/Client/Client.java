@@ -54,34 +54,40 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 	private JTextField address;
 	private JLabel nome_server;
 	private JTextField server_value;
-	
+	private JButton exit;
+	private boolean is_local;
 	public Client(ClientManagerLocal clientLocal)
 	{
 		this.connManager =new ConnectionManagerLocal(clientLocal);
-		login = new FrameLogin("Login",this,true);
+		is_local = true;
+		login = new FrameLogin("Login",this,is_local);
+		
 	}
 	public Client(String Name) {
 		super (Name);
 		this.setResizable(false);
 		this.setVisible(true);
-		
+		is_local = false;
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		nome_server = new JLabel("Server: ");
 		server_value = new JTextField("server");
+		exit = new JButton("Exit");
+		exit.setSize(150,40);
+		exit.setLocation(30, 310);
 		nome_server.setSize(90,20);
 		server_value.setSize(160, 20);
 		nome_server.setLocation(50,280);
 		server_value.setLocation(140,280);
 		port_label = new JLabel("Port :");
 		address_label = new JLabel("Address :");
-		port = new JTextField("");
+		port = new JTextField("0000");
 		enable_port = new JCheckBox("enable");
 		address = new JTextField("localhost");
 		radiogroup = new ButtonGroup();
 		next = new JButton("Continue");
-		next.setLocation(150,310);
+		next.setLocation(200,310);
 		next.setSize(150, 40);
 		rmi = new JRadioButton("rmi");
 		socket = new JRadioButton("socket");
@@ -114,6 +120,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		address.setLocation(140,240);
 		port_label.setLocation(50,200);
 		address_label.setLocation(50,240);
+		exit.setVisible(true);
 		server_value.setVisible(true);
 		nome_server.setVisible(true);
 		address.setEnabled(true);
@@ -125,6 +132,8 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		port_label.setEnabled(true);
 		address_label.setEnabled(true);
 		
+		
+		panel.add(exit);
 		panel.add(nome_server);
 		panel.add(server_value);
 		panel.add(address);
@@ -138,8 +147,9 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		panel.add(rmi);
 		panel.add(next);
 		this.add(panel);
+		exit.addMouseListener(this);
 		this.addWindowListener(this);
-		next.addActionListener(this);
+		next.addMouseListener(this);
 		this.setResizable(false);
 		this.validate();
 		this.repaint();
@@ -173,6 +183,65 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 		// TODO Auto-generated method stub
 		if(arg0.getSource() instanceof JButton)
 		{
+			
+		}
+		
+		
+	}
+	
+	public void setConnMann(ConnectionManagerSocket conn)
+	{
+		this.connManager = conn;
+	}
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		if (!is_local)
+			System.exit(0);
+		else 
+			this.setVisible(true);
+	}
+	
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		if(arg0.getComponent().equals(exit))
+		{
+			System.exit(0);
+		}
+		else if(arg0.getComponent().equals(next))
+		{
 			if((rmi.isSelected()==false)&&(socket.isSelected()==false))
 			{
 				System.out.println("You Can't Go Next!!!");
@@ -184,7 +253,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 					this.setVisible(false);
 					try{
 						this.connManager = new ConnectionManagerRMI(address.getText(),port.getText(),server_value.getText());
-						login = new FrameLogin("Login",this,false);
+						login = new FrameLogin("Login",this,is_local);
 						System.out.println("Server scaricato!!");
 					}
 					catch(MalformedURLException e)
@@ -221,7 +290,7 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 					Integer port_i = new Integer(port.getText());
 					try{
 							connManager = new ConnectionManagerSocket(port_i.intValue(), address.getText(), new MonitorMessage());
-							login = new FrameLogin("Login",this, false);
+							login = new FrameLogin("Login",this, is_local);
 						}
 					catch(ConnectException e)
 					{
@@ -254,53 +323,6 @@ public class Client extends JFrame implements ActionListener, WindowListener,Mou
 				}
 			}
 		}
-		
-		
-	}
-	
-	public void setConnMann(ConnectionManagerSocket conn)
-	{
-		this.connManager = conn;
-	}
-	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		System.exit(0);
-	}
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 	}
 	@Override
 	public void mouseEntered(MouseEvent arg0) {

@@ -10,6 +10,8 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -24,6 +26,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.BadLocationException;
 
 /**
  * @author Andrea
@@ -246,30 +249,38 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		}
 		if(arg0.getComponent().equals(new_user))
 		{
-			this.setVisible(false);
-			new_userframe = new JFrame("New User");
-			new_userframe.setResizable(false);
-			new_userframe.setVisible(true);
-			new_userframe.addWindowListener(this);
-			new_userframe.setSize(330,330);
-			new_userframe.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
-			panel.remove(send);
-			panel.add(back);
-			panel.add(send_newUser);
-			panel.remove(this.new_user);
-			new_userframe.add(panel);
+																																																																														
+			
+				this.setVisible(false);
+				new_userframe = new JFrame("New User");
+				new_userframe.setResizable(false);
+				new_userframe.setVisible(true);
+				new_userframe.addWindowListener(this);
+				new_userframe.setSize(330,330);
+				new_userframe.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
+				panel.remove(send);
+				panel.add(back);
+				panel.add(send_newUser);
+				panel.remove(this.new_user);
+				new_userframe.add(panel);
+			
 			
 		}
 		if (arg0.getComponent().equals(send))
 		{
-			
+			if((password.getText().contains("@"))||( password.getText().contains("<"))||(password.getText().contains(">"))||(password.getText().contains("'"))||(password.getText().contains("\""))||(password.getText().contains("?"))||(password.getText().contains("&"))||(password.getText().contains("="))||(password.getText().contains("!"))||(password.getText().contains("%"))||(username.getText().contains("@"))||( username.getText().contains("<"))||(username.getText().contains(">"))||(username.getText().contains("'"))||(username.getText().contains("\""))||(username.getText().contains("?"))||(username.getText().contains("&"))||(username.getText().contains("="))||(username.getText().contains("!"))||(username.getText().contains("%")))
+			{
+				JOptionPane.showMessageDialog(this,"Maybe you insert one or more special caracters!!!fix it and try again!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
+			}
+			else
+			{
 					this.setVisible(false);
 					String login = client.getConnManager().login(username.getText(), password.getText());
 					if(login != null)
 					{
 						if (ClientMessageBroker.manageLogin(login)[0].compareTo("ok")==0)
 						{
-							new FrameGameManager("ManagerPanel",client);
+							new FrameGameManager("ManagerPanel",client,is_local);
 							
 						}
 						else if (ClientMessageBroker.manageLogin(login)[0].compareTo("no")==0)
@@ -283,7 +294,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 							JOptionPane.showMessageDialog(this,"Generic Error during Login. Try Again!!!", "Message Error", JOptionPane.ERROR_MESSAGE);
 						}
 					}
-			
+			}
 		}
 		if (arg0.getComponent().equals(exit) && !is_local)
 		{
@@ -296,7 +307,12 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		}
 		if (arg0.getComponent().equals(send_newUser))
 		{
-			
+			if((password.getText().contains("@"))||( password.getText().contains("<"))||(password.getText().contains(">"))||(password.getText().contains("'"))||(password.getText().contains("\""))||(password.getText().contains("?"))||(password.getText().contains("&"))||(password.getText().contains("="))||(password.getText().contains("!"))||(password.getText().contains("%"))||(username.getText().contains("@"))||( username.getText().contains("<"))||(username.getText().contains(">"))||(username.getText().contains("'"))||(username.getText().contains("\""))||(username.getText().contains("?"))||(username.getText().contains("&"))||(username.getText().contains("="))||(username.getText().contains("!"))||(username.getText().contains("%")))
+			{
+				JOptionPane.showMessageDialog(this,"Maybe you insert one or more special caracters!!!fix it and try again!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
+			}
+			else
+			{
 				new_userframe.setVisible(false);
 				String newUser = client.getConnManager().creaUtente(username.getText(), password.getText());
 				if(newUser!=null)
@@ -320,6 +336,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 				{
 					JOptionPane.showMessageDialog(this,"TIME OUT", "NewUser Error", JOptionPane.ERROR_MESSAGE);
 				}
+			}
 		}
 		
 	}
@@ -363,6 +380,8 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	{
 		
 	}
+
+
 	
 
 }

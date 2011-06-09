@@ -6,6 +6,7 @@ package Client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -68,16 +69,20 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private ImageIcon[] iconChosenDino;
 	
 	private FrameGame frameGame;
+	
+	private FrameLogin login;
+	private boolean is_local;
 	/**
 	 * @param title
 	 * @throws HeadlessException
 	 */
-	public FrameGameManager(String title, Client client) throws HeadlessException {
+	public FrameGameManager(String title, Client client, boolean is_local) throws HeadlessException {
 		super(title);
 
 		this.client = client;
 		this.setResizable(false);
 		this.setLayout(null);
+		this.is_local = is_local; 
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		titleframe = new JLabel("ManagerPanel v 1.0");
 		creaRazza = new JLabel("Create new Species");
@@ -317,14 +322,15 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		{
 			int ritorno = JOptionPane.showConfirmDialog(
 				    this,
-				    "Do you really want to exit from Camdinzzle?",
+				    "Do you really want to logout from Camdinzzle?",
 				    "Exit Question",
 				    JOptionPane.YES_NO_OPTION);
 			if (ritorno == 0){
 				String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
 				if(response[0].compareTo("ok")==0)
 				{
-					System.exit(0);
+					this.setVisible(false);
+					login = new FrameLogin("Login",client, this.is_local);
 				}
 				if(response[0].compareTo("no")==0)
 				{
@@ -405,7 +411,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
 			if(response[0].compareTo("ok")==0)
 			{
-				System.exit(0);
+				
 			}
 			if(response[0].compareTo("no")==0)
 			{
