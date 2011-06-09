@@ -199,9 +199,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		if (new_userframe != null)
 		new_userframe.setVisible(false);
 		}
-	else{
-		System.exit(0);
-	}
+	
 		
 	}
 

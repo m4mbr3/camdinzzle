@@ -374,11 +374,23 @@ public class Server implements Runnable
 				}
 				else if(command == 's' || command == 'S')
 				{
-					System.out.println("You have saved the server state");
-					serverLogic.saveServerState();
+					if(ss.getPlayerInGame() == 0)
+					{
+						System.out.println("You have saved the server state");
+						serverLogic.saveServerState();
+					}
+					else
+					{
+						System.out.println("There are players in game...Impossible saving");
+					}
+				}
+				else if (command == 'e' || command =='E')
+				{
+					ss.stop();
+					ss = null;
 				}
 				
-			}while(command != 'e' || command != 'E');
+			}while(command != 'e' && command != 'E');
 		}
 }
 
