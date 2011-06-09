@@ -1616,61 +1616,62 @@ public class ServerLogic
 	
 	public void saveServerState()
 	{
-		try 
-		{
-			FileOutputStream out = new FileOutputStream("server.ser");
-			ObjectOutputStream oos = new ObjectOutputStream(out);
-			Object[][] map = currentSession.getGeneralMap();
 			
-			oos.writeObject(map);
-			
-			// Salvataggio PlayerTable
-			Object[][] playerMatrix = new Object[players.size()][2];
-			
-			Set<Map.Entry<String, Player>> setPlayers = players.entrySet();
-			Iterator<Map.Entry<String, Player>> iterPlayers = setPlayers.iterator();
-			
-			int i = 0;
-			while(iterPlayers.hasNext())
+			try 
 			{
-				Map.Entry<String, Player> mePlayers = (Map.Entry<String, Player>) iterPlayers.next();
-				playerMatrix[i][0] = mePlayers.getKey();
-				playerMatrix[i][1] = mePlayers.getValue();
+				FileOutputStream out = new FileOutputStream("server.ser");
+				ObjectOutputStream oos = new ObjectOutputStream(out);
+				Object[][] map = currentSession.getGeneralMap();
 				
-				i++;
+				oos.writeObject(map);
+				
+				// Salvataggio PlayerTable
+				Object[][] playerMatrix = new Object[players.size()][2];
+				
+				Set<Map.Entry<String, Player>> setPlayers = players.entrySet();
+				Iterator<Map.Entry<String, Player>> iterPlayers = setPlayers.iterator();
+				
+				int i = 0;
+				while(iterPlayers.hasNext())
+				{
+					Map.Entry<String, Player> mePlayers = (Map.Entry<String, Player>) iterPlayers.next();
+					playerMatrix[i][0] = mePlayers.getKey();
+					playerMatrix[i][1] = mePlayers.getValue();
+					
+					i++;
+				}
+				oos.writeObject(playerMatrix);
+				// End salvataggio playerTable
+				
+				// Salvataggio rank
+				Object[][] rankList = new Object[rank.size()][2];
+				
+				Set<Map.Entry<String, Species>> setRank = rank.entrySet();
+				Iterator<Map.Entry<String, Species>> iterRank = setRank.iterator();
+				
+				i = 0;
+				while(iterRank.hasNext())
+				{
+					Map.Entry<String, Species> meRank = (Map.Entry<String, Species>) iterRank.next();
+					rankList[i][0] = meRank.getKey();
+					rankList[i][1] = meRank.getValue();
+					
+					i++;
+				}
+				oos.writeObject(rankList);
+				// End salvataggio rank
+				
+				oos.close();
+				out.close();
 			}
-			oos.writeObject(playerMatrix);
-			// End salvataggio playerTable
-			
-			// Salvataggio rank
-			Object[][] rankList = new Object[rank.size()][2];
-			
-			Set<Map.Entry<String, Species>> setRank = rank.entrySet();
-			Iterator<Map.Entry<String, Species>> iterRank = setRank.iterator();
-			
-			i = 0;
-			while(iterRank.hasNext())
+			catch (FileNotFoundException e) 
 			{
-				Map.Entry<String, Species> meRank = (Map.Entry<String, Species>) iterRank.next();
-				rankList[i][0] = meRank.getKey();
-				rankList[i][1] = meRank.getValue();
-				
-				i++;
+				System.out.println("ERROR: File not exist.");
 			}
-			oos.writeObject(rankList);
-			// End salvataggio rank
-			
-			oos.close();
-			out.close();
-		}
-		catch (FileNotFoundException e) 
-		{
-			System.out.println("ERROR: File not exist.");
-		}
-		catch (IOException e) 
-		{
-			System.out.println("ERROR: Loading from file failed.");
-		}
+			catch (IOException e) 
+			{
+				System.out.println("ERROR: Loading from file failed.");
+			}
 	}
 	
 	public String getTokenFromUsername(String username)

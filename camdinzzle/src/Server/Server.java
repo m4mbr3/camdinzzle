@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import Client.Client;
@@ -62,10 +63,7 @@ public class Server implements Runnable
 			this.serverLogic = serverLogic;
 			this.registro = null;
 			
-			ClientManagerLocal cmLocal = new ClientManagerLocal(serverLogic, this);
-			client = new Client(cmLocal);
-			clientLocal.add(cmLocal);
-			clientLocal.get(0).setClient(client);
+	
 			try 
 			{
 				this.server = new ServerSocket(this.port);
@@ -138,6 +136,10 @@ public class Server implements Runnable
 			}
 	}
 	
+	public int getPlayerInGame()
+	{
+		return clientListSocket.size() + clientTableRMI.size() + clientListSocket.size();
+	}
 	public void stop()
 	{
 		is_run = false;
@@ -318,10 +320,27 @@ public class Server implements Runnable
 		}
 	}
 	
+	public void newClient()
+	{
+		clientLocal.add( new ClientManagerLocal(serverLogic, this));		
+		client = new Client(clientLocal.get(clientLocal.size()-1));
+		clientLocal.get(clientLocal.size()-1).setClient(client);
+	}
+	public static void print_help()
+	{
+		System.out.println("****************************************************************************************");
+		System.out.println("Welcome to Camdinzzle Server v 1.0");
+		System.out.println("Insert corrispondent character for these istructions :");
+		System.out.println("-> c or C for create a new Client");
+		System.out.println("-> s or S for save the status of server");
+		System.out.println("-> e or E for Close the server");
+		System.out.println("****************************************************************************************");
+	}
+	
 	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub
 		ServerLogic serverLogic = null;
-		
+		Server ss=null;
 		try
 		{
 			serverLogic = new ServerLogic();
@@ -329,7 +348,7 @@ public class Server implements Runnable
 			try 
 			{
 				int socketPort = 4567;
-				Server ss = new Server(socketPort, serverLogic, "1099", "server");
+				ss = new Server(socketPort, serverLogic, "1099", "server");
 				(new Thread(ss)).start();
 			} 
 			catch (Exception e) 
@@ -341,5 +360,25 @@ public class Server implements Runnable
 		{
 			System.out.println("ERROR: serverLogic is not create.\n" + ex.getMessage());
 		}
-	}
+		Scanner scan = new Scanner(System.in);
+		String letto;
+		char command = ' ';
+			do{
+				print_help();
+				letto = scan.nextLine();
+				command = letto.charAt(0);
+				if(command == 'c' || command == 'C')
+				{
+					System.out.println("You have started a new Client in local!!!");
+					ss.newClient();
+				}
+				else if(command == 's' || command == 'S')
+				{
+					System.out.println("You have saved the server state");
+					serverLogic.saveServerState();
+				}
+				
+			}while(command != 'e' || command != 'E');
+		}
 }
+
