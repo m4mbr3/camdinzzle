@@ -211,16 +211,16 @@ public class Server implements Runnable
 			while(iter.hasNext())
 			{
 				Map.Entry<String, ClientManagerRMI> me = (Map.Entry<String, ClientManagerRMI>)iter.next();
-				
+				/*
 				if(((ClientManagerRMI)me.getValue()).getIsInGame())
-				{
+				{*/
 					isSend = ((ClientManagerRMI)me.getValue()).sendChangeRound(msg);
 					
 					if(!isSend)
 					{
 						removeClientRMI(((ClientManagerRMI)me.getValue()).getUsername());
 					}
-				}
+				//}
 			}
 		}
 	}

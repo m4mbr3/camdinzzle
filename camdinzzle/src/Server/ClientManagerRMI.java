@@ -75,13 +75,19 @@ public class ClientManagerRMI implements ClientManager
 	public boolean getIsInGame() 
 	{
 		return isInGame;
-		
 	}
 
 	@Override
 	public void setIsInGame(boolean isInGame) 
 	{
 		this.isInGame = isInGame;
+		
+		try {
+			client.setInGame(isInGame);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void unregistryClient()

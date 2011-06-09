@@ -19,13 +19,16 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 	@Override
 	public boolean sendMessage(String msg) throws RemoteException 
 	{
-		if(ClientMessageBroker.manageChangeRound(msg) != null)
+		if(isInGame)
 		{
-			System.out.println("--> CAMBIO TURNO: " + msg);
-			
-			cmRMI.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
-			
-			return true;
+			if(ClientMessageBroker.manageChangeRound(msg) != null)
+			{
+				System.out.println("--> CAMBIO TURNO: " + msg);
+				
+				cmRMI.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
+				
+				return true;
+			}
 		}
 		
 		return false;
