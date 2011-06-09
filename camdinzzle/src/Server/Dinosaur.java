@@ -110,11 +110,15 @@ public abstract class Dinosaur implements Serializable
 								newDino.setMoveTake(true);
 								break;
 							}
+							if(positioned) break;
 						}
+						if(positioned) break;
 					}
 					if(positioned) break;
 				}
 				offSet++;
+				if(positioned) break;
+				
 			}while(!positioned);
 			setActionTake(true);
 			return idDino;
