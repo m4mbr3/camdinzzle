@@ -372,9 +372,26 @@ public class Server implements Runnable
 		}
 		Scanner scan = new Scanner(System.in);
 		String letto=" ";
+		boolean check;
 		char command = ' ';
 			do{
 				print_help();
+
+				do
+				{
+					letto = scan.nextLine();
+					if(((!(letto.equals("c")))&&(!(letto.equals("C")))&&(!(letto.equals("s")))&&(!(letto.equals("S")))&&(!(letto.equals("e")))&&((!(letto.equals("E"))))))
+					{
+						System.out.println("Comando non valido");
+						check = false;
+					}
+					else
+					{
+						check = true;
+					}
+				}
+				while(!check);
+
 				try{
 					letto = scan.nextLine();
 				}
@@ -383,6 +400,8 @@ public class Server implements Runnable
 					System.out.println("See you soon");
 				}
 				command = letto.charAt(0);
+
+
 				if(command == 'c' || command == 'C')
 				{
 					System.out.println("You have started a new Client in local!!!");

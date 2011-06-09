@@ -1,4 +1,4 @@
-/*package Visualization;
+package Visualization;
 
 
 import Client.*;
@@ -24,7 +24,7 @@ import javax.xml.soap.Text;
 
 
 public class ProvaTest1 {
-	*//**
+/*	*//**
 	 * @param args
 	 * @throws Exception 
 	 *//*
@@ -598,6 +598,5 @@ public class ProvaTest1 {
 		}
 		while(!scelta.equals("E")); 
 		
-	}
+	}*/
 }
-*/

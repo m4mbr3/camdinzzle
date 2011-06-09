@@ -375,7 +375,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	@Override
 	public void windowClosed(WindowEvent arg0) 
 	{
-		int ritorno = JOptionPane.showConfirmDialog(
+/*		int ritorno = JOptionPane.showConfirmDialog(
 			    this,
 			    "Do you really want to exit from Camdinzzle?",
 			    "Exit Question",
@@ -390,7 +390,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			{
 				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -402,15 +402,23 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			    "Exit Question",
 			    JOptionPane.YES_NO_OPTION);
 		if (ritorno == 0){
-			String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
-			if(response[0].compareTo("ok")==0)
+			String check = client.getConnManager().logout();
+			if(check!=null)
 			{
-				
+				String[] response = ClientMessageBroker.manageLogout(check);
+				if(response[0].compareTo("ok")==0)
+				{
+					
+				}
+				if(response[0].compareTo("no")==0)
+				{
+					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
-			if(response[0].compareTo("no")==0)
+/*			else
 			{
-				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
-			}
+				JOptionPane.showMessageDialog(this, "QUi", "Error", JOptionPane.ERROR_MESSAGE);
+			}*/
 		}
 	}
 

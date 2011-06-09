@@ -1,4 +1,4 @@
-/*package Client;
+package Client;
 
 
 import Client.*;
@@ -633,6 +633,5 @@ public class ProvaTest1 {
 		}
 		while(!scelta.equals("E")); 
 		
-	}
+	}*/
 }
-*/

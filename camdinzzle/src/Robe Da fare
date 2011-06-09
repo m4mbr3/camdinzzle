@@ -1,16 +1,15 @@
 
 		
 		LOGICA
-		
-		-salvataggi---> thread che legge da riga di comando
+
 		
 		GRAFICA	
 		-sistemare immgagini dinosauri
 		
+		(CHIEDERE CARDAMONE)
 
 		-JUNIT
 		-JML
 		-JDOC
 		
-		-file di sicurezza RMI
-		-uovo in posizione lontana
+		-file di sicurezza RMI						è obbligatorio installare RMI security manager e creare il file di policy
