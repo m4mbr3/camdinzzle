@@ -905,7 +905,7 @@ public class ServerLogic
 													if(dino.fight(Game.getCell(dinoRow, dinoCol)))		//combatte
 													{
 												
-														((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol));
+														((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol),false);
 														
 															
 														if(dino instanceof Vegetarian)		//controlla se il dino e' vegetariano
@@ -937,7 +937,7 @@ public class ServerLogic
 													}
 													else
 													{
-														currentSession.getPlayer(token).getSpecie().killDino(dino);
+														currentSession.getPlayer(token).getSpecie().killDino(dino,true);
 														return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "p");
 													}
 												}
@@ -976,7 +976,7 @@ public class ServerLogic
 											}
 											else
 											{
-												currentSession.getPlayer(token).getSpecie().killDino(dino);
+												currentSession.getPlayer(token).getSpecie().killDino(dino,false);
 												return ServerMessageBroker.createErroMessage("mortePerInedia");
 											}
 										}
@@ -1047,7 +1047,7 @@ public class ServerLogic
 								}
 								else
 								{
-									currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+									currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId),false);
 									return ServerMessageBroker.createErroMessage("mortePerInedia");
 								}
 							}
@@ -1104,7 +1104,7 @@ public class ServerLogic
 								}
 								else
 								{
-									currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId));
+									currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId),false);
 									return ServerMessageBroker.createErroMessage("mortePerInedia");
 								}
 							}
@@ -1287,7 +1287,7 @@ public class ServerLogic
 						
 						if(((Dinosaur)me1.getValue()).getAge() == 0)
 						{
-							currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me1.getValue()));
+							currentSession.getPlayer(token).getSpecie().killDino(((Dinosaur)me1.getValue()),false);
 						}
 					}
 					

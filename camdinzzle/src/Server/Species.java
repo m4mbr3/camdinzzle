@@ -304,9 +304,9 @@ public class Species implements Serializable
 		}
 	}
 	
-	public void killDino(Dinosaur dinoId)
+	public void killDino(Dinosaur dinoId, boolean fight)
 	{
-		if(!(Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Vegetarian || Game.getCell(dinoId.getPosRow(), dinoId.getPosCol()) instanceof Carnivorous))
+		if(!fight)
 		{
 				if(speciesType==type.Carnivorous)
 				{

@@ -2,14 +2,32 @@
 		
 		LOGICA
 
+		-RMI controllare che se sn in gioco non mi manda la cambia turno vuota quando fa il controllo
 		
 		GRAFICA	
 		-sistemare immgagini dinosauri
+		-controllare bodo blue
 		
-		(CHIEDERE CARDAMONE)
+		-se faccio esci partita e poi riaccedo nn parte il timer
+		-se faccio exit to Camdinzle e poi rifaccio login sparisce tt
+		
+		(CHIESTO A CARDAMONE)
 
-		-JUNIT
-		-JML
-		-JDOC
+		-JUNIT					classi + importanti
+		-JML					www.jmlspecs.com
+					
+					private /*@ spec_public @*/ int[] ciccio;
+					//@public invariant ciccio != null
 		
-		-file di sicurezza RMI						è obbligatorio installare RMI security manager e creare il file di policy
+					//@requires 
+					//@ensures
+					
+					logica..  no grafica
+					le parti + interessanti
+		
+		-JDOC		tutto		
+		
+		
+		-file di sicurezza RMI		NON è OBBLIGATORIO!!! SERVE SOLO X PASSAGGIO DI OGGETTI DINAMICI(CHE NN è IL NOSTRO CASO)
+
+		se nn ci sn aggiornamenti rilevanti nell'uml nn lo ricontrola..

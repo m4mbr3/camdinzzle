@@ -1,6 +1,6 @@
 package Client;
 
-
+/*
 import Client.*;
 
 import java.io.BufferedReader;
@@ -16,7 +16,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
-
+*/
 public class ProvaTest1 {
 	/*
 	public static void main(String[] args) {

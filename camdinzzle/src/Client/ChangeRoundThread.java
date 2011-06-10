@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 public class ChangeRoundThread extends JFrame implements Runnable 
 {
 	private static final long serialVersionUID = 1L;
-	private static boolean is_run;
+	private static boolean is_run = true;
 	private Client client;
 	private FrameGame frameGame;
 	private JLabel msg;
@@ -23,7 +23,7 @@ public class ChangeRoundThread extends JFrame implements Runnable
 	{
 		super (name);
 		this.client = client;
-		this.is_run =true;
+//		this.is_run =true;
 		this.frameGame = frameGame;
 		this.msg = new JLabel();
 		this.setSize(300, 200);
@@ -50,8 +50,8 @@ public class ChangeRoundThread extends JFrame implements Runnable
 		is_run = false;
 	}
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
+	public void run() 
+	{
 		while (is_run)
 		{
 			if (!client.getConnManager().getChangeRound().equals(""))
@@ -98,8 +98,8 @@ public class ChangeRoundThread extends JFrame implements Runnable
 		}
 	}
 
-	public void optionpaneClicked(int chosedOption) {
-		// TODO Auto-generated method stub
+	public void optionpaneClicked(int chosedOption) 
+	{
 		String[] response;
 		if(chosedOption == 0)
 		{ 

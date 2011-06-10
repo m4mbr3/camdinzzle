@@ -6,7 +6,6 @@ package Client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -304,7 +303,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				
 				}
 				else
-				{
+				{//TODO
 					 JOptionPane.showMessageDialog(this, "Azione non compiuta", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}

@@ -1,6 +1,7 @@
 package Visualization;
 
 
+/*
 import Client.*;
 
 import java.io.BufferedReader;
@@ -21,7 +22,7 @@ import java.util.Set;
 
 import javax.annotation.Generated;
 import javax.xml.soap.Text;
-
+*/
 
 public class ProvaTest1 {
 /*	*//**
