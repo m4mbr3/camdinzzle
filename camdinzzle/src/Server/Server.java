@@ -395,10 +395,9 @@ public class Server implements Runnable
 					}
 				}
 				while(!check);
-
+				
 				try
 				{
-					letto = scan.nextLine();
 					command = letto.charAt(0);
 
 

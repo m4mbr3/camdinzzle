@@ -83,14 +83,15 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		this.setLayout(null);
 		this.is_local = is_local; 
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		titleframe = new JLabel("ManagerPanel v 1.0");
-		creaRazza = new JLabel("Create new Species");
-		accPartita = new JLabel("Access to Game");
-		lisGiocatori = new JLabel("Give List of Players");
-		classifica = new JLabel("Give the Classific");
-		logout = new JLabel("Exit to Camdinzzle");
-		razzatitle = new JLabel("Create new Species");
+		titleframe = new JLabel("<html> <h1>ManagerPanel v 1.0</h1></html>");
+		creaRazza = new JLabel("<html><h2>Create new Species</h2></html>");
+		accPartita = new JLabel("<html><h2>Access to Game</h2></html>");
+		lisGiocatori = new JLabel("<html><h2>Give List of Players</h2></html>");
+		classifica = new JLabel("<html><h2>Give the Classific</h2></html>");
+		logout = new JLabel("<html><h2>Exit to Camdinzzle</h2></html>");
+		razzatitle = new JLabel("<html><h2>Create new Species</h2></html>");
 		razza_testo = new JLabel("Insert the Name");
+		
 		choice = new JLabel("Select the type of new Species :");
 		razza_valore = new JTextField();
 		radiogroup = new ButtonGroup();
