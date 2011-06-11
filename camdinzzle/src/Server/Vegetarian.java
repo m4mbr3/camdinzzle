@@ -11,9 +11,23 @@ import java.io.Serializable;
 public class Vegetarian extends Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * parametro che contiene la caogna presente nella cella quando il dinosauro si trova sopra di essa
+	 */
 	private Carrion carrion=null;
+	/**
+	 * parametro che contiene la vegetazione presente nella cella quando il dinosauro si trova sopra di essa
+	 */
 	private Vegetation vegetation=null;
 
+	/**
+	 * richiama il costruttore di Dinosaur e setta la distanza massima per il movimento a 2
+	 * 
+	 * @param dinoId
+	 * @param posRow
+	 * @param posCol
+	 * @param specie
+	 */
 	public Vegetarian(String dinoId, int posRow, int posCol, Species specie)
 	{
 		super(dinoId, posRow, posCol, specie);
@@ -21,7 +35,7 @@ public class Vegetarian extends Dinosaur implements Serializable
 	}
 	
 	@Override
-	public boolean eat(Object cell)
+	public void eat(Object cell)
 	{
 		if(cell instanceof Vegetation)
 		{
@@ -30,15 +44,10 @@ public class Vegetarian extends Dinosaur implements Serializable
 			{
 				energy = energyMax;
 			}
-			return true;
 		}
-		return false;
 	}
 
 	@Override
-	/**
-	 * @param 
-	 */
 	public boolean fight(Object dino) 
 	{
 		int powerAttack;
@@ -96,21 +105,37 @@ public class Vegetarian extends Dinosaur implements Serializable
 
 	}
 	
+	/**
+	 * ritorna la carogna che sta nella stessa cella del dinosauro
+	 * @return Carrion
+	 */
 	public Carrion getCarrion()
 	{
 		return carrion;
 	}
 	
+	/**
+	 * setta la carogna che c'era sulla mappa dove ora si e' posizionato il dinosauro
+	 * @param carrion
+	 */
 	public void setCarrion(Carrion carrion)
 	{
 		this.carrion=carrion;
 	}
 
+	/**
+	 * setta la vegetazione che c'era sulla mappa dove ora si e' posizionato il dinosauro
+	 * @param vegetation
+	 */
 	public void setVegetation(Vegetation vegetation) 
 	{
 		this.vegetation = vegetation;
 	}
 
+	/**
+	 * ritorna la vegetazione che sta nella stessa cella del dinosauro
+	 * @return Vegetation
+	 */
 	public Vegetation getVegetation() 
 	{
 		return vegetation;

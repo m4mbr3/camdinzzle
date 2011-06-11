@@ -5,23 +5,60 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 
+ * @author Marco
+ *
+ */
 public class Species implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * nome della specie
+	 */
 	private String name;
+	/**
+	 * turni mancanti alla estizione
+	 */
 	private int timeOfLive;
+	/**
+	 * tabella dei dinosauri in gioco
+	 */
 	private Hashtable<String, Dinosaur> myDinosaurs;
-	
+	/**
+	 * razza di dinosauri: Carnivoro o Vegetariano
+	 */
 	protected static enum type {Carnivorous, Vegetarian}
+	/**
+	 * razza della specie
+	 */
 	private type speciesType;
+	/**
+	 * numero di dinosauri creati
+	 */
 	private int  dinoNumber;
+	/**
+	 * mappa della specie con celle visibili solo quelle gia' visitate
+	 */
 	private Object[][] map;
+	/**
+	 * punteggio della specie
+	 */
 	private int score;
+	/**
+	 * username del giocatore possessore della specie
+	 */
 	private String playerUsername;
-	private final int maxDino=10;
+	/**
+	 * limite massimo di dinosauri in gioco
+	 */
+	private final int maxDino=1;
 	
 	/**
-	 * Create a new species, set name, type, timeOfLive and add one dinosaur
+	 * Crea una nuova specie, setta il nome e il timo, imposta timeOfLive a 120, crea un nuovo dinosauro e chiama startMap e l'updateMap
+	 * @param name
+	 * @param speciesType
+	 * @param username
 	 */
 	public Species(String name, type speciesType, String username)
 	{
@@ -44,27 +81,45 @@ public class Species implements Serializable
 		
 		startMap();
 		updateMap();
-		return;
 	}
 	
+	/**
+	 * ritorna il punteggio
+	 * @return int
+	 */
 	public int getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	/**
+	 * setta il punteggio
+	 * @param score
+	 */
+	public void setScore(int score) 
+	{
 		this.score = score;
 	}
 	
+	/**
+	 * sottrae uno al tempo di vita della specie
+	 */
 	public void updateTimeOfLive()
 	{
 		timeOfLive -= 1;
 	}
 	
+	/**
+	 * ritorna il tempo di vita della specie
+	 * @return int
+	 */
 	public int getTimeOfLive()
 	{
 		return timeOfLive;
 	}
 	
+	/**
+	 * incrementa il punteggio
+	 */
 	public void increaseScore()
 	{
 		Iterator<Map.Entry<String, Dinosaur>> iter = this.getDinosaurs();
@@ -76,16 +131,26 @@ public class Species implements Serializable
 		}
 	}
 	
-	public String getPlayerUsername() {
+	/**
+	 * restituisce l'username del giocatore
+	 * @return String
+	 */
+	public String getPlayerUsername() 
+	{
 		return playerUsername;
 	}
 
-	public void setPlayerUsername(String playerUsername) {
+	/**
+	 * setta l'username del giocatore
+	 * @param playerUsername
+	 */
+	public void setPlayerUsername(String playerUsername) 
+	{
 		this.playerUsername = playerUsername;
 	}
 
 	/**
-	 * add one at number of dinosaurs of species
+	 * aggiunge uno al numero di dinosauri della specie, per l'identificatore
 	 */
 	public void addDinoNumber()
 	{
@@ -94,7 +159,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * return number of dinosaurs of species
+	 * ritorna il numero di dinosauri creati
 	 */
 	public int getDinoNumber()
 	{
@@ -111,8 +176,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * add a new dinosaur the same type of my species
-	 * at my HashTable of dinosaurs
+	 * crea un nuovo dinosauro, lo aggiunge alla HashTable  e lo setta sulla mappa generale
 	 */
 	public Dinosaur addDinosaur( int posRig, int posCol)
 	{
@@ -152,6 +216,11 @@ public class Species implements Serializable
 			return null;
 	}
 	
+	/**
+	 * controlla se ci sono dinosauri della specie
+	 * ritorna true se positivo, false altrimenti
+	 * @return boolean
+	 */
 	public boolean existDinos()
 	{
 		if(myDinosaurs.size() > 0)
@@ -187,35 +256,53 @@ public class Species implements Serializable
 		}
 		
 	}
-	/*
-	 * tornano il tipo enum
+
+	/**
+	 * ritorna il type carivoro
+	 * @return type
 	 */
 	public static type getCarnType()
 	{
 		return type.Carnivorous;
 	}
 	
+	/**
+	 * ritorna il type vegetariano
+	 * @return type
+	 */
 	public static type getVegType()
 	{
 		return type.Vegetarian;
 	}
 	
+	/**
+	 * ritorna il type della specie
+	 * @return type
+	 */
 	public type getType()
 	{
 		return speciesType;
 	}
 
 	
-	
+	/**
+	 * ritorna il nome della specie
+	 * @return String
+	 */
 	public String getName() 
 	{
 		return name;
 	}
 
+	/**
+	 * setta il nome della specie
+	 * @param name
+	 */
 	public void setName(String name)
 	{
 		this.name = name;
 	}
+	
 	/**
 	 * crea una mappa generale del giocatore tutta buia
 	 */
@@ -233,7 +320,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * aggiorna la mappa generale del giocatore (buio) inserendo la vista dei dinosauri
+	 * aggiorna la mappa generale del giocatore (buio) inserendo la vista dei dinosauri in gioco
 	 */
 	public void updateMap()
 	{
@@ -283,14 +370,17 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * 
-	 * @return map mappa generale del player con celle visibili solo quelle già visitate.
+	 * ritorna la mappa generale della specie con celle visibili solo quelle già visitate.
+	 * @return Object[][]
 	 */
 	public Object[][] getPlayerMap()
 	{
 		return map;
 	}
 	
+	/**
+	 * stampa la mappa della specie
+	 */
 	public void stampa()
 	{
 
@@ -304,6 +394,11 @@ public class Species implements Serializable
 		}
 	}
 	
+	/**
+	 * setta la cella del dinosauro dove si trovava con quello che c'era prima di esso, ed elimina il dinosauro
+	 * @param dinoId
+	 * @param fight : boolean che indica se la morte è avvenuta dopo la sconfitta in combattimento
+	 */
 	public void killDino(Dinosaur dinoId, boolean fight)
 	{
 		if(!fight)
@@ -313,10 +408,12 @@ public class Species implements Serializable
 					if(((Carnivorous)dinoId).getVegetation()!=null)
 					{
 						Game.setCellMap(((Carnivorous)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
+						setCellMap(((Carnivorous)dinoId).getVegetation().toString(), dinoId.getPosRow(), dinoId.getPosCol());
 					}
 					else
 					{
 						Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
+						setCellMap("t", dinoId.getPosRow(), dinoId.getPosCol());
 					}
 				}
 				else
@@ -324,14 +421,17 @@ public class Species implements Serializable
 					if(((Vegetarian)dinoId).getCarrion()!=null)
 					{
 						Game.setCellMap(((Vegetarian)dinoId).getCarrion(), dinoId.getPosRow(), dinoId.getPosCol());
+						setCellMap(((Vegetarian)dinoId).getCarrion().toString(), dinoId.getPosRow(), dinoId.getPosCol());
 					}
 					else if(((Vegetarian)dinoId).getVegetation()!=null)
 					{
 						Game.setCellMap(((Vegetarian)dinoId).getVegetation(), dinoId.getPosRow(), dinoId.getPosCol());
+						setCellMap(((Vegetarian)dinoId).getVegetation().toString(), dinoId.getPosRow(), dinoId.getPosCol());
 					}
 					else
 					{
 						Game.setCellMap("t",dinoId.getPosRow(), dinoId.getPosCol());
+						setCellMap("t", dinoId.getPosRow(), dinoId.getPosCol());
 					}
 				}
 		}
@@ -349,9 +449,13 @@ public class Species implements Serializable
 		map[row][col] = msg;
 	}
 	
-	public boolean ckeckDinoNumber()
+	/**
+	 * controlla se il numero massimo di dinosauri e' stato raggiunto
+	 * @return boolean
+	 */
+	public boolean checkDinoNumber()
 	{
-		if(dinoNumber<=maxDino)
+		if(dinoNumber<maxDino)
 			return true;
 		else
 			return false;

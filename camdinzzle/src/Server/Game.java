@@ -8,25 +8,61 @@ import java.util.Set;
 
 public class Game
 {
+	/**
+	 * mappa generale del gioco
+	 */
 	private static Object[][] map;
+	/**
+	 * numero massimo di righe della mappa
+	 */
 	public static final int maxRow=40;
+	/**
+	 * numero massimo delle colonne della mappa
+	 */
 	public static final int maxCol=40;
+	/**
+	 * grandezza massima della mappa di raggiungibilita'
+	 */
 	public static final int maxReach=7;
+	/**
+	 * distanza massima percorribile da un dinosauro
+	 */
 	public static final int distMax=3;
+	/**
+	 * numero massimo di celle d'acqua
+	 */
 	private int Water = 164;
+	/**
+	 * numero di carogne
+	 */
 	private int Carrion=20;
+	/**
+	 * numero di vegetazione
+	 */
 	private int Vegetation=512;
+	/**
+	 * 
+	 */
 	private boolean permise=true;
+	/**
+	 * numero massimo di giocatori in gioco
+	 */
 	private int maxPlayers;
-	// Chiave token
+	/**
+	 * tabella dei giocatori in gioco
+	 */
 	private LinkedHashMap<String, Player> playersInGame;
-	//matrice di raggiungibilita' delle celle
+	/**
+	 * mappa di raggiungibilita'
+	 */
 	private static int[][][][] mapReach;
 
-	
+	/**
+	 * crea una nuova mappa se non esiste, altrimenti la caica da file e inizializza la mappa di raggiungibilita'
+	 * @param mapFromFile
+	 */
 	public Game(Object[][] mapFromFile) 
 	{
-		// TODO Auto-generated constructor stub
 		playersInGame = new LinkedHashMap<String, Player>();
 		maxPlayers = 8;
 		
@@ -42,16 +78,30 @@ public class Game
 		this.startMapReach();
 	}
 	
+	/**
+	 * restituisce la mappa generale
+	 * @return
+	 */
 	public Object[][] getGeneralMap()
 	{
 		return map;
 	}
 	
-	public int getMaxPlayers() {
+	/**
+	 * restituisce il numero massimo di giocatori
+	 * @return int
+	 */
+	public int getMaxPlayers() 
+	{
 		return maxPlayers;
 	}
 
-	public void setMaxPlayers(int maxPlayers) {
+	/**
+	 * setta il numero massimo di giocatori
+	 * @param maxPlayers
+	 */
+	public void setMaxPlayers(int maxPlayers) 
+	{
 		this.maxPlayers = maxPlayers;
 	}
 
@@ -821,11 +871,11 @@ public class Game
 		}
 	}
 	
-	public void newCreateMap()
+/*	public void newCreateMap()
 	{
-		/*
-		 * creazione bordo d'acqua
-		 */
+		
+		 // creazione bordo d'acqua
+		 
 		map = new Object[maxRow][maxCol];
 		for(int row=0; row<maxRow; row++)
 		{
@@ -842,14 +892,14 @@ public class Game
 				map[row][maxRow-1] = new String("a");
 			}
 		}
-		/*
-		 * inizializzazione mappa casuale
-		 */
+		
+		 // inizializzazione mappa casuale
+		 
 
 		
-		/*
-		 * inizializza la mappa con tutta terra
-		 */
+		
+		 // inizializza la mappa con tutta terra
+		 
 		for(int row=1; row<maxRow-1; row++)
 		{
 			for(int col=1; col<maxCol-1; col++)
@@ -858,9 +908,9 @@ public class Game
 			}
 		}
 		
-		/*
-		 * creaione pozze d'acqua
-		 */
+		
+		 // creaione pozze d'acqua
+		 
 		int posRow;
 		int posCol;
 		do
@@ -871,7 +921,7 @@ public class Game
 		
 		
 	}
-	/*
+	
 	private boolean controlWater(int startRow, int startCol, int destRow, int destCol)
 	{
 		if((startRow>=0)&&(startRow<maxRow)&&(startCol>=0)&&(startCol<maxRow)&&(destRow>=0)&&(destRow<maxRow)&&(destCol>=0)&&(destCol<maxRow))
@@ -936,7 +986,7 @@ public class Game
 	}*/
 	/**
 	 * riposiziona nella mappa in modo casuale la carogna
-	 * @param row : podizione iniziale
+	 * @param row : posizione iniziale
 	 * @param col : posizione iniziale
 	 */
 	public void repositionCarrion(int row, int col)
@@ -952,6 +1002,11 @@ public class Game
 		setCellMap(getCell(row, col), posRow, posCol);
 	}
 	
+	/**
+	 * controlla che il giocatore sia in gioco
+	 * @param token
+	 * @return
+	 */
 	public boolean isPlayerInGame(String token)
 	{
 		synchronized (playersInGame) 

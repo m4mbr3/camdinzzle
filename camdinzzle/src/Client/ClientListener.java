@@ -22,7 +22,6 @@ public class ClientListener implements Runnable
 	
 	public ClientListener(MonitorMessage mm, Socket soc, ConnectionManagerSocket cms) throws IOException
 	{
-		// TODO Auto-generated constructor stub
 		this.cms = cms;
 		this.mm = mm;
 		this.readSocket = null;

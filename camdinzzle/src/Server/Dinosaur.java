@@ -11,32 +11,88 @@ import java.io.Serializable;
 public abstract class Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * identificatore del dinosauro
+	 */
 	private String dinoId;
+	/**
+	 * eta' massima del dinosauro
+	 */
 	private int age;
+	/**
+	 * specie del dinosauro
+	 */
 	protected Species nameSpecie;
+	/**
+	 * energia del dinosauro
+	 */
 	protected int energy;
+	/**
+	 * dimensione del dinosauro
+	 */
 	private int dimension;
+	/**
+	 * energia massima che il dinosauro puo' accumulare
+	 */
 	protected int energyMax;
+	/**
+	 * energia per creare un nuovo dinosauro
+	 */
 	private final int eEgg = 1500;
-	protected int posRow; //Row of dinosaur on the map
-	protected int posCol; //Column of dinosaur on the map
+	/**
+	 * riga della posizione del dinosauro
+	 */
+	protected int posRow;
+	/**
+	 * colonna della posizione del dinosauro
+	 */
+	protected int posCol;
+	/**
+	 * vista locale del dinosauro
+	 */
 	private Object[][] localMap;
+	/**
+	 * distanza massima che puo' percorrere il dinosauro
+	 */
 	private int distMax;
+	/**
+	 * booleano per controllare se il movimento nel turno è gia' stato effettuato
+	 */
 	private boolean moveTake=false;
+	/**
+	 * booleano per controllare se un azione nel turno è gia' stata effettuata
+	 */
 	private boolean actionTake=false;
+	/**
+	 * numero di turni gia' vissuti dal dinosauro
+	 */
 	private int timeOfLive;
 	
-	public abstract boolean eat(Object cell);
+	/**
+	 * controlla cosa c'è nella cella e aggiunge l'energia al dinosauro senza superare il massimo
+	 * @param cell di destinazione
+	 */
+	public abstract void eat(Object cell);
+	/**
+	 * calcola l'energia dei due dinosauri
+	 * @param dino avversario
+	 * @return true se vince, false altrimenti
+	 */
 	public abstract boolean fight(Object dino);
+	/**
+	 * risetta la cella di partenza con la carogna o vegetazione se c'erano, calcola l'energia x spostarsi e in caso positivo setta
+	 * la posizione del dinosauro, aggiorna la mappa locale, aggiorna la mappa della specie e setta il moveTake a true
+	 * @param rowDest
+	 * @param colDest
+	 * @return true se ha abbastanza energia per muoversi, false altrimenti.
+	 */
 	public abstract boolean move(int rowDest, int colDest);
 	
 	/**
-	 * Create a new dinosaur with age = (30±20%), dimension = 1 and energy = 1000
+	 * crea un nuovo dinosauro con eta' = (30±20%), dimensione = 1 ed energia = 1000
 	 * @param dinoId id del dinosauro da creare
-	 * @param posRig riga nella mappa
-	 * @param posCol colonna nella mappa
-	 * @return null
-	 *  
+	 * @param posRow riga nella mappa
+	 * @param posCol colonna nella mappa 
 	 */
 	public Dinosaur(String dinoId, int posRow, int posCol, Species nameSpecie)
 	{
@@ -57,9 +113,10 @@ public abstract class Dinosaur implements Serializable
 	
 	/**
 	 * controlla che la dimensione non sia gia' massima (=5)
-	 * controlla che abbia abbanstanza energia per crescere e cresce
+	 * controlla che abbia abbanstanza energia per crescere, cresce , toglie l'energia necessaria, aumenta l'energia massima
+	 * e setta actionTake a true
 	 * altrimenti muore
-	 * 
+	 * @return true se cresce, false altrimenti
 	 */
 	public boolean growUp()
 	{
@@ -83,6 +140,7 @@ public abstract class Dinosaur implements Serializable
 	
 	/**
 	 * crea un nuovo dinosauro nella prima cella libera vicino al dinosauro
+	 * @return dinoId del nuovo dinosauro
 	 */
 	public String newEgg()
 	{
@@ -117,7 +175,6 @@ public abstract class Dinosaur implements Serializable
 					if(positioned) break;
 				}
 				offSet++;
-				if(positioned) break;
 				
 			}while(!positioned);
 			setActionTake(true);
@@ -161,7 +218,7 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * dimensione dinosauro
+	 * ritorna la dimensione dinosauro
 	 * @return int
 	 */
 	public int getDinoDimension()
@@ -170,7 +227,7 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * riga della posizione del dinosauro
+	 * ritorna la riga della posizione del dinosauro
 	 * @return int
 	 */
 	public int getPosRow()
@@ -179,7 +236,7 @@ public abstract class Dinosaur implements Serializable
 	}
 
 	/**
-	 * riga della posizione del dinosauro
+	 * ritorna la colonna della posizione del dinosauro
 	 * @return int
 	 */
 	public int getPosCol()
@@ -188,7 +245,7 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * energia dinosauro
+	 * ritorna l'energia dinosauro
 	 * @return int
 	 */
 	public int getEnergy()
@@ -197,7 +254,7 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * turni di vita mancanti al dinosauro
+	 * ritorna turni di vita mancanti al dinosauro
 	 * @return int
 	 */
 	public int getAge()
@@ -206,7 +263,8 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * turni vissuti dal dinosauro
+	 * ritorna turni vissuti dal dinosauro
+	 * @return int
 	 */
 	public int getTimeOfLive()
 	{
@@ -214,20 +272,25 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * restituisce la dimensione della mappa locale in base alla dimensione del dinosauro
-	 * @return
+	 * ritorna il numero di righe della mappa locale
+	 * @return  int
 	 */
 	public int getSizeRowLocalMap()
 	{		
 		return localMap.length;
 	}
+	
+	/**
+	 * ritorna il numero di colonne della mappa locale
+	 * @return int
+	 */
 	public int getSizeColLocalMap()
 	{
 		return localMap[0].length;
 	}
 	
 	/**
-	 * inizializza la mappa locale del dinosauro
+	 * setta la mappa locale del dinosauro prendendola dalla mappa generale
 	 */
 	public void setLocalMap()
 	{
@@ -235,8 +298,8 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * 
-	 * @return Object[][] 
+	 * ritorna la mappa locale del dinosauro
+	 * @return  Object[][]
 	 */
 	public Object[][] getLocalMap()
 	{
@@ -245,37 +308,73 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	/**
-	 * 
+	 * override di toString
+	 * ritorna una "d"
+	 * @return String
 	 */
 	public String toString()
 	{
 		return "d";
 	}
+	
+	/**
+	 * setta la distanza massima percorribile dal dinosauro
+	 * @param distMax
+	 */
 	public void setDistMax(int distMax)
 	{
 		this.distMax = distMax;
 	}
 	
+	/**
+	 * ritorna la distanza massima percorribile dal dinosauro
+	 * @return int
+	 */
 	public int getDistMax()
 	{
 		return distMax;
 	}
+	
+	/**
+	 * setta la variabile moveTake
+	 * @param moveTake
+	 */
 	public void setMoveTake(boolean moveTake) 
 	{
 		this.moveTake = moveTake;
 	}
+	
+	/**
+	 * ritorna la variabile moveTake
+	 * @return boolean
+	 */
 	public boolean getMoveTake() 
 	{
 		return moveTake;
 	}
+	
+	/**
+	 * setta la variabile actionTake
+	 * @param actionTake
+	 */
 	public void setActionTake(boolean actionTake) 
 	{
 		this.actionTake = actionTake;
 	}
+	
+	/**
+	 * ritorna la variabile actionTake
+	 * @return boolean
+	 */
 	public boolean getActionTake() 
 	{
 		return actionTake;
 	}
+	
+	/**
+	 * ritorna l'oggetto specie
+	 * @return Species
+	 */
 	public Species getSpecie()
 	{
 		return nameSpecie;

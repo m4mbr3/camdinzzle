@@ -25,9 +25,43 @@
 					logica..  no grafica
 					le parti + interessanti
 		
-		-JDOC		tutto		
-		
 		
 		-file di sicurezza RMI		NON è OBBLIGATORIO!!! SERVE SOLO X PASSAGGIO DI OGGETTI DINAMICI(CHE NN è IL NOSTRO CASO)
 
 		se nn ci sn aggiornamenti rilevanti nell'uml nn lo ricontrola..
+		
+				JAVA DOC (classi da fare)
+				
+		-ChangeRoundThread
+		-Client
+		-ClientListener
+		-ClientMessageBroker
+		-ClientRMI
+		-ClientRMIInterface
+		-ConnectionManager
+		-ConnectionManagerLocal
+		-ConnectionManagerRMI
+		-ConnectionManagerSocket
+		-FrameConnection
+		-FrameGame
+		-FrameGameManager
+		-FrameLogin
+		-Loading
+		-MonitorMessage
+		-Textual
+		-TimeOutOptionPane
+		-Visual
+		
+		-CheckRMIClientConnection
+		-ClientManager
+		-ClientManagerLocal
+		-ClientManagerRMI
+		-ClientManagerSocket
+		-Counter
+		-Player
+		-RMIMessageBroker
+		-Server
+		-ServerLogic
+		-ServerMessageBroker
+		-ServerRMI
+		-ServerRMIInterface

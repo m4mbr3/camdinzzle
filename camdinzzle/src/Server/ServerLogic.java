@@ -117,9 +117,6 @@ public class ServerLogic
 		System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
 	}
 
-	public void controlAction() {
-	}
-
 	/**
 	 * Aggiunge un nuovo utente
 	 * 
@@ -904,7 +901,6 @@ public class ServerLogic
 												{
 													if(dino.fight(Game.getCell(dinoRow, dinoCol)))		//combatte
 													{
-												
 														((Dinosaur)Game.getCell(dinoRow, dinoCol)).getSpecie().killDino((Dinosaur)Game.getCell(dinoRow, dinoCol),false);
 														
 															
@@ -1095,22 +1091,29 @@ public class ServerLogic
 					{
 						if(currentSession.getPlayer(token).getSpecie().getDino(dinoId)!=null)		//controllo dinoId
 						{
-							if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
+							if(currentSession.getPlayer(token).getSpecie().checkDinoNumber())
 							{
-								String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
-								if(idDino !=null)		//non ha abbastanza energia
+								if(!currentSession.getPlayer(token).getSpecie().getDino(dinoId).getActionTake())		//controlla se l'azione � gia stata fatta
 								{
-									return ServerMessageBroker.createOkMessageWithOneParameter(idDino);//id dino nuovo
+									String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
+									if(idDino !=null)		//non ha abbastanza energia
+									{
+										return ServerMessageBroker.createOkMessageWithOneParameter(idDino);//id dino nuovo
+									}
+									else
+									{
+										currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId),false);
+										return ServerMessageBroker.createErroMessage("mortePerInedia");
+									}
 								}
 								else
 								{
-									currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId),false);
-									return ServerMessageBroker.createErroMessage("mortePerInedia");
+									return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
 								}
 							}
 							else
 							{
-								return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
+								return ServerMessageBroker.createErroMessage("raggiuntoNumeroMaxDinosauri");
 							}
 						}
 						else
@@ -1396,6 +1399,14 @@ public class ServerLogic
 				
 				if(currentSpecie.getTimeOfLive() == 0)
 				{
+					Iterator<Map.Entry<String, Dinosaur>> iter1 = currentSpecie.getDinosaurs();
+					
+					// kill dei dinosauri
+					while(iter1.hasNext())
+					{
+						Map.Entry<String, Dinosaur> me1 = (Map.Entry<String, Dinosaur>) iter1.next();
+						currentSpecie.killDino(((Dinosaur)me1.getValue()),false);
+					}
 					currentPlayer.setSpecie(null);
 					currentSession.removePlayer(currentPlayer.getToken());
 				}

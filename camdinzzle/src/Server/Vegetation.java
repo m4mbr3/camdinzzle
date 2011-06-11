@@ -11,7 +11,13 @@ import java.io.Serializable;
 public class Vegetation implements Food, Serializable
 {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * energia della vegetazione
+	 */
 	private int power;
+	/**
+	 * energia massima della vegetazione
+	 */
 	private int maxPower;
 	
 	/**
@@ -27,26 +33,40 @@ public class Vegetation implements Food, Serializable
 	 * Ricrescita della vegetazione
 	 */
 	@Override
-	public void rebirth() {
+	public void rebirth() 
+	{
 		power += maxPower/10;
 	}
 
-	public int getPower() {
+	/**
+	 * restituisce l'energia della vegetazione
+	 * @return int
+	 */
+	public int getPower() 
+	{
 		return power;
 	}
 
 	/**
+	 * setta l'energia della vegetzzione
 	 * @param power
 	 */
-	public void setPower(int power) {
+	public void setPower(int power) 
+	{
 		this.power = power;
 	}
 
-	public int getMaxPower() {
+	/**
+	 * ritorna l'energia massima
+	 * @return
+	 */
+	public int getMaxPower() 
+	{
 		return maxPower;
 	}
 
 	/**
+	 * setta l'energia massima
 	 * @param maxPower
 	 */
 	public void setMaxPower(int maxPower) {

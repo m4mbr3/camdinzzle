@@ -10,8 +10,19 @@ import java.io.Serializable;
 public class Carnivorous extends Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * parametro che contiene la vegetazione presente nella cella quando il dinosauro si trova sopra di essa
+	 */
 	private Vegetation vegetation=null;
 
+	/**
+	 * richiama il costruttore di Dinosaur e setta la distanza massima per il movimento a 3
+	 * 
+	 * @param dinoId
+	 * @param posRow
+	 * @param posCol
+	 * @param specie
+	 */
 	public Carnivorous(String dinoId, int posRow, int posCol, Species specie) 
 	{
 		super(dinoId, posRow, posCol, specie);
@@ -19,10 +30,7 @@ public class Carnivorous extends Dinosaur implements Serializable
 	}
 	
 	@Override
-	/**
-	 * @param cell
-	 */
-	public boolean eat(Object cell)
+	public void eat(Object cell)
 	{
 		if(cell instanceof Carrion)
 		{
@@ -31,16 +39,10 @@ public class Carnivorous extends Dinosaur implements Serializable
 			{
 				energy = energyMax;
 			}
-			
-			return true;
 		}
-		return false;
 	}
 
 	@Override
-	/**
-	 * 
-	 */
 	public boolean fight(Object dino) 
 	{
 		int powerAttack;
@@ -74,9 +76,6 @@ public class Carnivorous extends Dinosaur implements Serializable
 	}
 
 	@Override
-	/**
-	 * 
-	 */
 	public boolean move(int rowDest, int colDest)
 	{
 		
@@ -109,21 +108,20 @@ public class Carnivorous extends Dinosaur implements Serializable
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * setta la vegetazione che c'era sulla mappa dove ora si e' posizionato il dinosauro
+	 * @param vegetation
 	 */
-	public Vegetation getVegetation()
+	public void setVegetation(Vegetation vegetation) 
+	{
+		this.vegetation = vegetation;
+	}
+
+	/**
+	 * ritorna la vegetazione che sta nella stessa cella del dinosauro
+	 * @return Vegetation
+	 */
+	public Vegetation getVegetation() 
 	{
 		return vegetation;
 	}
-	
-	/**
-	 * 
-	 * @param vegetation
-	 */
-	public void setVegetation(Vegetation vegetation)
-	{
-		this.vegetation=vegetation;
-	}
-
 }

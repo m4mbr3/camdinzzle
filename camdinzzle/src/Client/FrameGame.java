@@ -291,6 +291,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[0]))
 		{
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
 			String[] growUpDino = client.getConnManager().cresciDinosauro(dinoId);
 			if(growUpDino==null)
 			{
@@ -318,7 +321,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 *  se non � no ridisegna la mappa altrimenti crea un popup
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[1]))
-		{	
+		{
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
 			String[] newEgg = client.getConnManager().deponiUovo(dinoId);
 			if(newEgg==null)
 			{
@@ -346,6 +352,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandGameButton[0]))
 		{
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
 			ArrayList<String> classifica = client.getConnManager().classifica();
 			if(classifica!=null)
 			{
@@ -372,6 +381,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandGameButton[1]))
 		{
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
 			String[] check = client.getConnManager().passaTurno();
 			if(check==null)
 			{
@@ -396,6 +408,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandGameButton[2]))
 		{
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
 			String check = client.getConnManager().uscitaPartita();
 			if(check==null)
 			{
@@ -422,6 +437,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandGameButton[3]))
 		{
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
 			String[] check = client.getConnManager().listaGiocatori();
 
 			if(check==null)
@@ -447,6 +465,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandGameButton[4]))
 		{
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
 			ArrayList<String> check = client.getConnManager().mappaGenerale();
 
 			if(check==null)
@@ -481,13 +502,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					{
 						String[] option = {"yes","no"};
 						int opt = JOptionPane.showOptionDialog(panel, "Would you move "+ dinoId, "Dinosaur move", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
-						((JButton)arg0.getComponent()).setBorder(null);
+						cellClicked.setBorder(null);
 						if(opt==0)
 						{
 							String[] nameDest = nameCell.split(";");
 							String[] newNameDest = nameDest[0].split(",");
 							String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
-							cellClicked.setBorder(null);
 							if(check==null)
 							{
 								errorMessage();
@@ -522,6 +542,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					}
 					else
 					{
+						if(cellClicked!=null)
+							cellClicked.setBorder(null);
 						String[] idDino = arg0.getComponent().getName().split(";");
 						dinoId = idDino[1];
 						drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
@@ -943,9 +965,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		return timeGlobal;
 	}
 	public void drawRound(String user)
-	{
-		//TODO 
-		time.setText("      ora e' il turno di: \n" + user);
+	{ 
+		time.setText("      now is the turn of: \n" + user);
 		time.setVisible(true);
 		panelControlDown.repaint();
 	}
@@ -1027,8 +1048,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				}
 				
 				newMsgDinoState+="to move select your dinosaur\n";
-				//TODO
-				newMsgDinoState+="        e poi la destinazione";
+				newMsgDinoState+="        then the destination";
 				if(scrollDinoState!=null)
 				{
 					scrollDinoState.remove(dinoState);
@@ -1121,9 +1141,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 commandGameButton = new JButton[5];
 		 commandGameButton[0] = new JButton("Ranking");
 		 commandGameButton[0].setName("Ranking");
-		 //TODO
-		 commandGameButton[1] = new JButton("Passa Turno");
-		 commandGameButton[1].setName("Passa Turno");
+		 commandGameButton[1] = new JButton("Switch Round");
+		 commandGameButton[1].setName("Switch Round");
 		 commandGameButton[2] = new JButton("Game Exit");
 		 commandGameButton[2].setName("Game Exit");
 		 commandGameButton[3] = new JButton("Player List");
@@ -1160,7 +1179,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessage()
 	 {
-		 JOptionPane.showMessageDialog(panel, "Azione non compiuta", "Error", JOptionPane.ERROR_MESSAGE);
+		 JOptionPane.showMessageDialog(this, "Action not completed", "Error", JOptionPane.ERROR_MESSAGE);
 	 }
 	 
 	 /**
@@ -1169,7 +1188,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer(String[] msg)
 	 {
-		 JOptionPane.showMessageDialog(panel, msg);
+		 JOptionPane.showMessageDialog(this, msg);
 	 }
 	 
 	 /**
@@ -1177,7 +1196,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer()
 	 {
-		 JOptionPane.showMessageDialog(panel, "Errore nella comunicazione col server");
+		 JOptionPane.showMessageDialog(this, "Error in server communication");
 	 }
 	 
 	 /**
@@ -1186,7 +1205,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer(ArrayList<String> msg)
 	 {
-		 JOptionPane.showMessageDialog(panel, msg);
+		 JOptionPane.showMessageDialog(this, msg);
 	 }
 	 
 	 /**
@@ -1195,7 +1214,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer(String msg)
 	 {
-		 JOptionPane.showMessageDialog(panel, msg);
+		 JOptionPane.showMessageDialog(this, msg);
 	 }
 	 
 	 private String[] extinctionSpecies()
