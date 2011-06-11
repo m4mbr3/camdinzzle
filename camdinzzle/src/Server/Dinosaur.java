@@ -233,13 +233,20 @@ public abstract class Dinosaur implements Serializable
 	{
 		localMap = Game.getLocalMap(posRow, posCol, dimension);		
 	}
-	 
+	
+	/**
+	 * 
+	 * @return Object[][] 
+	 */
 	public Object[][] getLocalMap()
 	{
 		setLocalMap();
 		 return localMap;
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString()
 	{
 		return "d";

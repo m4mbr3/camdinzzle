@@ -2,6 +2,11 @@ package Server;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Marco
+ *
+ */
 public class Carnivorous extends Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -15,7 +20,7 @@ public class Carnivorous extends Dinosaur implements Serializable
 	
 	@Override
 	/**
-	 * @param map
+	 * @param cell
 	 */
 	public boolean eat(Object cell)
 	{
@@ -33,6 +38,9 @@ public class Carnivorous extends Dinosaur implements Serializable
 	}
 
 	@Override
+	/**
+	 * 
+	 */
 	public boolean fight(Object dino) 
 	{
 		int powerAttack;
@@ -66,6 +74,9 @@ public class Carnivorous extends Dinosaur implements Serializable
 	}
 
 	@Override
+	/**
+	 * 
+	 */
 	public boolean move(int rowDest, int colDest)
 	{
 		
@@ -97,11 +108,19 @@ public class Carnivorous extends Dinosaur implements Serializable
 	
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Vegetation getVegetation()
 	{
 		return vegetation;
 	}
 	
+	/**
+	 * 
+	 * @param vegetation
+	 */
 	public void setVegetation(Vegetation vegetation)
 	{
 		this.vegetation=vegetation;

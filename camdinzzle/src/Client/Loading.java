@@ -1,8 +1,11 @@
 package Client;
+
 import javax.swing.JProgressBar;
 import javax.swing.JFrame;
+
 public class Loading extends JFrame
 {
+	private static final long serialVersionUID = 1L;
 	JProgressBar progress;
 	public Loading()
 	{
@@ -25,17 +28,20 @@ public class Loading extends JFrame
 	{
 		progress.setValue(value);
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		Loading load = new Loading();
 		int value = 0;
 		while (value<=100)
 		{
 			value += 5;
 			load.inc(value);
-			try {
+			try 
+			{
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			} 
+			catch (InterruptedException e) 
+			{
 				e.printStackTrace();
 			}
 		}
