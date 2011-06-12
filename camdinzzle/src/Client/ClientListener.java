@@ -11,37 +11,73 @@ import javax.swing.JOptionPane;
 
 public class ClientListener implements Runnable 
 {
+	/**
+	 * Parametro che contiene il Socket per la comunicazione con il server
+	 * In questo caso per la lettura dei messaggi del server 
+	 */
 	private Socket connection_with_server;
+	/**
+	 * Oggetto per Leggere dal Socket i messaggi del server
+	 */
 	private BufferedReader reader_on_socket;
+	/**
+	 * Stringa per il salvataggio del messaggio dal server
+	 */
 	private String readSocket;
+	/**
+	 * Oggetto Monitor per la comunicazione al client dei messaggi
+	 */
 	private MonitorMessage mm;
+	/**
+	 * Contiene l'username dell'utente legato a questo Client
+	 */
 	private String username;
+	/**
+	 * Variabile per Limitare il numero di messaggi in validi dal server
+	 * Serve per capire se eventualmente il server non è più in esecuzione
+	 */
 	private int timelineServerNull;
+	/**
+	 * Variabile che permette la terminazione del thread di ascolto sul socket
+	 */
 	private boolean run;
+	/**
+	 * Variabile che contiente l'oggetto di connessione con il server
+	 */
 	private ConnectionManagerSocket cms;
-	
+	/**
+	 * Costruttore della classe ClientListener 
+	 * Inizializza il thread all'ascolto sul socket
+	 * @param mm Locazione comune per comunicare a terzi il messaggio
+	 * @param soc Socket di connessione con il server
+	 * @param cms Oggetto di connessione con il server
+	 * @throws IOException
+	 */
 	public ClientListener(MonitorMessage mm, Socket soc, ConnectionManagerSocket cms) throws IOException
 	{
 		this.cms = cms;
 		this.mm = mm;
 		this.readSocket = null;
 		connection_with_server = soc;
-		
 		timelineServerNull = 0;
 		run = true;
-		
 		reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
-		
 		System.out.println("<<CONN MANAGER>>--STARTING THREAD " );
 		(new Thread(this)).start();
 		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
 	}
-
+	/**
+	 * Metodo che stoppa il thread di ascolto sul socket
+	 */
 	public void stop()
 	{
 		run = false;
 	}
-	
+	/**
+	 * Metodo che legge i messaggi del server
+	 * Nel caso di cambio turno notifica al changeRoundListener il messaggio di cambio turno
+	 * se no notifica al monitor message il messaggio per il Client
+	 */
 	@Override
 	public void run() 
 	{				
@@ -59,7 +95,6 @@ public class ClientListener implements Runnable
 				}
 				new Client("Cliente");
 				this.stop();
-				//System.exit(0);
 			}
 			try 
 			{
@@ -70,7 +105,6 @@ public class ClientListener implements Runnable
 			{
 				timelineServerNull++;
 			}
-			
 			if(readSocket != null)
 			{
 				if(ClientMessageBroker.manageMessageType(readSocket).equals("cambioTurno"))
@@ -88,7 +122,9 @@ public class ClientListener implements Runnable
 			}
 		}
 	}
-	
+	/**
+	 * Metodo per la notifica del cambio turno
+	 */
 	public void changeRoundNotify(String msg)
 	{
 		if(ClientMessageBroker.manageChangeRound(msg) != null)
@@ -98,7 +134,10 @@ public class ClientListener implements Runnable
 			cms.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
 		}
 	}
-	
+	/**
+	 * Metodo per settare il nome del client 
+	 * @param username
+	 */
 	public void setUsername(String username)
 	{
 		this.username = username;
