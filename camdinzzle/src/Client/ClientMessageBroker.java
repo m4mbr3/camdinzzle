@@ -14,9 +14,8 @@ import java.util.ArrayList;
  * proveniente dal ServerLogic; i metodi che iniziano con "create" creano le stringhe dei messaggi da mandare al ServerLogic
  */
 public class ClientMessageBroker 
-{
-	// Gestione messaggi in entrata
-	
+{	
+	//Gestione messaggi in entrata
 	/**
 	 * Controlla se il messaggio � valido oppure no
 	 * @param msg messaggio del server
@@ -25,11 +24,9 @@ public class ClientMessageBroker
 	public static boolean checkMessage(String msg)
 	{
 		String[] splittedMessage;
-		
 		if(msg.contains(","))
 		{
 			splittedMessage = msg.split(",");
-			
 			if(splittedMessage[0].equals("@no"))
 				return false;
 			return true;
@@ -39,27 +36,23 @@ public class ClientMessageBroker
 		else
 			return false;
 	}
-	
 	/**
 	 * Gestisce il comando di creazione utente
 	 * @param msg : messaggio di risposta del Server
-	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'� stato
+	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'è stato
 	 */
 	public static String[] manageCreateUser(String msg)
 	{
-		String[] ret = new String[2];
-		
+		String[] ret = new String[2];	
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";
-			
 			return ret;
 		}
 		else if(msg.equals("@no,@usernameOccupato"))
 		{
 			ret[0] = "no";
 			ret[1] = msg.substring(msg.indexOf(",") + 2);
-			
 			return ret;
 		}
 		else if(msg.equals("@no"))
@@ -69,22 +62,19 @@ public class ClientMessageBroker
 		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il comando di creazione della specie
-	 * @param msg : messaggio di ripsota del Server
-	 * @return Array contenente in prima posizione l'esito del messaggio e se � no contiene in seconda posizione l'errore
+	 * @param msg : messaggio di risposta del Server
+	 * @return Array contenente in prima posizione l'esito del messaggio e se è no contiene in seconda posizione l'errore
 	 */
 	public static String[] manageCreateSpecies(String msg)
 	{
 		String[] ret = new String[2];
 		ret[0] = null;
 		ret[1] = null;
-		
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";
-			
 			return ret;
 		}
 		else if((msg.equals("@no,@nomeRazzaOccupato")) || (msg.equals("@no")))
@@ -101,27 +91,23 @@ public class ClientMessageBroker
 		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il comando di accesso partita
-	 * @param msg
-	 * @return
+	 * @param msg : messaggio di risposta del Server
+	 * @return  Array con la risposta nella prima cella c'è ok oppure no e se no in seconda cella c'è il motivo del no
 	 */
 	public static String[] manageGameAccess(String msg)
 	{
 		String[] ret = new String[2];
-		
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";
-			
 			return ret;
 		}
 		else if((msg.equals("@no,@troppiGiocatori")) || (msg.equals("@no,@tokenNonValido")))
 		{
 			ret[0] = "no";
 			ret[1] = msg.substring(msg.indexOf(",") + 2);
-			
 			return ret;
 		}
 		else if(msg.equals("@no"))
@@ -131,27 +117,23 @@ public class ClientMessageBroker
 		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il comando di uscita partita
-	 * @param msg
-	 * @return
+	 * @param msg :messaggio di risposta del Server
+	 * @return Array con la risposta, nella prima cella c'è ok oppure no se no nella seconda c'è il motivo del no
 	 */
 	public static String[] manageGameExit(String msg)
 	{
 		String[] ret = new String[2];
-		
 		if(msg.equals("@ok"))
 		{
 			ret[0] = "ok";
-			
 			return ret;
 		}
 		else if(msg.equals("@no,@tokenNonValido"))
 		{
 			ret[0] = "no";
 			ret[1] = msg.substring(msg.indexOf(",") + 2);
-			
 			return ret;
 		}
 		else if(msg.equals("@no"))
@@ -161,11 +143,10 @@ public class ClientMessageBroker
 		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il comando di logout
-	 * @param msg
-	 * @return
+	 * @param msg :messaggio di risposta del Server
+	 * @return Array con la risposta, nella prima cella c'è ok oppure no se no nella seconda c'è il motivo del no
 	 */
 	public static String[] manageLogout(String msg)
 	{
@@ -186,13 +167,12 @@ public class ClientMessageBroker
 	
 	/**
 	 * Gestisce il nome del comando ricevuto
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return nome del comando ricevuto
 	 */
 	public static String manageMessageType(String msg)
 	{
 		String[] splittedMessage;
-		
 		if(msg.contains(","))
 		{
 			splittedMessage = msg.split(",");
@@ -201,10 +181,9 @@ public class ClientMessageBroker
 		else
 			return msg.substring(1);
 	}
-	
 	/**
 	 * Gestisce il messaggio della mappa generale
-	 * @param msg Messaggio del server
+	 * @param msg :messaggio di risposta del Server
 	 * @return ArrayList contenente(in ordine di posizione): x di partenza, y di partenza, numero di righe della
 	 * vista, numero di colonne della vista, elemento della prima colonna della prima riga, elemento della seconda
 	 * colonna della prima riga e cos� via
@@ -214,12 +193,10 @@ public class ClientMessageBroker
 		if(msg.contains("@mappaGenerale,"))
 		{
 			ArrayList<String> generalMap = new ArrayList<String>();
-			String validMessage = msg.substring(msg.indexOf(',')+1);
-			
+			String validMessage = msg.substring(msg.indexOf(',')+1);		
 			if(msg.contains(";"))
 			{
 				String[] dotAndCommaSeparator = validMessage.split(";");
-				
 				/**
 				 * gestione prima parte del messaggio contenente la dimenzione della mappa generale
 				 */
@@ -232,17 +209,14 @@ public class ClientMessageBroker
 				 */
 				dotAndCommaSeparator[0] = commaSeparator[2];
 				String[] bracketSquareSeparator;
-				
 				for (String row : dotAndCommaSeparator) 
 				{
 					bracketSquareSeparator = row.split("\\[");
-					
 					for (int i = 1; i<bracketSquareSeparator.length; i++) 
 					{
 						generalMap.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
 					}
 				}
-				
 				return generalMap;
 			}
 		}
@@ -251,7 +225,6 @@ public class ClientMessageBroker
 			ArrayList<String> ret = new ArrayList<String>();
 			ret.add("no");
 			ret.add(msg.substring(msg.indexOf(",")) + 2);
-			
 			return ret;
 		}
 		else if(msg.equals("@no"))
@@ -266,7 +239,7 @@ public class ClientMessageBroker
 	
 	/**
 	 * Gestisce la divisione del messaggio in parametri. Se il messaggio non contiene parametri viene tornato null
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return array contenente il messaggio diviso per parametri
 	 */
 	public static String[] splitMessage(String msg)
@@ -275,53 +248,38 @@ public class ClientMessageBroker
 		{
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			String[] splittedMessage = validMessage.split(",");
-			
 			return splittedMessage;
 		}
-		
 		return null;
 	}
 	
 	/**
 	 * Gestisce il messaggio della lista dei dinosauri
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return array contenente i dinoId dei dinosauri
 	 */
 	public static String[] manageDinoList(String msg)
 	{
 		if(msg.equals("@listaDinosauri"))
-		{
 			return new String[]{"null"};
-		}
 		else if(msg.contains("@listaDinosauri,"))
 		{
-			String validMessage = msg.substring(msg.indexOf(',')+1);
-			
+			String validMessage = msg.substring(msg.indexOf(',')+1);	
 			if(validMessage.contains(","))
-			{
-				String[] dinoList = validMessage.split(",");
-				
-				return dinoList;
-			}
+				return validMessage.split(",");
 			else
-			{
 				return new String[]{validMessage};
-			}
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
 	
 	/**
 	 * Gestisce il messaggio dello zoom su uno specifico dinosauro
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return ArrayList contenente le posizioni di partenza (x e y in posizioni diverse) o 
 	 * la dimensione della  vista o il contenuto di una cella della vista
 	 */
@@ -332,7 +290,6 @@ public class ClientMessageBroker
 			ArrayList<String> dinoZoomList = new ArrayList<String>();
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			String[] dotAndCommaSeparator = validMessage.split(";");
-			
 			/**
 			 * gestione prima parte del messaggio contenente la posizione di partenza(basso a sx), la dimenzione della vista e
 			 * la prima riga della vista
@@ -348,27 +305,20 @@ public class ClientMessageBroker
 			 */
 			dotAndCommaSeparator[0] = dotAndCommaSeparator[0].substring(dotAndCommaSeparator[0].lastIndexOf("\\}") + 2);
 			String[] bracketSquareSeparator;
-			
 			for (String row : dotAndCommaSeparator) 
 			{
 				bracketSquareSeparator = row.trim().split("\\[");
-				
 				// Ciclo che parte da uno perch� il primo carattere dell'array � uno spazio 
 				for (int i = 1; i<bracketSquareSeparator.length; i++) 
-				{
 					dinoZoomList.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
-				}
 			}
-			
 			return dinoZoomList;
 		}
 		else if((msg.equals("@ok,@tokenNonValido")) ||(msg.equals("@ok,@idNonValido")) || (msg.equals("@ok,@nonInPartita")))
 		{
 			ArrayList<String> ret = new ArrayList<String>();
-			
 			ret.add("no");
 			ret.add(msg.substring(msg.indexOf(",") + 2));
-			
 			return ret;
 		}
 		else if(msg.equals("@no"))
@@ -380,221 +330,165 @@ public class ClientMessageBroker
 		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il messaggio dello stato di un singolo dinosauro
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return array contenente i parametri del messaggio
 	 */
 	public static String[] manageDinoState(String msg)
 	{
 		if(msg.equals("@no"))
-		{
 			return new String[]{"null"};
-		}
 		if(msg.contains("@statoDinosauro,"))
 		{
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			String[] dinoState = validMessage.split(",");
-			
 			//Eliminazione delle parentesi nelle coordinate di inizio
 			dinoState[3] = dinoState[3].substring(1);
 			dinoState[4] = dinoState[4].substring(0, dinoState[4].length() - 1);
-			
 			return dinoState;
 		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonInPartita")) || (msg.equals("@no,@idNonValido")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
 
 	/**
 	 * Gestisce il messaggio del movimento di un dinosauro
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return stringa contenente l'esito del combattimento se c'� stato, altrimenti ritorna ok
 	 */
 	public static String[] manageDinoMove(String msg)
 	{
 		if(msg.equals("@ok"))
-		{
 			return new String[]{"ok"};
-		}
 		else if(msg.equals("@ok,@combattimento,v"))
-		{
 			return new String[]{"ok", "combattimento", "v"};
-		}
 		else if(msg.equals("@ok,@combattimento,p"))
-		{
 			return new String[]{"ok", "combattimento", "p"};
-		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@idNonValido"))
 				|| (msg.equals("@no,@destinazioneNonValida")) || (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
 				|| (msg.equals("@no,@mortePerInedia")) || (msg.equals("@no,@nonIlTuoTurno"))
 				|| (msg.equals("@no,@nonInPartita")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
 	
 	public static String[] manageDinoGrowUp(String msg)
 	{
 		if(msg.equals("@ok"))
-		{
 			return new String[]{"ok"};
-		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@idNonValido"))
 				|| (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
 				|| (msg.equals("@no,@mortePerInedia")) || (msg.equals("@no,@nonIlTuoTurno"))
 				|| (msg.equals("@no,@nonInPartita")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
 	
 	/**
 	 * Gestisce il messaggio della deposizione di un uovo di un dinosauro
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return array contenente i parametri del messaggio
 	 */
 	public static String[] manageNewEgg(String msg)
 	{
 		if(msg.contains("@ok,"))
-		{
 			return new String[]{"ok",msg.substring(msg.indexOf(",")+1)};
-		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@idNonValido"))
 				|| (msg.equals("@no,@raggiuntoLimiteMosseDinosauro"))
 				|| (msg.equals("@no,@raggiuntoNumeroMaxDinosauri"))
 				|| (msg.equals("@no,@mortePerInedia")) || (msg.equals("@no,@nonIlTuoTurno"))
 				|| (msg.equals("@no,@nonInPartita")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il messaggio del cambio del turno
-	 * @param msg
+	 * @param msg :messaggio di risposta del Server
 	 * @return array contenente i parametri del messaggio
 	 */
 	public static String[] roundSwitch(String msg)
 	{
 		if(msg.equals("@ok"))
-		{
 			return new String[]{"ok"};
-		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonIlTuoTurno"))
 				|| (msg.equals("@no,@nonInPartita")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
-	
 	/**
-	 * 
-	 * @param msg
-	 * @return
+	 * Gestisce il messaggio della conferma del turno
+	 * @param msg :messaggio di risposta del Server
+	 * @return Array contenente i parametri del messaggio
 	 */
 	public static String[] manageRoundConfirm(String msg)
 	{
 		if(msg.equals("@ok"))
-		{
 			return new String[]{"ok"};
-		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonIlTuoTurno"))
 				|| (msg.equals("@no,@nonInPartita")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
 	
 	/**
-	 * 
-	 * @param msg
-	 * @return
+	 * Gestisce il messaggio del cambia turno
+	 * @param msg :messaggio di risposta del Server
+	 * @return Array contente i parametri del messaggio
 	 */
 	public static String[] managePlayerChangeRound(String msg)
 	{
 		if(msg.equals("@ok"))
-		{
 			return new String[]{"ok"};
-		}
 		else if((msg.equals("@no,@tokenNonValido")) || (msg.equals("@no,@nonIlTuoTurno"))
 				|| (msg.equals("@no,@nonInPartita")))
-		{
 			return new String[]{"no", msg.substring(msg.indexOf(",") + 2)};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
 	
 	/**
 	 * Gestisce il messaggio del login di un giocatore
-	 * @param msg
+	 * @param msg gestione messaggi in entrata
 	 * @return array contenente i parametri del messaggio
 	 */
 	public static String[] manageLogin(String msg)
 	{
 		String[] ret = new String[2];
-		
 		if(msg.contains("@ok,"))
 		{
 			ret[0] = "ok";
-			ret[1] = msg.substring(msg.indexOf(",") + 1);
-			
+			ret[1] = msg.substring(msg.indexOf(",") + 1);	
 			return ret;
 		}
 		else if(msg.equals("@no,@autenticazioneFallita"))
 		{
 			ret[0] = "no";
 			ret[1] = msg.substring(msg.indexOf(",") + 2);
-			
 			return ret;
 		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
 	
 	/**
 	 * Gestisce il messaggio della lista dei giocatori di una partita
-	 * @param msg
+	 * @param msg gestione messaggi in entrata
 	 * @return array contenente i parametri del messaggio
 	 */
 	public static String[] managePlayerList(String msg)
@@ -602,32 +496,22 @@ public class ClientMessageBroker
 		if(msg.contains("@listaGiocatori"))
 		{			
 			String validMessage = msg.substring(1);
-			
 			if(validMessage.contains(","))
-			{
 				return validMessage.split(",");
-			}
 			else
-			{				
 				return new String[]{"null"};
-			}
 		}
 		else if(msg.equals("@no,@tokenNonValido"))
-		{
 			return new String[]{"no", "tokenNonValido"};
-		}
 		else if(msg.equals("@no"))
-		{
 			return new String[]{"no", "COMANDO NON ESEGUITO"};
-		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il messaggio della classifica dei giocatori di una partita
-	 * @param msg
+	 * @param msg : messaggio di risposta del Server
 	 * @return ArrayList contenente in ordine i giocatori con il loro stato; 4 celle per ogni giocatore 
-	 * contenti(in ordine): username, nome specie, punteggio, se � in partita
+	 * contenti(in ordine): username, nome specie, punteggio, se è in partita
 	 */
 	public static ArrayList<String> manageRanking(String msg)
 	{
@@ -635,27 +519,21 @@ public class ClientMessageBroker
 		{
 			ArrayList<String> arr = new ArrayList<String>();
 			arr.add("null");
-			
 			return arr;
 		}
 		if(msg.contains("@classifica,"))
 		{
 			ArrayList<String> rankingList = new ArrayList<String>();
 			rankingList.add(msg.substring(1, msg.indexOf(",")));
-			
 			String validMessage = msg.substring(msg.indexOf(',')+1);
-			
 			if(validMessage.contains("{"))
 			{
 				String[] bracketBraceSeparator = validMessage.split("\\{");
-				
 				for (int j = 1; j<bracketBraceSeparator.length;j++) 
 				{
 					String[] commaSeparator = bracketBraceSeparator[j].split(",");
 					for(int i = 0; i<=2; i++)
-					{
 						rankingList.add(commaSeparator[i]);
-					}
 					rankingList.add(commaSeparator[3].substring(0, 1));
 				}
 			}
@@ -664,10 +542,8 @@ public class ClientMessageBroker
 		else if(msg.equals("@no,@tokenNonValido"))
 		{
 			ArrayList<String> ret = new ArrayList<String>();
-			
 			ret.add("no");
 			ret.add("tokenNonValido");
-			
 			return ret;
 		}
 		else if(msg.equals("@no"))
@@ -679,21 +555,17 @@ public class ClientMessageBroker
 		}
 		return null;
 	}
-	
 	/**
 	 * Gestisce il messaggio del cambio del turno(notifica in partita)
-	 * @param msg
+	 * @param msg : messaggio di risposta del Server
 	 * @return Username del giocatore abilitato a fare le proprie mosse, altrimenti null
 	 */
 	public static String manageChangeRound(String msg)
 	{
 		if(msg.contains(","))
-		{
 			return msg.substring(msg.indexOf(",") + 1);
-		}
 		return null;
 	}
-	
 	/**
 	 * Creazione utente, per creare un nuovo utente
 	 * @param username
@@ -720,7 +592,6 @@ public class ClientMessageBroker
 	{
 		return "@login,user=" + username + ",pass=" + password;
 	}
-	
 	/**
 	 * Creazione razza dinosauri, per chiedere la creazione di una nuova razza di dinosauri
 	 * @param token
@@ -732,7 +603,6 @@ public class ClientMessageBroker
 	{
 		return "@creaRazza,token=" + token + ",nome=" + nome + ",tipo=" + tipo;
 	}
-	
 	/**
 	 * Accesso partita, per entrare nella partita
 	 * @param token
@@ -742,7 +612,6 @@ public class ClientMessageBroker
 	{
 		return "@accessoPartita,token=" + token;
 	}
-	
 	/**
 	 * Uscita partita, per abbandonare la partita
 	 * @param token
@@ -752,7 +621,6 @@ public class ClientMessageBroker
 	{
 		return "@uscitaPartita,token=" + token;
 	}
-	
 	/**
 	 * Lista giocatori, per ottenere la lista degli utenti attualmente in partita
 	 * @param token
@@ -762,7 +630,6 @@ public class ClientMessageBroker
 	{
 		return "@listaGiocatori,token=" + token;
 	}
-	
 	/**
 	 * Classifica, per ottenere  la  classifica generale
 	 * @param token
@@ -772,7 +639,6 @@ public class ClientMessageBroker
 	{
 		return "@classifica,token=" + token;
 	}
-	
 	/**
 	 * Logout, per effettuare il logout
 	 * @param token
@@ -782,7 +648,6 @@ public class ClientMessageBroker
 	{
 		return "@logout,token=" + token;
 	}
-	
 	/**
 	 * Mappa generale, per chiedere la mappa generale aggiornata
 	 * @param token
@@ -792,7 +657,6 @@ public class ClientMessageBroker
 	{
 		return "@mappaGenerale,token=" + token;
 	}
-	
 	/**
 	 * Lista dinosauri, per ottenere la lista degli identificatori dei propri dinosauri
 	 * @param token
@@ -802,7 +666,6 @@ public class ClientMessageBroker
 	{
 		return "@listaDinosauri,token=" + token;
 	}
-	
 	/**
 	 * Vista locale, per ottenere la vista locale dettagliata di uno dei propri dinosauri
 	 * @param token
@@ -813,7 +676,6 @@ public class ClientMessageBroker
 	{
 		return "@vistaLocale,token=" + token + ",idDino=" + dinoId;
 	}
-	
 	/**
 	 * Stato dinosauro, per ottenere lo stato di un proprio dinosauro oppure di un dinosauro altrui
 	 * @param token
@@ -824,7 +686,6 @@ public class ClientMessageBroker
 	{
 		return "@statoDinosauro,token=" + token + ",idDino=" + dinoId;
 	}
-	
 	/**
 	 * Movimento dinosauro, per spostare un proprio dinosauro in una nuova posizione sulla mappa
 	 * @param token
@@ -837,7 +698,6 @@ public class ClientMessageBroker
 	{
 		return "@muoviDinosauro,token="+ token + ",idDino=" + idDino + ",dest={"+ destX + ","+ destY + "}";
 	}
-	
 	/**
 	 * Crescita dinosauro, per  far crescere un proprio dinosauro
 	 * @param token
@@ -848,7 +708,6 @@ public class ClientMessageBroker
 	{
 		return "@cresciDinosauro,token=" +  token + ",idDino=" + dinoId;
 	}
-	
 	/**
 	 * Deposizione uovo, per creare un nuovo dinosauro nei pressi di un proprio dinosauro
 	 * @param token
@@ -859,10 +718,9 @@ public class ClientMessageBroker
 	{
 		return "@deponiUovo,token=" + token + ",idDino=" + dinoId;
 	}
-	
 	/**
-	 * Conferma turno, per confermare la volont� di utilizzare il turno (entro 30 secondi dalla notifica 
-	 * che � il proprio turno)
+	 * Conferma turno, per confermare la volontà di utilizzare il turno (entro 30 secondi dalla notifica 
+	 * che è il proprio turno)
 	 * @param token
 	 * @return messaggio completo
 	 */
@@ -870,7 +728,6 @@ public class ClientMessageBroker
 	{
 		return "@confermaTurno,token=" + token;
 	}
-	
 	/**
 	 * Passa turno, per passare il turno prima della scadenza del tempo a disposizione (2 minuti)
 	 * @param token
@@ -880,7 +737,6 @@ public class ClientMessageBroker
 	{
 		return "@passaTurno,token=" + token;
 	}
-
 	// Edn creazione messaggi in uscita
 }
 
