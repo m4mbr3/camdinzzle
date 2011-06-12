@@ -31,7 +31,6 @@
 		
 				JAVA DOC (classi da fare)
 				
-		-ClientRMI
 		-ClientRMIInterface
 		-ConnectionManager
 		-ConnectionManagerLocal
