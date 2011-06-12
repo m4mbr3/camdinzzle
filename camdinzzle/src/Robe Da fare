@@ -7,7 +7,11 @@
 		GRAFICA	
 		-sistemare immgagini dinosauri
 		
-		-se faccio esci partita e poi riaccedo nn parte il timer
+		-se faccio esci partita e poi riaccedo nn parte il timer 
+		(Questo credo di averlo fixato, avendo messo is_run statica una volta settata false lo rimaneva anche per
+		la nuova instanza di ChangeRoundThread, adesso la rimetto a true prima di chiudere il run così 
+		è pronta per una nuova chiamata)
+		
 		-se faccio exit to Camdinzle e poi rifaccio login sparisce tt 
 		(by Andre: Si blocca sulla riga 278 di frameLogin dove manda la richiesta al server di login...
 		il server non gli risponde + e quindi resta in attesa senza più creare o fare niente)
