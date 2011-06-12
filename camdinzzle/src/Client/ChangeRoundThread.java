@@ -1,54 +1,60 @@
 package Client;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class ChangeRoundThread extends JFrame implements Runnable 
+public class ChangeRoundThread  implements Runnable 
 {
+	
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Variabile booleana che permette la terminazione del thread del ChangeRoundThread
+	 */
 	private static boolean is_run = true;
+	
+	/**
+	 * Variabile che contiene l'istanza del client associato al ChangeRoundThread
+	 */
 	private Client client;
+	
+	/**
+	 * Variabile che contiene l'istanza del Frame di gioco per permettere l'aggiornamento
+	 * del conto alla rovescia visualizzato all'utente
+	 */
 	private FrameGame frameGame;
-	private JLabel msg;
-	private Dimension screenSize;
-	private JButton confirm;
-	private JButton deny;
+	
+	/**
+	 * Variabile che contiene determina il tipo di Info visualizzata all'utente
+	 * in base a chi appartiene il turno corrente
+	 */
 	private boolean is_my_turn;
 	
-	public ChangeRoundThread(String name,Client client,FrameGame frameGame)
+	/**
+	 * Costruttore della classe ChangeRoundThread che inizializza le variabili legandole alle variabili
+	 * del client corrente e al suo scherma di gioco
+	 * @param client
+	 * @param frameGame
+	 */
+	public ChangeRoundThread(Client client,FrameGame frameGame)
 	{
-		super (name);
 		this.client = client;
-//		this.is_run =true;
 		this.frameGame = frameGame;
-		this.msg = new JLabel();
-		this.setSize(300, 200);
-		this.setVisible(false);
 		this.is_my_turn=false;
-		confirm = new JButton("Confirm");
-		deny = new JButton("Deny");
-		//confirm.addMouseListener(this);
-		//deny.addMouseListener(this);
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		msg.setSize(200,20);
-		msg.setLocation(5,50);
-		confirm.setLocation(5, 130);
-		confirm.setSize(100,30);
-		deny.setLocation(150,130);
-		deny.setSize(100,30);	
-		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
-		this.setLayout(null);
-		this.add(msg);		
-		this.repaint();
 	}
+	/**
+	 * Metodo statico che permette la terminazione del thread facendolo uscire dal ciclo di countdown
+	 * Viene richiamata all'uscita dell'utente dalla partita
+	 */
 	public static void stop()
 	{
 		is_run = false;
 	}
+	/**
+	 * Metodo chiamato al lancio del ChangeRoundthread che fa le notifiche all'utente riguardanti il cambio del turno
+	 * e gestisce la scelta dell'utente di accettare o rifiutare il turno. In caso di accettazione del turno 
+	 * il metodo provvede alla visualizzazione del contatore del tempo rimanente sull'interfaccia utente.
+	 * In caso di turno altrui visualizza il nome del giocatore che sta giocando
+	 */
 	@Override
 	public void run() 
 	{
@@ -63,23 +69,12 @@ public class ChangeRoundThread extends JFrame implements Runnable
 					this.is_my_turn = false;
 					client.getConnManager().setChangeRound("");
 				}
-				
 				else
 				{
 					frameGame.upDateFrameGame();
-					int response = TimeOutOptionPane.showTimeoutDialog(this, "Vuoi utilizzare il turno?", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
+					int response = TimeOutOptionPane.showTimeoutDialog(new JFrame(), "Vuoi utilizzare il turno?", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
 					optionpaneClicked(response);
-					client.getConnManager().setChangeRound("");
-					/*
-					this.msg.setText("Ora tocca: "+ client.getConnManager().getChangeRound());
-					this.add(confirm);
-					this.add(deny);
-					this.repaint();
-					this.validate();
-					this.setVisible(true);
-					client.getConnManager().setChangeRound("");
-					this.repaint();*/
-					
+					client.getConnManager().setChangeRound("");					
 				}
 				client.getConnManager().setChangeRound("");
 			}
@@ -96,18 +91,23 @@ public class ChangeRoundThread extends JFrame implements Runnable
 				System.out.println("ERROR: " + e.getMessage());
 			}
 		}
+		is_run = true;
 	}
-
+	/**
+	 * Metoro di gestione della scelta di accettazione o rifiuto del turno.
+	 * Invia al server il messaggio corrispondente alla scelta
+	 * @param chosedOption	server per indicare al metodo che tipo di decisione ha preso l'utente e quindi 
+	 * il tipo di messaggio da inoltrare al server
+	 */
 	public void optionpaneClicked(int chosedOption) 
 	{
 		String[] response;
 		if(chosedOption == 0)
 		{ 
-			this.setVisible(false);
 			response=client.getConnManager().confermaTurno();
 			if (response == null)
 			{
-				JOptionPane.showMessageDialog(this,"MessageIncorrect", "Turn Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(),"MessageIncorrect", "Turn Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else if(response[0].equals("ok"))
 			{
@@ -117,29 +117,25 @@ public class ChangeRoundThread extends JFrame implements Runnable
 			else if (response[0].equals("no"))
 			{
 				if( response[1].equals("tokenNonValido")){
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else if (response[1].equals("nonInPartita")){
-					JOptionPane.showMessageDialog(this,"You aren't in the game!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"You aren't in the game!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else if (response[1].equals("nonIlTuoTurno")){
-					JOptionPane.showMessageDialog(this,"It's not Your turn!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"It's not Your turn!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
-					
-			}
-			
-				
+			}				
 		}
 		else
 		{
-			this.setVisible(false);
 			response=client.getConnManager().passaTurno();
 			if (response == null)
 			{
-				JOptionPane.showMessageDialog(this,"MessageIncorrect", "Turn Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(),"MessageIncorrect", "Turn Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else if(response[0].equals("ok"))
 			{
@@ -148,16 +144,16 @@ public class ChangeRoundThread extends JFrame implements Runnable
 			else if (response[0].equals("no"))
 			{
 				if( response[1].equals("tokenNonValido")){
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else if (response[1].equals("nonInPartita")){
-					JOptionPane.showMessageDialog(this,"You aren't in the game!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"You aren't in the game!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else if (response[1].equals("nonIlTuoTurno")){
-					JOptionPane.showMessageDialog(this,"It's not Your turn!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"It's not Your turn!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			

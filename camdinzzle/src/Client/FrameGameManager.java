@@ -40,6 +40,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private Dimension screenSize;
 	private JLabel titleframe;
 	private JLabel creaRazza;
+	private JLabel creaRazza2;
 	private JLabel accPartita;
 	private JLabel lisGiocatori;
 	private JLabel classifica;
@@ -85,6 +86,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		titleframe = new JLabel("<html> <h1>ManagerPanel v 1.0</h1></html>");
 		creaRazza = new JLabel("<html><h2>Create new Species</h2></html>");
+		creaRazza2  = new JLabel("<html><h3>Create new Species</h3></html>");
 		accPartita = new JLabel("<html><h2>Access to Game</h2></html>");
 		lisGiocatori = new JLabel("<html><h2>Give List of Players</h2></html>");
 		classifica = new JLabel("<html><h2>Give the Classific</h2></html>");
@@ -100,6 +102,8 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		razza_button = new JButton("Create new Species");
 		radiogroup.add(Vege);
 		radiogroup.add(Carn);
+		choice.setSize(250,20);
+		choice.setLocation(20, 100);
 		razza_button.setSize(180, 20);
 		razzatitle.setSize(200,20);
 		razza_testo.setSize(130,20);
@@ -129,13 +133,14 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 
 		//FINE CARICAMENTO IMMAGINI
 		
-		
+		creaRazza2.setSize(300,76);
 		creaRazza.setSize(300, 76);
 		accPartita.setSize(300,76);
 		lisGiocatori.setSize(300,76);
 		classifica.setSize(300,76);
 		logout.setSize(300,76);
 		
+		creaRazza2.setLocation(0,20);
 		creaRazza.setLocation(0,20);
 		accPartita.setLocation(0,96);
 		lisGiocatori.setLocation(0,172);
@@ -152,7 +157,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		this.setVisible(true);
 		titleframe.setSize(300,20);
 		titleframe.setLocation(10,0);
-		
 		creaRazza.addMouseListener(this);
 		accPartita.addMouseListener(this);
 		lisGiocatori.addMouseListener(this);
@@ -179,9 +183,11 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			creaRazzaFrame.setLayout(null);
 			creaRazzaFrame.setVisible(true);
 			creaRazzaFrame.setSize(360,250);
+			creaRazzaFrame.add(this.creaRazza2);
 			creaRazzaFrame.add(this.razza_button);
 			creaRazzaFrame.add(this.Vege);
 			creaRazzaFrame.add(this.Carn);
+			creaRazzaFrame.add(this.choice);
 			creaRazzaFrame.add(this.razzatitle);
 			creaRazzaFrame.add(this.razza_testo);
 			creaRazzaFrame.add(this.razza_valore);
@@ -205,7 +211,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					if(opt==-1)
 						opt=0;
 					frameGame = new FrameGame("Isola dei Dinosauri",client, this,iconChosenDino[opt]);
-					ChangeRoundThread changeRoundThread = new ChangeRoundThread("Change Round", client, frameGame);
+					ChangeRoundThread changeRoundThread = new ChangeRoundThread(client, frameGame);
 						
 					(new Thread(changeRoundThread)).start();
 					
