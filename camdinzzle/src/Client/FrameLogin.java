@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JFrame;
@@ -24,6 +25,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import com.sun.medialib.mlib.Image;
 
 /**
  * @author Andrea
@@ -88,7 +91,14 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		exit = new JButton("Back Home");
 		panel = new JPanel();
 		panel_newUser = new JPanel();
-		send_newUser = new JButton("Register it");
+/*		//CARICAMENTO IMMAGINI SFONDO
+		ClassLoader cldr = this.getClass().getClassLoader();
+		ImageIcon newUser = new ImageIcon(cldr.getResource("Images/NEW_USER.jpg"));
+		JFrame newUserFrame = new JFrame();
+		newUserFrame.setIconImage(newUser.getImage());
+		this.add(newUserFrame);
+		//
+*/		send_newUser = new JButton("Register it");
 		send = new JButton("Send Info");
 		back.setSize(250,20);
 		new_user.setSize(250,20);
