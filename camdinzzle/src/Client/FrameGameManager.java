@@ -262,8 +262,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					postiGiocatori[i-1].setText(response[i]);
 					pannelloGiocatori.add(postiGiocatori[i-1]);
 				}	
-				
-				
 				listaGiocatori.repaint();
 			}
 			else if (response[0].compareTo("no")==0)

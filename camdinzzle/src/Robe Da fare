@@ -8,7 +8,9 @@
 		-sistemare immgagini dinosauri
 		
 		-se faccio esci partita e poi riaccedo nn parte il timer
-		-se faccio exit to Camdinzle e poi rifaccio login sparisce tt
+		-se faccio exit to Camdinzle e poi rifaccio login sparisce tt 
+		(by Andre: Si blocca sulla riga 278 di frameLogin dove manda la richiesta al server di login...
+		il server non gli risponde + e quindi resta in attesa senza più creare o fare niente)
 		
 		(CHIESTO A CARDAMONE)
 

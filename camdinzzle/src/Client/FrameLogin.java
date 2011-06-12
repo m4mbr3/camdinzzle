@@ -181,18 +181,17 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	@Override
 	public void windowClosed(WindowEvent arg0) 
 	{
-	if(!is_local){
-		System.out.println("Exit clicked");
-		client.setConnManager(null);
-		client.setVisible(true);
-		this.setVisible(false);
-		if (new_userframe != null)
-		new_userframe.setVisible(false);
-		}
-	else{
-
-		System.exit(0);
-	}
+		if(!is_local){
+			System.out.println("Exit clicked");
+			client.setConnManager(null);
+			client.setVisible(true);
+			this.setVisible(false);
+			if (new_userframe != null)
+			new_userframe.setVisible(false);
+			}
+		else{
+			System.exit(0);
+			}
 	}
 
 	@Override
@@ -253,9 +252,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 			this.setVisible(true);
 		}
 		if(arg0.getComponent().equals(new_user))
-		{
-																																																																														
-			
+		{																																																																														
 				this.setVisible(false);
 				new_userframe = new JFrame("New User");
 				new_userframe.setResizable(false);
@@ -267,13 +264,11 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 				panel.add(back);
 				panel.add(send_newUser);
 				panel.remove(this.new_user);
-				new_userframe.add(panel);
-			
-			
+				new_userframe.add(panel);			
 		}
 		if (arg0.getComponent().equals(send))
 		{
-			if((!checkPassword(password.getPassword()))||(username.getText().contains("@"))||( username.getText().contains("<"))||(username.getText().contains(">"))||(username.getText().contains("'"))||(username.getText().contains("\""))||(username.getText().contains("?"))||(username.getText().contains("&"))||(username.getText().contains("="))||(username.getText().contains("!"))||(username.getText().contains("%")))
+			if((!checkPassword(password.getPassword()))||(username.getText().contains("@"))||( username.getText().contains("<"))||(username.getText().contains(">"))||(username.getText().contains("'"))||(username.getText().contains("\""))||(username.getText().contains("?"))||(username.getText().contains("&"))||(username.getText().contains("="))||(username.getText().contains("!"))||(username.getText().contains("%")))	
 			{
 				JOptionPane.showMessageDialog(this,"Maybe you insert one or more special caracters!!!fix it and try again!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -286,7 +281,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 						if (ClientMessageBroker.manageLogin(login)[0].compareTo("ok")==0)
 						{
 							new FrameGameManager("ManagerPanel",client,is_local);
-							
 						}
 						else if (ClientMessageBroker.manageLogin(login)[0].compareTo("no")==0)
 						{
@@ -300,6 +294,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 						}
 					}
 			}
+			System.out.println("Uscendo dalla gestione di send in FrameLogin riga 294");
 		}
 		if (arg0.getComponent().equals(exit) && !is_local)
 		{
