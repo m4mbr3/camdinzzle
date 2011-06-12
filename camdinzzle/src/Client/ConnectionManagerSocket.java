@@ -26,7 +26,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 		this.mm = mm;
 		changeRound = "";
  		token = "";
-		changeRound = "";
 		connection_with_server = new Socket(address,port);
 		clientListener = new ClientListener(mm, this.connection_with_server, this);
 		

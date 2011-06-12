@@ -27,12 +27,11 @@
 		
 		-file di sicurezza RMI		NON è OBBLIGATORIO!!! SERVE SOLO X PASSAGGIO DI OGGETTI DINAMICI(CHE NN è IL NOSTRO CASO)
 
-		se nn ci sn aggiornamenti rilevanti nell'uml nn lo ricontrola..
+		se nn ci sn aggiornamenti rilevanti nell'uml nn lo ricontrolla..
 		
 				JAVA DOC (classi da fare)
 				
 		-ClientRMIInterface
-		-ConnectionManager
 		-ConnectionManagerLocal
 		-ConnectionManagerRMI
 		-ConnectionManagerSocket

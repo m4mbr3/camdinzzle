@@ -1,24 +1,17 @@
-/**
- * 
- */
 package Client;
 
 import java.util.ArrayList;
 
 /**
  * @author Andrea
- *
  */
 public interface ConnectionManager {
-
-	//TODO: modifica dei parametri
 	/**
 	 * Invia il messaggio di creazione utente al Server e attende la risposta
 	 * @param msg : messaggio da inviare al Server
 	 * @return Risposta del Server, se va in errore ritorna null
 	 */
 	public String creaUtente(String username, String password) ;
-	
 	/**
 	 * Invia il messaggio di login al Server e attende la risposta
 	 * @param msg : messaggio da inviare al Server
@@ -131,12 +124,39 @@ public interface ConnectionManager {
 	 */
 	public String[] passaTurno() ;
 	
-	
+	/**
+	 * Torna lo stato del turno
+	 * @return il valore della variabile changeRound
+	 */
 	public String getChangeRound();
+	
+	/**
+	 * Setta lo stato del turno
+	 * @param msg :nuovo valore della variabile changeRound
+	 */
 	public void setChangeRound(String msg);
+	
+	/**
+	 * Torna il token dell'utente relativo alla connessione attuale
+	 * @return una stringa contenente il token
+	 */
 	public String getToken();
+	
+	/**
+	 * Torna l'username dell'utente loggato con questo client
+	 * @return una stringa contenente l'useraname
+	 */
 	public String getUsername();
+
+	/**
+	 * Torna il client
+	 * @return l'instanza del client stesso 
+	 */
 	public Client getClient();
+	/**
+	 * Setta l'istanza del client stesso
+	 * @param salva l'instanza del client
+	 */
 	public void setClient(Client client);
 	
 }
