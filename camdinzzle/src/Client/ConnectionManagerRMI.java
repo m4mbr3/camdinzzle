@@ -28,24 +28,51 @@ import javax.swing.JOptionPane;
 
 public class ConnectionManagerRMI implements ConnectionManager 
 {
+	/**
+	 * Variabile che memorizza il nome dell'utente legato alla connessione corrente
+	 */
 	private String username;
+	/**
+	 * Oggetto per ereditare i metodi del server
+	 */
 	private ServerRMIInterface server;
+	/**
+	 * Contiene la stringa del token relativo alla connessione corrente
+	 */
 	private String token;
+	/**
+	 * Contiene l'istanza del client in versione RMI
+	 */
 	private ClientRMI client;
+	/**
+	 * Serve per notificare il cambio del turno alla changeRoundThread
+	 */
 	private String changeRound;
+	/**
+	 * Stringa relativa all'indirizzo del server
+	 */
 	private String ip;
+	/**
+	 * Contatore delle comunicazioni fallite che indicato la caduta del server
+	 */
 	private int timelineRemoteRequest;
-	
+	/**
+	 * Porta di default del server
+	 */
 	private static final String port = "1099";
-	
+	/**
+	 * Costruttore dell classe ConnectionManagerRMI
+	 * @param address
+	 * @param port
+	 * @param serverName
+	 * @throws Exception
+	 */
 	public ConnectionManagerRMI(String address, String port, String serverName) throws Exception
 	{
 		this.username = "";
 		changeRound = "";
 		this.token = "";
 		timelineRemoteRequest = 0;
-		
-		//System.setSecurityManager(new RMISecurityManager());
 		server = (ServerRMIInterface)Naming.lookup("rmi://" + address + "/" + serverName + ":" + port);
 	}
 	
@@ -53,7 +80,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	public String creaUtente(String username, String password)
 	{		
 		String msg = null;
-		
 		try 
 		{
 			msg = server.creaUtente(username, password);
@@ -68,7 +94,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 			checkAccessServerRemote();
 			return null;
 		}
-		
 		return msg;
 	}
 
@@ -76,24 +101,18 @@ public class ConnectionManagerRMI implements ConnectionManager
 	public String login(String username, String password)
 	{		
 		String msg = null;
-		
 		try 
 		{
 			msg = server.login(username, password);
-			
 			String[] response = ClientMessageBroker.manageLogin(msg);
-			
 			if(response[0].equals("ok"))
 			{
 				token = response[1];
 				this.username = username;
-				
 				try
 				{
 					client = new ClientRMI(this);
-					
 					// Cerca l'IP del client
-					
 					for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) 
 					{
 						  NetworkInterface iface = ifaces.nextElement();
@@ -226,19 +245,16 @@ public class ConnectionManagerRMI implements ConnectionManager
 	{
 		String msg = null;
 		String tokenBeforeUpdatePlayer = "";
-		
 		try 
 		{
 			if(!token.equals(""))
 			{
 				tokenBeforeUpdatePlayer = server.getTokenOfCurrentPlayer();
-				
 				msg = server.uscitaPartita(token);
 			}
 			if(ClientMessageBroker.manageGameExit(msg)[0].equals("ok"))
 			{
 				server.setGameAccess(false, username);
-				
 				if(token.equals(tokenBeforeUpdatePlayer))
 				{
 					server.changeRoundNotify();
@@ -262,7 +278,6 @@ public class ConnectionManagerRMI implements ConnectionManager
 	public String[] listaGiocatori() 
 	{
 		String[] msg = null;
-		
 		try 
 		{
 			if(!token.equals(""))
@@ -588,7 +603,9 @@ public class ConnectionManagerRMI implements ConnectionManager
 		}
 		return null;
 	}
-
+	/**
+	 * Server per il controllo dell'accesso in rmi
+	 */
 	public void checkAccessServerRemote()
 	{
 		try 
