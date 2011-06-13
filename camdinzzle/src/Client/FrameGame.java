@@ -43,64 +43,222 @@ import javax.swing.event.ListSelectionListener;
 public class FrameGame extends JFrame implements MouseListener,Visual,ActionListener, WindowListener {
 
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Pannello di contenimento per la mappa
+	 */
 	private JPanel panel;
+	/**
+	 * Pannello di contenimento per i comandi sullo schema di gioco
+	 */
 	private BackPanel panelControl;
+	/**
+	 * Pannello di contenimento incluso in panelControl che contiene gli oggetti nella parte
+	 * superiore
+	 */
 	private JPanel panelControlUp;
+	/**
+	 * Pannello di contenimento incluso in panelControl che contiene gli oggetti nella parte
+	 * inferiore
+	 */
 	private JPanel panelControlDown;
+	/**
+	 * Costante che indica il numero di righe della mappa
+	 */
 	final private int row = 40;
+	/**
+	 * Costante che indica il numero di colonne della mappa
+	 */
 	final private int col = 40;
+	/**
+	 * Matrice di bottoni per definire lo schema di gioco
+	 */
 	private JButton[][] buttons;
+	/**
+	 * Array delle Immagini riguardanti la vegetazione
+	 */
 	private ImageIcon[] iconVegetation;
+	/**
+	 * Oggetto riguardante l'immagine dell'acqua
+	 */
 	private ImageIcon iconWater;
+	/**
+	 * Oggetto riguardante l'immagine delle carogne;
+	 */
 	private ImageIcon iconCarrion;
+	/**
+	 * Array delle immagini riguardanti i dinosauri
+	 */
 	private ImageIcon[] iconDino;
+	/**
+	 * Oggetto contenente l'immagine scelta dall'utente per quella specifica sessione di gioco
+	 */
 	private ImageIcon iconDinoPlayer;
+	/**
+	 * Oggetto riguardante l'immagine del buio
+	 */
 	private ImageIcon iconDark;
+	/**
+	 * Array delle immagini riguardanti i vari tipi di terra
+	 */
 	private ImageIcon[] iconLand;
+	/**
+	 * Array delle immagini riguardanti i vari tipi di vegetazione nella nebbia
+	 */
 	private ImageIcon iconVegetationDisable;
+	/**
+	 * Array delle immagini riguardanti i vari tipi di acqua nella nebbia
+	 */
 	private ImageIcon iconWaterDisable;
+	/**
+	 * Array delle immagini riguardanti i vari tipi di terra nella nebbia
+	 */
 	private ImageIcon iconLandDisable;
+	/**
+	 * Oggetto riguardante l'immagine del nemico
+	 */
 	private ImageIcon iconDinoEnemy;
+	/**
+	 * Oggetto che ricapitola i dinosauri della propria specie
+	 */
 	private JList dinoList;
+	/**
+	 * Oggetto che fa scorrere i dinosauri nella dinoList
+	 */
 	private JScrollPane dinoListScroll;
+	/**
+	 * Oggetto che ricapitola le caratteristiche di un particolare dino selezionato
+	 * di una specie nell'dinoList
+	 */
 	private JTextArea dinoState;
+	/**
+	 * Oggetto che fa scorrere le caratteristiche di un particolare dino nella dinoState
+	 */
 	private JScrollPane scrollDinoState;
+	/**
+	 * Frame che visualizza la lista dei giocatori in partita
+	 */
 	private JFrame listaGiocatori;
+	/**
+	 * Titolo del frame listaGiocatori
+	 */
 	private JLabel titoloGiocatori;
+	/**
+	 * "Slot" dove vengono visualizzati i giocatori in partita nel frame listaGiocatori
+	 */
 	private JLabel[] postiGiocatori;
+	/**
+	 * Pannello dove risiedono i postiGiocatori nel frame listaGiocatori
+	 */
 	private JPanel pannelloGiocatori;
+	/**
+	 * Pannello per i comandi
+	 */
 	private JPanel commandButtons;
+	/**
+	 * Lista di bottoni corrispondenti alle operazioni sul dinosauro
+	 */
 	private JButton[] commandDinoButton;
+	/**
+	 * Lista di bottoni corrispondenti alle operazioni di sessione partita che può fare l'utente 
+	 */
 	private JButton[] commandGameButton;
+	/**
+	 * Etichetta che stampa l'utente corrente o il timer del turno
+	 */
 	private JLabel time;
+	/**
+	 * Intero che rappresenta i minuti nel time
+	 */
 	private int timeMin;
+	/**
+	 * Intero che rappresenta i secondi nel time
+	 */
 	private int timeSec;
+	/**
+	 * finestra per la rappresentazione della classifica
+	 */
 	private JFrame rankingFrame;
+	/**
+	 * Tabella per il layout della classifica
+	 */
 	private JTable rankingTable;
+	/**
+	 * Oggetto per permettere di scorrere la classifica
+	 */
 	private JScrollPane rankingScroll;
+	/**
+	 * Oggetto che memorizza un'istanza del client che utilizza il FrameGame stesso
+	 */
 	private Client client;
+	/**
+	 * Oggetto per il salvataggio dell'id del dinosauro selezionato
+	 */
 	private String dinoId;
+	/**
+	 * Indica se è già stato selezionato un dinosauro da parte dell'utente
+	 */
 	private int flag=0;
+	/**
+	 * Tempo di durata turno in secondi
+	 */
 	private int timeGlobal;
+	/**
+	 * Flag per indicare che la specie è estinta
+ 	 */
 	private boolean flagStop;
+	/**
+	 * Oggetto che salva il  nome della specie dell'utente corrente
+	 */
 	private String nameSpecie;
+	/**
+	 * Oggetto che fa riferimento alla cella cliccata
+	 */
 	private JButton cellClicked;
-	
+	/**
+	 * Istanza di FrameGameManager per tornare allo stato di loggato fuori partita
+	 */
 	private FrameGameManager frameGameManager;
+	/**
+	 * Larghezza della sezione comandi
+	 */
 	private final int widthControlPanel=300;
+	/**
+	 * Numero di righe visibili nella dinolist
+	 */
 	private int visibleRowCountDinoList=6;
+	/**
+	 * Numero massimo di richieste con risposta negativa dal server prima dell'uscita direttamente
+	 */
 	private final int maxAttempt = 5;
-	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24); 
+	/**
+	 * Font utilizzato per la dinoList
+	 */
+	private final Font fontDinoList = new Font("Serif", Font.PLAIN, 24);
+	/**
+	 * Font utilizzato per la dinostate
+	 */
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
+	/**
+	 * Valore che indica l'altezza dello schermo
+	 */
 	private int screenHeight;
+	/**
+	 * Valore che indica la larghezza dello schermo
+	 */
 	private int screenWidth;
-	
+	/**
+	 * Oggetto relativo all'immagine di Messaggio operazione Errata
+	 */
 	private ImageIcon error;
+	/**
+	 * Oggetto relativo all'immagine di Messaggio operazione Confermata
+	 */
 	private ImageIcon ok;
 
 	
 	
 	/**
+	 * Costruttore di FrameGame
 	 * @param title
 	 * @throws HeadlessException
 	 * 
@@ -218,7 +376,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			this.drawCommandButtons();
 			this.repaint();
 		}
-
 		this.drawMap(client.getConnManager().mappaGenerale());
 	}
 
@@ -1247,7 +1404,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 {
 		 JOptionPane.showMessageDialog(this, msg,"Error",JOptionPane.ERROR_MESSAGE,error);
 	 }
-	 
+	 /**
+	  * Controlla che la lista dei dinosauri sia vuota per tornare alla frameGameManager
+	  * @return Array di stringhe
+	  */
 	 private String[] extinctionSpecies()
 	 {
 		 String[] dinoList = client.getConnManager().listaDinosauri();
@@ -1266,6 +1426,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			 return dinoList;
 		 }
 	 }
+	 /**
+	  * Controlla che la lista dei dinosauri con l'ultima listadino richiesta che sia vuota per tornare alla frameGameManager
+	  * @param listaDino lista dei dinosauri
+	  */
 	 private void extinctionSpecies(String[] listaDino)
 	 {
 		 if(listaDino[0].equals("null"))
@@ -1279,7 +1443,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, error); 
 		 }
 	 }
-	 
+	 /**
+	  * metodo che aggiorna il campo di gioco
+	  */
 	 public void upDateFrameGame()
 	 {
 		String [] dinoList = extinctionSpecies();
