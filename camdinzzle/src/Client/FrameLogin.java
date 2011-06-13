@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JFrame;
@@ -36,11 +35,9 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private static final long serialVersionUID = 1L;
 	private JLabel username_label;
 	private JLabel password_label;
-	private JLabel camdinzzle;
 	private JTextField username;
 	private JPasswordField password;
-	private JPanel panel;
-	private JPanel panel_newUser;
+	private BackPanel panel;
 	private JButton send;
 	private JButton send_newUser;
 	private Dimension screenSize;
@@ -50,6 +47,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private JFrame new_userframe;
 	private JButton exit;
 	private boolean is_local;
+	private ClassLoader cldr;
 	/**
 	 * @throws HeadlessException
 	 */
@@ -82,31 +80,23 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		new_user = new JLabel("<html> <u> Are you a new user? Click here!</u>");
 		this.is_local = is_local;
 		back = new JLabel("<html> <u>Come back to login</u>");
-		camdinzzle = new JLabel("<html> <h3>Camdinzzle on Socket v1.0</h3>");
 		username_label = new JLabel("Username :");
 		password_label = new JLabel("Password :");
 		username = new JTextField();
 		password = new JPasswordField();
 		exit = new JButton("Back Home");
-		panel = new JPanel();
-		panel_newUser = new JPanel();
-/*		//CARICAMENTO IMMAGINI SFONDO
-		ClassLoader cldr = this.getClass().getClassLoader();
-		ImageIcon newUser = new ImageIcon(cldr.getResource("Images/NEW_USER.jpg"));
-		JFrame newUserFrame = new JFrame();
-		newUserFrame.setIconImage(newUser.getImage());
-		this.add(newUserFrame);
+		panel = new BackPanel();
+		//CARICAMENTO IMMAGINI SFONDO
+		cldr = this.getClass().getClassLoader();
 		//
-*/		send_newUser = new JButton("Register it");
+		send_newUser = new JButton("Register it");
 		send = new JButton("Send Info");
 		back.setSize(250,20);
 		new_user.setSize(250,20);
 		exit.setSize(145, 20);
-		panel_newUser.setSize(300,300);
 		panel.setSize(300,300);
 		send_newUser.setSize(145,20);
 		send.setSize(145, 20);
-		camdinzzle.setSize(220,70);
 		username_label.setSize(90,20);
 		password_label.setSize(90,20);
 		username.setSize(160,20);
@@ -115,28 +105,24 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		new_user.setVisible(true);
 		back.setVisible(true);
 		exit.setVisible(true);
-		camdinzzle.setVisible(true);
 		send_newUser.setVisible(true);
 		send.setVisible(true);
 		username_label.setVisible(true);
 		password_label.setVisible(true);
 		username.setVisible(true);
 		password.setVisible(true);
-		panel_newUser.setVisible(true);
 		if(is_local == true) exit.setEnabled(false);
 		panel.setVisible(true);
 		back.setLocation(50,200);
 		exit.setLocation(170,250);
 		new_user.setLocation(50,200);
-		camdinzzle.setLocation(50,0);
 		send_newUser.setLocation(10,250);
 		send.setLocation(10, 250);
-		username_label.setLocation(50,80);
-		password_label.setLocation(50,120);
+		username_label.setLocation(50,110);
+		password_label.setLocation(50,150);
 		username.setLocation(140,80);
 		password.setLocation(140, 120);
 		panel.add(exit);
-		panel.add(camdinzzle);
 		panel.add(send);
 		panel.add(password_label);
 		panel.add(username_label);
@@ -261,6 +247,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 				panel.add(back);
 				panel.add(send_newUser);
 				panel.remove(this.new_user);
+				panel.setBackground(cldr.getResource("Images/NEW_USER.jpg"));
 				new_userframe.add(panel);			
 		}
 		if (arg0.getComponent().equals(send))

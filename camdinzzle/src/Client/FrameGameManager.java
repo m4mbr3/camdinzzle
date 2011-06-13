@@ -124,12 +124,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		
 		ClassLoader cldr = this.getClass().getClassLoader();
         iconChosenDino = new ImageIcon[6];
-        iconChosenDino[0] = new ImageIcon(cldr.getResource("Images/sauro.jpg"));
-        iconChosenDino[1] = new ImageIcon(cldr.getResource("Images/T_REX.jpg"));
-        iconChosenDino[2] = new ImageIcon(cldr.getResource("Images/Saurolophus.jpg"));
-        iconChosenDino[3] = new ImageIcon(cldr.getResource("Images/stegosauro.jpg"));
-        iconChosenDino[4] = new ImageIcon(cldr.getResource("Images/triceratopo.jpg"));
-        iconChosenDino[5] = new ImageIcon(cldr.getResource("Images/velociraptor.jpg"));
+        iconChosenDino[0] = new ImageIcon(cldr.getResource("Images/carn1.jpg"));
+        iconChosenDino[1] = new ImageIcon(cldr.getResource("Images/car2.jpg"));
+        iconChosenDino[2] = new ImageIcon(cldr.getResource("Images/car3.jpg"));
+        iconChosenDino[3] = new ImageIcon(cldr.getResource("Images/veg1.jpg"));
+        iconChosenDino[4] = new ImageIcon(cldr.getResource("Images/veg2.jpg"));
+        iconChosenDino[5] = new ImageIcon(cldr.getResource("Images/veg3.jpg"));
 
 		//FINE CARICAMENTO IMMAGINI
 		
@@ -208,9 +208,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					this.setVisible(false);
 					this.validate();
 					int opt = chosenDinoImage();
-					if(opt==-1)
+					if((opt<0)||(opt>5))
 						opt=0;
-					frameGame = new FrameGame("Isola dei Dinosauri",client, this,iconChosenDino[opt]);
+					frameGame = new FrameGame("Isola dei Dinosauri",client, this,opt);
 					ChangeRoundThread changeRoundThread = new ChangeRoundThread(client, frameGame);
 						
 					(new Thread(changeRoundThread)).start();
@@ -406,7 +406,8 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			    "Do you really want to exit from Camdinzzle?",
 			    "Exit Question",
 			    JOptionPane.YES_NO_OPTION);
-		if (ritorno == 0){
+		if (ritorno == 0)
+		{
 			String check = client.getConnManager().logout();
 			if(check!=null)
 			{

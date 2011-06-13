@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 
+
 /**
  * @author Andrea
  *
@@ -49,12 +50,13 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	final private int row = 40;
 	final private int col = 40;
 	private JButton[][] buttons;
-	private ImageIcon iconVegetation;
+	private ImageIcon[] iconVegetation;
 	private ImageIcon iconWater;
 	private ImageIcon iconCarrion;
-	private ImageIcon iconDino;
+	private ImageIcon[] iconDino;
+	private ImageIcon iconDinoPlayer;
 	private ImageIcon iconDark;
-	private ImageIcon iconLand;
+	private ImageIcon[] iconLand;
 	private ImageIcon iconVegetationDisable;
 	private ImageIcon iconWaterDisable;
 	private ImageIcon iconLandDisable;
@@ -101,7 +103,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 * 
 	 */
 	
-	public FrameGame(String title,Client client, FrameGameManager frameGameManager, ImageIcon imageDino) throws HeadlessException{
+	public FrameGame(String title,Client client, FrameGameManager frameGameManager, int intDino) throws HeadlessException{
 		super(title);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setResizable(false);
@@ -114,20 +116,31 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		
 		//INIZIO CARICAMENTO IMMAGINI
 		
+		iconVegetation = new ImageIcon[2];
+		iconLand = new ImageIcon[2];
+		iconDino = new ImageIcon[6];
 		ClassLoader cldr = this.getClass().getClassLoader();
-		iconVegetation = new ImageIcon(cldr.getResource("Images/vege.jpg"));
-		iconLand = new ImageIcon(cldr.getResource("Images/terra.jpg"));
+		iconVegetation[0] = new ImageIcon(cldr.getResource("Images/vegetazione1.jpg"));
+		iconVegetation[1] = new ImageIcon(cldr.getResource("Images/vegetazione2.jpg"));
+		iconLand[0] = new ImageIcon(cldr.getResource("Images/terra1.jpg"));
+		iconLand[1] = new ImageIcon(cldr.getResource("Images/terra2.jpg"));
 		iconWater = new ImageIcon(cldr.getResource("Images/acqua.jpg"));
 		iconDark = new ImageIcon(cldr.getResource("Images/buio.jpg"));
-		iconCarrion = new ImageIcon(cldr.getResource("Images/carrion.jpg"));
+		iconCarrion = new ImageIcon(cldr.getResource("Images/carogna.jpg"));
 		iconLandDisable  = new ImageIcon(cldr.getResource("Images/terraDisable.jpg"));
 		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
 		iconVegetationDisable  = new ImageIcon(cldr.getResource("Images/vegeDisable.jpg"));
 		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));
+		iconDino[0] = new ImageIcon(cldr.getResource("Images/carn1.jpg"));
+		iconDino[1] = new ImageIcon(cldr.getResource("Images/car2.jpg"));
+		iconDino[2] = new ImageIcon(cldr.getResource("Images/car3.jpg"));
+		iconDino[3] = new ImageIcon(cldr.getResource("Images/veg1.jpg"));
+		iconDino[4] = new ImageIcon(cldr.getResource("Images/veg2.jpg"));
+		iconDino[5] = new ImageIcon(cldr.getResource("Images/veg3.jpg"));
 
 		//FINE CARICAMENTO IMMAGINI
 		
-		iconDino = imageDino;
+		iconDinoPlayer = iconDino[intDino];
 
 		this.setVisible(true);
 		this.setLocation(0,0);
@@ -177,7 +190,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				buttons[i][j].addActionListener(this);
 				buttons[i][j].addMouseListener(this);
 				buttons[i][j].setBorder(null);
-				buttons[i][j].setIcon(iconLand);
+				int random = (int)(Math.random()*2);
+				buttons[i][j].setIcon(iconLand[random]);
 				buttons[i][j].setEnabled(false);
 				panel.add(buttons[i][j]);
 			}
@@ -781,7 +795,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 							else if(mapList.get(i).compareTo("t")==0)
 							{
 								buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "land");
-								buttons[row][col].setIcon(iconLand);
+								int random = (int)(Math.random()*2);
+								buttons[row][col].setIcon(iconLand[random]);
 							}
 							else if(mapList.get(i).compareTo("a")==0)
 							{
@@ -798,7 +813,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 									buttons[row][col].setToolTipText("Dinosaur id: " + energySplit[1]);
 									String name = buttons[row][col].getName();
 									if(name.contains(nameSpecie))
-											buttons[row][col].setIcon(iconDino);
+											buttons[row][col].setIcon(iconDinoPlayer);
 									else
 										buttons[row][col].setIcon(iconDinoEnemy);
 								}
@@ -806,7 +821,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 								{
 									buttons[row][col].setName(buttons[row][col].getName().substring(0, buttons[row][col].getName().indexOf(";")+1) + "vegetation");
 									buttons[row][col].setToolTipText("Vegetation energy: " + energySplit[1]);
-									buttons[row][col].setIcon(iconVegetation);
+									int random = (int)(Math.random()*2);
+									buttons[row][col].setIcon(iconVegetation[random]);
 								}
 								else if(energySplit[0].compareTo("c")==0)
 								{
@@ -1242,7 +1258,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			 client.getConnManager().uscitaPartita();
 			 flagStop = true;
 			 this.setVisible(false);
-//			 this.repaint();
 			 this.validate();
 			 frameGameManager.setVisible(true);
 			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null); 
@@ -1259,5 +1274,4 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			this.drawDinoState(dinoList[0], client.getConnManager().statoDinosauro(dinoList[0]));
 		}
 	 }
-
 }
