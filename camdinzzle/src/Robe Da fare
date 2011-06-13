@@ -7,10 +7,8 @@
 		GRAFICA	
 		-sistemare immgagini dinosauri
 		
-		-se faccio esci partita e poi riaccedo nn parte il timer 
-		(Questo credo di averlo fixato, avendo messo is_run statica una volta settata false lo rimaneva anche per
-		la nuova instanza di ChangeRoundThread, adesso la rimetto a true prima di chiudere il run così 
-		è pronta per una nuova chiamata)
+		-controllare fra richiesta lista dinosauri e stato dinosauro che esce errore classcastexception
+		ma non viene data la riga.
 		
 		-se faccio exit to Camdinzle e poi rifaccio login sparisce tt 
 		(by Andre: Si blocca sulla riga 278 di frameLogin dove manda la richiesta al server di login...
