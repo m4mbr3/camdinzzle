@@ -34,8 +34,7 @@
 		se nn ci sn aggiornamenti rilevanti nell'uml nn lo ricontrolla..
 		
 				JAVA DOC (classi da fare)
-				
-		-ClientRMIInterface
+		
 		-ConnectionManagerLocal
 		-ConnectionManagerRMI
 		-ConnectionManagerSocket
