@@ -9,7 +9,7 @@ package Server;
 import java.util.ArrayList;
 
 /**
- * classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal client. I metodi che iniziano con 
+ * Classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal client. I metodi che iniziano con 
  * "manage" gestiscono le stringhe dei messaggi proveniente dal Client; i metodi che iniziano con "create" 
  * creano le stringhe dei messaggi da mandare al Client
  */

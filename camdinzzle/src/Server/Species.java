@@ -6,9 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 
- * @author Marco
- *
+ * Classe che rappresenta la specie di un giocatore. Contiene le informazione di tutti i dinosauri
+ * della specie.
  */
 public class Species implements Serializable
 {

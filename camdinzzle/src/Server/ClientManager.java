@@ -1,7 +1,7 @@
 package Server;
 
 /**
- * Interfaccia che funge da tramite tra la logica applicativa del server e la comunicazione con i client.
+ * Interfaccia che rappresenta il tramite tra la logica applicativa del server e la comunicazione con i client.
  */
 public interface ClientManager 
 {	

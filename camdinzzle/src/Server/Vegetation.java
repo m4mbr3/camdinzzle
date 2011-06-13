@@ -3,35 +3,30 @@ package Server;
 import java.io.Serializable;
 
 /**
- * @author Forme
- * created 			28/04/2011
- * last modified	28/04/2011 
+ * Classe che rappresenta la vegetazione all'interno del gioco.
  */
-
 public class Vegetation implements Food, Serializable
 {
 	private static final long serialVersionUID = 1L;
 	/**
-	 * energia della vegetazione
+	 * Energia attuale della vegetazione.
 	 */
 	private int power;
 	/**
-	 * energia massima della vegetazione
+	 * Energia massima della vegetazione.
 	 */
 	private int maxPower;
 	
 	/**
-	 * @param maxPower compreso fra 150 e 350 (250±40%)
+	 * Istanzia un oggetto vegetazione da aggiungere alla mappa del gioco.
+	 * @param maxPower energia massima. Compresa fra 150 e 350 (250±40%)
 	 */
 	public Vegetation(int maxPower)
 	{
 		this.maxPower = maxPower;
 		this.power = 10;
 	}
-
-	/**
-	 * Ricrescita della vegetazione
-	 */
+	
 	@Override
 	public void rebirth() 
 	{
@@ -57,8 +52,8 @@ public class Vegetation implements Food, Serializable
 	}
 
 	/**
-	 * ritorna l'energia massima
-	 * @return
+	 * Ritorna l'energia massima della vegetazione.
+	 * @return energia massima
 	 */
 	public int getMaxPower() 
 	{
@@ -66,12 +61,13 @@ public class Vegetation implements Food, Serializable
 	}
 
 	/**
-	 * setta l'energia massima
-	 * @param maxPower
+	 * Setta l'energia massima della vegetazione.
+	 * @param maxPower energia massima
 	 */
 	public void setMaxPower(int maxPower) {
 		this.maxPower = maxPower;
 	}
+	
 	public String toString()
 	{
 		return "v";

@@ -79,7 +79,7 @@ public class ClientManagerLocal implements ClientManager
 		String msg = serverLogic.gameExit(token);
 		if (RMIMessageBroker.convertGameExit(msg) != null)
 		{			
-			if (RMIMessageBroker.convertGameExit(msg)[0].equals("ok"))
+			if (msg.equals("@ok"))
 			{
 				setIsInGame(false);
 				if(token.equals(tokenBeforeUpdatePlayer))

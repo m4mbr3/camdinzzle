@@ -27,12 +27,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-/**
- * @author Andrea
- *
- */
-
-
 public class FrameGameManager extends JFrame implements WindowListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
