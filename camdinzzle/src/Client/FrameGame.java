@@ -44,7 +44,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 
 	private static final long serialVersionUID = 1L;
 	private JPanel panel;
-	private JPanel panelControl;
+	private BackPanel panelControl;
 	private JPanel panelControlUp;
 	private JPanel panelControlDown;
 	final private int row = 40;
@@ -150,7 +150,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		this.setSize(screenWidth, screenHeight);
 		this.addWindowListener(this);
 		panel = new JPanel();
-		panelControl = new JPanel();
+		panelControl = new BackPanel();
 		panelControlUp = new JPanel();
 		panelControlDown = new JPanel();
 		panel.setVisible(true);
@@ -169,6 +169,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		panelControlUp.validate();
 		panelControlDown.validate();
 		panelControl.validate();
+		panelControlUp.setOpaque(false);
+		panelControlDown.setOpaque(false);
+		panelControl.setBackground(cldr.getResource("Images/fondo_gioco.jpg"));
 		panelControl.add(panelControlUp, BorderLayout.NORTH);
 		panelControl.add(panelControlDown, BorderLayout.SOUTH);
 		commandButtons = new JPanel();
@@ -916,6 +919,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				dinoList.setFont(fontDinoList);
 				dinoListScroll = new JScrollPane(dinoList);
 				dinoListScroll.setPreferredSize(new Dimension(widthControlPanel-55,screenHeight/14*3));
+				dinoList.setOpaque(false);
+				dinoListScroll.setOpaque(false);
 				panelControlUp.add(dinoListScroll,BorderLayout.NORTH);
 				panelControlUp.repaint();
 			}
@@ -971,8 +976,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			timeStringMin = "0" + String.valueOf(timeMin);
 		}
 		
-		time.setText("Time to finish round  " + timeStringMin +":"+ timeStringSec);
+		time.setText("         Time to finish round  " + timeStringMin +":"+ timeStringSec);
 		time.setVisible(true);
+		time.setOpaque(false);
 		panelControlDown.repaint();
 	}
 	public int getTime()
@@ -981,8 +987,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	}
 	public void drawRound(String user)
 	{ 
-		time.setText("      now is the turn of: \n" + user);
+		time.setText("         now is the turn of: \n" + user);
 		time.setVisible(true);
+		time.setOpaque(false);
 		panelControlDown.repaint();
 	}
 
@@ -1073,10 +1080,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				dinoState.setVisible(true);
 				dinoState.setFont(fontDinoState);
 				dinoState.setEditable(false);
+				dinoState.setOpaque(false);
 				scrollDinoState = new JScrollPane(dinoState);
 				scrollDinoState.setPreferredSize(new Dimension(widthControlPanel-25,screenHeight/14*3));
 				scrollDinoState.setVisible(true);
 				scrollDinoState.validate();
+				scrollDinoState.setOpaque(false);
 				panelControlUp.add(scrollDinoState,BorderLayout.SOUTH);
 				panelControlUp.validate();
 			}
@@ -1185,6 +1194,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 commandButtons.add(commandGameButton[3]);
 		 commandButtons.add(commandGameButton[0]);
 		 commandButtons.add(commandGameButton[2]);
+		 commandButtons.setOpaque(false);
 		 panelControlDown.add(commandButtons, BorderLayout.NORTH);
 		 
 

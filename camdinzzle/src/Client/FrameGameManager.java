@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -28,6 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import com.sun.medialib.mlib.Image;
+
 /**
  * @author Andrea
  *
@@ -38,17 +41,21 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 
 	private static final long serialVersionUID = 1L;
 	private Dimension screenSize;
-	private JLabel titleframe;
-	private JLabel creaRazza;
-	private JLabel creaRazza2;
-	private JLabel accPartita;
-	private JLabel lisGiocatori;
-	private JLabel classifica;
-	private JLabel logout;
+	private BackPanel creaRazza;
+	private BackPanel accPartita;
+	private BackPanel lisGiocatori;
+	private BackPanel classifica;
+	private BackPanel logout;
+	private BackPanel backGround;
+	private URL creaRazzaImage;
+	private URL accPartitaImage;
+	private URL lisGiocatoriImage;
+	private URL classificaImage;
+	private URL logoutImage;
+	private URL backGroundImage;
 	private Client client;
 	
 	private JFrame creaRazzaFrame;
-	private JLabel razzatitle;
 	private JLabel razza_testo;
 	private JLabel choice;
 	private JTextField razza_valore;
@@ -56,6 +63,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	private JRadioButton Carn;
 	private ButtonGroup radiogroup;
 	private JButton razza_button;
+	private ImageIcon razza_button_image;
+	private URL creaRazzaFrameImage;
+	private BackPanel creaRazzaPanel;
 	
 	private JFrame listaGiocatori;
 	private JPanel pannelloGiocatori;
@@ -84,40 +94,38 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		this.setLayout(null);
 		this.is_local = is_local; 
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		titleframe = new JLabel("<html> <h1>ManagerPanel v 1.0</h1></html>");
-		creaRazza = new JLabel("<html><h2>Create new Species</h2></html>");
-		creaRazza2  = new JLabel("<html><h3>Create new Species</h3></html>");
-		accPartita = new JLabel("<html><h2>Access to Game</h2></html>");
-		lisGiocatori = new JLabel("<html><h2>Give List of Players</h2></html>");
-		classifica = new JLabel("<html><h2>Give the Classific</h2></html>");
-		logout = new JLabel("<html><h2>Exit to Camdinzzle</h2></html>");
-		razzatitle = new JLabel("<html><h2>Create new Species</h2></html>");
+		creaRazza = new BackPanel();
+		accPartita = new BackPanel();
+		lisGiocatori = new BackPanel();
+		classifica = new BackPanel();
+		logout = new BackPanel();
+		backGround = new BackPanel();
 		razza_testo = new JLabel("Insert the Name");
+		
+		
 		
 		choice = new JLabel("Select the type of new Species :");
 		razza_valore = new JTextField();
 		radiogroup = new ButtonGroup();
 		Vege = new JRadioButton("Vegetarian");
 		Carn = new JRadioButton("Carnivorous");
-		razza_button = new JButton("Create new Species");
+		razza_button = new JButton();
 		radiogroup.add(Vege);
 		radiogroup.add(Carn);
 		choice.setSize(250,20);
 		choice.setLocation(20, 100);
-		razza_button.setSize(180, 20);
-		razzatitle.setSize(200,20);
+		razza_button.setSize(331, 50);
 		razza_testo.setSize(130,20);
 		razza_valore.setSize(120,20);
 		Vege.setSize(130,20);
 		Carn.setSize(130,20);
-		razzatitle.setLocation(10,0);
 		razza_testo.setLocation(10,50);
 		razza_valore.setLocation(180, 50);
 		Vege.setLocation(10,130);
 		Vege.setSelected(true);
 		Carn.setLocation(150,130);
 		Carn.setSelected(false);
-		razza_button.setLocation(10,190);
+		razza_button.setLocation(10,170);
 		razza_button.addMouseListener(this);
 	
 		//INIZIO CARICAMENTO IMMAGINI
@@ -130,33 +138,34 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
         iconChosenDino[3] = new ImageIcon(cldr.getResource("Images/veg1.jpg"));
         iconChosenDino[4] = new ImageIcon(cldr.getResource("Images/veg2.jpg"));
         iconChosenDino[5] = new ImageIcon(cldr.getResource("Images/veg3.jpg"));
+        creaRazzaImage = cldr.getResource("Images/bottone1.jpg");
+        accPartitaImage = cldr.getResource("Images/bottone2.jpg");
+        lisGiocatoriImage = cldr.getResource("Images/bottone3.jpg");
+        classificaImage = cldr.getResource("Images/bottone4.jpg");
+        logoutImage = cldr.getResource("Images/bottone5.jpg");
+        backGroundImage = cldr.getResource("Images/sfondo_manager_panel.jpg");
+        razza_button_image = new ImageIcon(cldr.getResource("Images/create_new_species_tasto.jpg"));
+        creaRazzaFrameImage = cldr.getResource("Images/create_new_species.jpg");
 
 		//FINE CARICAMENTO IMMAGINI
 		
-		creaRazza2.setSize(300,76);
-		creaRazza.setSize(300, 76);
-		accPartita.setSize(300,76);
-		lisGiocatori.setSize(300,76);
-		classifica.setSize(300,76);
-		logout.setSize(300,76);
+		creaRazza.setSize(296, 71);
+		accPartita.setSize(296, 71);
+		lisGiocatori.setSize(296, 71);
+		classifica.setSize(296, 71);
+		logout.setSize(296, 71);
+		backGround.setSize(319, 372);
 		
-		creaRazza2.setLocation(0,20);
-		creaRazza.setLocation(0,20);
-		accPartita.setLocation(0,96);
-		lisGiocatori.setLocation(0,172);
-		classifica.setLocation(0, 248);
-		logout.setLocation(0, 324);
+		creaRazza.setLocation(11,8);
+		accPartita.setLocation(11,79);
+		lisGiocatori.setLocation(11,150);
+		classifica.setLocation(11, 221);
+		logout.setLocation(11, 292);
+		backGround.setLocation(0, 0);
 		
-		creaRazza.setBorder(BorderFactory.createLineBorder(Color.black));
-		accPartita.setBorder(BorderFactory.createLineBorder(Color.black));
-		lisGiocatori.setBorder(BorderFactory.createLineBorder(Color.black));
-		classifica.setBorder(BorderFactory.createLineBorder(Color.black));
-		logout.setBorder(BorderFactory.createLineBorder(Color.black));
-		this.setSize(300,450);
+		this.setSize(319,395);
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-400)/2);
 		this.setVisible(true);
-		titleframe.setSize(300,20);
-		titleframe.setLocation(10,0);
 		creaRazza.addMouseListener(this);
 		accPartita.addMouseListener(this);
 		lisGiocatori.addMouseListener(this);
@@ -164,12 +173,21 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		logout.addMouseListener(this);
 		this.addWindowListener(this);
 		
-		this.add(titleframe);
-		this.add( creaRazza);
-		this.add(accPartita);
-		this.add(lisGiocatori);
-		this.add(classifica);
-		this.add(logout);
+		creaRazza.setBackground(creaRazzaImage);
+		accPartita.setBackground(accPartitaImage);
+		lisGiocatori.setBackground(lisGiocatoriImage);
+		classifica.setBackground(classificaImage);
+		logout.setBackground(logoutImage);
+		backGround.setBackground(backGroundImage);
+		
+		razza_button.setIcon(razza_button_image);
+		
+		backGround.add(creaRazza);
+		backGround.add(accPartita);
+		backGround.add(lisGiocatori);
+		backGround.add(classifica);
+		backGround.add(logout);
+		this.add(backGround);
 		this.repaint();
 	}
 
@@ -183,14 +201,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			creaRazzaFrame.setLayout(null);
 			creaRazzaFrame.setVisible(true);
 			creaRazzaFrame.setSize(360,250);
-			creaRazzaFrame.add(this.creaRazza2);
-			creaRazzaFrame.add(this.razza_button);
-			creaRazzaFrame.add(this.Vege);
-			creaRazzaFrame.add(this.Carn);
-			creaRazzaFrame.add(this.choice);
-			creaRazzaFrame.add(this.razzatitle);
-			creaRazzaFrame.add(this.razza_testo);
-			creaRazzaFrame.add(this.razza_valore);
+			creaRazzaPanel.add(this.razza_button);
+			creaRazzaPanel.add(this.Vege);
+			creaRazzaPanel.add(this.Carn);
+			creaRazzaPanel.add(this.choice);
+			creaRazzaPanel.add(this.razza_testo);
+			creaRazzaPanel.add(this.razza_valore);
 		}
 		else if (arg0.getComponent().equals(accPartita))
 		{
