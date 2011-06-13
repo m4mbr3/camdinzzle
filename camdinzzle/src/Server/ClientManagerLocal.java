@@ -106,10 +106,13 @@ public class ClientManagerLocal implements ClientManager
 		{
 			this.setIsInGame(false);
 			token = "";
-			server.removeClientLocal(this);
 		}
 		
 		return msg;
+	}
+	public void rmClient()
+	{
+		server.removeClientLocal(this);
 	}
 	public ArrayList<String> mappaGenerale(String token)
 	{

@@ -521,6 +521,11 @@ public class ConnectionManagerSocket implements ConnectionManager
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void rmClientLocal() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 }

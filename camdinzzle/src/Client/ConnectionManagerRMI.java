@@ -672,5 +672,11 @@ public class ConnectionManagerRMI implements ConnectionManager
 		
 	}
 
+	@Override
+	public void rmClientLocal() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

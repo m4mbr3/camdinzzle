@@ -103,7 +103,11 @@ public class ConnectionManagerLocal implements ConnectionManager
 		}
 		return null;
 	}
-
+	@Override
+	public synchronized void rmClientLocal()
+	{
+		manager.rmClient();
+	}
 	@Override
 	public synchronized String uscitaPartita() {
 		if (!token.equals(""))return manager.uscitaPartita(token);

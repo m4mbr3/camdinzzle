@@ -158,5 +158,9 @@ public interface ConnectionManager {
 	 * @param salva l'instanza del client
 	 */
 	public void setClient(Client client);
+	/**
+	 * Rimuove la connessione con un clientLocal quando questo viene terminato
+	 */
+	public void rmClientLocal();
 	
 }
