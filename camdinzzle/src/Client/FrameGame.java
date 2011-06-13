@@ -131,12 +131,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
 		iconVegetationDisable  = new ImageIcon(cldr.getResource("Images/vegeDisable.jpg"));
 		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));
-		iconDino[0] = new ImageIcon(cldr.getResource("Images/carn1.jpg"));
-		iconDino[1] = new ImageIcon(cldr.getResource("Images/car2.jpg"));
-		iconDino[2] = new ImageIcon(cldr.getResource("Images/car3.jpg"));
-		iconDino[3] = new ImageIcon(cldr.getResource("Images/veg1.jpg"));
-		iconDino[4] = new ImageIcon(cldr.getResource("Images/veg2.jpg"));
-		iconDino[5] = new ImageIcon(cldr.getResource("Images/veg3.jpg"));
+		iconDino[0] = new ImageIcon(cldr.getResource("Images/carn1map.jpg"));
+		iconDino[1] = new ImageIcon(cldr.getResource("Images/car2map.jpg"));
+		iconDino[2] = new ImageIcon(cldr.getResource("Images/car3map.jpg"));
+		iconDino[3] = new ImageIcon(cldr.getResource("Images/veg1map.jpg"));
+		iconDino[4] = new ImageIcon(cldr.getResource("Images/veg2map.jpg"));
+		iconDino[5] = new ImageIcon(cldr.getResource("Images/veg3map.jpg"));
 
 		//FINE CARICAMENTO IMMAGINI
 		
