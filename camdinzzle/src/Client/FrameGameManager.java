@@ -189,6 +189,26 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		this.repaint();
 	}
 
+	public void refreshFrameGameManager()
+	{
+		creaRazza.setVisible(true);
+		accPartita.setVisible(true);
+		lisGiocatori.setVisible(true);
+		classifica.setVisible(true);
+		logout.setVisible(true);
+		backGround.setVisible(true);
+		creaRazza.repaint();
+		accPartita.repaint();
+		lisGiocatori.repaint();
+		classifica.repaint();
+		logout.repaint();
+		backGround.repaint();
+	}
+	
+	public boolean getIsLocal()
+	{
+		return is_local;
+	}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if(arg0.getComponent().equals(creaRazza))
