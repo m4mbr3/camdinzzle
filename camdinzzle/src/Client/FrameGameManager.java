@@ -113,17 +113,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		radiogroup.add(Vege);
 		radiogroup.add(Carn);
 		choice.setSize(250,20);
-		choice.setLocation(20, 100);
-		razza_button.setSize(331, 130);
-		razza_testo.setSize(130,100);
-		razza_valore.setSize(120,50);
+		razza_button.setSize(331,50);
+		razza_testo.setSize(130,50);
+		razza_valore.setSize(120,25);
 		Vege.setSize(130,20);
 		Carn.setSize(130,20);
-		razza_testo.setLocation(10,50);
-		razza_valore.setLocation(180, 50);
-		Vege.setLocation(10,130);
 		Vege.setSelected(true);
-		Carn.setLocation(150,130);
 		Carn.setSelected(false);
 		razza_button.addMouseListener(this);
 	
@@ -183,6 +178,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		creaRazzaPanel.setBackground(creaRazzaFrameImage);
 		creaRazzaPanel.setSize(360, 230);
 		creaRazzaPanel.setVisible(true);
+		creaRazzaPanel.setLayout(null);
 	
 		
 		backGround.add(creaRazza);
@@ -204,7 +200,13 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			creaRazzaFrame.setLayout(null);
 			creaRazzaFrame.setVisible(true);
 			creaRazzaFrame.setSize(360,250);
-			razza_button.setLocation(10, 200);
+			
+			razza_button.setLocation(15, 165);
+			razza_testo.setLocation(20,50);
+			razza_valore.setLocation(180,60);
+			Vege.setLocation(10,130);
+			Carn.setLocation(150,130);
+			choice.setLocation(20, 100);
 
 			creaRazzaPanel.add(choice);
 			creaRazzaPanel.add(Vege);

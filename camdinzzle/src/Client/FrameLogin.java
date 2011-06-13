@@ -78,7 +78,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.client = client;
 		this.setVisible(true);
-		this.setSize(330,335);
+		this.setSize(330,330);
 		this.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-300)/2);
 		this.validate();
 		this.repaint();
@@ -105,7 +105,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		back.setSize(250,20);
 		new_user.setSize(250,20);
 		exit.setSize(131, 46);
-		panel.setSize(300,300);
+		panel.setSize(330,310);
 		send_newUser.setSize(131,46);
 		send.setSize(131, 46);
 		username_label.setSize(90,20);
