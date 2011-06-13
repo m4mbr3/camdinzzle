@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -197,16 +196,14 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	@Override
 	public void windowClosing(WindowEvent arg0) 
 	{
-	if(!is_local){
-		System.out.println("Exit clicked");
-		client.setConnManager(null);
-		client.setVisible(true);
-		this.setVisible(false);
-		if (new_userframe != null)
-		new_userframe.setVisible(false);
-		}
-	
-		
+		if(!is_local){
+			System.out.println("Exit clicked");
+			client.setConnManager(null);
+			client.setVisible(true);
+			this.setVisible(false);
+			if (new_userframe != null)
+			new_userframe.setVisible(false);
+			}
 	}
 
 	@Override
@@ -294,7 +291,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 						}
 					}
 			}
-			System.out.println("Uscendo dalla gestione di send in FrameLogin riga 294");
 		}
 		if (arg0.getComponent().equals(exit) && !is_local)
 		{

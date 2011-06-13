@@ -28,7 +28,6 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 	public ClientManagerSocket(Socket connection_with_client, ServerLogic serverLogic, Server s)
 		throws IOException
 	{
-		// TODO Auto-generated constructor stub
 		token ="";
 		isInGame = false;
 		this.is_run = true;
