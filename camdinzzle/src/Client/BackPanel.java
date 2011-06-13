@@ -20,11 +20,17 @@ public class BackPanel extends JPanel
 	 */
 	protected Image background;
 	
+	/**
+	 * richiama il costruttore di JPanel
+	 */
 	public BackPanel() 
 	{
 	    super();
 	}
 	
+	/**
+	 * override per repaint
+	 */
 	public void paintComponent(Graphics g) 
 	{
 		g.drawImage(background, 0, 0, this);
@@ -32,7 +38,7 @@ public class BackPanel extends JPanel
 	
 	/**
 	 * Setta lo sfondo del pannello.
-	 * @param url
+	 * @param url dell'immagine da settare
 	 */
 	public void setBackground(URL url)
 	{

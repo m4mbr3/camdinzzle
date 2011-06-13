@@ -91,6 +91,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		classifica = new BackPanel();
 		logout = new BackPanel();
 		backGround = new BackPanel();
+		backGround.setLayout(null);
 		razza_testo = new JLabel("Insert the Name");
 		creaRazzaPanel = new BackPanel();
 		
