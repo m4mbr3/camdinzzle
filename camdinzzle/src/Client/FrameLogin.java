@@ -26,7 +26,6 @@ import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-//import com.sun.medialib.mlib.Image;
 
 /**
  * @author Andrea

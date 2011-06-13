@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import com.sun.medialib.mlib.Image;
 
 /**
  * @author Andrea
@@ -101,6 +100,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		logout = new BackPanel();
 		backGround = new BackPanel();
 		razza_testo = new JLabel("Insert the Name");
+		creaRazzaPanel = new BackPanel();
 		
 		
 		
@@ -114,9 +114,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		radiogroup.add(Carn);
 		choice.setSize(250,20);
 		choice.setLocation(20, 100);
-		razza_button.setSize(331, 50);
-		razza_testo.setSize(130,20);
-		razza_valore.setSize(120,20);
+		razza_button.setSize(331, 130);
+		razza_testo.setSize(130,100);
+		razza_valore.setSize(120,50);
 		Vege.setSize(130,20);
 		Carn.setSize(130,20);
 		razza_testo.setLocation(10,50);
@@ -125,7 +125,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		Vege.setSelected(true);
 		Carn.setLocation(150,130);
 		Carn.setSelected(false);
-		razza_button.setLocation(10,170);
 		razza_button.addMouseListener(this);
 	
 		//INIZIO CARICAMENTO IMMAGINI
@@ -181,6 +180,10 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		backGround.setBackground(backGroundImage);
 		
 		razza_button.setIcon(razza_button_image);
+		creaRazzaPanel.setBackground(creaRazzaFrameImage);
+		creaRazzaPanel.setSize(360, 230);
+		creaRazzaPanel.setVisible(true);
+	
 		
 		backGround.add(creaRazza);
 		backGround.add(accPartita);
@@ -201,12 +204,15 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			creaRazzaFrame.setLayout(null);
 			creaRazzaFrame.setVisible(true);
 			creaRazzaFrame.setSize(360,250);
-			creaRazzaPanel.add(this.razza_button);
-			creaRazzaPanel.add(this.Vege);
-			creaRazzaPanel.add(this.Carn);
-			creaRazzaPanel.add(this.choice);
-			creaRazzaPanel.add(this.razza_testo);
-			creaRazzaPanel.add(this.razza_valore);
+			razza_button.setLocation(10, 200);
+
+			creaRazzaPanel.add(choice);
+			creaRazzaPanel.add(Vege);
+			creaRazzaPanel.add(Carn);
+			creaRazzaPanel.add(razza_testo);
+			creaRazzaPanel.add(razza_valore);
+			creaRazzaPanel.add(razza_button);
+			creaRazzaFrame.add(creaRazzaPanel);
 		}
 		else if (arg0.getComponent().equals(accPartita))
 		{
