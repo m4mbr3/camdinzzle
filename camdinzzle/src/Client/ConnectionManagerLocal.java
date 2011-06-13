@@ -13,13 +13,31 @@ import Server.ClientManagerLocal;
 
 public class ConnectionManagerLocal implements ConnectionManager 
 {	
+	/**
+	 * Contiene l'oggetto della connessione da locale
+	 */
 	private ClientManagerLocal manager;
+	/**
+	 * Contiene l'username del client collegato tramite locale
+	 */
 	private String username;
+	/**
+	 * Contiene la stringa del token relativo alla connessione corrente
+	 */
 	private String token;
+	/**
+	 * Conetiene l'istanza del client relativa alla connessione corrente
+	 */
 	private Client client;
-	
-
+	/**
+	 * Serve per notificare il cambio del turno alla changeRoundThread
+	 */
 	private String changeRound;
+	
+	/**
+	 * Costruttore della classe ConnectionManagerLocal
+	 * @param manager :gestore della connessione su server
+	 */
 	public ConnectionManagerLocal(ClientManagerLocal manager)
 	{
 		this.manager = manager;
@@ -30,17 +48,13 @@ public class ConnectionManagerLocal implements ConnectionManager
 	@Override
 	public synchronized String creaUtente(String username, String password) 
 	{
-		// TODO Auto-generated method stub
 		return manager.creaUtente(username, password);
 	}
-
 	@Override
 	public synchronized String login(String username, String password) 
 	{
-		// TODO Auto-generated method stub
 		String retStr = manager.Login(username, password);
-		String[] response = ClientMessageBroker.manageLogin(retStr);
-		
+		String[] response = ClientMessageBroker.manageLogin(retStr);	
 		if(response !=  null)
 		{
 			if(response[0].equals("ok"))
@@ -56,7 +70,6 @@ public class ConnectionManagerLocal implements ConnectionManager
 	@Override
 	public synchronized String creaRazza(String name, String type) 
 	{
-		// TODO Auto-generated method stub
 		if (!token.equals("")) return  manager.creaRazza(token, name, type);
 		else return null;
 	}
@@ -64,7 +77,6 @@ public class ConnectionManagerLocal implements ConnectionManager
 	
 	@Override
 	public synchronized String accessoPartita() {
-		// TODO Auto-generated method stub
 		if(!token.equals(""))
 		{
 			String retStr = manager.accessoPartita(token);
@@ -72,7 +84,6 @@ public class ConnectionManagerLocal implements ConnectionManager
 			if(ret[0].equals("ok"))
 			{
 				manager.setIsInGame(true);
-				
 				if(token.equals(manager.getTokenOfCurrentPlayer()))
 				{
 					manager.changeRoundNotify();
@@ -86,7 +97,6 @@ public class ConnectionManagerLocal implements ConnectionManager
 			else if(!((ret[0].equals("no"))&&(ret[1].equals("COMANDO NON ESEGUITO"))))
 			{
 				return retStr;
-				
 			}
 			else
 				return null;
@@ -96,91 +106,78 @@ public class ConnectionManagerLocal implements ConnectionManager
 
 	@Override
 	public synchronized String uscitaPartita() {
-		// TODO Auto-generated method stub
 		if (!token.equals(""))return manager.uscitaPartita(token);
 		else return null;
 	}
 
 	@Override
 	public synchronized String[] listaGiocatori() {
-		// TODO Auto-generated method stub
 		if (!token.equals("")) return manager.listaGiocatori(token);
 		else return null;
 	}
 
 	@Override
 	public synchronized ArrayList<String> classifica() {
-		// TODO Auto-generated method stub
 		if (!token.equals("")) return manager.Classifica(token);
 		else return null;
 	}
 
 	@Override
 	public synchronized String logout() {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return manager.logout(token);
 		else return null;
 	}
 
 	@Override
 	public synchronized ArrayList<String> mappaGenerale() {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return manager.mappaGenerale(token);
 		return null;
 	}
 
 	@Override
 	public synchronized String[] listaDinosauri() {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return manager.listaDinosauri(token);
 		else return null;
 	}
 
 	@Override
 	public synchronized ArrayList<String> vistaLocale(String dinoId) {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return manager.vistaLocale(token, dinoId);
 		else return null;
 	}
 
 	@Override
 	public synchronized String[] statoDinosauro(String dinoId) {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return manager.statoDinosauro(token, dinoId);
 		else return null;
 	}
 
 	@Override
 	public synchronized String[] muoviDinosauro(String dinoId, String row, String col) {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return ClientMessageBroker.manageDinoMove(manager.muoviDinosauro(token, dinoId, row, col));
 		else return null;
 	}
 
 	@Override
 	public synchronized String[] cresciDinosauro(String dinoId) {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return ClientMessageBroker.manageDinoGrowUp(manager.cresciDinosauro(token, dinoId));
 		else return null;
 	}
 
 	@Override
 	public synchronized String[] deponiUovo(String dinoId) {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return ClientMessageBroker.manageNewEgg(manager.deponiUovo(token, dinoId));
 		else return null;
 	}
 
 	@Override
 	public synchronized String[] confermaTurno() {
-		// TODO Auto-generated method stub
 		if(!token.equals("")) return ClientMessageBroker.manageRoundConfirm(manager.confermaTurno(token));
 		else return null;
 	}
 
 	@Override
 	public synchronized String[] passaTurno() {
-		// TODO Auto-generated method stub
 		String msg = manager.passaTurno(token);
 		if(!token.equals("")) return ClientMessageBroker.managePlayerChangeRound(msg);
 		else return null;
@@ -188,8 +185,6 @@ public class ConnectionManagerLocal implements ConnectionManager
 
 	@Override
 	public synchronized String getChangeRound() {
-		// TODO Auto-generated method stub
-		
 		return changeRound;
 	}
 
@@ -214,25 +209,19 @@ public class ConnectionManagerLocal implements ConnectionManager
 
 	@Override
 	public synchronized String getToken() {
-		// TODO Auto-generated method stub
 		return token;
 	}
 
 	@Override
 	public synchronized String getUsername() {
-		// TODO Auto-generated method stub
 		return username;
 	}
 	@Override
 	public synchronized Client getClient() {
-		// TODO Auto-generated method stub
 		return this.client;
 	}
 	@Override
 	public synchronized void setClient(Client client) {
-		// TODO Auto-generated method stub
 		this.client = client;
 	}
-	
-
 }

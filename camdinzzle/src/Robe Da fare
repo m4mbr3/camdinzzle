@@ -35,7 +35,6 @@
 		
 				JAVA DOC (classi da fare)
 		
-		-ConnectionManagerLocal
 		-ConnectionManagerRMI
 		-ConnectionManagerSocket
 		-FrameConnection
