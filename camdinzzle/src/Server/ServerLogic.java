@@ -135,6 +135,9 @@ public class ServerLogic
 		System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
 	}
 
+	//@ requires username != null && password != null;
+	//@ ensures \result == "@no,@usernameOccupato" || \result == "@ok";
+		
 	/**
 	 * Aggiunge un nuovo utente alla lista degli utenti.
 	 * @param username l'username dell'utente
