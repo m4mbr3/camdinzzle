@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package Client;
 
 import java.io.BufferedWriter;
@@ -11,34 +9,60 @@ import java.util.ArrayList;
 
 public class ConnectionManagerSocket implements ConnectionManager 
 {
-	
+	/**
+	 * Oggetto di connessione socket con il server
+	 */
 	private Socket connection_with_server;
+	/**
+	 * Oggetto di scrittura sul socket con il server
+	 */
 	private BufferedWriter writer_on_socket;
+	/**
+	 * Oggetto per memorizzare l'username del client legato a questa connessione
+	 */
 	private String username;
+	/**
+	 * Oggetto per memorizzare la chiave di connessione corrente
+	 */
 	private String token;
+	/**
+	 * Oggetto  monitor per ricevere i messaggi dagli altri thread x l'invio al server 
+	 */
 	private MonitorMessage mm;
+	/**
+	 * Oggetto per ricevere i messaggi del server
+	 */
 	private ClientListener clientListener;
+	/**
+	 * Ogggetto stringa per ricevere le notifiche del cambio turno e propagarle agli altri thread
+	 */
 	private String changeRound;
-	
+	/**
+	 * Costruttore della classe ConnectionManagerSocket
+	 * @param port : porta del serverSocket per la connessione
+	 * @param address : indirizzo del serverSocket per la connessione
+	 * @param mm : monitor per la condivisione con gli altri thread dei messaggi
+	 * @throws IOException
+	 */
 	public ConnectionManagerSocket(int port, String address, MonitorMessage mm) throws IOException
 	{
-		// TODO Auto-generated constructor stub
 		this.mm = mm;
 		changeRound = "";
  		token = "";
 		connection_with_server = new Socket(address,port);
 		clientListener = new ClientListener(mm, this.connection_with_server, this);
-		
 		writer_on_socket = new BufferedWriter(new OutputStreamWriter(connection_with_server.getOutputStream()));
-		
 	}
 	@Override
 	public void setChangeRound(String msg)
 	{
 		this.changeRound = msg;
 	}
-	
-	// TODO: scelta gestione comandoNonValido
+	/**
+	 * Scrittura su socket del messaggio al server
+	 * @param msg : messaggio da inviare al server
+	 * @return il messaggio di risposta del server
+	 */
 	public String sendMessage(String msg) 
 	{
 		try
@@ -46,17 +70,14 @@ public class ConnectionManagerSocket implements ConnectionManager
 			writer_on_socket.write(msg);
 			writer_on_socket.newLine();				
 			writer_on_socket.flush();
-			
 			while(mm.getMessage().equals(""))
 			{
 				try {
 					Thread.sleep(10);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					return null;
 				}
 			}
-			
 			if(mm.getMessage().equals("null"))
 			{
 				return null;
@@ -65,18 +86,19 @@ public class ConnectionManagerSocket implements ConnectionManager
 		}
 		catch(IOException e)
 		{
-			/*TODO: ogni volta che va in catch chiamare un metodo dell'interfaccia grafica che manda un popup di errore
-			 * di comunicazione col socket 
-			 */
 			return null;
 		} 
 	}
-	
+	/**
+	 * Ottiene la stringa contenente il possessore del turno corrente
+	 */
 	public String getChangeRound() 
 	{
 		return changeRound;
 	}
-
+	
+	
+	@Override
 	public synchronized String creaUtente(String username, String password) 
 	{
 		String msg = ClientMessageBroker.createUser(username, password);
@@ -492,7 +514,9 @@ public class ConnectionManagerSocket implements ConnectionManager
 		else
 			return null;
 	}	
-	
+	/**
+	 * Metodo che termina l'ascoltatore dei messaggi da parte del server per questo client.
+	 */
 	public void stopClientListener() 
 	{
 		clientListener.stop();
@@ -500,30 +524,25 @@ public class ConnectionManagerSocket implements ConnectionManager
 
 	@Override
 	public String getToken() {
-		// TODO Auto-generated method stub
 		return token;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return username;
 	}
 
 	@Override
 	public Client getClient() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setClient(Client client) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void rmClientLocal() {
-		// TODO Auto-generated method stub
 		
 	}
 

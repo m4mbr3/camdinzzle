@@ -11,7 +11,9 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class ClientManagerSocket implements ClientManager, Runnable {
-
+	/**
+	 * Oggetto Socket di connessione con il client
+	 */
 	private Socket connection_with_client;
 	private ServerLogic serverLogic;
 	private BufferedWriter writer_on_socket;
