@@ -329,7 +329,13 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				if(response[0].compareTo("ok")==0)
 				{
 					this.setVisible(false);
+					if(!is_local)
 					client.setVisible(true);
+					else{
+						client.getLogin().setVisible(true);
+						client.validate();
+					}
+					
 				}
 				if(response[0].compareTo("no")==0)
 				{

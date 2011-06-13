@@ -389,6 +389,9 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 	}
+	public FrameLogin getLogin() {
+		return login;
+	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 	}
