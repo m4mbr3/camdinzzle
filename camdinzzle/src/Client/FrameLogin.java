@@ -34,25 +34,85 @@ import javax.swing.event.ChangeListener;
 public class FrameLogin extends JFrame implements ActionListener,WindowListener,ChangeListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Etichetta che indica il campo testo dell'username
+	 */
 	private JLabel username_label;
+	/**
+	 * Etichetta che indica il campo testo della password
+	 */
 	private JLabel password_label;
+	/**
+	 * Etichetta che indica il campo per l'immissione dell'username
+	 */
 	private JTextField username;
+	/**
+	 * Etichetta che indica il campo per l'immissione della password
+	 */
 	private JPasswordField password;
+	/**
+	 * Pannello che raccoglie tutti gli oggetti del FrameLogin e del FramenewUser
+	 */
 	private BackPanel panel;
+	/**
+	 * Bottone per inviare i valori di login al server
+	 */
 	private JButton send;
+	/**
+	 * Bottone per inviare i valori per un nuovo utente al server
+	 */
 	private JButton send_newUser;
+	/**
+	 * Variabile che contiene le informazioni sullo schermo dell'utente
+	 */
 	private Dimension screenSize;
+	/**
+	 * Variabile che contiene un'istanza del client corrente
+	 */
 	private Client client;
+	/**
+	 * Etichetta che permette di passare dalla finestra di login alla finestra di creazione del nuovo utente
+	 */
 	private JLabel new_user;
+	/**
+	 * Etichetta che permette di tornare alla finestra di login senza aver creato un nuovo utente
+	 */
 	private JLabel back;
+	/**
+	 * Frame per la visualizzazione del form per creare un nuovo utente
+	 */
 	private JFrame new_userframe;
+	/**
+	 * Bottone per tornare alla scelta del tipo di connessione
+	 */
 	private JButton exit;
+	/**
+	 * Variabile che mi indica se il client è standAlone oppure in locale
+	 */
 	private boolean is_local;
+	/**
+	 * 
+	 */
 	private ClassLoader cldr;
+	/**
+	 * URL dell'immagine di sfondo del login
+	 */
 	private URL loginImage;
+	/**
+	 * URL dell'immagine di sfondo del frame per il nuovo utente
+	 */
 	private URL newUserImage;
+	/**
+	 * Immagine per il bottone di invio delle info per il login
+	 */
 	private ImageIcon sendInfoImage;
+	/**
+	 * Immagine per il bottone di uscita
+	 */
 	private ImageIcon exitImage;
+	/**
+	 * Immagine per un'operazione non andata a buon fine
+	 */
 	private ImageIcon error;
 	/**
 	 * @throws HeadlessException
@@ -71,6 +131,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	}
 
 	/**
+	 * Costruttore del FrameLogin
 	 * @param title
 	 * @throws HeadlessException
 	 */
@@ -381,7 +442,9 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	{
 		
 	}
-	
+	/**
+	 * Metodo che controlla i caratteri della password evitando i caratteri speciali
+	 */
 	private boolean checkPassword(char[] password)
 	{
 		for(int i=0; i<password.length; i++)
@@ -410,6 +473,11 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		return true;
 	}
 	
+	/**
+	 * Metodo che trasforma la password da array di caratteri a stringa
+	 * @param password
+	 * @return
+	 */
 	private String getPasswordString(JPasswordField password)
 	{
 		char[] pass = password.getPassword();
@@ -421,7 +489,5 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		return ret;
 	}
 
-
-	
 
 }

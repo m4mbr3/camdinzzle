@@ -11,9 +11,7 @@
 		
 		-sistemare frameGameManager all'uscita da game
 		
-		-se faccio exit to Camdinzle e poi rifaccio login sparisce tt 
-		(by Andre: Si blocca sulla riga 278 di frameLogin dove manda la richiesta al server di login...
-		il server non gli risponde + e quindi resta in attesa senza più creare o fare niente)
+		
 		
 		(CHIESTO A CARDAMONE)
 
@@ -34,14 +32,5 @@
 
 		se nn ci sn aggiornamenti rilevanti nell'uml nn lo ricontrolla..
 		
-				JAVA DOC (classi da fare)
-		
-		
-	
-		-FrameLogin
-		-Loading
-		-MonitorMessage
-		-Textual
-		-TimeOutOptionPane
-		-Visual
+				
 		
