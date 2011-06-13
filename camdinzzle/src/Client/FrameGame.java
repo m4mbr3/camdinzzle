@@ -94,6 +94,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	private final Font fontDinoState = new Font("Serif", Font.PLAIN, 15);
 	private int screenHeight;
 	private int screenWidth;
+	
+	private ImageIcon error;
+	private ImageIcon ok;
 
 	
 	
@@ -137,6 +140,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconDino[3] = new ImageIcon(cldr.getResource("Images/veg1map.jpg"));
 		iconDino[4] = new ImageIcon(cldr.getResource("Images/veg2map.jpg"));
 		iconDino[5] = new ImageIcon(cldr.getResource("Images/veg3map.jpg"));
+        error = new ImageIcon(cldr.getResource("Images/errore.jpg"));
+        ok = new ImageIcon(cldr.getResource("Images/conferma.jpg"));
 
 		//FINE CARICAMENTO IMMAGINI
 		
@@ -517,7 +522,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					if(!((String)arg0.getComponent().getName()).contains(nameSpecie))
 					{
 						String[] option = {"yes","no"};
-						int opt = JOptionPane.showOptionDialog(panel, "Would you move "+ dinoId, "Dinosaur move", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, option, "yes");
+						int opt = JOptionPane.showOptionDialog(panel, "Would you move "+ dinoId, "Dinosaur move", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ok, option, "yes");
 						cellClicked.setBorder(null);
 						if(opt==0)
 						{
@@ -539,7 +544,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 											result = " win!";
 										else
 											result = " lose!";
-										JOptionPane.showMessageDialog(panel, "Fight" + result, "Fight result", JOptionPane.INFORMATION_MESSAGE, null);
+										JOptionPane.showMessageDialog(panel, "Fight" + result, "Fight result", JOptionPane.INFORMATION_MESSAGE, ok);
 									}
 									extinctionSpecies();
 									if(!flagStop)
@@ -1204,7 +1209,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessage()
 	 {
-		 JOptionPane.showMessageDialog(this, "Action not completed", "Error", JOptionPane.ERROR_MESSAGE);
+		 JOptionPane.showMessageDialog(this, "Action not completed", "Error", JOptionPane.ERROR_MESSAGE,error);
 	 }
 	 
 	 /**
@@ -1213,7 +1218,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer(String[] msg)
 	 {
-		 JOptionPane.showMessageDialog(this, msg);
+		 JOptionPane.showMessageDialog(this, msg,"Error",JOptionPane.ERROR_MESSAGE,error);
 	 }
 	 
 	 /**
@@ -1221,7 +1226,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer()
 	 {
-		 JOptionPane.showMessageDialog(this, "Error in server communication");
+		 JOptionPane.showMessageDialog(this, "Error in server communication","Error",JOptionPane.ERROR_MESSAGE,error);
 	 }
 	 
 	 /**
@@ -1230,7 +1235,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer(ArrayList<String> msg)
 	 {
-		 JOptionPane.showMessageDialog(this, msg);
+		 JOptionPane.showMessageDialog(this, msg,"Error",JOptionPane.ERROR_MESSAGE,error);
 	 }
 	 
 	 /**
@@ -1239,7 +1244,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  */
 	 public void errorMessageServer(String msg)
 	 {
-		 JOptionPane.showMessageDialog(this, msg);
+		 JOptionPane.showMessageDialog(this, msg,"Error",JOptionPane.ERROR_MESSAGE,error);
 	 }
 	 
 	 private String[] extinctionSpecies()
@@ -1251,7 +1256,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			 client.getConnManager().uscitaPartita();
 			 this.setVisible(false);
 			 frameGameManager.setVisible(true);
-			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null); 
+			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, error); 
 			 flagStop = true;
 			 return new String[] {""};
 		 }
@@ -1270,7 +1275,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			 this.setVisible(false);
 			 this.validate();
 			 frameGameManager.setVisible(true);
-			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, null); 
+			 JOptionPane.showMessageDialog(getRootPane(), "La tua specie si e' estinta", "SPECIE ESTINTA", JOptionPane.INFORMATION_MESSAGE, error); 
 		 }
 	 }
 	 

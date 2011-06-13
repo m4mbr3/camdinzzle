@@ -7,11 +7,19 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Marco
+ *
+ */
 public class BackPanel extends JPanel 
 {
 	private static final long serialVersionUID = 1L;
-	protected ImageIcon icon;
+	/**
+	 * sfondo pannello
+	 */
 	protected Image background;
+	
 	public BackPanel() 
 	{
 	    super();
@@ -22,9 +30,12 @@ public class BackPanel extends JPanel
 		g.drawImage(background, 0, 0, this);
 	}
 	
+	/**
+	 * Setta lo sfondo del pannello.
+	 * @param url
+	 */
 	public void setBackground(URL url)
 	{
-	    icon = new ImageIcon(url);
-	    background = icon.getImage();
+	    background = (new ImageIcon(url)).getImage();
 	}
 }

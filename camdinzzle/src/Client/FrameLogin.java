@@ -53,6 +53,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	private URL newUserImage;
 	private ImageIcon sendInfoImage;
 	private ImageIcon exitImage;
+	private ImageIcon error;
 	/**
 	 * @throws HeadlessException
 	 */
@@ -97,6 +98,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		newUserImage = cldr.getResource("Images/NEW_USER.jpg");
 		sendInfoImage = new ImageIcon(cldr.getResource("Images/SEND_INFO.jpg"));
 		exitImage = new ImageIcon(cldr.getResource("Images/BACK_HOME.jpg"));
+        error = new ImageIcon(cldr.getResource("Images/errore.jpg"));
 		//FINE CARICAMENTO IMMAGINI SFONDO
 		
 		send_newUser = new JButton(sendInfoImage);
@@ -267,7 +269,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		{
 			if((!checkPassword(password.getPassword()))||(username.getText().contains("@"))||( username.getText().contains("<"))||(username.getText().contains(">"))||(username.getText().contains("'"))||(username.getText().contains("\""))||(username.getText().contains("?"))||(username.getText().contains("&"))||(username.getText().contains("="))||(username.getText().contains("!"))||(username.getText().contains("%")))	
 			{
-				JOptionPane.showMessageDialog(this,"Maybe you insert one or more special caracters!!!fix it and try again!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this,"Maybe you insert one or more special caracters!!!fix it and try again!!!", "Login Error", JOptionPane.ERROR_MESSAGE,error);
 			}
 			else
 			{
@@ -282,12 +284,12 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 						else if (ClientMessageBroker.manageLogin(login)[0].compareTo("no")==0)
 						{
 							this.setVisible(true);
-							JOptionPane.showMessageDialog(this,"Authentication Failed!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(this,"Authentication Failed!!!", "Login Error", JOptionPane.ERROR_MESSAGE,error);
 						}
 						else
 						{
 							this.setVisible(true);
-							JOptionPane.showMessageDialog(this,"Generic Error during Login. Try Again!!!", "Message Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(this,"Generic Error during Login. Try Again!!!", "Message Error", JOptionPane.ERROR_MESSAGE,error);
 						}
 					}
 			}
@@ -305,7 +307,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		{
 			if((!checkPassword(password.getPassword()))||(username.getText().contains("@"))||( username.getText().contains("<"))||(username.getText().contains(">"))||(username.getText().contains("'"))||(username.getText().contains("\""))||(username.getText().contains("?"))||(username.getText().contains("&"))||(username.getText().contains("="))||(username.getText().contains("!"))||(username.getText().contains("%")))
 			{
-				JOptionPane.showMessageDialog(this,"Maybe you insert one or more special caracters!!!fix it and try again!!!", "Login Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this,"Maybe you insert one or more special caracters!!!fix it and try again!!!", "Login Error", JOptionPane.ERROR_MESSAGE,error);
 			}
 			else
 			{
@@ -324,13 +326,13 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(this,"Username already exist", "NewUser Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,"Username already exist", "NewUser Error", JOptionPane.ERROR_MESSAGE,error);
 						new_userframe.setVisible(true);
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(this,"TIME OUT", "NewUser Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,"TIME OUT", "NewUser Error", JOptionPane.ERROR_MESSAGE,error);
 				}
 			}
 		}

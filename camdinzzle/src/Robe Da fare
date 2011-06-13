@@ -5,10 +5,11 @@
 		-RMI controllare che se sn in gioco non mi manda la cambia turno vuota quando fa il controllo
 		
 		GRAFICA	
-		-sistemare immgagini dinosauri
 		
 		-controllare fra richiesta lista dinosauri e stato dinosauro che esce errore classcastexception
 		ma non viene data la riga.
+		
+		-sistemare frameGameManager all'uscita da game
 		
 		-se faccio exit to Camdinzle e poi rifaccio login sparisce tt 
 		(by Andre: Si blocca sulla riga 278 di frameLogin dove manda la richiesta al server di login...

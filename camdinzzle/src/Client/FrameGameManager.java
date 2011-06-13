@@ -4,7 +4,6 @@
 package Client;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -16,7 +15,6 @@ import java.awt.event.WindowListener;
 import java.net.URL;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -78,8 +76,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	
 	private FrameGame frameGame;
 	
-	private FrameLogin login;
 	private boolean is_local;
+	private ImageIcon error;
+	private ImageIcon ok;
 	/**
 	 * @param title
 	 * @throws HeadlessException
@@ -108,6 +107,8 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		radiogroup = new ButtonGroup();
 		Vege = new JRadioButton("Vegetarian");
 		Carn = new JRadioButton("Carnivorous");
+		Vege.setOpaque(false);
+		Carn.setOpaque(false);
 		razza_button = new JButton();
 		radiogroup.add(Vege);
 		radiogroup.add(Carn);
@@ -139,6 +140,8 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
         backGroundImage = cldr.getResource("Images/sfondo_manager_panel.jpg");
         razza_button_image = new ImageIcon(cldr.getResource("Images/create_new_species_tasto.jpg"));
         creaRazzaFrameImage = cldr.getResource("Images/create_new_species.jpg");
+        error = new ImageIcon(cldr.getResource("Images/errore.jpg"));
+        ok = new ImageIcon(cldr.getResource("Images/conferma.jpg"));
 
 		//FINE CARICAMENTO IMMAGINI
 		
@@ -243,7 +246,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				String[] response = ClientMessageBroker.manageGameAccess(gameAccess);
 				if(response == null)
 				{
-					JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE,error);
 				}
 				else if(response[0].compareTo("ok")==0)
 				{
@@ -263,11 +266,11 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				{
 					if (response[1].compareTo("troppiGiocatori")==0)
 					{
-						JOptionPane.showMessageDialog(this,"There aren't free spot!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,"There aren't free spot!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE,error);
 					}
 					else if(response[1].compareTo("tokenNonValido")==0)
 					{
-						JOptionPane.showMessageDialog(this,"Before access to game you must create a new specie!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this,"Before access to game you must create a new specie!!!", "Access Game Error", JOptionPane.ERROR_MESSAGE,error);
 					}
 				}
 			}
@@ -277,11 +280,11 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			String[] response = client.getConnManager().listaGiocatori();
 			if (response == null)
 			{
-				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE,error);
 			}
 			else if (response[0].compareTo("null") == 0)
 			{
-				JOptionPane.showMessageDialog(this,"No players in game", "Lista Giocatori", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this,"No players in game", "Lista Giocatori", JOptionPane.INFORMATION_MESSAGE,ok);
 			}
 			else if (response[0].compareTo("listaGiocatori")==0)
 			{
@@ -309,7 +312,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			}
 			else if (response[0].compareTo("no")==0)
 			{
-				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Lista Giocatori Error", JOptionPane.ERROR_MESSAGE,error);
 			}
 		}
 		else if (arg0.getComponent().equals(classifica))
@@ -352,12 +355,12 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				}
 				else
 				{//TODO
-					 JOptionPane.showMessageDialog(this, "Azione non compiuta", "Error", JOptionPane.ERROR_MESSAGE);
+					 JOptionPane.showMessageDialog(this, "Azione non compiuta", "Error", JOptionPane.ERROR_MESSAGE,error);
 				}
 			}
 			else
 			{
-				//errorMessage();
+				
 			}
 		}
 		else if (arg0.getComponent().equals(logout))
@@ -366,7 +369,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				    this,
 				    "Do you really want to logout from Camdinzzle?",
 				    "Exit Question",
-				    JOptionPane.YES_NO_OPTION);
+				    JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE,ok);
 			if (ritorno == 0){
 				String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
 				if(response[0].compareTo("ok")==0)
@@ -382,7 +385,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				}
 				if(response[0].compareTo("no")==0)
 				{
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE,error);
 				}
 			}
 		}
@@ -397,19 +400,19 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			 if(newRace != null)
 			 {
 				 String[] response = ClientMessageBroker.manageCreateSpecies(newRace);	 
-				 if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+				 if (response == null) JOptionPane.showMessageDialog(this,"You have sent an invalid message!!!", "New Species Error", JOptionPane.ERROR_MESSAGE,error);
 				 else if(response[0].compareTo("ok")==0)
 				 {
-					 JOptionPane.showMessageDialog(this,"New Specie's been created!!!", "New Species", JOptionPane.INFORMATION_MESSAGE);
+					 JOptionPane.showMessageDialog(this,"New Specie's been created!!!", "New Species", JOptionPane.INFORMATION_MESSAGE,ok);
 				 }
 				 else if (response[0].compareTo("no")==0)
 				 {
 					 if(response[1] != null)
 					 {
-						 if(response[1].compareTo("nomeRazzaOccupato")==0) JOptionPane.showMessageDialog(this,"Name busy!!! try with another name", "New Species Error", JOptionPane.ERROR_MESSAGE);
-						 else if(response[1].compareTo("tokenNonValido")==0)JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+						 if(response[1].compareTo("nomeRazzaOccupato")==0) JOptionPane.showMessageDialog(this,"Name busy!!! try with another name", "New Species Error", JOptionPane.ERROR_MESSAGE,error);
+						 else if(response[1].compareTo("tokenNonValido")==0)JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "New Species Error", JOptionPane.ERROR_MESSAGE,error);
 					 }
-					 else JOptionPane.showMessageDialog(this,"You already have created another specie !!!", "New Species Error", JOptionPane.ERROR_MESSAGE);
+					 else JOptionPane.showMessageDialog(this,"You already have created another specie !!!", "New Species Error", JOptionPane.ERROR_MESSAGE,error);
 				 }
 			 }
 		}
@@ -417,7 +420,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	
 	public int chosenDinoImage()
 	{
-		 return JOptionPane.showOptionDialog(this, "                                        scegli l'icona del dinosauro                                               ", "Chosen Icon Dinosaur", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, iconChosenDino, null);	
+		 return JOptionPane.showOptionDialog(this, "                                        scegli l'icona del dinosauro                                               ", "Chosen Icon Dinosaur", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, iconChosenDino, ok);	
 	}
 	
 	@Override
@@ -429,22 +432,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	@Override
 	public void windowClosed(WindowEvent arg0) 
 	{
-/*		int ritorno = JOptionPane.showConfirmDialog(
-			    this,
-			    "Do you really want to exit from Camdinzzle?",
-			    "Exit Question",
-			    JOptionPane.YES_NO_OPTION);
-		if (ritorno == 0){
-			String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
-			if(response[0].compareTo("ok")==0)
-			{
-				System.exit(0);
-			}
-			if(response[0].compareTo("no")==0)
-			{
-				JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
-			}
-		}*/
+
 	}
 
 	@Override
@@ -454,7 +442,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			    this,
 			    "Do you really want to exit from Camdinzzle?",
 			    "Exit Question",
-			    JOptionPane.YES_NO_OPTION);
+			    JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE,ok);
 		if (ritorno == 0)
 		{
 			String check = client.getConnManager().logout();
@@ -467,13 +455,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				}
 				if(response[0].compareTo("no")==0)
 				{
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE,error);
 				}
 			}
-/*			else
-			{
-				JOptionPane.showMessageDialog(this, "QUi", "Error", JOptionPane.ERROR_MESSAGE);
-			}*/
 		}
 	}
 

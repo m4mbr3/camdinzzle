@@ -104,7 +104,7 @@ public class RMIMessageBroker
 	/**
 	 * Gestisce il comando di accesso partita
 	 * @param msg
-	 * @return
+	 * @return array contenente i parametri del messaggio 
 	 */
 	public static String[] convertGameAccess(String msg)
 	{
@@ -134,7 +134,7 @@ public class RMIMessageBroker
 	/**
 	 * Gestisce il comando di uscita partita
 	 * @param msg
-	 * @return
+	 * @return array contenente i parametri del messaggio
 	 */
 	public static String[] convertGameExit(String msg)
 	{
@@ -164,7 +164,7 @@ public class RMIMessageBroker
 	/**
 	 * Gestisce il comando di logout
 	 * @param msg
-	 * @return
+	 * @return array contenente i parametri del messaggio
 	 */
 	public static String[] convertLogout(String msg)
 	{
