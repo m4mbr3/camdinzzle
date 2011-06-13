@@ -1,14 +1,12 @@
 package Server;
-/**
- * @author Forme
- * created 			28/04/2011
- * last modified	28/04/2011 
- */
 
+/**
+ * Interfaccia che rappresenta del cibo per i dinosauri all'interno del gioco.
+ */
 public interface Food 
 {
 	/**
-	 *  Ricrescita della vegetazione o la perdita di energia della carogna
+	 *  Ricrescita della vegetazione o la perdita di energia della carogna.
 	 */
 	public void rebirth();
 }

@@ -2,19 +2,23 @@ package Server;
 
 import java.io.Serializable;
 
+/**
+ * Classe che rappresenta una carogna all'interno del gioco.
+ */
 public class Carrion implements Food, Serializable
 {
 	private static final long serialVersionUID = 1L;
 	/**
-	 * energia della carogna
+	 * Energia attuale della carogna.
 	 */
 	private int power;
 	/**
-	 * energia massima della carogna
+	 * Energia massima della carogna.
 	 */
 	private int maxPower;
 	
 	/**
+	 * Istanzia un oggetto Carrion con energia massima come parametro.
 	 * @param maxPower compreso fra 350 e 650 (500±30%)
 	 */
 	public Carrion(int maxPower)
@@ -24,7 +28,7 @@ public class Carrion implements Food, Serializable
 	}
 
 	/**
-	 * Perdita di energia
+	 * Esegue la perdita di energia della carogna.
 	 */
 	@Override
 	public void rebirth() 
@@ -33,8 +37,8 @@ public class Carrion implements Food, Serializable
 	}
 	
 	/**
-	 * restituisce l'energia della carogna
-	 * @return int
+	 * Ritorna l'energia della carogna.
+	 * @return energia della carogna
 	 */
 	public int getPower() 
 	{
@@ -42,8 +46,8 @@ public class Carrion implements Food, Serializable
 	}
 
 	/**
-	 * setta l'energia della carogna
-	 * @param power
+	 * Setta l'energia della carogna.
+	 * @param power energia della carogna
 	 */
 	public void setPower(int power) 
 	{
@@ -51,8 +55,8 @@ public class Carrion implements Food, Serializable
 	}
 
 	/**
-	 * restituisce l'energia massima della carogna
-	 * @return int
+	 * Ritorna l'energia massima della carogna.
+	 * @return energia massima della carogna
 	 */
 	public int getMaxPower() 
 	{
@@ -60,8 +64,8 @@ public class Carrion implements Food, Serializable
 	}
 
 	/**
-	 * setta l'energia massima della carogna
-	 * @param maxPower
+	 * Setta l'energia massima della carogna.
+	 * @param maxPower energia massima da assegnare alla carogna
 	 */
 	public void setMaxPower(int maxPower) 
 	{

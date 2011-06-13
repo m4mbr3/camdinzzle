@@ -9,7 +9,8 @@ import Client.Client;
 import Client.ClientMessageBroker;
 import Client.ConnectionManagerLocal;
 
-public class ClientManagerLocal implements ClientManager{
+public class ClientManagerLocal implements ClientManager
+{
 
 	private ServerLogic serverLogic;
 	private boolean isInGame;

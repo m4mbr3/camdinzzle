@@ -14,40 +14,58 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Classe che rappresenta la logica applicativa del gioco. 
+ * Contiene la lista di tutti gli utenti registrati e la lista di tutte le specie create. 
+ */
+
 public class ServerLogic 
 {
+	/**
+	 * Utilizzato per mandare il messaggio di cambio del turno ai client.
+	 */
 	private Server server = null;
 	
-	Thread counter30s;
-	Thread counter2m;
-	private static int timeForConfirm = 30000;   // in millisecondi
+	private Thread counter30s;
+	private Thread counter2m;
+	/**
+	 * Tempo che un giocatore ha per confermare l'utilizzo di un turno di gioco (in millisecondi).
+	 */
+	private static int timeForConfirm = 30000; 
+	/**
+	 * Tempo che un giocatore ha per fare le mosse di un suo turno di gioco (in millisecondi).
+	 */
 	private static int timeForPlay = 120000;
 	/**
-	 * Instance of CurrentSession of Game. It contains the info about the game
-	 * and current maps used for gaming
+	 * Istanza della sessione di gioco corrente. Contiene informazioni sulla sessione come i 
+	 * giocatori e la mappa del gioco.
 	 */
 	private Game currentSession;
-
 	/**
-	 * Hashmap that contains players instances. All players registered are here
-	 * from first start of server
+	 * Lista degli utenti registrati al gioco.
+	 * La chiave dell'HashTable e' l'username del giocatore scelto al momento della registrazione.
 	 */
 	private Hashtable<String, Player> players;
 	/**
-	 * HashMap che contiene delle istanze dei Player loggati. Chiave il token
+	 * Lista degli utenti loggati.
+	 * La chiave dell'HashTable e' il token generato al momento dell'invio dei dati di login.
 	 */
 	private Hashtable<String, Player> loggedPlayers;
 	/**
-	 * HashMap che contiene le specie estinte
+	 * Lista di tutte le specie create nel gioco. Utilizzata per la classifica.
+	 * La chiave dell'HashTable e' il nome della specie. 
 	 */
 	private Hashtable<String, Species> rank;
 	/**
-	 * Stringa che contiene il token del giocatore che deve effettuare il turno
+	 * Il token del giocatore che puo' effettuare le azioni di gioco.
 	 */
 	private String tokenOfCurrentPlayer;
 	
 	private String keyForToken;
 	
+	/**
+	 * Istanzia un nuovo ServerLogic.
+	 */
 	public ServerLogic()
 	{
 		File f = new File("server.ser");
@@ -118,11 +136,10 @@ public class ServerLogic
 	}
 
 	/**
-	 * Aggiunge un nuovo utente
-	 * 
-	 * @param msg
-	 *            Messaggio del Client
-	 * @return Messaggio da mandare al Client
+	 * Aggiunge un nuovo utente alla lista degli utenti.
+	 * @param username l'username dell'utente
+	 * @param password la password dell'utente
+	 * @return stringa di esito della richiesta 
 	 */
 	public String add_new_user(String username, String password) 
 	{
@@ -146,9 +163,10 @@ public class ServerLogic
 	}
 
 	/**
-	 * Aggiunge il Player alla HashMap dei Player loggati
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Aggiunge un utente alla lista degli utenti loggati.
+	 * @param username l'username dell'utente
+	 * @param password la password dell'utente
+	 * @return stringa di esito della richiesta
 	 */
 	public String login(String username, String password)
 	{
@@ -182,9 +200,11 @@ public class ServerLogic
 	}
 
 	/**
-	 * Aggiunge la nuova specie al Player se non esiste giï¿½
-	 * @param msg : messaggio del Client
-	 * @return Messaggio da mandare al Client
+	 * Aggiunge la nuova specie all'utente se non esiste gia' o se l'utente ha gi� una specie in gioco.
+	 * @param token il token dell'utente
+	 * @param name il nome della specie da creare
+	 * @param type il tipo della specie ('c' o 'e')
+	 * @return stringa di esito della richiesta
 	 */
 	public String addNewSpecies(String token, String name, String type) 
 	{
@@ -227,14 +247,13 @@ public class ServerLogic
 	}
 
 	/**
-	 * Controlla che il player possa accedere alla partita e se puo lo fa accedere. Puï¿½ accedere se c'ï¿½
-	 * ancora posto nella partita(non ï¿½ stato raggiunto il numero massimo di
-	 * giocatori) e se il token ï¿½ valido. Se il giocatore non ha ancora creato una propria specie, viene creata una specie di
-	 * default che ha come nome l'username del player e come razza e.
-	 * 
-	 * @param username: username del giocatore
-	 * @param token : token del giocatore
-	 * @return Il comando da inviare al Client
+	 * Aggiunge un utente alla partita corrente.
+	 * Controlla che il player possa accedere alla partita e se puo lo fa accedere. Puo' accedere se 
+	 * c'e' ancora posto nella partita (non se e' stato raggiunto il numero massimo di
+	 * giocatori).
+	 * @param username l'username dell'utente
+	 * @param token il token dell'utente
+	 * @return stringa di esito della richiesta
 	 */
 	public String gameAccess(String token) 
 	{
@@ -338,9 +357,9 @@ public class ServerLogic
 	}
 
 	/**
-	 * Esegue l'uscita del giocatore dalla partita
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Esegue l'uscita dalla partita di un utente. 
+	 * @param token il token dell'utente
+	 * @return stringa di esito della richiesta
 	 */
 	public String gameExit(String token)
 	{	
@@ -436,9 +455,9 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Esegue la creazione della lista di giocatori in partita.
-	 * @param msg : messaggio del Client
-	 * @return Messaggio da mandare al Client
+	 * Crea la lista degi giocatori attualmente in partita.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @return stringa di esito della richiesta
 	 */
 	public String playerList(String token)
 	{
@@ -472,9 +491,9 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Genera la classifica di tutti gli utenti registrati
-	 * @param msg : messaggio del Client
-	 * @return Messaggio da mandare al Client
+	 * Genera la classifica di tutte le specie registrate.
+	 * @param token il token dell'utente che eesegue la richiesta
+	 * @return stringa di esito della richiesta
 	 */
 	public String ranking(String token)
 	{
@@ -541,10 +560,10 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Esegue il logout di un giocatore loggato. Se il giocatore ï¿½ in partita, prima di eseguire il 
-	 * logout deve uscire dalla partita
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Esegue il logout di un utente loggato. Se il giocatore e' in partita, prima di eseguire il 
+	 * logout viene eseguita l'uscita dalla partita.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @return stringa di esito della richiesta
 	 */
 	public String logout(String token)
 	{	
@@ -570,9 +589,10 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Crea la mappa generale da mandare a giocatori in partita
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Ritorna la mappa generale dell'utente che esegue la richiesta. L'utente deve essere in partita
+	 * per ottenere la sua mappa generale.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @return stringa di esito della richiesta
 	 */
 	public String generalMap(String token)
 	{
@@ -614,9 +634,10 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Crea la lista dei dinosauri di un giocatore
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Ritorna la lista dei dinosauri dell'utente che esegue la richiesta. L'utente deve essere in 
+	 * partita per ottenere la lista dei suoi dinosauri.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @return stringa di esito della richiesta
 	 */
 	public String dinosaursList(String token)
 	{
@@ -663,9 +684,11 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Crea la vista di un dinosauro dal suo id
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Ritorna la vista locale di un dinosauro. L'utente deve essere in partita per ottenere la vista
+	 * locale di un dinosauro.
+	 * @param token il token dell'utente che eesegue la richiesta
+	 * @param dinoId l'id del dinosauro di cui e' richiesta la vista vlocale
+	 * @return stringa di esito della richiesta
 	 */
 	public String dinoZoom(String token, String dinoId)
 	{		
@@ -736,9 +759,10 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Crea lo stato di un dinosauro
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Ritorna lo stato di un dinosauro. L'utente che esegue la richiesta deve essere in partita.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @param dinoId l'id del dinosauro di cui e' richiesta lo stato
+	 * @return stringa di esito della richiesta
 	 */
 	public String dinoState(String token, String dinoId)
 	{
@@ -871,6 +895,15 @@ public class ServerLogic
 		}
 	}
 	
+	/**
+	 * Esegue il movimento di un dinosauro. L'utente che esegue la richiesta deve essere in partita 
+	 * per muovere un proprio dinosauro.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @param dinoId l'id del dinosauro che l'utente intende spostare
+	 * @param rowDest la riga di destinazione del movimento
+	 * @param colDest la colonna di destinazione del movimento
+	 * @return stringa di esito della richiesta
+	 */
 	public String dinoMove(String token, String dinoId, String rowDest, String colDest)
 	{
 		try
@@ -1023,11 +1056,18 @@ public class ServerLogic
 		}
 	}
 	
+	/**
+	 * Esegue la crescita di un dinosauro. L'utente che esegue la richiesta deve essere in partita per
+	 * far crescere un proprio dinosauro.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @param dinoId l'id del dinosauro che l'utente intende far crescere
+	 * @return stringa di esito della richiesta
+	 */
 	public String dinoGrowUp(String token, String dinoId)
 	{	
 		try
 		{
-			if(isLoggedUser(token))						//controlla se � loggato
+			if(isLoggedUser(token))						//controlla se e' loggato
 			{
 				if(currentSession.getPlayer(token) != null)			//controllo token valido
 				{
@@ -1079,6 +1119,13 @@ public class ServerLogic
 		}
 	}
 	
+	/**
+	 * Esegue la deposizione di un uovo di un dinosauro. L'utente che esegue la richiesta deve essere
+	 * in partita per far deporre un uovo ad un proprio dinosauro.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @param dinoId l'id del dinosauro che l'utente intende far deporre un uovo
+	 * @return stringa di esito della richiesta
+	 */
 	public String dinoNewEgg(String token, String dinoId)
 	{	
 		try
@@ -1145,9 +1192,9 @@ public class ServerLogic
 	
 	
 	/**
-	 * Esegue la conferma del turno
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Esegue la conferma di un turno di gioco da parte di un utente. 
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @return stringa di esito della richiesta
 	 */
 	public String roundConfirm(String token)
 	{
@@ -1185,9 +1232,9 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Esegue il passa turno da parte di un giocatore
-	 * @param msg : messaggio ricevuto dal Client
-	 * @return Messaggio da mandare al Client
+	 * Esegue il cambio del turno di gioco.
+	 * @param token il token dell'utente che esegue la richiesta
+	 * @return stringa di esito della richiesta
 	 */
 	public String playerRoundSwitch(String token)
 	{		
@@ -1227,7 +1274,8 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Crea il thread dei 30 secondi di conferma
+	 * Crea il thread dei 30 secondi di tempo che un giocatore ha per confermare l'utilizzo del
+	 * proprio turno di gioco.
 	 */
 	public void changeRound()
 	{
@@ -1243,6 +1291,9 @@ public class ServerLogic
 		}
 	}
 	
+	/**
+	 * Invia a tutti i giocatori il messaggio di cambio del turno.
+	 */
 	public void changeRoundNotify()
 	{
 		try
@@ -1255,6 +1306,10 @@ public class ServerLogic
 		}
 	}
 	
+	/**
+	 * Ritorna l'username del giocatore che e' abilitato ad eseguire le proprie mosse.
+	 * @return username del giocatore
+	 */
 	public String getUsernameOfCurrentPlayer()
 	{
 		try
@@ -1269,7 +1324,7 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Esegue il cambio del turno da un giocatore al prossimo e esegue le update su un giocatore(notifica in partita)
+	 * Esegue l'aggiornamento dello stato di un giocatore ed esegue il cambio del turno.
 	 */
 	public void updatePlayer(String token)
 	{		
@@ -1367,8 +1422,8 @@ public class ServerLogic
 	}
 	
 	/**
-	 * Esegue gli aggiornamenti sugli oggetti della mappa e sulle specie in partita. Da chiamare dopo che tutti hanno 
-	 * giocato.
+	 * Esegue gli aggiornamenti sugli oggetti della mappa e sulle specie in partita. Viene eseguita
+	 * dopo che tutti i giocatori hanno giocato.
 	 */
 	public void updateGame(String token)
 	{
@@ -1502,19 +1557,28 @@ public class ServerLogic
 		}
 	}
 	
-	
-	public String getTokenOfCurrentPlayer() {
+	/**
+	 * Ritorna il token del giocatore abilitato a fare le proprie mosse.
+	 * @return il token del giocatore
+	 */
+	public String getTokenOfCurrentPlayer() 
+	{
 		return tokenOfCurrentPlayer;
 	}
 
-	public void setTokenOfCurrentPlayer(String tokenOfCurrentPlayer) {
+	/**
+	 * Setta il token del giocatore abilitato a fare le proprie mosse.
+	 * @param tokenOfCurrentPlayer il token del giocatore abilitato a afre le proprie mosse
+	 */
+	public void setTokenOfCurrentPlayer(String tokenOfCurrentPlayer) 
+	{
 		this.tokenOfCurrentPlayer = tokenOfCurrentPlayer;
 	}
 	
 	/**
-	 * Controlla che un utente sia giï¿½ loggato
-	 * @param token : token del giocatore
-	 * @return True se il giocatore ï¿½ loggato, false altrimenti
+	 * Controlla che un utente sia loggato.
+	 * @param token il token dell'utente
+	 * @return true se il giocatore e' loggato, false altrimenti
 	 */
 	private boolean isLoggedUser(String token)
 	{
@@ -1532,18 +1596,21 @@ public class ServerLogic
 		}
 	}
 	
+	/**
+	 * Viene settato il server.
+	 * @param s il server
+	 */
 	public void setServer(Server s)
 	{
 		this.server = s;
 	}
 	
 	/**
-	 * 
-	 * 
-	 * Chiave per generazione dei token generata in modo casuale ad ogni avvio del ServerLogic
-	 * @return Chiave generata
+	 * Genera la chiave per generare i token degli utenti.
+	 * @return chiave generata
 	 */
-	private String generateKeyForToken() {
+	private String generateKeyForToken() 
+	{
 		// Lunghezza della chiave da 3 a 5
 		int keyLength = (int) (Math.random() * 3 + 3);
 		String key = new String("");
@@ -1552,12 +1619,14 @@ public class ServerLogic
 		HashMap<String, String> registeredPositions = new HashMap<String, String>();
 		int i = 0;
 
-		while (i < keyLength) {
+		while (i < keyLength) 
+		{
 			// Generazione casuale del numero da inserire nella chiave
 			int singleCasual = (int) (Math.random() * keyLength);
 
-			// Se non ï¿½ giï¿½ presente nella chiave, viene inserito
-			if (!registeredPositions.containsKey(String.valueOf(singleCasual))) {
+			// Se non e' presente nella chiave, viene inserito
+			if (!registeredPositions.containsKey(String.valueOf(singleCasual))) 
+			{
 				registeredPositions.put(String.valueOf(singleCasual),
 						String.valueOf(singleCasual));
 				key += String.valueOf(singleCasual);
@@ -1569,18 +1638,14 @@ public class ServerLogic
 	}
 
 	/**
-	 * @return Chiave generata dal ServerLogic pe generare il token
+	 * Ritorna la chiave per generare i token degli utenti.
+	 * @return chiave
 	 */
 	public String getKeyForToken() 
 	{
 		return keyForToken;
 	}
 	
-	/**
-	 * Ricerca il minimo all'interno della chiave e lo ritorna 
-	 * @param key : chiave generata dal ServerLogic
-	 * @return Il minimo all'interno della chiave
-	 */
 	private int findMin(String key) 
 	{
 		int min = key.length() + 1;
@@ -1595,10 +1660,10 @@ public class ServerLogic
 	}
 
 	/**
-	 * Token generato tramite l'applicazione sulla concatenazione di username e riferimento a questo 
-	 * oggetto). Sulla concatenazione si applica un algoritmo di trasposizione.
-	 * @param username : username del giocatore
-	 * @return Token generato
+	 * Genera il token di un utente tramite l'applicazione sulla concatenazione di username
+	 * e i nanosecondi del server). Sulla concatenazione si applica un algoritmo di trasposizione.
+	 * @param username username del giocatore
+	 * @return token generato
 	 */
 	private String generateToken(String username, long el) 
 	{
@@ -1607,14 +1672,15 @@ public class ServerLogic
 		String concatenateIdentifier = new String(username + el);
 		String token = new String("");
 
-		for (int j = 0; j < length; j++) {
+		for (int j = 0; j < length; j++) 
+		{
 			int min = findMin(key);
 			int positionMin = key.indexOf(String.valueOf(min));
 
-			key = key.replaceFirst(String.valueOf(min),
-					String.valueOf(key.length()));
+			key = key.replaceFirst(String.valueOf(min), String.valueOf(key.length()));
 
-			for (int i = positionMin; i < concatenateIdentifier.length(); i += length) {
+			for (int i = positionMin; i < concatenateIdentifier.length(); i += length) 
+			{
 				token += concatenateIdentifier.charAt(i);
 			}
 		}
@@ -1625,6 +1691,10 @@ public class ServerLogic
 		return token;
 	}
 	
+	/**
+	 * Salva lo stato del Server. Viene salvata la mappa, la lista dei giocatori registrati e la lista
+	 * di tutte le specie. Il file di salvataggio si chiama 'server.ser'.
+	 */
 	public void saveServerState()
 	{
 		if ( server.getPlayerInGame() == 0)
@@ -1687,6 +1757,11 @@ public class ServerLogic
 		}
 	}
 	
+	/**
+	 * Ritorna il token di un giocatore tramite il suo username.
+	 * @param username l'username dell'utente che esegue la richiesta
+	 * @return token dell'utente che esegue la richiesta
+	 */
 	public String getTokenFromUsername(String username)
 	{
 		if(players.get(username) != null)

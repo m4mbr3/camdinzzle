@@ -17,7 +17,7 @@
 		(CHIESTO A CARDAMONE)
 
 		-JUNIT					classi + importanti
-		-JML					www.jmlspecs.com
+		-JML					www.jmlspecs.org
 					
 					private /*@ spec_public @*/ int[] ciccio;
 					//@public invariant ciccio != null
@@ -47,16 +47,6 @@
 		-TimeOutOptionPane
 		-Visual
 		
-		-CheckRMIClientConnection
-		-ClientManager
-		-ClientManagerLocal
-		-ClientManagerRMI
-		-ClientManagerSocket
-		-Counter
-		-Player
 		-RMIMessageBroker
-		-Server
-		-ServerLogic
 		-ServerMessageBroker
-		-ServerRMI
 		-ServerRMIInterface

@@ -14,51 +14,51 @@ public class Species implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	/**
-	 * nome della specie
+	 * Nome della specie.
 	 */
 	private String name;
 	/**
-	 * turni mancanti alla estizione
+	 * Turni mancanti alla estizione.
 	 */
 	private int timeOfLive;
 	/**
-	 * tabella dei dinosauri in gioco
+	 * Tabella dei dinosauri in gioco.
 	 */
 	private Hashtable<String, Dinosaur> myDinosaurs;
 	/**
-	 * razza di dinosauri: Carnivoro o Vegetariano
+	 * Razza di dinosauri: Carnivoro o Vegetariano.
 	 */
 	protected static enum type {Carnivorous, Vegetarian}
 	/**
-	 * razza della specie
+	 * Razza della specie.
 	 */
 	private type speciesType;
 	/**
-	 * numero di dinosauri creati
+	 * Numero di dinosauri creati.
 	 */
 	private int  dinoNumber;
 	/**
-	 * mappa della specie con celle visibili solo quelle gia' visitate
+	 * Mappa della specie con celle visibili solo quelle gia' visitate.
 	 */
 	private Object[][] map;
 	/**
-	 * punteggio della specie
+	 * Punteggio della specie.
 	 */
 	private int score;
 	/**
-	 * username del giocatore possessore della specie
+	 * Username del giocatore possessore della specie.
 	 */
 	private String playerUsername;
 	/**
-	 * limite massimo di dinosauri in gioco
+	 * Limite massimo di dinosauri in gioco.
 	 */
 	private final int maxDino=1;
 	
 	/**
-	 * Crea una nuova specie, setta il nome e il timo, imposta timeOfLive a 120, crea un nuovo dinosauro e chiama startMap e l'updateMap
-	 * @param name
-	 * @param speciesType
-	 * @param username
+	 * Crea una nuova specie, setta il nome e il tipo, imposta timeOfLive a 120, crea un nuovo dinosauro e chiama startMap e l'updateMap
+	 * @param name nome della specie
+	 * @param speciesType tipo della specie
+	 * @param username l'username del giocatore che vuole creare la specie
 	 */
 	public Species(String name, type speciesType, String username)
 	{
@@ -84,16 +84,16 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * ritorna il punteggio
-	 * @return int
+	 * Ritorna il punteggio della specie.
+	 * @return punteggio della specie
 	 */
 	public int getScore() {
 		return score;
 	}
 
 	/**
-	 * setta il punteggio
-	 * @param score
+	 * Assegna il punteggio alla specie.
+	 * @param punteggio
 	 */
 	public void setScore(int score) 
 	{
@@ -101,7 +101,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * sottrae uno al tempo di vita della specie
+	 * Sottrae uno al tempo di vita della specie.
 	 */
 	public void updateTimeOfLive()
 	{
@@ -109,8 +109,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * ritorna il tempo di vita della specie
-	 * @return int
+	 * Ritorna il tempo di vita della specie.
+	 * @return tempo di vita della specie
 	 */
 	public int getTimeOfLive()
 	{
@@ -118,7 +118,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * incrementa il punteggio
+	 * Incrementa il punteggio della specie.
 	 */
 	public void increaseScore()
 	{
@@ -132,8 +132,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * restituisce l'username del giocatore
-	 * @return String
+	 * Restituisce l'username del giocatore a cui appartiene la specie.
+	 * @return username del giocatore
 	 */
 	public String getPlayerUsername() 
 	{
@@ -141,8 +141,8 @@ public class Species implements Serializable
 	}
 
 	/**
-	 * setta l'username del giocatore
-	 * @param playerUsername
+	 * Setta l'username del giocatore.
+	 * @param username del giocatore
 	 */
 	public void setPlayerUsername(String playerUsername) 
 	{
@@ -150,7 +150,8 @@ public class Species implements Serializable
 	}
 
 	/**
-	 * aggiunge uno al numero di dinosauri della specie, per l'identificatore
+	 * Sggiunge uno al numero di dinosauri della specie. Utilizzato per l'id progressivo dei 
+	 * dinosauri della specie.
 	 */
 	public void addDinoNumber()
 	{
@@ -159,7 +160,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * ritorna il numero di dinosauri creati
+	 * Ritorna il numero di dinosauri creati.
 	 */
 	public int getDinoNumber()
 	{
@@ -167,8 +168,9 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * @param dinoId : ID del dinosauro
-	 * @return Il riferimento al dinosauro se esiste un dinosauro avente come id dinoId, null altrimenti
+	 * Ritorna il riferimento al dinosauro richiesto.
+	 * @param dinoId ID del dinosauro
+	 * @return riferimento al dinosauro se esiste un dinosauro avente come id dinoId, null altrimenti
 	 */
 	public Dinosaur getDino(String dinoId)
 	{
@@ -176,7 +178,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * crea un nuovo dinosauro, lo aggiunge alla HashTable  e lo setta sulla mappa generale
+	 * Crea un nuovo dinosauro, lo aggiunge alla lista dei dinosauri della specie e lo inserisce 
+	 * nella mappa generale.
 	 */
 	public Dinosaur addDinosaur( int posRig, int posCol)
 	{
@@ -202,7 +205,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * @return Un iteratore contenente i dinosauri delle specie
+	 * Ritorna la lista dei dinosauri della specie.
+	 * @return iteratore con la lista dei dinosauri
 	 */
 	public Iterator<Map.Entry<String, Dinosaur>> getDinosaurs()
 	{
@@ -217,9 +221,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * controlla se ci sono dinosauri della specie
-	 * ritorna true se positivo, false altrimenti
-	 * @return boolean
+	 * Controlla se ci sono dinosauri della specie.
+	 * @return true se esistono dinosauri della specie, false altrimenti
 	 */
 	public boolean existDinos()
 	{
@@ -232,7 +235,9 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * riconosce l'id del dinosauro e restituisce l'oggetto
+	 * Riconosce l'id del dinosauro e restituisce il riferimento.
+	 * @param dinoId id del dinosauro
+	 * @return riferimento al dinosauro
 	 */
 	public Dinosaur identifyDinosaur(String dinoId)
 	{
@@ -242,7 +247,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * aggiorna stato di ogni dinosauro alla fine del turno
+	 * Aggiorna stato di ogni dinosauro della specie.
 	 */
 	public void upDateDinosaurStatus()
 	{
@@ -258,8 +263,8 @@ public class Species implements Serializable
 	}
 
 	/**
-	 * ritorna il type carivoro
-	 * @return type
+	 * Ritorna il type carnivoro.
+	 * @return tipo carnivoro 
 	 */
 	public static type getCarnType()
 	{
@@ -267,8 +272,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * ritorna il type vegetariano
-	 * @return type
+	 * Ritorna il type vegetariano
+	 * @return tipo vegetariano
 	 */
 	public static type getVegType()
 	{
@@ -276,8 +281,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * ritorna il type della specie
-	 * @return type
+	 * Ritorna il type della specie.
+	 * @return tipo della specie
 	 */
 	public type getType()
 	{
@@ -286,8 +291,8 @@ public class Species implements Serializable
 
 	
 	/**
-	 * ritorna il nome della specie
-	 * @return String
+	 * Ritorna il nome della specie.
+	 * @return nome della specie
 	 */
 	public String getName() 
 	{
@@ -295,8 +300,8 @@ public class Species implements Serializable
 	}
 
 	/**
-	 * setta il nome della specie
-	 * @param name
+	 * Setta il nome della specie.
+	 * @param name nome della specie
 	 */
 	public void setName(String name)
 	{
@@ -304,7 +309,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * crea una mappa generale del giocatore tutta buia
+	 * Crea la mappa generale del giocatore tutta a buio.
 	 */
 	public void startMap()
 	{
@@ -320,7 +325,7 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * aggiorna la mappa generale del giocatore (buio) inserendo la vista dei dinosauri in gioco
+	 * Aggiorna la mappa generale del giocatore (buio) inserendo la vista dei dinosauri in gioco.
 	 */
 	public void updateMap()
 	{
@@ -370,17 +375,14 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * ritorna la mappa generale della specie con celle visibili solo quelle già visitate.
-	 * @return Object[][]
+	 * Ritorna la mappa generale della specie con celle visibili solo quelle gia' visitate.
+	 * @return mappa generale
 	 */
 	public Object[][] getPlayerMap()
 	{
 		return map;
 	}
 	
-	/**
-	 * stampa la mappa della specie
-	 */
 	public void stampa()
 	{
 
@@ -395,9 +397,10 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * setta la cella del dinosauro dove si trovava con quello che c'era prima di esso, ed elimina il dinosauro
-	 * @param dinoId
-	 * @param fight : boolean che indica se la morte è avvenuta dopo la sconfitta in combattimento
+	 * Setta la cella del dinosauro dove si trovava con quello che c'era prima di esso, 
+	 * ed elimina il dinosauro.
+	 * @param dinoId id del dinosauro
+	 * @param fight indica se la morte e' avvenuta dopo la sconfitta in combattimento
 	 */
 	public void killDino(Dinosaur dinoId, boolean fight)
 	{
@@ -439,10 +442,10 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * imposta una cella della mappa generale del giocatore con la stringa in msg e nella posizione row, col
-	 * @param msg
-	 * @param row
-	 * @param col
+	 * Imposta una cella della mappa generale del giocatore con la stringa in msg e nella posizione row, col
+	 * @param msg stringa da settare
+	 * @param row riga della mappa da settare
+	 * @param col colonna della mappa da settare
 	 */
 	public void setCellMap(String msg, int row, int col)
 	{
@@ -450,8 +453,8 @@ public class Species implements Serializable
 	}
 	
 	/**
-	 * controlla se il numero massimo di dinosauri e' stato raggiunto
-	 * @return boolean
+	 * Controlla se il numero massimo di dinosauri e' stato raggiunto.
+	 * @return true se il numero massimo di dinosauri e' stato raggiunto, false altrimenti
 	 */
 	public boolean checkDinoNumber()
 	{

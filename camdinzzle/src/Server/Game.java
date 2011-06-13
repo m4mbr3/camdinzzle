@@ -5,61 +5,65 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * Classe che rappresenta la sessione di gioco corrente. Contiene informazioni riguardanti i giocatori
+ * attualmente in partita e contiene la mappa generale.
+ */
 public class Game
 {
 	/**
-	 * mappa generale del gioco
+	 * Mappa generale del gioco.
 	 */
 	private static Object[][] map;
 	/**
-	 * numero massimo di righe della mappa
+	 * Numero massimo di righe della mappa.
 	 */
 	public static final int maxRow=40;
 	/**
-	 * numero massimo delle colonne della mappa
+	 * Numero massimo delle colonne della mappa.
 	 */
 	public static final int maxCol=40;
 	/**
-	 * grandezza massima della mappa di raggiungibilita'
+	 * Grandezza massima della mappa di raggiungibilita'.
 	 */
 	public static final int maxReach=7;
 	/**
-	 * distanza massima percorribile da un dinosauro
+	 * Distanza massima percorribile da un dinosauro.
 	 */
 	public static final int distMax=3;
 	/**
-	 * numero massimo di celle d'acqua
+	 * Numero massimo di celle d'acqua.
 	 */
 	private int Water = 164;
 	/**
-	 * numero di carogne
+	 * Numero di carogne.
 	 */
 	private int Carrion=20;
 	/**
-	 * numero di vegetazione
+	 * Numero di vegetazione.
 	 */
 	private int Vegetation=512;
-	/**
-	 * 
-	 */
+	
 	private boolean permise=true;
 	/**
-	 * numero massimo di giocatori in gioco
+	 * Numero massimo di giocatori attualmente in gioco.
 	 */
 	private int maxPlayers;
 	/**
-	 * tabella dei giocatori in gioco
+	 * Lista dei giocatori in gioco. 
+	 * La LinkedHashMap ha come chiave il token del giocatore.
 	 */
 	private LinkedHashMap<String, Player> playersInGame;
 	/**
-	 * mappa di raggiungibilita'
+	 * Mappa di raggiungibilita'.
 	 */
 	private static int[][][][] mapReach;
 
 	/**
-	 * crea una nuova mappa se non esiste, altrimenti la caica da file e inizializza la mappa di raggiungibilita'
-	 * @param mapFromFile
+	 * Istanzia un nuovo Game.
+	 * Crea una nuova mappa se non esiste, altrimenti la carica da file e inizializza la mappa 
+	 * di raggiungibilita'.
+	 * @param mapFromFile riferimento alla mappa
 	 */
 	public Game(Object[][] mapFromFile) 
 	{
@@ -79,8 +83,8 @@ public class Game
 	}
 	
 	/**
-	 * restituisce la mappa generale
-	 * @return
+	 * Ritorna la mappa generale della partita.
+	 * @return matrice contenente la mappa generale
 	 */
 	public Object[][] getGeneralMap()
 	{
@@ -88,8 +92,8 @@ public class Game
 	}
 	
 	/**
-	 * restituisce il numero massimo di giocatori
-	 * @return int
+	 * Ritorna il numero massimo di giocatori che possono partecipare contemporaneamente alla partita.
+	 * @return numero massimo dei giocatori
 	 */
 	public int getMaxPlayers() 
 	{
@@ -97,8 +101,8 @@ public class Game
 	}
 
 	/**
-	 * setta il numero massimo di giocatori
-	 * @param maxPlayers
+	 * Setta il numero massimo di giocatori della partita.
+	 * @param maxPlayers numero massimo di giocatori
 	 */
 	public void setMaxPlayers(int maxPlayers) 
 	{
@@ -106,10 +110,10 @@ public class Game
 	}
 
 	/**
-	 * Aggiunge un nuovo giocatore alla HashMap dei giocatori già in partita
-	 * @param token Token del giocatore da aggiungere
-	 * @param newPlayer Player da aggiungere alla HashMap
-	 * @return true se non esiste già un valore referenziato da quel token, false altrimenti
+	 * Aggiunge un nuovo giocatore alla lista dei giocatori gia' in partita.
+	 * @param token il token del giocatore da aggiungere
+	 * @param newPlayer oggetto Player da aggiungere alla lista
+	 * @return true se non esiste un giocatore in partita con il token, false altrimenti
 	 */
 	public boolean addPlayer(String token, Player newPlayer)
 	{
@@ -125,9 +129,10 @@ public class Game
 	}
 	
 	/**
-	 * @param token Token del Player da tornare
-	 * @return Player referenziato dal token ricevuto come parametro. Se la chiave non referenzia nessun
-	 * valore viene ritornato null
+	 * Ritorna un oggetto Player corrispondente al Player che ha come chiave il token.
+	 * @param token il token del Player
+	 * @return Player corrispondente al token. Se il nessun Player corrisponde al token viene ritornato
+	 * null
 	 */
 	public Player getPlayer(String token)
 	{
@@ -141,8 +146,8 @@ public class Game
 	}
 	
 	/**
-	 * Rimuove un giocatore dalla HashMap dei Player
-	 * @param token : token del giocatore
+	 * Rimuove un giocatore dalla lista dei giocatori in partita attualmente.
+	 * @param token il token del giocatore
 	 * @return true se il giocatore era presente ed è stato eliminato, false altrimenti
 	 */
 	public boolean removePlayer(String token)
@@ -160,8 +165,8 @@ public class Game
 	}
 	
 	/**
-	 * Numero di giocatoriin partita
-	 * @return Numero di giocatori in partita
+	 * Ritorna il umero di giocatori in partita.
+	 * @return numero di giocatori in partita
 	 */
 	public int numberPlayersInGame()
 	{
@@ -172,7 +177,7 @@ public class Game
 	}
 	
 	/**
-	 * Lista dei giocatori in partita
+	 * Ritorna la lista dei giocatori in partita.
 	 * @return Iterator con la lista dei giocatori in partita
 	 */
 	public Iterator<Map.Entry<String, Player>> getPlayersList()
@@ -186,9 +191,8 @@ public class Game
 	}
 	
 	/**
-	 * Ritorna il token del primo giocatore che ha il diritto del primo turno(il primo giocatore della
-	 * HashMap dei giocatori)
-	 * @return Token del giocatore
+	 * Ritorna il token del giocatore in testa alla lista dei giocatori attualmente in partita.
+	 * @return il token del giocatore
 	 */
 	public String getFirstPlayer()
 	{
@@ -207,10 +211,10 @@ public class Game
 	}
 	
 	/**
-	 * controlla che ci sia spazio e crea una pozza rettangolare
-	 * @param size
-	 * @param row
-	 * @param col
+	 * Controlla che ci sia spazio nella mappa e crea una pozza di acqua rettangolare.
+	 * @param size dimensione della pozza di acqua
+	 * @param row altezza della pozza
+	 * @param col base della pozza
 	 */
 	private void rectangle(int size, int row, int col, Object[][] map)
 	{
@@ -246,10 +250,10 @@ public class Game
 	}
 	
 	/**
-	 * controlla che ci sia spazio e crea una pozza a ferro di cavallo
-	 * @param size
-	 * @param row
-	 * @param col
+	 * Controlla che ci sia spazio e crea una pozza di acqua a ferro di cavallo.
+	 * @param size dimensione della pozza
+	 * @param row numero di righe occupate dalla pozza
+	 * @param col numero di colonne occupate dalla pozza
 	 */
 	private void horseshoe(int size, int row, int col, Object[][] map)
 	{
@@ -304,11 +308,11 @@ public class Game
 		}
 	}
 	/**
-	 * controlla che ci sia spazio e crea una pozza a stella
-	 * @param size
-	 * @param row
-	 * @param col
-	 * @param map
+	 * Controlla che ci sia spazio e crea una pozza d'acqua a stella.
+	 * @param size dimensione della pozza
+	 * @param row numero di righe occupate dalla pozza
+	 * @param col numero di colonne occupate dalla pozza
+	 * @param map matrice contenente la mappa generale
 	 */
 	private void star(int size, int row, int col, Object[][] map)
 	{
@@ -375,11 +379,11 @@ public class Game
 	}
 	
 	/**
-	 * controlla che ci sia spazio e crea una pozza a fiume
-	 * @param size
-	 * @param row
-	 * @param col
-	 * @param map
+	 * Controlla che ci sia spazio e crea una pozza di acqua a fiume.
+	 * @param size dimensione della pozza
+	 * @param row numero di righe occupate dalla pozza
+	 * @param col numero di colonne occupate dalla pozza
+	 * @param map matrice contenente la mappa generale
 	 */
 	private void river(int size, int row, int col, Object[][] map)
 	{
@@ -460,7 +464,7 @@ public class Game
 	}
 	
 	/**
-	 * crea una nuova mappa random
+	 * Crea una nuova mappa di gioco.
 	 */
 	public void createMap()
 	{
@@ -610,9 +614,8 @@ public class Game
 			
 	}
 
-		
 	/**
-	 * stampa la mappa generale del server senza buoio
+	 * Stampa la mappa generale di gioco.
 	 */
 	public static void stampa()
 	{
@@ -628,10 +631,10 @@ public class Game
 	}
 	
 	/**
-	 * 
-	 * @param row :riga della cella desiderata
-	 * @param col : colonna della cella desiderata
-	 * @return	oggetto contenuto nella cella
+	 * Ritorna il contenuto di una cella della matrice della mappa generale.
+	 * @param row riga della cella desiderata
+	 * @param col colonna della cella desiderata
+	 * @return oggetto contenuto nella cella
 	 */
 	public static Object getCell(int row, int col)
 	{
@@ -639,10 +642,10 @@ public class Game
 	}
 	
 	/**
-	 * Ritaglia una orzione di mappa intorno al dinosauro in base alle dimensioni
-	 * @param row : riga del dinosauro
-	 * @param col : colonna del dinosauro
-	 * @param dimension : dimensione del dinosauro
+	 * Ritaglia dalla mappa la vista locale di un dinosauro.
+	 * @param row riga del dinosauro
+	 * @param col colonna del dinosauro
+	 * @param dimension dimensione del dinosauro
 	 * @return mappa locale del dinosauro
 	 */
 	public static Object[][] getLocalMap(int row, int col, int dimension)
@@ -708,7 +711,7 @@ public class Game
 	}
 	
 	/**
-	 * inizializza la mappa di raggiungibilità
+	 * Inizializza la mappa di raggiungibilità.
 	 */
 	public void startMapReach()
 	{
@@ -730,15 +733,14 @@ public class Game
 	}
 	
 	/**
-	 * metodo ricorsivo per creare la mappa di raggiungibilita'
-	 * compila la matrice dist con i passi che servono per arrivare a una determinata cella partendo da quella centrale
-	 * @param rowStart
-	 * @param colStart
-	 * @param rowRel
-	 * @param colRel
-	 * @param view
-	 * @param dist
-	 * @param d
+	 * Crea la mappa di raggiungibilita'.
+	 * @param rowStart riga di inizio della creazione
+	 * @param colStart colonna di inizio della creazione
+	 * @param rowRel riga della cella della mappa da controllare
+	 * @param colRel colonna della cella della mappa da controllare
+	 * @param view matrice delle cella gia' visitate
+	 * @param dist matrice delle distanze dalla cella iniziale
+	 * @param d distanza della cella relativa rispetto alla cella iniziale
 	 */
 	public void reachAbleCell(int rowStart, int colStart, int rowRel, int colRel, boolean[][] view, int[][] dist, int d)
 	{
@@ -782,14 +784,14 @@ public class Game
 	}
 	
 	/**
-	 * controlla che una cella sia raggiungibile dal dinosauro interessato in base alla massima distanza che puo' percorrere
+	 * Controlla che una cella sia raggiungibile dal dinosauro interessato in base alla massima distanza che puo' percorrere
 	 * e alla presenza di un percorso continuo senza acqua in mezzo
-	 * @param startRow
-	 * @param startCol
-	 * @param destRow
-	 * @param destCol
-	 * @param distMax
-	 * @return
+	 * @param startRow riga di partenza del controllo 
+	 * @param startCol colonna di partenza del controllo
+	 * @param destRow riga di destinazione del movimento
+	 * @param destCol colonna di destinazione del movimento
+	 * @param distMax distanza massima del movimento
+	 * @return true se la cella di destinazione e' raggiungibile, false altrimenti
 	 */
 	public static boolean checkReachCell(int startRow, int startCol, int destRow, int destCol, int distMax)
 	{
@@ -805,15 +807,8 @@ public class Game
 		return false;
 	}
 	
-	/**
-	 * stampa la mappa di raggiungibilita' di una cella specifica
-	 * @param row
-	 * @param col
-	 */
 	public static void stampaReachAble(int row, int col)
 	{
-		
-
 		for(int i=0; i<maxReach; i++)
 		{
 			for(int j=0; j<maxReach; j++)
@@ -825,10 +820,10 @@ public class Game
 	}
 	
 	/**
-	 * inerisce nella mappa generale l'oggetto passato
-	 * @param obj
-	 * @param row
-	 * @param col
+	 * Inserisce nella mappa generale l'oggetto passato.
+	 * @param obj oggetto da inserire nella mappa
+	 * @param row riga della mappa in cui inserire l'oggetto
+	 * @param col colonna della mappa in cui inserire l'oggetto
 	 */
 	public static void setCellMap(Object obj, int row, int col)
 	{
@@ -843,12 +838,13 @@ public class Game
 	}
 	
 	/**
-	 * legge la mappa di raggiungibilità e sestituisce la distanza tra la cella di partenza e quella di arrivo
-	 * @param startRow
-	 * @param startCol
-	 * @param destRow
-	 * @param destCol
-	 * @return 
+	 * Legge la mappa di raggiungibilità e restituisce la distanza tra la cella di partenza e quella 
+	 * di arrivo
+	 * @param startRow riga di inizio del controllo
+	 * @param startCol colonna di inizio del controllo
+	 * @param destRow riga di destinazione del controllo
+	 * @param destCol colonna di destinazione del controllo
+	 * @return  distanza delle celle controllate
 	 */
 	public static int getDistCell(int startRow, int startCol, int destRow, int destCol)
 	{
@@ -984,10 +980,11 @@ public class Game
 			return false;
 		
 	}*/
+	
 	/**
-	 * riposiziona nella mappa in modo casuale la carogna
-	 * @param row : posizione iniziale
-	 * @param col : posizione iniziale
+	 * Riposiziona nella mappa in modo casuale un oggetto di tipo Carrion.
+	 * @param row riga della posizione iniziale
+	 * @param col colonna della posizione iniziale
 	 */
 	public void repositionCarrion(int row, int col)
 	{
@@ -1003,9 +1000,9 @@ public class Game
 	}
 	
 	/**
-	 * controlla che il giocatore sia in gioco
-	 * @param token
-	 * @return
+	 * Controlla che il giocatore sia in gioco.
+	 * @param token il token del giocatore su cui fare il controllo
+	 * @return true se il giocatore e' in gioco, false altrimenti
 	 */
 	public boolean isPlayerInGame(String token)
 	{

@@ -3,25 +3,23 @@ package Server;
 import java.io.Serializable;
 
 /**
- * 
- * @author Marco
- *
+ * Classe che rappresenta un dinosauro carnivoro all'interno del gioco.
  */
 public class Carnivorous extends Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	/**
-	 * parametro che contiene la vegetazione presente nella cella quando il dinosauro si trova sopra di essa
+	 * Oggetto che contiene la vegetazione presente nella cella quando il dinosauro si trova sopra 
+	 * di essa.
 	 */
 	private Vegetation vegetation=null;
 
 	/**
-	 * richiama il costruttore di Dinosaur e setta la distanza massima per il movimento a 3
-	 * 
-	 * @param dinoId
-	 * @param posRow
-	 * @param posCol
-	 * @param specie
+	 * Richiama il costruttore di Dinosaur e setta la distanza massima per il movimento a 3
+	 * @param dinoId id del dinosauro
+	 * @param posRow riga della posizione iniziale
+	 * @param posCol colonna della posizione iniziale
+	 * @param specie riferimento alla specie del dinosauro
 	 */
 	public Carnivorous(String dinoId, int posRow, int posCol, Species specie) 
 	{
@@ -78,8 +76,6 @@ public class Carnivorous extends Dinosaur implements Serializable
 	@Override
 	public boolean move(int rowDest, int colDest)
 	{
-		
-
 		if(vegetation!=null)
 		{
 			Game.setCellMap(vegetation, this.getPosRow(), this.getPosCol());
@@ -108,8 +104,8 @@ public class Carnivorous extends Dinosaur implements Serializable
 	}
 	
 	/**
-	 * setta la vegetazione che c'era sulla mappa dove ora si e' posizionato il dinosauro
-	 * @param vegetation
+	 * Setta la vegetazione che c'era sulla mappa dove ora si e' posizionato il dinosauro
+	 * @param vegetation riferimento alla vegetazione da settare
 	 */
 	public void setVegetation(Vegetation vegetation) 
 	{
@@ -117,8 +113,8 @@ public class Carnivorous extends Dinosaur implements Serializable
 	}
 
 	/**
-	 * ritorna la vegetazione che sta nella stessa cella del dinosauro
-	 * @return Vegetation
+	 * Ritorna la vegetazione posizionata nella stessa cella del dinosauro.
+	 * @return l'oggetto posizionato nella cella
 	 */
 	public Vegetation getVegetation() 
 	{

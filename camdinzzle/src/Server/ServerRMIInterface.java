@@ -4,7 +4,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface ServerRMIInterface extends Remote {
+public interface ServerRMIInterface extends Remote 
+{
 
 	public String creaUtente(String username, String password) throws RemoteException;
 	public String login(String username, String password) throws RemoteException;

@@ -23,13 +23,12 @@ import java.util.Set;
 
 import Client.Client;
 
-
+/**
+ * Classe che rappresenta il server. Registra in remoto un server di nome "server" sulla porta 1099
+ * per le connessioni RMI e aspetta le connessioni dei client in socket.
+ */
 public class Server implements Runnable 
 {
-
-	/**
-	 * @param args
-	 */
 	// RMI variables
 	
 	// End RMI variables
@@ -43,20 +42,40 @@ public class Server implements Runnable
 	private ClientManagerSocket clientManagerSocket;
 	// End ClientManager
 	
-	
 	private ServerRMI serverRMI;
-	
+	/**
+	 * Lista dei client connessi via RMI. La chiave della tabella è l'username dell'utente.
+	 */
 	private Hashtable<String, ClientManagerRMI> clientTableRMI;
+	/**
+	 * Lista dei client connessi via Socket.
+	 */
 	private ArrayList<ClientManagerSocket> clientListSocket;
 	
 	private boolean is_run;
+	/**
+	 * Porta di default socket.
+	 */
 	private int port;
+	/**
+	 * Istanza di ServerLogic.
+	 */
 	private ServerLogic serverLogic;
+	/**
+	 * Lista dei client locali.
+	 */
 	private ArrayList<ClientManagerLocal> clientLocal;
 	private Client client;
 	private Registry registro;
 	private CheckRMIClientConnection checkRMI;
 	
+	/**
+	 * Istanzia un nuovo server.
+	 * @param port porta di ascolta per le connessioni socket
+	 * @param serverLogic istanza di ServerLogic
+	 * @param serverPort porta dove registrare il server RMI
+	 * @param serverName nome del server RMI
+	 */
 	public Server(int port, ServerLogic serverLogic, String serverPort, String serverName)
 	{
 			clientLocal = new ArrayList<ClientManagerLocal>();
@@ -141,15 +160,63 @@ public class Server implements Runnable
 			}
 	}
 	
+	/**
+	 * Ritorna il numero dei giocatori in partita attualmente.
+	 * @return numero dei giocatori in partita. Se va in errore viene tornato -1
+	 */
 	public int getPlayerInGame()
 	{
-		return clientListSocket.size() + clientTableRMI.size() + clientListSocket.size();
+		try
+		{
+			int playerInGame = 0;
+			
+			for (ClientManagerSocket client : clientListSocket) 
+			{
+				if(client.getIsInGame())
+				{
+					playerInGame++;
+				}
+			}
+			
+			for (ClientManagerLocal client : clientLocal) 
+			{
+				if(client.getIsInGame())
+				{
+					playerInGame++;
+				}
+			}
+			
+			Set<Map.Entry<String, ClientManagerRMI>> set = clientTableRMI.entrySet();
+			Iterator<Map.Entry<String, ClientManagerRMI>> iter = set.iterator();
+			
+			while(iter.hasNext())
+			{
+				Map.Entry<String, ClientManagerRMI> me = (Map.Entry<String, ClientManagerRMI>)iter.next();
+				
+				if(me.getValue().getIsInGame())
+				{
+					playerInGame++;
+				}
+			}
+			
+			return playerInGame;
+		}
+		catch(Exception ex)
+		{
+			System.out.println("ERROR in Server.getPlayerInGame: " + ex.getMessage());
+			return -1;
+		}
 	}
+	
 	public void stop()
 	{
 		is_run = false;
 	}
 	
+	/**
+	 * Aspetta le connessioni in socket da parte dei client.
+	 */
+	@Override
 	public void run()
 	{
 		System.out.println("<<SERVER DAEMON>>--STARTED");
@@ -176,8 +243,8 @@ public class Server implements Runnable
 	}
 	
 	/**
-	 * Per ogni  Client in partita invia la notifica di cambio del turno
-	 * @param msg : messaggio da mandare al Client
+	 * Per ogni  Client in partita invia la notifica di cambio del turno.
+	 * @param msg messaggio da mandare al Client
 	 */
 	public void sendBroadcastMessage(String msg)
 	{
@@ -230,6 +297,10 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * Aggiunge un client socket alla lista dei client connessi via socket.
+	 * @param cms il client da aggiungere alla lista
+	 */
 	public void addClientSocket(ClientManagerSocket cms)
 	{
 		try
@@ -242,6 +313,10 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * Rimuove un client connesso via socket dalla lista dei client connessi.
+	 * @param cms rimuove il client dalla lista
+	 */
 	public void removeClientSocket(ClientManagerSocket cms)
 	{
 		try
@@ -254,6 +329,11 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * Aggiunge un client connesso al server via RMI alla lista dei client connessi via RMI.
+	 * @param username username del client
+	 * @param clientIp ip del PC del client
+	 */
 	public void addClientRMI(String username, String clientIp)
 	{
 		try 
@@ -281,6 +361,10 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * Rimuove un client connesso via RMI dalla tabella dei client connessi via RMI.
+	 * @param username l'username dell'utente da scollegare
+	 */
 	public void removeClientRMI(String username)
 	{
 		try
@@ -298,6 +382,11 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * Assegna alla variabile di controllo in partita il parametro passato.
+	 * @param username l'username del giocatore
+	 * @param isInGame valore da assegnare alla variabile di gioco
+	 */
 	public void setGameAccessRMI(String username, boolean isInGame)
 	{
 		try
@@ -313,11 +402,19 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * Ritorna la HashTable contenente i giocatori connessi via RMI.
+	 * @return lista dei giocatori connessi via RMI
+	 */
 	public Hashtable<String, ClientManagerRMI> getClientRMI()
 	{
 		return clientTableRMI;
 	}
 	
+	/**
+	 * Rimuove un client locale dalla lista dei client locali.
+	 * @param cmLocal il client da rimuovere
+	 */
 	public void removeClientLocal(ClientManagerLocal cmLocal)
 	{
 		try
@@ -330,12 +427,19 @@ public class Server implements Runnable
 		}
 	}
 	
+	/**
+	 * Crea un nuovo client locale e lo inserisce nella lista dei client locali.
+	 */
 	public void newClient()
 	{
 		clientLocal.add( new ClientManagerLocal(serverLogic, this));		
 		client = new Client(clientLocal.get(clientLocal.size()-1));
 		clientLocal.get(clientLocal.size()-1).setClient(client);
 	}
+	
+	/**
+	 * Stampa il menu di scelta iniziale.
+	 */
 	public static void print_help()
 	{
 		System.out.println("****************************************************************************************");
