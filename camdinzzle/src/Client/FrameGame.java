@@ -448,6 +448,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					ChangeRoundThread.stop();
 					frameGameManager.setVisible(true);
 					this.setVisible(false);
+					
 				}
 			}
 		}

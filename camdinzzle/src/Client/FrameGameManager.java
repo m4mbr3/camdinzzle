@@ -251,10 +251,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					if((opt<0)||(opt>5))
 						opt=0;
 					frameGame = new FrameGame("Isola dei Dinosauri",client, this,opt);
-					ChangeRoundThread changeRoundThread = new ChangeRoundThread(client, frameGame);
-						
-					(new Thread(changeRoundThread)).start();
-					
+					ChangeRoundThread.start();
+					(new Thread(new ChangeRoundThread(client, frameGame))).start();
+					System.out.println("changeRoundThread--> partito");
 				}
 				else if (response[0].compareTo("no")==0)
 				{
@@ -445,7 +444,13 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				String[] response = ClientMessageBroker.manageLogout(check);
 				if(response[0].compareTo("ok")==0)
 				{
-					
+					this.setVisible(false);
+					if(!is_local)
+					client.setVisible(true);
+					else{
+						client.getLogin().setVisible(true);
+						client.validate();
+					}
 				}
 				if(response[0].compareTo("no")==0)
 				{

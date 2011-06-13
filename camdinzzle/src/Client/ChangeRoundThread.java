@@ -41,6 +41,11 @@ public class ChangeRoundThread  implements Runnable
 		this.frameGame = frameGame;
 		this.is_my_turn=false;
 	}
+	
+	public static void start()
+	{
+		is_run = true;
+	}
 	/**
 	 * Metodo statico che permette la terminazione del thread facendolo uscire dal ciclo di countdown
 	 * Viene richiamata all'uscita dell'utente dalla partita
@@ -48,6 +53,14 @@ public class ChangeRoundThread  implements Runnable
 	public static void stop()
 	{
 		is_run = false;
+	}
+	/**
+	 * Metodo statico che ritorna lo stato del thread
+	 * @return
+	 */
+	public static boolean getIsRun()
+	{
+		return is_run;
 	}
 	/**
 	 * Metodo chiamato al lancio del ChangeRoundthread che fa le notifiche all'utente riguardanti il cambio del turno

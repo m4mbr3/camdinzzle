@@ -344,8 +344,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	{
 		if (arg0.getComponent().equals(this.new_user))
 		{
-			new_user.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			
+			new_user.setCursor(new Cursor(Cursor.HAND_CURSOR));	
 		}
 		if (arg0.getComponent().equals(this.back))
 		{
