@@ -29,10 +29,6 @@ public class ClientListener implements Runnable
 	 */
 	private MonitorMessage mm;
 	/**
-	 * Contiene l'username dell'utente legato a questo Client
-	 */
-	private String username;
-	/**
 	 * Variabile per Limitare il numero di messaggi in validi dal server
 	 * Serve per capire se eventualmente il server non è più in esecuzione
 	 */
@@ -133,13 +129,5 @@ public class ClientListener implements Runnable
 			
 			cms.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
 		}
-	}
-	/**
-	 * Metodo per settare il nome del client 
-	 * @param username
-	 */
-	public void setUsername(String username)
-	{
-		this.username = username;
 	}
 }
