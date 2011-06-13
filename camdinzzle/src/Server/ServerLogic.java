@@ -1773,4 +1773,39 @@ public class ServerLogic
 		}
 		return null;
 	}
+
+	public Game getCurrentSession() 
+	{
+		return currentSession;
+	}
+
+	public void setCurrentSession(Game currentSession) 
+	{
+		this.currentSession = currentSession;
+	}
+
+	public Server getServer() 
+	{
+		return server;
+	}
+
+	public Hashtable<String, Player> getPlayers() 
+	{
+		return players;
+	}
+
+	public Hashtable<String, Player> getLoggedPlayers() 
+	{
+		return loggedPlayers;
+	}
+
+	public Hashtable<String, Species> getRank() 
+	{
+		return rank;
+	}
+
+	public void setKeyForToken(String keyForToken) 
+	{
+		this.keyForToken = keyForToken;
+	}
 }

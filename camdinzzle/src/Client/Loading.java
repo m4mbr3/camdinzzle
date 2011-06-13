@@ -15,7 +15,7 @@ public class Loading extends JFrame
 		this.setLayout(null);
 		progress = new JProgressBar();
 		progress.setSize(400,30);
-		progress.setLocation(0,100);
+		progress.setLocation(100,170);
 		progress.setValue(100);
 		this.setVisible(true);
 		this.add(progress);
