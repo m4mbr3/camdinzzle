@@ -135,9 +135,9 @@ public class ServerLogic
 		System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
 	}
 
-	//@ requires username != null && password != null;
+	//@ requires username != null && password != null (*Il controllo  dei caratteri speciali deve essere giÃ  eseguito*);
 	//@ ensures \result == "@no,@usernameOccupato" || \result == "@ok";
-		
+	//@ signals (Excetpion ex) \result == "@no";
 	/**
 	 * Aggiunge un nuovo utente alla lista degli utenti.
 	 * @param username l'username dell'utente
@@ -203,7 +203,7 @@ public class ServerLogic
 	}
 
 	/**
-	 * Aggiunge la nuova specie all'utente se non esiste gia' o se l'utente ha già una specie in gioco.
+	 * Aggiunge la nuova specie all'utente se non esiste gia' o se l'utente ha giï¿½ una specie in gioco.
 	 * @param token il token dell'utente
 	 * @param name il nome della specie da creare
 	 * @param type il tipo della specie ('c' o 'e')
