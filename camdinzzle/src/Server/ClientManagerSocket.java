@@ -64,6 +64,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				} 
 				catch (IOException e) 
 				{
+					LogHelper.writeError("client socket disconnesso malamente.");
 					this.stop();
 				}
 				
@@ -83,9 +84,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 			
 			if(read_socket != null)
 			{
-				System.out.println("MESSAGGIO CLIENT ->" + read_socket);
 				command = ServerMessageBroker.manageMessageType(read_socket);
-				System.out.println("COMMAND ->" + command);
 				
 				try
 				{
@@ -100,6 +99,8 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.write(serverLogic.add_new_user(parameters[0], parameters[1]));
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
+								
+								LogHelper.writeClientRequest("creaUtente.");
 							}
 							else
 							{
@@ -462,11 +463,11 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				}
 				catch(IOException e)
 				{
-					System.out.println("ERROR: " + e.getMessage());
+					LogHelper.writeError("scrittura su socket fallita.");
 				} 
 				catch (InterruptedException e) 
 				{
-					System.out.println("ERROR: " + e.getMessage());
+					LogHelper.writeError("client socket perso.");
 				}
 			
 				read_socket = null;
@@ -497,7 +498,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 			}
 			catch(IOException e)
 			{
-				System.out.println("ERROR: " + e.getMessage());
+				LogHelper.writeError("scrittua su socket fallita.");
 				sendCounter++;
 			}
 		}while((!isSend) && (sendCounter <= 5));

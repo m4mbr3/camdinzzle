@@ -96,12 +96,12 @@ public class Server implements Runnable
 			} 
 			catch (BindException e)
 			{
-				System.out.println("ERROR: Another server is already running.");
+				LogHelper.writeError("un altro server è già in esecuzione.");
 				System.exit(0);
 			}
 			catch (IOException e) 
 			{
-				System.out.println("ERROR: Creation socket not occured.");
+				LogHelper.writeError("creazione server socket non riuscita.");
 			}
 			
 			serverRMI = null;
@@ -116,7 +116,7 @@ public class Server implements Runnable
 			}
 			catch (RemoteException e1) 
 			{
-				System.out.println("ERROR: Creation server RMI not occured.");
+				LogHelper.writeError("creazione server RMI non riuscita.");
 			}
 			
 			try 
@@ -128,36 +128,36 @@ public class Server implements Runnable
 			} 
 			catch (AccessException e) 
 			{
-				System.out.println("ERROR: The server do not have permission to perform the action requested by the method call.");
+				LogHelper.writeError("il server non ha i permessi per accedere alla risorsa RMI.");
 			} 
 			catch (RemoteException e) 
 			{
-				System.out.println("ERROR: Server RMI is down.");
+				LogHelper.writeError("server RMI non attivo.");
 			} 
 			catch (AlreadyBoundException e)
 			{
-				System.out.println("ERROR: Server is just registrated.");
+				LogHelper.writeError("server RMI non registrato.");
 			}
 			catch (MalformedURLException e) 
 			{
-				System.out.println("ERROR: Check the URL to bind the server RMI.");
+				LogHelper.writeError("URL per server RMI non valido.");
 			}
 			try 
 			{
 				Naming.rebind("rmi://127.0.0.1/" + serverName + ":" + serverPort,(Remote) serverRMI);
-				System.out.println("Server RMI Avviato!");
+				LogHelper.writeInfo("server RMI avviato.");
 			}
 			catch (AccessException e) 
 			{
-				System.out.println("ERROR: The server do not have permission to perform the action requested by the method call.");
+				LogHelper.writeError("il server non ha i permessi per accedere alla risorsa RMI.");
 			} 
 			catch (RemoteException e) 
 			{
-				System.out.println("ERROR: Server RMI is down.");
+				LogHelper.writeError("server RMI non attivo.");
 			} 
 			catch (MalformedURLException e)
 			{
-				System.out.println("ERROR: Check the URL to bind the server RMI.");
+				LogHelper.writeError("URL per server RMI non valido.");
 			}
 	}
 	
@@ -204,7 +204,6 @@ public class Server implements Runnable
 		}
 		catch(Exception ex)
 		{
-			System.out.println("ERROR in Server.getPlayerInGame: " + ex.getMessage());
 			return -1;
 		}
 	}
@@ -220,24 +219,24 @@ public class Server implements Runnable
 	@Override
 	public void run()
 	{
-		System.out.println("<<SERVER DAEMON>>--STARTED");
+		LogHelper.writeInfo("<<server daemon>>--start");
 		
 		while(is_run)
 		{
 			try 
 			{
 				//waiting for connection
-				System.out.println("<<SERVER DAEMON>>--WAITING FOR CONNECTIONS at " + server.getLocalPort());
+				LogHelper.writeInfo("<<server daemon>>--in atesa di connessioni socket sulla porta " + server.getLocalPort());
 				new_connection = server.accept();
-				System.out.println("<<SERVER DAEMON>>--CONNECTION INTERCEPTED");
+				LogHelper.writeInfo("<<server daemon>>--connessione socket intercettata");
 				clientManagerSocket = new ClientManagerSocket(new_connection,serverLogic, this);
-				System.out.println("<<SERVER DAEMON>>--STARTING CLIENTMANAGER");
+				LogHelper.writeInfo("<<server daemon>>--start Client Manager");
 				(new Thread(clientManagerSocket)).start();
-				System.out.println("<<SERVER DAEMON>>--EXECUTION CLIENTMANAGER STARTED");
+				LogHelper.writeInfo("<<server daemon>>--esecuzione Client Manager avviata");
 			} 
 			catch (IOException e) 
 			{
-				System.out.println("ERROR: " + e.getMessage());
+				LogHelper.writeError("richiesta client socket non intercettata.");
 			}
 		}
 		
@@ -310,7 +309,7 @@ public class Server implements Runnable
 		}
 		catch(Exception ex)
 		{
-			System.out.println("ERROR: " + ex.getMessage());
+			LogHelper.writeError("client socket non aggiunto alla lista.");
 		}
 	}
 	
@@ -326,7 +325,7 @@ public class Server implements Runnable
 		}
 		catch(Exception ex)
 		{
-			System.out.println("ERROR: " + ex.getMessage());
+			LogHelper.writeError("client socket non rimosso dalla lista.");
 		}
 	}
 	
@@ -341,19 +340,19 @@ public class Server implements Runnable
 		{
 			ClientManagerRMI cmRMI = new ClientManagerRMI(username, clientIp, "1099", serverRMI);
 			clientTableRMI.put(username, cmRMI);
-			System.out.println("Client scaricato!!");
+			LogHelper.writeInfo("client RMI scaricato.");
 		} 
 		catch (MalformedURLException e) 
 		{
-			System.out.println("ERROR: Check the URL to bind the server RMI.");
+			LogHelper.writeError("client RMI non aggiunto alla lista. URL non corretto.");
 		}
 		catch (RemoteException e) 
 		{
-			System.out.println("ERROR: Client RMI is down.");
+			LogHelper.writeError("primo accesso remoto ad un client RMI non riuscito.");
 		}
 		catch (Exception e)
 		{
-			System.out.println("ERROR: " + e.getMessage());
+			LogHelper.writeError("client RMI non aggiunto alla lista.");
 			String token = serverLogic.getTokenFromUsername(username);
 			if(token != null)
 			{
@@ -379,7 +378,7 @@ public class Server implements Runnable
 		}
 		catch(Exception ex)
 		{
-			System.out.println("ERROR: " + ex.getMessage());
+			LogHelper.writeError("client RMI non rimosso alla lista.");
 		}
 	}
 	
@@ -399,7 +398,7 @@ public class Server implements Runnable
 		}
 		catch(Exception ex)
 		{
-			System.out.println("ERROR: " + ex.getMessage());
+			LogHelper.writeError("in partita client RMI non settato.");
 		}
 	}
 	
@@ -424,7 +423,7 @@ public class Server implements Runnable
 		}
 		catch(Exception ex)
 		{
-			System.out.println("ERROR: " + ex.getMessage());
+			LogHelper.writeError("client locale non rimosso alla lista.");
 		}
 	}
 	
@@ -470,12 +469,12 @@ public class Server implements Runnable
 			} 
 			catch (Exception e) 
 			{
-				System.out.println("ERROR: " + e.getMessage());
+				LogHelper.writeError("creazione server non avvenuta.");
 			}
 		}
 		catch(Exception ex)
 		{
-			System.out.println("ERROR: serverLogic is not create.\n" + ex.getMessage());
+			LogHelper.writeError("server logic non creato.");
 		}
 		
 		

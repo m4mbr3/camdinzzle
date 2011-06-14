@@ -41,7 +41,7 @@ public class ClientManagerRMI implements ClientManager
 			} 
 			catch (RemoteException e) 
 			{
-				System.out.println("ERROR: " + e.getMessage());
+				LogHelper.writeError("client RMI non raggiungibile.");
 				sendCounter++;
 			}
 		}while((!isSend) && (sendCounter < 2));
@@ -62,7 +62,7 @@ public class ClientManagerRMI implements ClientManager
 			}
 			catch (RemoteException e) 
 			{
-				System.out.println("ERROR: " + e.getMessage());
+				LogHelper.writeError("server RMI non raggiungibile.");
 			}
 			return false;
 		}
@@ -85,6 +85,8 @@ public class ClientManagerRMI implements ClientManager
 		} 
 		catch (RemoteException e) 
 		{
+			LogHelper.writeError("client RMI non raggiungibile.");
+			
 			try
 			{
 				if(this.isInGame)
@@ -96,7 +98,7 @@ public class ClientManagerRMI implements ClientManager
 			}
 			catch (RemoteException ex) 
 			{
-				System.out.println("ERROR: " + ex.getMessage());
+				LogHelper.writeError("server RMI non raggiungibile.");
 			}
 		}
 	}

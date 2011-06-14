@@ -43,7 +43,7 @@ public class CheckRMIClientConnection implements Runnable
 			} 
 			catch (InterruptedException e)
 			{
-				System.out.println("ERROR in CheckRMIClientCOnnection: " + e.getMessage());
+				LogHelper.writeError("client RMI non raggiungibile.");
 			}
 		}
 	}

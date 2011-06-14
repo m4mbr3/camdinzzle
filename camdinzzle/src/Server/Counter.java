@@ -27,7 +27,7 @@ public class Counter implements Runnable, Serializable
 		} 
 		catch (InterruptedException e) 
 		{
-			System.out.println("Thread " + timeToLive + " interrotto");
+			
 		}
 	}
 }
