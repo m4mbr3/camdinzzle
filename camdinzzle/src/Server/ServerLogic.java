@@ -106,17 +106,17 @@ public class ServerLogic
 			catch (FileNotFoundException e) 
 			{
 				isCorrectLoadingFromFile = false;
-				System.out.println("ERROR: File not exist.");
+				LogHelper.writeError("file 'server.ser' non trovato. Impossibile caricare lo stato del server.");
 			}
 			catch (ClassNotFoundException e) 
 			{
 				isCorrectLoadingFromFile = false;
-				System.out.println("ERROR: Loading from file failed.");
+				LogHelper.writeError("deserializzazione file 'server.ser' fallita.");
 			}
 			catch (IOException e) 
 			{
 				isCorrectLoadingFromFile = false;
-				System.out.println("ERROR: Lecture from file failed.");
+				LogHelper.writeError("deserializzazione file 'server.ser' fallita.");
 			}
 				// END DESERIALIZZAZIONE
 		}
@@ -149,6 +149,8 @@ public class ServerLogic
 	 */
 	public String add_new_user(String username, String password) 
 	{
+		LogHelper.writeClientRequest("creaUtente --> " + username + ", " + password);
+		
 		try
 		{
 			if (!players.containsKey(username)) 
@@ -156,14 +158,18 @@ public class ServerLogic
 				Player newPlayer = new Player(username, password);
 				players.put(username, newPlayer);
 	
+				LogHelper.writeServerResponse("creaUtente " + username + " --> @ok");
 				return ServerMessageBroker.createOkMessage();
 			} 
 			else
+			{
+				LogHelper.writeServerResponse("creaUtente " + username + " --> @no,@usernameOccupato");
 				return ServerMessageBroker.createErroMessage("usernameOccupato");
+			}
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(username + " creazione utente fallita.");
 			return "@no";
 		}
 	}
@@ -182,6 +188,8 @@ public class ServerLogic
 	 */
 	public String login(String username, String password)
 	{
+		LogHelper.writeClientRequest("login --> " + username + ", " + password);
+		
 		try
 		{
 			if(players.containsKey(username))
@@ -196,17 +204,20 @@ public class ServerLogic
 						if(!this.isLoggedUser(token))
 						{
 							loggedPlayers.put(token, players.get(username));
+							
+							LogHelper.writeServerResponse("login " + username + " --> @ok," + token);
 							return ServerMessageBroker.createOkMessageWithOneParameter(token);
 						}
 					}
 				}
 			}
 			
+			LogHelper.writeServerResponse("login " + username + " --> @no,@autenticazioneFallita");
 			return ServerMessageBroker.createErroMessage("autenticazioneFallita");
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(username + " login fallito.");
 			return "@no";
 		}
 	}
@@ -261,7 +272,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " creazione specie fallita.");
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 	}
@@ -277,6 +288,8 @@ public class ServerLogic
 	 */
 	public String gameAccess(String token) 
 	{
+		LogHelper.writeClientRequest("accessoPartita --> " + token);
+		
 		try
 		{
 			if(this.isLoggedUser(token))
@@ -285,6 +298,7 @@ public class ServerLogic
 				{
 					if(loggedPlayers.get(token).getSpecie() == null)
 					{
+						LogHelper.writeServerResponse("accessoPartita " + token + " --> @no,@tokenNonValido");
 						return ServerMessageBroker.createTokenNonValidoErrorMessage();
 					}
 					
@@ -356,22 +370,28 @@ public class ServerLogic
 						}
 						currentSession.getPlayer(token).getSpecie().updateMap();
 						
+						LogHelper.writeServerResponse("accessoPartita " + token + " --> @ok");
 						return ServerMessageBroker.createOkMessage();
 					} 
 					else 
 					{
+						LogHelper.writeServerResponse("accessoPartita " + token + " --> @no,@tokenNonValido");
 						return ServerMessageBroker.createTokenNonValidoErrorMessage();
 					}
 				}
 	
+				LogHelper.writeServerResponse("accessoPartita " + token + " --> @no,@troppiGiocatori");
 				return ServerMessageBroker.createErroMessage("troppiGiocatori");
 			}
 			else
+			{
+				LogHelper.writeServerResponse("accessoPartita " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " accesso in partita fallito");
 			return "@no";
 		}
 	}
@@ -383,12 +403,15 @@ public class ServerLogic
 	 */
 	public String gameExit(String token)
 	{	
+		LogHelper.writeClientRequest("uscitaPartita --> " + token);
+		
 		try
 		{
 			if(this.isLoggedUser(token))
 			{
 				if(currentSession.getPlayer(token) == null)
 				{
+					LogHelper.writeServerResponse("uscitaPartita " + token + " --> @no,@tokenNonValido");
 					return ServerMessageBroker.createTokenNonValidoErrorMessage();
 				}
 				else
@@ -461,15 +484,17 @@ public class ServerLogic
 							// END SALVATAGGIO SERVER
 						}
 						
+						LogHelper.writeServerResponse("uscitaPartita " + token + " --> @ok");
 						return ServerMessageBroker.createOkMessage();
 					}
 				}
 			}
+			LogHelper.writeServerResponse("uscitaPartita " + token + " --> @no,@tokenNonValido");
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " uscita partita fallita.");
 			return "@no";
 		}
 	}
@@ -505,7 +530,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " richiesta lista giocatori fallita.");
 			return "@no";
 		}
 	}
@@ -574,7 +599,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " richiesta classifica fallita.");
 			return "@no";
 		}
 	}
@@ -587,6 +612,8 @@ public class ServerLogic
 	 */
 	public String logout(String token)
 	{	
+		LogHelper.writeClientRequest("logout --> " + token);
+		
 		try
 		{
 			if(isLoggedUser(token))
@@ -596,14 +623,18 @@ public class ServerLogic
 				if(currentSession.getPlayer(token) != null)
 					currentSession.removePlayer(token);
 				
+				LogHelper.writeServerResponse("logout " + token + " --> @ok");
 				return ServerMessageBroker.createOkMessage();
 			}
 			else
+			{
+				LogHelper.writeServerResponse("logout " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " logout fallito.");
 			return "@no";
 		}
 	}
@@ -648,7 +679,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " richiesta mappa generale fallita.");
 			return "@no";
 		}
 	}
@@ -698,7 +729,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " richiesta lista dinosauri fallita.");
 			return "@no";
 		}
 	}
@@ -773,7 +804,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " richiesta vista locale fallita.");
 			return "@no";
 		}
 	}
@@ -910,7 +941,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " richiesta stato dinosauro fallita.");
 			return "@no";
 		}
 	}
@@ -1071,7 +1102,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " movimento dinosauro fallito.");
 			return "@no";
 		}
 	}
@@ -1134,7 +1165,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " crescita dinosauro fallita.");
 			return "@no";
 		}
 	}
@@ -1205,7 +1236,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " deposizione uovo fallita.");
 			return "@no";
 		}
 	}
@@ -1246,7 +1277,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " conferma turno fallita.");
 			return "@no";
 		}
 	}
@@ -1288,7 +1319,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError(token + " passa turno fallita.");
 			return "@no";
 		}
 	}
@@ -1307,7 +1338,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError("interruzione thread fallita.");
 		}
 	}
 	
@@ -1322,7 +1353,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError("spedizione messaggio notifica in partita fallito.");
 		}
 	}
 	
@@ -1338,7 +1369,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			
 		}
 		return null;
 	}
@@ -1437,7 +1468,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError("aggiornamento stato giocatore fallito.");
 		}
 	}
 	
@@ -1573,7 +1604,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
+			LogHelper.writeError("aggiornamento partita fallito.");
 		}
 	}
 	
@@ -1611,7 +1642,6 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			System.out.println(ex.getMessage());
 			return false;
 		}
 	}
@@ -1768,11 +1798,11 @@ public class ServerLogic
 			}
 			catch (FileNotFoundException e) 
 			{
-				System.out.println("ERROR: File not exist.");
+				LogHelper.writeError("salvataggio stato del server non eseguito.");
 			}
 			catch (IOException e) 
 			{
-				System.out.println("ERROR: Loading from file failed.");
+				LogHelper.writeError("salvataggio stato del server non eseguito.");
 			}
 		}
 	}

@@ -16,19 +16,73 @@ public class LogHelper
 			(new File(logPath)).mkdir();
 			
 			Calendar cal = Calendar.getInstance();
-			int mese = cal.get(Calendar.MONTH) + 1;
-			String ora = String.valueOf(cal.get(Calendar.HOUR_OF_DAY)) + ":" +
-				String.valueOf(cal.get(Calendar.MINUTE) + ":" +String.valueOf(cal.get(Calendar.SECOND)));
 			
-			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-			cal.get(Calendar.YEAR);
+			int mese_int = cal.get(Calendar.MONTH) + 1;
+			String mese;
+			if(mese_int < 10)
+			{
+				mese = "0" + String.valueOf(mese_int);
+			}
+			else
+			{
+				mese = String.valueOf(mese_int);
+			}
+			
+			int giorno_int = cal.get(Calendar.DAY_OF_MONTH);
+			String giorno;
+			if(giorno_int < 10)
+			{
+				giorno = "0" + String.valueOf(giorno_int);
+			}
+			else
+			{
+				giorno = String.valueOf(giorno_int);
+			}
+			
+			int ora_int = cal.get(Calendar.HOUR_OF_DAY);
+			String ora;
+			if(ora_int < 10)
+			{
+				ora = "0" + String.valueOf(ora_int);
+			}
+			else
+			{
+				ora = String.valueOf(ora_int);
+			}
+			
+			int minuti_int = cal.get(Calendar.MINUTE);
+			String minuti;
+			if(minuti_int < 10)
+			{
+				minuti = "0" + String.valueOf(minuti_int);
+			}
+			else
+			{
+				minuti = String.valueOf(minuti_int);
+			}
+			
+			int secondi_int = cal.get(Calendar.SECOND);
+			String secondi;
+			if(secondi_int < 10)
+			{
+				secondi = "0" + String.valueOf(secondi_int);
+			}
+			else
+			{
+				secondi = String.valueOf(secondi_int);
+			}
+			
+			
+			String hour = ora + ":" + minuti + ":" + secondi;
+			
+			String data =  mese + "-" + giorno + "-" + cal.get(Calendar.YEAR);
 			
 			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
 			
-			ps.println("[" + ora + "] - INFO: " + msg);
+			ps.println("[" + hour + "] - INFO:            " + msg);
 			
 			ps.close();
 			fos.close();
@@ -46,19 +100,73 @@ public class LogHelper
 			(new File(logPath)).mkdir();
 			
 			Calendar cal = Calendar.getInstance();
-			int mese = cal.get(Calendar.MONTH) + 1;
-			String ora = String.valueOf(cal.get(Calendar.HOUR_OF_DAY)) + ":" +
-			String.valueOf(cal.get(Calendar.MINUTE) + ":" +String.valueOf(cal.get(Calendar.SECOND)));
 			
-			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-			cal.get(Calendar.YEAR);
+			int mese_int = cal.get(Calendar.MONTH) + 1;
+			String mese;
+			if(mese_int < 10)
+			{
+				mese = "0" + String.valueOf(mese_int);
+			}
+			else
+			{
+				mese = String.valueOf(mese_int);
+			}
+			
+			int giorno_int = cal.get(Calendar.DAY_OF_MONTH);
+			String giorno;
+			if(giorno_int < 10)
+			{
+				giorno = "0" + String.valueOf(giorno_int);
+			}
+			else
+			{
+				giorno = String.valueOf(giorno_int);
+			}
+			
+			int ora_int = cal.get(Calendar.HOUR_OF_DAY);
+			String ora;
+			if(ora_int < 10)
+			{
+				ora = "0" + String.valueOf(ora_int);
+			}
+			else
+			{
+				ora = String.valueOf(ora_int);
+			}
+			
+			int minuti_int = cal.get(Calendar.MINUTE);
+			String minuti;
+			if(minuti_int < 10)
+			{
+				minuti = "0" + String.valueOf(minuti_int);
+			}
+			else
+			{
+				minuti = String.valueOf(minuti_int);
+			}
+			
+			int secondi_int = cal.get(Calendar.SECOND);
+			String secondi;
+			if(secondi_int < 10)
+			{
+				secondi = "0" + String.valueOf(secondi_int);
+			}
+			else
+			{
+				secondi = String.valueOf(secondi_int);
+			}
+			
+			
+			String hour = ora + ":" + minuti + ":" + secondi;
+			
+			String data =  mese + "-" + giorno + "-" + cal.get(Calendar.YEAR);
 			
 			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
 			
-			ps.println("[" + ora + "] - ERROR: " + msg);
+			ps.println("[" + hour + "] - ERROR:           " + msg);
 			
 			ps.close();
 			fos.close();
@@ -76,20 +184,74 @@ public class LogHelper
 			(new File(logPath)).mkdir();
 			
 			Calendar cal = Calendar.getInstance();
-			int mese = cal.get(Calendar.MONTH) + 1;
-			String ora = String.valueOf(cal.get(Calendar.HOUR_OF_DAY)) + ":" +
-			String.valueOf(cal.get(Calendar.MINUTE) + ":" +String.valueOf(cal.get(Calendar.SECOND)));
 			
-			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-			cal.get(Calendar.YEAR);
+			int mese_int = cal.get(Calendar.MONTH) + 1;
+			String mese;
+			if(mese_int < 10)
+			{
+				mese = "0" + String.valueOf(mese_int);
+			}
+			else
+			{
+				mese = String.valueOf(mese_int);
+			}
+			
+			int giorno_int = cal.get(Calendar.DAY_OF_MONTH);
+			String giorno;
+			if(giorno_int < 10)
+			{
+				giorno = "0" + String.valueOf(giorno_int);
+			}
+			else
+			{
+				giorno = String.valueOf(giorno_int);
+			}
+			
+			int ora_int = cal.get(Calendar.HOUR_OF_DAY);
+			String ora;
+			if(ora_int < 10)
+			{
+				ora = "0" + String.valueOf(ora_int);
+			}
+			else
+			{
+				ora = String.valueOf(ora_int);
+			}
+			
+			int minuti_int = cal.get(Calendar.MINUTE);
+			String minuti;
+			if(minuti_int < 10)
+			{
+				minuti = "0" + String.valueOf(minuti_int);
+			}
+			else
+			{
+				minuti = String.valueOf(minuti_int);
+			}
+			
+			int secondi_int = cal.get(Calendar.SECOND);
+			String secondi;
+			if(secondi_int < 10)
+			{
+				secondi = "0" + String.valueOf(secondi_int);
+			}
+			else
+			{
+				secondi = String.valueOf(secondi_int);
+			}
+			
+			
+			String hour = ora + ":" + minuti + ":" + secondi;
+			
+			String data =  mese + "-" + giorno + "-" + cal.get(Calendar.YEAR);
 			
 			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
 			
-			ps.println("[" + ora + "] - CLIENT REQUEST: " + msg);
-			
+			ps.println("[" + hour + "] - CLIENT REQUEST:  " + msg);
+			                            
 			ps.close();
 			fos.close();
 		}
@@ -106,19 +268,73 @@ public class LogHelper
 			(new File(logPath)).mkdir();
 			
 			Calendar cal = Calendar.getInstance();
-			int mese = cal.get(Calendar.MONTH) + 1;
-			String ora = String.valueOf(cal.get(Calendar.HOUR_OF_DAY)) + ":" +
-			String.valueOf(cal.get(Calendar.MINUTE) + ":" +String.valueOf(cal.get(Calendar.SECOND)));
 			
-			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-			cal.get(Calendar.YEAR);
+			int mese_int = cal.get(Calendar.MONTH) + 1;
+			String mese;
+			if(mese_int < 10)
+			{
+				mese = "0" + String.valueOf(mese_int);
+			}
+			else
+			{
+				mese = String.valueOf(mese_int);
+			}
+			
+			int giorno_int = cal.get(Calendar.DAY_OF_MONTH);
+			String giorno;
+			if(giorno_int < 10)
+			{
+				giorno = "0" + String.valueOf(giorno_int);
+			}
+			else
+			{
+				giorno = String.valueOf(giorno_int);
+			}
+			
+			int ora_int = cal.get(Calendar.HOUR_OF_DAY);
+			String ora;
+			if(ora_int < 10)
+			{
+				ora = "0" + String.valueOf(ora_int);
+			}
+			else
+			{
+				ora = String.valueOf(ora_int);
+			}
+			
+			int minuti_int = cal.get(Calendar.MINUTE);
+			String minuti;
+			if(minuti_int < 10)
+			{
+				minuti = "0" + String.valueOf(minuti_int);
+			}
+			else
+			{
+				minuti = String.valueOf(minuti_int);
+			}
+			
+			int secondi_int = cal.get(Calendar.SECOND);
+			String secondi;
+			if(secondi_int < 10)
+			{
+				secondi = "0" + String.valueOf(secondi_int);
+			}
+			else
+			{
+				secondi = String.valueOf(secondi_int);
+			}
+			
+			
+			String hour = ora + ":" + minuti + ":" + secondi;
+			
+			String data =  mese + "-" + giorno + "-" + cal.get(Calendar.YEAR);
 			
 			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
 			
-			ps.println("[" + ora + "] - SERVER RESPONSE: " + msg);
+			ps.println("[" + hour + "] - SERVER RESPONSE: " + msg);
 			
 			ps.close();
 			fos.close();
