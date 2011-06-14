@@ -32,8 +32,8 @@ public class ClientManagerRMI implements ClientManager
 		boolean isSend = false;
 		int sendCounter = 0;
 		
-		do
-		{
+		//do
+		//{
 			try
 			{
 				if(client.sendMessage(msg))
@@ -44,7 +44,7 @@ public class ClientManagerRMI implements ClientManager
 				LogHelper.writeError("client RMI non raggiungibile.");
 				sendCounter++;
 			}
-		}while((!isSend) && (sendCounter < 2));
+		//}while((!isSend) && (sendCounter < 2));
 		if(isSend)
 		{
 			return true;

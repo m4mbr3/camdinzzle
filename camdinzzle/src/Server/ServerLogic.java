@@ -1350,6 +1350,7 @@ public class ServerLogic
 		try
 		{
 			server.sendBroadcastMessage(ServerMessageBroker.createServerRoundSwitch(currentSession.getPlayer(tokenOfCurrentPlayer).getUserName()));
+			LogHelper.writeInfo("messaggio cambio turno inviato.");
 		}
 		catch(Exception ex)
 		{
@@ -1741,7 +1742,7 @@ public class ServerLogic
 		return token;
 	}
 	
-	/**
+	/*
 	 * Salva lo stato del Server. Viene salvata la mappa, la lista dei giocatori registrati e la lista
 	 * di tutte le specie. Il file di salvataggio si chiama 'server.ser'.
 	 */

@@ -20,7 +20,6 @@ public class Counter implements Runnable, Serializable
 		try 
 		{
 			Thread.sleep(timeToLive); 
-			System.out.println("Scaduti i " + timeToLive + " secondi!!");
 			server.updatePlayer(server.getTokenOfCurrentPlayer());
 			server.changeRoundNotify();
 			server.changeRound();
