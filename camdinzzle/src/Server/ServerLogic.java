@@ -136,8 +136,12 @@ public class ServerLogic
 	}
 
 	//@ requires username != null && password != null (*Il controllo  dei caratteri speciali deve essere già eseguito*);
-	//@ ensures \result == "@no,@usernameOccupato" || \result == "@ok";
+	//@ ensures if username != 
+	//@							(\forall String i; i != null; players.conatinKey(i) == true)  ==> \result == "@ok";
+	//@ 		else  \result == "@no,@usernameOccupato";
+	//@ assignable players.put(username)
 	//@ signals (Excetpion ex) \result == "@no";
+	
 	/**
 	 * Aggiunge un nuovo utente alla lista degli utenti.
 	 * @param username l'username dell'utente
@@ -165,6 +169,12 @@ public class ServerLogic
 		}
 	}
 
+	//@ requires username != null && password != null (*Il controllo dei caratteri speciali deve essere già eseguito*);
+	//@ ensures if (players.countainsKey(username) == true && players.get(username).getPassword() == password ) 
+	//@									==>  token == generateToken(username,System.nanoTime()) && \result == ServerMessageBroker.createOkMessageWithOneParameter(token);  
+	//@ 		else  					\return == ServerMessageBroker.createErroMessage("autenticazioneFallita");
+	//@ assignable LoggedPlayers.put(token, players.get(username));
+	//@ signals (Exception ex) \return == "@no";
 	/**
 	 * Aggiunge un utente alla lista degli utenti loggati.
 	 * @param username l'username dell'utente
@@ -201,7 +211,8 @@ public class ServerLogic
 			return "@no";
 		}
 	}
-
+	//@ requires token != null && name != null && (type == 'c' || type == 'e')
+	//@	ensures if is
 	/**
 	 * Aggiunge la nuova specie all'utente se non esiste gia' o se l'utente ha gi� una specie in gioco.
 	 * @param token il token dell'utente
