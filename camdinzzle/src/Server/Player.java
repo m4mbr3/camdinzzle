@@ -9,19 +9,19 @@ import java.io.Serializable;
 public class Player implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Password del giocatore.
 	 */
 	private String password;
-	/**
+	/*
 	 * Username del giocatore.
 	 */
 	private String userName;
-	/**
+	/*
 	 * Riferimento alla specie del giocatore.
 	 */
 	private Species specie;
-	/**
+	/*
 	 * Token del giocatore.
 	 */
 	private String token;

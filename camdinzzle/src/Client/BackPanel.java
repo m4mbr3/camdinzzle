@@ -7,15 +7,10 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-/**
- * 
- * @author Marco
- *
- */
 public class BackPanel extends JPanel 
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * sfondo pannello
 	 */
 	protected Image background;

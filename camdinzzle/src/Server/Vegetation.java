@@ -8,11 +8,11 @@ import java.io.Serializable;
 public class Vegetation implements Food, Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Energia attuale della vegetazione.
 	 */
 	private int power;
-	/**
+	/*
 	 * Energia massima della vegetazione.
 	 */
 	private int maxPower;

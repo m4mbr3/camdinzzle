@@ -12,43 +12,43 @@ import java.util.Set;
 public class Species implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Nome della specie.
 	 */
 	private String name;
-	/**
+	/*
 	 * Turni mancanti alla estizione.
 	 */
 	private int timeOfLive;
-	/**
+	/*
 	 * Tabella dei dinosauri in gioco.
 	 */
 	private Hashtable<String, Dinosaur> myDinosaurs;
-	/**
+	/*
 	 * Razza di dinosauri: Carnivoro o Vegetariano.
 	 */
 	protected static enum type {Carnivorous, Vegetarian}
-	/**
+	/*
 	 * Razza della specie.
 	 */
 	private type speciesType;
-	/**
+	/*
 	 * Numero di dinosauri creati.
 	 */
 	private int  dinoNumber;
-	/**
+	/*
 	 * Mappa della specie con celle visibili solo quelle gia' visitate.
 	 */
 	private Object[][] map;
-	/**
+	/*
 	 * Punteggio della specie.
 	 */
 	private int score;
-	/**
+	/*
 	 * Username del giocatore possessore della specie.
 	 */
 	private String playerUsername;
-	/**
+	/*
 	 * Limite massimo di dinosauri in gioco.
 	 */
 	private final int maxDino=1;

@@ -11,33 +11,33 @@ import javax.swing.JOptionPane;
 
 public class ClientListener implements Runnable 
 {
-	/**
+	/*
 	 * Parametro che contiene il Socket per la comunicazione con il server
 	 * In questo caso per la lettura dei messaggi del server 
 	 */
 	private Socket connection_with_server;
-	/**
+	/*
 	 * Oggetto per Leggere dal Socket i messaggi del server
 	 */
 	private BufferedReader reader_on_socket;
-	/**
+	/*
 	 * Stringa per il salvataggio del messaggio dal server
 	 */
 	private String readSocket;
-	/**
+	/*
 	 * Oggetto Monitor per la comunicazione al client dei messaggi
 	 */
 	private MonitorMessage mm;
-	/**
+	/*
 	 * Variabile per Limitare il numero di messaggi in validi dal server
 	 * Serve per capire se eventualmente il server non è più in esecuzione
 	 */
 	private int timelineServerNull;
-	/**
+	/*
 	 * Variabile che permette la terminazione del thread di ascolto sul socket
 	 */
 	private boolean run;
-	/**
+	/*
 	 * Variabile che contiente l'oggetto di connessione con il server
 	 */
 	private ConnectionManagerSocket cms;

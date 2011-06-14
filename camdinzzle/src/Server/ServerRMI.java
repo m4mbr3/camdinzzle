@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterface 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private ServerLogic serverLogic;
 	private String serverResponse;

@@ -8,11 +8,11 @@ import java.io.Serializable;
 public class Carrion implements Food, Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Energia attuale della carogna.
 	 */
 	private int power;
-	/**
+	/*
 	 * Energia massima della carogna.
 	 */
 	private int maxPower;

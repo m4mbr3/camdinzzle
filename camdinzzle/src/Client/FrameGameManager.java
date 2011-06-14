@@ -1,6 +1,3 @@
-/**
- * 
- */
 package Client;
 
 import java.awt.BorderLayout;
@@ -30,152 +27,152 @@ import javax.swing.JTextField;
 public class FrameGameManager extends JFrame implements WindowListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Variabile che contiene le dimensioni dello schermo
 	 */
 	private Dimension screenSize;
-	/**
+	/*
 	 * Pannello che lancia la crea Razza
 	 */
 	private BackPanel creaRazza;
-	/**
+	/*
 	 * Pannello che lancia l'accesso partita
 	 */
 	private BackPanel accPartita;
-	/**
+	/*
 	 * Pannello che lancia la lista dei giocatori
 	 */
 	private BackPanel lisGiocatori;
-	/**
+	/*
 	 * Pannello che lancia il comando per la classifica
 	 */
 	private BackPanel classifica;
-	/**
+	/*
 	 * Pannello che lancia il comando di logout
 	 */
 	private BackPanel logout;
-	/**
+	/*
 	 * Pannello che contiene tutti gli altri pannelli
 	 */
 	private BackPanel backGround;
-	/**
+	/*
 	 * URL all'immagine della creaRazza
 	 */
 	private URL creaRazzaImage;
-	/**
+	/*
 	 * URL all'immagine della accesso Partita
 	 */
 	private URL accPartitaImage;
-	/**
+	/*
 	 * URL all'immagine della Lista Giocatori
 	 *
 	 */
 	private URL lisGiocatoriImage;
-	/**
+	/*
 	 * URL all'immagine della classifica 
 	 */
 	private URL classificaImage;
-	/**
+	/*
 	 * URL all'immagine del logout
 	 */
 	private URL logoutImage;
-	/**
+	/*
 	 * URL all'immagine di sfondo
 	 */
 	private URL backGroundImage;
-	/**
+	/*
 	 * Variabile che contiene un'istanza del client corrente
 	 */
 	private Client client;
-	/**
+	/*
 	 * Frame per eseguire la creazione di una nuova razza
 	 */
 	private JFrame creaRazzaFrame;
-	/**
+	/*
 	 * Etichetta con Il testo della finestra Razza
 	 */
 	private JLabel razza_testo;
-	/**
+	/*
 	 * Etichetta che indica di dover eseguire una scelta
 	 */
 	private JLabel choice;
-	/**
+	/*
 	 * Campo Testo per il nome della nuova razza
 	 */
 	private JTextField razza_valore;
-	/**
+	/*
 	 * Opzione per una razza erbivora
 	 */
 	private JRadioButton Vege;
-	/**
+	/*
 	 * Opzione per una razza carnivora
 	 */
 	private JRadioButton Carn;
-	/**
+	/*
 	 * Oggetto per rendere mutuamente esclusiva la selezione del tipo di specie
 	 */
 	private ButtonGroup radiogroup;
-	/**
+	/*
 	 * Bottone per confermare la creazione della nuova razza
 	 */
 	private JButton razza_button;
-	/**
+	/*
 	 * Immagine per il bottone di creazione nuova razza
 	 */
 	private ImageIcon razza_button_image;
-	/**
+	/*
 	 * URL dell'immagine per il razza_button_image
 	 */
 	private URL creaRazzaFrameImage;
-	/**
+	/*
 	 * Pannello che contiene gli oggetti per la creazione della razza
 	 */
 	private BackPanel creaRazzaPanel;
-	/**
+	/*
 	 * Frame per la visualizzazione della lista giocatori
 	 */
 	private JFrame listaGiocatori;
-	/**
+	/*
 	 * Pannello della lista giocatori
 	 */
 	private JPanel pannelloGiocatori;
-	/**
+	/*
 	 * Posti della lista dei giocatori per la stampa dell'username
 	 */
 	private JLabel[] postiGiocatori;
-	/**
+	/*
 	 * Titolo del frame Lista Giocatori
 	 */
 	private JLabel titoloGiocatori;
-	/**
+	/*
 	 * Frame per la visualizzazione della classifica
 	 */
 	private JFrame ranking;
-	/**
+	/*
 	 * Oggetto per scorrere la classifica
 	 */
 	private JScrollPane ranking2;
-	/**
+	/*
 	 * Tabella per creare il layout della classifica
 	 */
 	private JTable ranking1;
-	/**
+	/*
 	 * Icone dei dinosauri per la scelta prima dell'accesso in partita
 	 */
 	private ImageIcon[] iconChosenDino;
-	/**
+	/*
 	 * Oggetto che contiene il frame di gioco
 	 */
 	private FrameGame frameGame;
-	/**
+	/*
 	 * variabile che indica se il client è stand-Alone o in locale
 	 */
 	private boolean is_local;
-	/**
+	/*
 	 * Immagine che indica un'operazione errata
 	 */
 	private ImageIcon error;
-	/**
+	/*
 	 * Immagine che indica un'operazione corretta
 	 */
 	private ImageIcon ok;

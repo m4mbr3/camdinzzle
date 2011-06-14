@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class Game
 {
-	/**
+	/*
 	 * Mappa generale del gioco.
 	 */
 	private static Object[][] map;
@@ -31,30 +31,30 @@ public class Game
 	 * Distanza massima percorribile da un dinosauro.
 	 */
 	public static final int distMax=3;
-	/**
+	/*
 	 * Numero massimo di celle d'acqua.
 	 */
 	private int Water = 164;
-	/**
+	/*
 	 * Numero di carogne.
 	 */
 	private int Carrion=20;
-	/**
+	/*
 	 * Numero di vegetazione.
 	 */
 	private int Vegetation=512;
 	
 	private boolean permise=true;
-	/**
+	/*
 	 * Numero massimo di giocatori attualmente in gioco.
 	 */
 	private int maxPlayers;
-	/**
+	/*
 	 * Lista dei giocatori in gioco. 
 	 * La LinkedHashMap ha come chiave il token del giocatore.
 	 */
 	private LinkedHashMap<String, Player> playersInGame;
-	/**
+	/*
 	 * Mappa di raggiungibilita'.
 	 */
 	private static int[][][][] mapReach;
@@ -210,7 +210,7 @@ public class Game
 		}
 	}
 	
-	/**
+	/*
 	 * Controlla che ci sia spazio nella mappa e crea una pozza di acqua rettangolare.
 	 * @param size dimensione della pozza di acqua
 	 * @param row altezza della pozza
@@ -249,7 +249,7 @@ public class Game
 		
 	}
 	
-	/**
+	/*
 	 * Controlla che ci sia spazio e crea una pozza di acqua a ferro di cavallo.
 	 * @param size dimensione della pozza
 	 * @param row numero di righe occupate dalla pozza
@@ -307,7 +307,7 @@ public class Game
 			}
 		}
 	}
-	/**
+	/*
 	 * Controlla che ci sia spazio e crea una pozza d'acqua a stella.
 	 * @param size dimensione della pozza
 	 * @param row numero di righe occupate dalla pozza
@@ -378,7 +378,7 @@ public class Game
 
 	}
 	
-	/**
+	/*
 	 * Controlla che ci sia spazio e crea una pozza di acqua a fiume.
 	 * @param size dimensione della pozza
 	 * @param row numero di righe occupate dalla pozza

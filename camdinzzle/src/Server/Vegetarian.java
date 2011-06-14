@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class Vegetarian extends Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Parametro che contiene la carogna presente nella cella quando il dinosauro si trova sopra di essa.
 	 */
 	private Carrion carrion=null;
-	/**
+	/*
 	 * Parametro che contiene la vegetazione presente nella cella quando il dinosauro si trova sopra di essa.
 	 */
 	private Vegetation vegetation=null;

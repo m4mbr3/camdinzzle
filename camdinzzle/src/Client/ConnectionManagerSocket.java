@@ -9,31 +9,31 @@ import java.util.ArrayList;
 
 public class ConnectionManagerSocket implements ConnectionManager 
 {
-	/**
+	/*
 	 * Oggetto di connessione socket con il server
 	 */
 	private Socket connection_with_server;
-	/**
+	/*
 	 * Oggetto di scrittura sul socket con il server
 	 */
 	private BufferedWriter writer_on_socket;
-	/**
+	/*
 	 * Oggetto per memorizzare l'username del client legato a questa connessione
 	 */
 	private String username;
-	/**
+	/*
 	 * Oggetto per memorizzare la chiave di connessione corrente
 	 */
 	private String token;
-	/**
+	/*
 	 * Oggetto  monitor per ricevere i messaggi dagli altri thread x l'invio al server 
 	 */
 	private MonitorMessage mm;
-	/**
+	/*
 	 * Oggetto per ricevere i messaggi del server
 	 */
 	private ClientListener clientListener;
-	/**
+	/*
 	 * Ogggetto stringa per ricevere le notifiche del cambio turno e propagarle agli altri thread
 	 */
 	private String changeRound;

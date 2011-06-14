@@ -43,25 +43,25 @@ public class Server implements Runnable
 	// End ClientManager
 	
 	private ServerRMI serverRMI;
-	/**
+	/*
 	 * Lista dei client connessi via RMI. La chiave della tabella è l'username dell'utente.
 	 */
 	private Hashtable<String, ClientManagerRMI> clientTableRMI;
-	/**
+	/*
 	 * Lista dei client connessi via Socket.
 	 */
 	private ArrayList<ClientManagerSocket> clientListSocket;
 	
 	private boolean is_run;
-	/**
+	/*
 	 * Porta di default socket.
 	 */
 	private int port;
-	/**
+	/*
 	 * Istanza di ServerLogic.
 	 */
 	private ServerLogic serverLogic;
-	/**
+	/*
 	 * Lista dei client locali.
 	 */
 	private ArrayList<ClientManagerLocal> clientLocal;

@@ -35,7 +35,7 @@ public class ServerMessageBroker
 			return "comandoNonValido";
 	}
 	
-	/**
+	/*
 	 * Gestisce la divisione del messaggio in parametri
 	 * @param msg
 	 * @return array contenente il messaggio diviso per parametri tranne il nome del comando
@@ -470,7 +470,7 @@ public class ServerMessageBroker
 		return null;
 	}
 	
-	/**
+	/*
 	 * Elimina il simbolo "=" dai parametri di un comando
 	 * @param str
 	 * @return array contente i valori dei parametri

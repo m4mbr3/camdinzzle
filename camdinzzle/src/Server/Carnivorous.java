@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Carnivorous extends Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Oggetto che contiene la vegetazione presente nella cella quando il dinosauro si trova sopra 
 	 * di essa.
 	 */

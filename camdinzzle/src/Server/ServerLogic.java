@@ -21,42 +21,42 @@ import java.util.Set;
 
 public class ServerLogic 
 {
-	/**
+	/*
 	 * Utilizzato per mandare il messaggio di cambio del turno ai client.
 	 */
 	private Server server = null;
 	
 	private Thread counter30s;
 	private Thread counter2m;
-	/**
+	/*
 	 * Tempo che un giocatore ha per confermare l'utilizzo di un turno di gioco (in millisecondi).
 	 */
 	private static int timeForConfirm = 30000; 
-	/**
+	/*
 	 * Tempo che un giocatore ha per fare le mosse di un suo turno di gioco (in millisecondi).
 	 */
 	private static int timeForPlay = 120000;
-	/**
+	/*
 	 * Istanza della sessione di gioco corrente. Contiene informazioni sulla sessione come i 
 	 * giocatori e la mappa del gioco.
 	 */
 	private Game currentSession;
-	/**
+	/*
 	 * Lista degli utenti registrati al gioco.
 	 * La chiave dell'HashTable e' l'username del giocatore scelto al momento della registrazione.
 	 */
 	private Hashtable<String, Player> players;
-	/**
+	/*
 	 * Lista degli utenti loggati.
 	 * La chiave dell'HashTable e' il token generato al momento dell'invio dei dati di login.
 	 */
 	private Hashtable<String, Player> loggedPlayers;
-	/**
+	/*
 	 * Lista di tutte le specie create nel gioco. Utilizzata per la classifica.
 	 * La chiave dell'HashTable e' il nome della specie. 
 	 */
 	private Hashtable<String, Species> rank;
-	/**
+	/*
 	 * Il token del giocatore che puo' effettuare le azioni di gioco.
 	 */
 	private String tokenOfCurrentPlayer;
@@ -1578,7 +1578,7 @@ public class ServerLogic
 		this.tokenOfCurrentPlayer = tokenOfCurrentPlayer;
 	}
 	
-	/**
+	/*
 	 * Controlla che un utente sia loggato.
 	 * @param token il token dell'utente
 	 * @return true se il giocatore e' loggato, false altrimenti
@@ -1608,7 +1608,7 @@ public class ServerLogic
 		this.server = s;
 	}
 	
-	/**
+	/*
 	 * Genera la chiave per generare i token degli utenti.
 	 * @return chiave generata
 	 */
@@ -1662,7 +1662,7 @@ public class ServerLogic
 		return min;
 	}
 
-	/**
+	/*
 	 * Genera il token di un utente tramite l'applicazione sulla concatenazione di username
 	 * e i nanosecondi del server). Sulla concatenazione si applica un algoritmo di trasposizione.
 	 * @param username username del giocatore

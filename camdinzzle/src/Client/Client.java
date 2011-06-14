@@ -35,23 +35,23 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 {
 
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Etichetta per la visualizzazione del titolo/versione del gioco
 	 */
 	private JLabel camdinzzle;
-	/**
+	/*
 	 * Etichetta per l'indicazione del dover fare una scelta del metodo di connessione
 	 */
 	private JLabel choice;
-	/**
+	/*
 	 * Cotentitore di tutti gli oggetti riguardanti la scelta della connessione 
 	 */
 	private JPanel panel;
-	/**
+	/*
 	 * Variabile contenente le dimensioni dello schermo
 	 */
 	private Dimension screenSize;
-	/**
+	/*
 	 * Selezione per l'rmi
 	 */
 	private JRadioButton rmi;
@@ -59,15 +59,15 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	 * Selezione per i socket
 	 */
 	private JRadioButton socket;
-	/**
+	/*
 	 * Variabile per rendere la scelta mutuamente esclusiva
 	 */
 	private ButtonGroup radiogroup;
-	/**
+	/*
 	 * Pulsante per la conferma della scelta
 	 */
 	private JButton next;
-	/**
+	/*
 	 * Variabile contenente l'oggetto di connessione 
 	 * Rende indipendente le richieste verso il server dal metodo di connessione scelto con quest'ultimo
 	 * Può contenere ConnectionManagerSocket, ConnectionManagerLocal e ConnectionManagerRMI
@@ -77,43 +77,43 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	 * Visualizza dopo la connessione con il server la finestra per il login o la creazione del nuovo utente
 	 */
 	private FrameLogin login;
-	/**
+	/*
 	 * Etichetta per indicare lo spazio destinato all'immissione della porta
 	 */
 	private JLabel port_label;
-	/**
+	/*
 	 * Etichetta per indicare lo spazio destinato all'indirizzo del server
 	 */
 	private JLabel address_label;
-	/**
+	/*
 	 * Campo di testo per l'immissione della porta
 	 * viene cambiata con quelle di default sia si scelga metodo socket sia per la scelta metodo rmi
 	 * è possibile ma sconsigliata una modifica manuale della stessa
 	 */
 	private JTextField port;
-	/**
+	/*
 	 * Campo di selezione per abilitare il cambio manuale del valore della porta da quello di default 
 	 */
 	private JCheckBox enable_port;
-	/**
+	/*
 	 * Campo di testo per l'immissione dell'indirizzo del server
 	 * ex localhost, 192.168.1.100, PC-SERVER
 	 */
 	private JTextField address;
-	/**
+	/*
 	 * Etichetta che indica qual è il campo del nome del server nel caso RMI
 	 */
 	private JLabel nome_server;
-	/**
+	/*
 	 * Campo di testo per l'immissione del nome del server 
 	 * Valido e visibile solo per la connessione tramite RMI
 	 */
 	private JTextField server_value;
-	/**
+	/*
 	 * Bottone che permette la disconnessione e terminazione del programma Camdinzzle
 	 */
 	private JButton exit;
-	/**
+	/*
 	 * Variabile che determina il diverso funzionamento del Client Stand-alone dal Client in locale lanciato quindi
 	 * dal server in esecuzione
 	 * Ne limita alcune opzione di chiusura

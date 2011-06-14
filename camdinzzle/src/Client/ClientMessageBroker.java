@@ -1,9 +1,3 @@
-/**
- * @author Forme
- * created 			05/05/2011
- * last modified	06/05/2011
- */
-
 package Client;
 
 import java.util.ArrayList;

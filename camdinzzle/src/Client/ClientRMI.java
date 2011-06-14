@@ -6,12 +6,12 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Variabile che determina se è già stato fatto l'accesso in partita o meno
 	 * serve per avere la notifica del cambia turno in caso di valore uguale  a true
 	 */
 	private boolean isInGame;
-	/**
+	/*
 	 * Variabile contenente l'oggetto della connessione in RMI
 	 */
 	private ConnectionManagerRMI cmRMI;

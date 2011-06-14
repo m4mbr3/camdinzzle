@@ -1,4 +1,5 @@
 package Client;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -7,23 +8,23 @@ public class ChangeRoundThread  implements Runnable
 	
 	private static final long serialVersionUID = 1L;
 	
-	/**
+	/*
 	 * Variabile booleana che permette la terminazione del thread del ChangeRoundThread
 	 */
 	private static boolean is_run = true;
 	
-	/**
+	/*
 	 * Variabile che contiene l'istanza del client associato al ChangeRoundThread
 	 */
 	private Client client;
 	
-	/**
+	/*
 	 * Variabile che contiene l'istanza del Frame di gioco per permettere l'aggiornamento
 	 * del conto alla rovescia visualizzato all'utente
 	 */
 	private FrameGame frameGame;
 	
-	/**
+	/*
 	 * Variabile che contiene determina il tipo di Info visualizzata all'utente
 	 * in base a chi appartiene il turno corrente
 	 */

@@ -9,59 +9,59 @@ import java.io.Serializable;
 public abstract class Dinosaur implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	/**
+	/*
 	 * Identificatore del dinosauro.
 	 */
 	private String dinoId;
-	/**
+	/*
 	 * Eta' massima del dinosauro.
 	 */
 	private int age;
-	/**
+	/*
 	 * Specie del dinosauro.
 	 */
 	protected Species nameSpecie;
-	/**
+	/*
 	 * Energia del dinosauro.
 	 */
 	protected int energy;
-	/**
+	/*
 	 * Dimensione del dinosauro.
 	 */
 	private int dimension;
-	/**
+	/*
 	 * Energia massima che il dinosauro puo' accumulare.
 	 */
 	protected int energyMax;
-	/**
+	/*
 	 * Energia per creare un nuovo dinosauro.
 	 */
 	private final int eEgg = 1500;
-	/**
+	/*
 	 * Riga della posizione del dinosauro.
 	 */
 	protected int posRow;
-	/**
+	/*
 	 * Colonna della posizione del dinosauro.
 	 */
 	protected int posCol;
-	/**
+	/*
 	 * Vista locale del dinosauro.
 	 */
 	private Object[][] localMap;
-	/**
+	/*
 	 * Distanza massima che puo' percorrere il dinosauro.
 	 */
 	private int distMax;
-	/**
+	/*
 	 * Check per movimento gia' effettuato.
 	 */
 	private boolean moveTake=false;
-	/**
+	/*
 	 * Check per azione nel turno gia' effettuata.
 	 */
 	private boolean actionTake=false;
-	/**
+	/*
 	 * Numero di turni gia' vissuti dal dinosauro.
 	 */
 	private int timeOfLive;

@@ -1,35 +1,27 @@
-/**
- * 
- */
 package Client;
 
 import java.util.ArrayList;
 import Server.ClientManagerLocal;
 
-/**
- * @author Andrea
- *
- */
-
 public class ConnectionManagerLocal implements ConnectionManager 
 {	
-	/**
+	/*
 	 * Contiene l'oggetto della connessione da locale
 	 */
 	private ClientManagerLocal manager;
-	/**
+	/*
 	 * Contiene l'username del client collegato tramite locale
 	 */
 	private String username;
-	/**
+	/*
 	 * Contiene la stringa del token relativo alla connessione corrente
 	 */
 	private String token;
-	/**
+	/*
 	 * Conetiene l'istanza del client relativa alla connessione corrente
 	 */
 	private Client client;
-	/**
+	/*
 	 * Serve per notificare il cambio del turno alla changeRoundThread
 	 */
 	private String changeRound;
@@ -195,20 +187,7 @@ public class ConnectionManagerLocal implements ConnectionManager
 	@Override
 	public synchronized void setChangeRound(String msg) 
 	{
-		/*
-		if(msg.equals(""))
-		{
-			changeRound = ""; 
-		}
-		else
-		{*/
-			/*
-			msg = ClientMessageBroker.manageChangeRound(msg);
-			if(msg != null)
-			{*/
-				this.changeRound = msg;
-			//}
-		//}
+		this.changeRound = msg;
 	}
 
 	@Override

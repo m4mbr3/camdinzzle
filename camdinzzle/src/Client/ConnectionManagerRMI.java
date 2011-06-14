@@ -1,6 +1,3 @@
-/**
- * 
- */
 package Client;
 
 import Server.ServerRMIInterface;
@@ -28,23 +25,23 @@ import javax.swing.JOptionPane;
 
 public class ConnectionManagerRMI implements ConnectionManager 
 {
-	/**
+	/*
 	 * Variabile che memorizza il nome dell'utente legato alla connessione corrente
 	 */
 	private String username;
-	/**
+	/*
 	 * Oggetto per ereditare i metodi del server
 	 */
 	private ServerRMIInterface server;
-	/**
+	/*
 	 * Contiene la stringa del token relativo alla connessione corrente
 	 */
 	private String token;
-	/**
+	/*
 	 * Contiene l'istanza del client in versione RMI
 	 */
 	private ClientRMI client;
-	/**
+	/*
 	 * Serve per notificare il cambio del turno alla changeRoundThread
 	 */
 	private String changeRound;
@@ -52,11 +49,11 @@ public class ConnectionManagerRMI implements ConnectionManager
 	 * Stringa relativa all'indirizzo del server
 	 */
 	private String ip;
-	/**
+	/*
 	 * Contatore delle comunicazioni fallite che indicato la caduta del server
 	 */
 	private int timelineRemoteRequest;
-	/**
+	/*
 	 * Porta di default del server
 	 */
 	private static final String port = "1099";

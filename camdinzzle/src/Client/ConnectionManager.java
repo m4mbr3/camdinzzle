@@ -2,9 +2,6 @@ package Client;
 
 import java.util.ArrayList;
 
-/**
- * @author Andrea
- */
 public interface ConnectionManager {
 	/**
 	 * Invia il messaggio di creazione utente al Server e attende la risposta
