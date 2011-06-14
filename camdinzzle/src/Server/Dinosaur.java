@@ -120,10 +120,7 @@ public abstract class Dinosaur implements Serializable
 	 */
 	public boolean growUp()
 	{
-		if(dimension == 5) return false;
-		else
-		{
-			if(energy > (energyMax/2))
+			if(energy > (energyMax/2) && (dimension < 5))
 			{
 				energy = energy - energyMax/2;
 				dimension = dimension + 1;
@@ -135,7 +132,6 @@ public abstract class Dinosaur implements Serializable
 			{
 				return false;
 			}
-		}
 	}
 	
 	/**
