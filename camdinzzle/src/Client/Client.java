@@ -220,6 +220,7 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 		this.add(panel);
 		enable_port.addChangeListener(this);
 		socket.addChangeListener(this);
+		rmi.addChangeListener(this);
 		exit.addMouseListener(this);
 		this.addWindowListener(this);
 		next.addMouseListener(this);
@@ -293,7 +294,8 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	 * e permette quindi la determinazione dell'operazione svolta dall'utente
 	 */
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent arg0) 
+	{
 		if(arg0.getComponent().equals(exit))
 		{
 			System.exit(0);
