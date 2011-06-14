@@ -4,11 +4,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Calendar;
-
+/**
+ * Classe utilizzata per scrivere un file di log giornaliero. Vengono scritte le azioni 
+ * compiute dal server, le richieste di creazione utente, di login, di accesso in partita, 
+ * di uscita dalla partita e di logout per ogni utente che le richiese. Vengono inoltre scritti
+ * gli eventuali errori che possono esserci.
+ */
 public class LogHelper 
 {
 	private static final String logPath = "log";
 	
+	/**
+	 * Scrive un messaggio di informazione sul file.
+	 * @param msg il messaggio di informazione
+	 */
 	public synchronized static void writeInfo(String msg)
 	{
 		try
@@ -93,6 +102,10 @@ public class LogHelper
 		}
 	}
 	
+	/**
+	 * Scrive un messaggio di errore sul file.
+	 * @param msg il messaggio di errore
+	 */
 	public synchronized static void writeError(String msg)
 	{
 		try
@@ -177,6 +190,10 @@ public class LogHelper
 		}
 	}
 	
+	/**
+	 * Scrive un messaggio di richiesta di un client sul file.
+	 * @param msg il messaggio di richiesta
+	 */
 	public synchronized static void writeClientRequest(String msg)
 	{
 		try
@@ -261,6 +278,10 @@ public class LogHelper
 		}
 	}
 	
+	/**
+	 * Scrive un messaggio di risposta del server ad un client.
+	 * @param msg il messaggio di risposta
+	 */
 	public synchronized static void writeServerResponse(String msg)
 	{
 		try
