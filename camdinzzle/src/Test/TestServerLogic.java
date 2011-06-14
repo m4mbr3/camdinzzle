@@ -19,6 +19,7 @@ public class TestServerLogic extends TestCase
 	private String dinoId;
 	private String[] dinoList;
 	private Dinosaur dino;
+	private Hashtable<String, Dinosaur> myDinosaurs;
 	
 	public void setUp()
 	{
@@ -171,7 +172,6 @@ public class TestServerLogic extends TestCase
 		actual = sl.gameAccess(token);
 		//esce correttamente dalla partita
 		actual = sl.gameExit(token);
-		System.out.println(actual);
 		assertEquals("@ok", actual);
 		
 		sl.setCurrentSession(null);
@@ -203,6 +203,74 @@ public class TestServerLogic extends TestCase
 	
 	public void testRanking()
 	{
+		sl.add_new_user("provaUser", "pass");
+		
+		//chiede la classifica non essendo loggato
+		actual = sl.ranking("tokenProva");
+		assertEquals("@no,@tokenNonValido", actual);
+		
+		//restituisce la classifica corretta vuota
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		actual = sl.ranking(token);
+		assertEquals("@classifica", actual);
+		
+		//restituisce la classifica corretta con un utente
+		sl.addNewSpecies(token, "provaSpecie", "c");
+		actual = sl.ranking(token);
+		assertEquals("@classifica,{provaUser,provaSpecie,0,s}", actual);
+		
+		sl.setRank(null);
+		//manda in try catch il metodo
+		actual = sl.ranking(token);
+		assertEquals("@no", actual);
+	}
+	
+	public void testLogout()
+	{
+		sl.add_new_user("provaUser", "pass");
+		
+		//chiede la classifica non essendo loggato
+		actual = sl.logout("tokenProva");
+		assertEquals("@no,@tokenNonValido", actual);
+		
+		//effettua logout correttamente
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		actual = sl.logout(token);
+		assertEquals("@ok", actual);
+		
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		sl.setCurrentSession(null);
+		//manda in try catch il metodo
+		actual = sl.logout(token);
+		assertEquals("@no", actual);
+	}
+	
+	public void testGeneralMap()
+	{
+		sl.add_new_user("provaUser", "pass");
+		
+		//chiede la mappa generale non essendo loggato
+		actual = sl.generalMap("tokenProva");
+		assertEquals("@no,@tokenNonValido", actual);
+		
+		//chiede la mappa generale non essendo in partita
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		actual = sl.generalMap(token);
+		assertEquals("@no,@nonInPartita", actual);
+		
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		sl.setCurrentSession(null);
+		//manda in try catch il metodo
+		actual = sl.generalMap(token);
+		assertEquals("@no", actual);
+		
+		//non e' stato effettuato il test sulla risposta positiva della mappa
+		//perche' viene generata casualmente
 		
 	}
 	
@@ -241,6 +309,94 @@ public class TestServerLogic extends TestCase
 		//manda in try catch il metodo
 		actual = sl.dinosaursList(token);
 		assertEquals("@no", actual);
+	}
+	
+	public void testDinoZoom()
+	{
+		sl.add_new_user("provaUser", "pass");
+		
+		//chiede la mappa locale non essendo loggato
+		actual = sl.dinoZoom("tokenProva","dinoIdProva");
+		assertEquals("@no,@tokenNonValido", actual);
+		
+		//chiede la mappa locale non essendo in partita
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		actual = sl.dinoZoom(token,"dinoIdProva");
+		assertEquals("@no,@nonInPartita", actual);
+		
+		//chiede la mappa locale con un id sbagliato
+		sl.addNewSpecies(token, "provaSpecie", "c");
+		sl.gameAccess(token);
+		actual = sl.dinoZoom(token,"dinoIdProva");
+		assertEquals("@no,@idNonValido", actual);
+		
+		sl.setCurrentSession(null);
+		//manda in try catch il metodo
+		actual = sl.generalMap(token);
+		assertEquals("@no", actual);
+		
+		//non e' stato effettuato il test sulla risposta positiva della mappa
+		//locale perche' e' dipendente dalla mappa generale casuale
+	}
+	
+	public void testDinoState()
+	{
+		sl.add_new_user("provaUser", "pass");
+		
+		//chiede lo stato dinosauro non essendo loggato
+		actual = sl.dinoState("tokenProva","dinoIdProva");
+		assertEquals("@no,@tokenNonValido", actual);
+		
+		//chiede lo stato dinosauro non essendo in partita
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		actual = sl.dinoState(token,"dinoIdProva");
+		assertEquals("@no,@nonInPartita", actual);
+		
+		//chiede lo stato dinosauro di un id non valido
+		sl.addNewSpecies(token, "provaSpecie", "c");
+		sl.gameAccess(token);
+		actual = sl.dinoState(token, "dinoIdTest");
+		assertEquals("@no,@idNonValido", actual);
+		
+		//chiede lo stato dinosauro non avendo la tabella dinosauri nella propria specie
+		currentSession = sl.getCurrentSession();
+		myDinosaurs = currentSession.getPlayer(token).getSpecie().getMyDinosaurs();
+		currentSession.getPlayer(token).getSpecie().setMyDinosaurs(null);
+		actual = sl.dinoState(token, "dinoIdTest");
+		assertEquals("@no", actual);
+		currentSession.getPlayer(token).getSpecie().setMyDinosaurs(myDinosaurs);
+		
+		//chiede lo stato di un dinosauro che e' nella vista locale del proprio dinosauro
+		//ma non appartiene ne all'utente e nemmeno agli avversari
+		dinoList = ClientMessageBroker.manageDinoList(sl.dinosaursList(token));
+		dinoId = dinoList[0];
+		dino = currentSession.getPlayer(token).getSpecie().getDino(dinoId);
+		int row = dino.getPosRow();
+		int col = dino.getPosCol();
+		boolean positioned = false;
+		for(int i=row-1; i<row+2; i++ )
+		{
+			for(int j=col-1; j<col+2; j++)
+			{
+				if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
+				{					
+					if((!(Game.getCell(i, j) instanceof String))||(((String)Game.getCell(i, j)).compareTo("a")!=0))
+					{
+						Carnivorous dinoNew = new Carnivorous("provaDino", i, j, currentSession.getPlayer(token).getSpecie());
+						Game.setCellMap(dinoNew, i, j);
+						positioned = true;
+						break;
+					}
+					
+				}
+			}
+			if(positioned) break;
+		}
+		actual = sl.dinoState(token, "provaDino");
+		assertEquals("@no,@idNonValido", actual);
+		
 	}
 	
 	public void testDinoMove()
@@ -427,6 +583,16 @@ public class TestServerLogic extends TestCase
 		dino.setActionTake(false);
 		actual = sl.dinoNewEgg(token, dinoId);
 		assertEquals("@no,@raggiuntoNumeroMaxDinosauri", actual);
+		
+	}
+	
+	public void testRoundConfirm()
+	{
+		
+	}
+	
+	public void testPlayerRoundSwitch()
+	{
 		
 	}
 	

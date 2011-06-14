@@ -1860,4 +1860,10 @@ public class ServerLogic
 	{
 		this.keyForToken = keyForToken;
 	}
+	
+	public void setRank(Hashtable<String, Species> rank)
+	{
+		this.rank = rank;
+	}
+
 }

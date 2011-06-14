@@ -468,4 +468,9 @@ public class Species implements Serializable
 	{
 		this.myDinosaurs = myDinosaurs;
 	}
+	
+	public Hashtable<String, Dinosaur> getMyDinosaurs()
+	{
+		return myDinosaurs;
+	}
 }
