@@ -43,11 +43,11 @@ public class CheckRMIClientConnection implements Runnable
 			} 
 			catch (InterruptedException e)
 			{
-				LogHelper.writeError("client RMI non raggiungibile.");
+				
 			}
 			catch(Exception ex)
 			{
-				
+				LogHelper.writeInfo("client RMI disconnesso.");
 			}
 		}
 	}

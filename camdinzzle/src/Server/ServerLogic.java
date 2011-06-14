@@ -102,6 +102,7 @@ public class ServerLogic
 				
 				ois.close(); 
 				input.close();
+				LogHelper.writeInfo("deserializzazione file 'server.ser' avvenuta con successo");
 			} 
 			catch (FileNotFoundException e) 
 			{
@@ -1748,10 +1749,16 @@ public class ServerLogic
 	 */
 	public void saveServerState()
 	{
-		if ( server.getPlayerInGame() == 0)
+		if ( currentSession.numberPlayersInGame() == 0)
 		{
 			try 
 			{
+				File f = new File("server.ser");
+				if(f.exists())
+				{
+					f.delete();	
+				}
+				
 				FileOutputStream out = new FileOutputStream("server.ser");
 				ObjectOutputStream oos = new ObjectOutputStream(out);
 				Object[][] map = currentSession.getGeneralMap();
@@ -1796,6 +1803,7 @@ public class ServerLogic
 				
 				oos.close();
 				out.close();
+				LogHelper.writeInfo("stato del server salvato con successo.");
 			}
 			catch (FileNotFoundException e) 
 			{

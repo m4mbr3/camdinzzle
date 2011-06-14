@@ -61,6 +61,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				try 
 				{
 					connection_with_client.close();
+					LogHelper.writeInfo("client socket non raggiungibile. Disconnesso.");
 				} 
 				catch (IOException e) 
 				{
@@ -506,6 +507,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 		}
 		else
 		{
+			LogHelper.writeError("client socket non raggiungibile. Disconnesso.");
 			if(this.isInGame)
 			{
 				serverLogic.gameExit(token);

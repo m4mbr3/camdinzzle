@@ -59,6 +59,7 @@ public class ClientManagerRMI implements ClientManager
 				}
 				serverRMI.logout(serverRMI.getTokenOfPlayer(username));
 				serverRMI.removeClientRMI(username);
+				LogHelper.writeInfo("client RMI disconnesso correttamente.");
 			}
 			catch (RemoteException e) 
 			{
@@ -82,6 +83,7 @@ public class ClientManagerRMI implements ClientManager
 		try 
 		{
 			client.setInGame(isInGame);
+			LogHelper.writeInfo("check partita client RMI settato correttamente.");
 		} 
 		catch (RemoteException e) 
 		{
@@ -95,6 +97,7 @@ public class ClientManagerRMI implements ClientManager
 				}
 				serverRMI.logout(serverRMI.getTokenOfPlayer(username));
 				serverRMI.removeClientRMI(username);
+				LogHelper.writeInfo("client RMI disconnesso correttamente.");
 			}
 			catch (RemoteException ex) 
 			{
@@ -106,6 +109,7 @@ public class ClientManagerRMI implements ClientManager
 	public void unregistryClient()
 	{
 		this.client = null;
+		LogHelper.writeInfo("client RMI unregistered.");
 	}
 
 	public String getUsername()

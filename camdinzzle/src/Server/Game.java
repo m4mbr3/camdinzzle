@@ -73,9 +73,11 @@ public class Game
 		if(mapFromFile == null)
 		{
 			this.createMap();
+			LogHelper.writeInfo("mappa di gioco creata.");
 		}
 		else
 		{
+			LogHelper.writeInfo("mappa di gioco caricata da file");
 			map = mapFromFile;
 		}
 		

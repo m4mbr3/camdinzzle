@@ -265,6 +265,7 @@ public class Server implements Runnable
 				}
 			}
 		}
+		LogHelper.writeInfo("notifica cambio del turno inviata correttamente ai client via socket");
 		if (clientLocal.size() > 0)
 		{
 			for (ClientManagerLocal client : clientLocal) 
@@ -275,6 +276,7 @@ public class Server implements Runnable
 				}
 			}
 		}
+		LogHelper.writeInfo("notifica cambio del turno inviata correttamente ai client via locale");
 		if(clientTableRMI.size() > 0)
 		{			
 			Set<Map.Entry<String, ClientManagerRMI>> set = clientTableRMI.entrySet();
@@ -295,6 +297,7 @@ public class Server implements Runnable
 				}
 			}
 		}
+		LogHelper.writeInfo("notifica cambio del turno inviata correttamente ai client via RMI");
 	}
 	
 	/**
@@ -449,7 +452,7 @@ public class Server implements Runnable
 		System.out.println("Welcome to Camdinzzle Server v 1.0");
 		System.out.println("Insert corrispondent character for these istructions :");
 		System.out.println("-> c or C for create a new Client");
-		System.out.println("-> s or S for save the status of server");
+		System.out.println("-> s or S for save the status of server. The status is saved always when there aren't player in game.");
 		System.out.println("-> e or E for Close the server");
 		System.out.println("****************************************************************************************");
 	}
