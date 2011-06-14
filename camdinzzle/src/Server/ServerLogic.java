@@ -132,7 +132,6 @@ public class ServerLogic
 		tokenOfCurrentPlayer = "";
 		// Inizializzazione chiave per generazione del token
 		keyForToken = this.generateKeyForToken();
-		System.out.println("<<SERVER>>--ENVIROMENT VARIABLES DEFINITED");
 	}
 
 	//@ requires username != null && password != null (*Il controllo  dei caratteri speciali deve essere già eseguito*);

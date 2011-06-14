@@ -99,8 +99,6 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								writer_on_socket.write(serverLogic.add_new_user(parameters[0], parameters[1]));
 								writer_on_socket.newLine();				
 								writer_on_socket.flush();
-								
-								LogHelper.writeClientRequest("creaUtente.");
 							}
 							else
 							{
