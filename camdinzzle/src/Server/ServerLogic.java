@@ -211,7 +211,14 @@ public class ServerLogic
 		}
 	}
 	//@ requires token != null && name != null && (type == 'c' || type == 'e')
-	//@	ensures if is
+	//@	ensures if (!isLoggedUser(token)) ==> \result == ServerMessageBroker.createTokenNonValidoErrorMessage();
+	//@			if (* la specie dell'utente non esiste e non c'è nessun'altra specie con quel nome *) ==> creo la specie && \return == ServerMessageBroker.createOkMessage();   
+	//@			else ==> ServerMessageBroker.createErroMessage("nomeRazzaOccupato");
+	//@			
+	//@			else if (* la specie dell'utente esiste già *) ==> \return == "@no";
+	//@	assignable rank.put(name, new_specie);
+	//@ assignable loggedPlayers.get(token).setSpecie(new_specie);				
+	//@ signals (Exception e) ServerMessageBroker.createTokenNonValidoErrorMessage();
 	/**
 	 * Aggiunge la nuova specie all'utente se non esiste gia' o se l'utente ha gi� una specie in gioco.
 	 * @param token il token dell'utente

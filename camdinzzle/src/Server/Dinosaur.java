@@ -109,6 +109,9 @@ public abstract class Dinosaur implements Serializable
 		setLocalMap();
 	}
 	
+	//@	ensures if (requires dimension < 5 && energy > energyMax/2) ==> dimension == dimension + 1 && energyMax == dimension*1000 && \result == true;
+	//@ 		else ==> \result == false
+	//@ assignable energy, dimension, energyMax;
 	/**
 	 * Controlla che la dimensione non sia gia' massima (=5).
 	 * Controlla che abbia abbanstanza energia per crescere, cresce , toglie l'energia necessaria, aumenta l'energia massima
