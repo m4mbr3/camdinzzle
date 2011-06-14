@@ -23,7 +23,7 @@ public class LogHelper
 			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
 			cal.get(Calendar.YEAR);
 			
-			File f = new File(logPath + "\\log_" + data + ".txt");
+			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
@@ -53,7 +53,7 @@ public class LogHelper
 			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
 			cal.get(Calendar.YEAR);
 			
-			File f = new File("log_" + data + ".txt");
+			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
@@ -83,7 +83,7 @@ public class LogHelper
 			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
 			cal.get(Calendar.YEAR);
 			
-			File f = new File("log_" + data + ".txt");
+			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
@@ -113,7 +113,7 @@ public class LogHelper
 			String data =  mese + "-" + cal.get(Calendar.DAY_OF_MONTH) + "-" + 
 			cal.get(Calendar.YEAR);
 			
-			File f = new File("log_" + data + ".txt");
+			File f = new File(logPath + "/log_" + data + ".txt");
 			
 			FileOutputStream fos = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(fos);
