@@ -68,6 +68,7 @@ public class Server implements Runnable
 	private Client client;
 	private Registry registro;
 	private CheckRMIClientConnection checkRMI;
+	private static char command;
 	
 	/**
 	 * Istanzia un nuovo server.
@@ -481,7 +482,7 @@ public class Server implements Runnable
 		Scanner scan = new Scanner(System.in);
 		String letto=" ";
 		boolean check;
-		char command = ' ';
+		command = ' ';
 			do{
 				print_help();
 
@@ -534,5 +535,10 @@ public class Server implements Runnable
 				
 			}while(command != 'e' && command != 'E');
 		}
+	
+	public void setCommand(char c)
+	{
+		command = c;
+	}
 }
 

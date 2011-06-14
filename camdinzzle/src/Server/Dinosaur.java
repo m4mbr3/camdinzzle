@@ -152,7 +152,7 @@ public abstract class Dinosaur implements Serializable
 			{
 				for(int i=posRow-offSet; i<posRow+offSet+1; i++ )
 				{
-					for(int j=posCol-offSet; i<posCol+offSet+1; j++)
+					for(int j=posCol-offSet; j<posCol+offSet+1; j++)
 					{
 						if((i>=0)&&(i<Game.maxRow)&&(j>=0)&&(j<Game.maxCol))
 						{					
@@ -165,9 +165,8 @@ public abstract class Dinosaur implements Serializable
 								newDino.setMoveTake(true);
 								break;
 							}
-							if(positioned) break;
+							
 						}
-						if(positioned) break;
 					}
 					if(positioned) break;
 				}
@@ -370,6 +369,14 @@ public abstract class Dinosaur implements Serializable
 		return nameSpecie;
 	}
 	
+	/**
+	 * Setta l'energia del dinosauro
+	 * @param energia
+	 */
+	public void setEnergy(int energy)
+	{
+		this.energy = energy;
+	}
 }
 
 

@@ -51,7 +51,7 @@ public class Species implements Serializable
 	/*
 	 * Limite massimo di dinosauri in gioco.
 	 */
-	private final int maxDino=1;
+	private final int maxDino=8;
 	
 	/**
 	 * Crea una nuova specie, setta il nome e il tipo, imposta timeOfLive a 120, crea un nuovo dinosauro e chiama startMap e l'updateMap
@@ -233,17 +233,6 @@ public class Species implements Serializable
 			return false;
 	}
 	
-	/**
-	 * Riconosce l'id del dinosauro e restituisce il riferimento.
-	 * @param dinoId id del dinosauro
-	 * @return riferimento al dinosauro
-	 */
-	public Dinosaur identifyDinosaur(String dinoId)
-	{
-		if(myDinosaurs.containsKey(dinoId))
-			return myDinosaurs.get(dinoId);
-		return null;
-	}
 	
 	/**
 	 * Aggiorna stato di ogni dinosauro della specie.
@@ -461,5 +450,22 @@ public class Species implements Serializable
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * Ritorna il numero massimo di dinosauri
+	 * @return numero massimo
+	 */
+	public int getMaxDino()
+	{
+		return maxDino;
+	}
+	
+	/**
+	 * Setta la tabella dei dinosauri
+	 */
+	public void setMyDinosaurs(Hashtable<String, Dinosaur> myDinosaurs)
+	{
+		this.myDinosaurs = myDinosaurs;
 	}
 }

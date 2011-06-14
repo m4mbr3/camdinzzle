@@ -1083,7 +1083,7 @@ public class ServerLogic
 		{
 			if(isLoggedUser(token))						//controlla se e' loggato
 			{
-				if(currentSession.getPlayer(token) != null)			//controllo token valido
+				if(currentSession.getPlayer(token) != null)			//controllo se in partita
 				{
 					if(tokenOfCurrentPlayer.equals(token))
 					{
@@ -1809,7 +1809,12 @@ public class ServerLogic
 	{
 		return loggedPlayers;
 	}
-
+	
+	public void setLoggedPlayers(Hashtable<String, Player> loggedPlayers)
+	{
+		this.loggedPlayers = loggedPlayers;
+	}
+	
 	public Hashtable<String, Species> getRank() 
 	{
 		return rank;
