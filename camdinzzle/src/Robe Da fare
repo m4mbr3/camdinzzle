@@ -24,6 +24,12 @@
 					logica..  no grafica
 					le parti + interessanti
 		
+		-da testare la classifica che alla fine sia in ordine.
+		-numero di casella di acqua, numero di caselle di vegetazione, numero di caselle di terra,
+		numero di caselle carogna
+		-deposizione uovo deve togliere 1500
+		-combattimento
+		
 		
 		-file di sicurezza RMI		NON è OBBLIGATORIO!!! SERVE SOLO X PASSAGGIO DI OGGETTI DINAMICI(CHE NN è IL NOSTRO CASO)
 
