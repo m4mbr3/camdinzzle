@@ -283,16 +283,16 @@ public class Server implements Runnable
 			while(iter.hasNext())
 			{
 				Map.Entry<String, ClientManagerRMI> me = (Map.Entry<String, ClientManagerRMI>)iter.next();
-				/*
+				
 				if(((ClientManagerRMI)me.getValue()).getIsInGame())
-				{*/
+				{
 					isSend = ((ClientManagerRMI)me.getValue()).sendChangeRound(msg);
 					
 					if(!isSend)
 					{
 						removeClientRMI(((ClientManagerRMI)me.getValue()).getUsername());
 					}
-				//}
+				}
 			}
 		}
 	}
@@ -371,9 +371,12 @@ public class Server implements Runnable
 		{
 			if(clientTableRMI.get(username) != null)
 			{
-				clientTableRMI.get(username).unregistryClient();
+				ClientManagerRMI cmRMI = clientTableRMI.get(username);
 				
 				clientTableRMI.remove(username);
+				cmRMI.unregistryClient();
+				
+				System.out.println("Client RMI rimosso con successo");
 			}
 		}
 		catch(Exception ex)
