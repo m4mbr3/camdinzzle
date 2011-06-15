@@ -470,7 +470,8 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				    "Do you really want to logout from Camdinzzle?",
 				    "Exit Question",
 				    JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE,ok);
-			if (ritorno == 0){
+			if (ritorno == 0)
+			{
 				String check = client.getConnManager().logout();
 				if(check!=null)
 				{
@@ -491,6 +492,10 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 						JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE,error);
 					}
 				}
+			}
+			else
+			{
+				this.setVisible(true);
 			}
 		}
 		else if (arg0.getComponent().equals(razza_button))
@@ -570,6 +575,10 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE,error);
 				}
 			}
+		}
+		else
+		{
+			this.setVisible(true);
 		}
 	}
 
