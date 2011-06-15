@@ -443,7 +443,7 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 								
 								if(msg.equals("@ok"))
 								{
-									Thread.sleep(1000);
+									//Thread.sleep(1000);
 									serverLogic.changeRoundNotify();
 								}
 							}
@@ -466,11 +466,12 @@ public class ClientManagerSocket implements ClientManager, Runnable {
 				{
 					LogHelper.writeError("scrittura su socket fallita.");
 				} 
+				/*
 				catch (InterruptedException e) 
 				{
 					LogHelper.writeError("client socket perso.");
 				}
-			
+			*/
 				read_socket = null;
 			}
 			else

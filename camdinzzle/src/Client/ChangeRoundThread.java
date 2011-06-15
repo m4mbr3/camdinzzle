@@ -79,21 +79,24 @@ public class ChangeRoundThread  implements Runnable
 		{
 			if (!client.getConnManager().getChangeRound().equals(""))
 			{
-				frameGame.drawRound(client.getConnManager().getChangeRound());
-				if(!client.getConnManager().getUsername().equals(client.getConnManager().getChangeRound()))
+				String round = client.getConnManager().getChangeRound();
+				client.getConnManager().setChangeRound("");
+				frameGame.drawRound(round);
+				//frameGame.drawRound(client.getConnManager().getChangeRound());
+				if(!client.getConnManager().getUsername().equals(round))
 				{
 					frameGame.upDateFrameGame();
 					this.is_my_turn = false;
-					client.getConnManager().setChangeRound("");
+					//client.getConnManager().setChangeRound("");
 				}
 				else
 				{
 					frameGame.upDateFrameGame();
 					int response = TimeOutOptionPane.showTimeoutDialog(new JFrame(), "You want to use your round? You have 30 seconds to choose.", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
 					optionpaneClicked(response);
-					client.getConnManager().setChangeRound("");					
+					//client.getConnManager().setChangeRound("");					
 				}
-				client.getConnManager().setChangeRound("");
+				//client.getConnManager().setChangeRound("");
 			}
 			if(is_my_turn)
 			{
