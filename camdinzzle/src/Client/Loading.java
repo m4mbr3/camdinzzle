@@ -23,6 +23,7 @@ public class Loading extends JFrame
 	public Loading()
 	{
 		super("Loading");
+		this.setUndecorated(true);
 		this.setResizable(false);
 		// setta l'icona del frame
 		ClassLoader cldr = this.getClass().getClassLoader();
