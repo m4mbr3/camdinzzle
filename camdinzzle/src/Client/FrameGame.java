@@ -111,7 +111,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	/*
 	 * Oggetto che ricapitola i dinosauri della propria specie
 	 */
-	private JList<Object> dinoList;
+	private JList dinoList;
 	/*
 	 * Oggetto che fa scorrere i dinosauri nella dinoList
 	 */
@@ -1047,7 +1047,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					dinoList = null;
 					dinoListScroll=null;
 				}
-				dinoList = new JList<Object>(msgDinoList);
+				dinoList = new JList(msgDinoList);
 				dinoList.setVisibleRowCount(visibleRowCountDinoList);
 				dinoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				dinoList.addListSelectionListener(new ListSelectionListener() {
