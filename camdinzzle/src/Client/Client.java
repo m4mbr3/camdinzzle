@@ -250,11 +250,6 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	 */
 	public static void main(String[] args) {
 		new Loading();
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		new Client("Cliente");		
 	}
 	
