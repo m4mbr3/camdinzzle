@@ -1,5 +1,9 @@
 package Client;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+
 import javax.swing.JProgressBar;
 import javax.swing.JFrame;
 
@@ -8,16 +12,20 @@ public class Loading extends JFrame
 	private static final long serialVersionUID = 1L;
 	private JProgressBar progress;
 	private AnimationPanel background;
+	private Dimension screenSize;
 	
 	public Loading()
 	{
 		super("Loading");
 		//this.setResizable(false);
+		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(600,250);
+		this.setLocation((int)(screenSize.getWidth()-600)/2,(int)(screenSize.getHeight()-250)/2);
 		this.setLayout(null);
 		background = new AnimationPanel("Images/animazion_caricamento.gif");
 		background.setSize(600, 250);
 		background.setLayout(null);
+	
 		
 		progress = new JProgressBar();
 		progress.setSize(400,30);
