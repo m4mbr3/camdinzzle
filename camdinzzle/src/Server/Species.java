@@ -175,7 +175,9 @@ public class Species implements Serializable
 	{
 		return myDinosaurs.get(dinoId);
 	}
-	
+	//@requires posRig >= 0 && posRig <= 39 && posCol >= 0 && posRig <= 39;
+	//@ensures
+	//@assignable
 	/**
 	 * Crea un nuovo dinosauro, lo aggiunge alla lista dei dinosauri della specie e lo inserisce 
 	 * nella mappa generale.
