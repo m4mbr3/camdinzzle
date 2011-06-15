@@ -9,9 +9,7 @@ package Server;
 import java.util.ArrayList;
 
 /**
- * Classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal client. I metodi che iniziano con 
- * "manage" gestiscono le stringhe dei messaggi proveniente dal Client; i metodi che iniziano con "create" 
- * creano le stringhe dei messaggi da mandare al Client
+ * Classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal client.
  */
 public class ServerMessageBroker 
 {
@@ -557,7 +555,8 @@ public class ServerMessageBroker
 	
 	/**
 	 * Crea il messaggio di ok con due parametro in coda: @ok,nomeParametro
-	 * @param parameter : Parametro da mandare al Client
+	 * @param parameter1 Parametro da mandare al Client
+	 * @param parameter2 Parametro da mandare al Client
 	 * @return Messaggio da mandare al Client
 	 */
 	public static String createOkMessageWithTwoParameter(String parameter1, String parameter2)

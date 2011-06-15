@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-
+/**
+ * Classe utilizzata per la gestione dello scambio dei messaggi e della connessione con il server via socket.
+ */
 public class ConnectionManagerSocket implements ConnectionManager 
 {
 	/*

@@ -51,7 +51,7 @@ public class Textual implements Visual
 	/**
 	 * Stampa a video la vista locale del dinosaruro
 	 * @param dinoId Id del dinosaruo di cui stampare la vista locale
-	 * @param msg Messaggio del ServerLogic
+	 * @param dinoZoomList la vista locale del dinosauro
 	 */
 	@Override
 	public void drawDinoZoom(String dinoId, ArrayList<String> dinoZoomList) 
@@ -111,7 +111,7 @@ public class Textual implements Visual
 
 	/**
 	 * Stampa a video la lista dei dinosauri del giocatore
-	 * @param msg Messaggio del ServerLogic
+	 * @param msgDinoList Messaggio del server
 	 */
 	@Override
 	public void drawDinoList(Object[] msgDinoList) 
@@ -133,7 +133,7 @@ public class Textual implements Visual
 	/**
 	 * Stampa a video lo stato di un dinosauro
 	 * @param dinoId Id del dinosauro
-	 * @param msg Messaggio del ServerLogic
+	 * @param dinoState stato del dinosauro
 	 */
 	public void drawDinoState(String dinoId, String[] dinoState)
 	{
@@ -198,7 +198,7 @@ public class Textual implements Visual
 	
 	/**
 	 * Stampa a video la classifica dei giocatori
-	 * @param msg Messaggio del ServerLogic
+	 * @param rankingList classifica
 	 */
 	@Override
 	public void drawRanking(ArrayList<String> rankingList) 
@@ -318,7 +318,7 @@ public class Textual implements Visual
 	
 	/**
 	 * Stampa a video la lista degli username dei giocatopri in partita
-	 * @param msg Messaggio del ServerLogic
+	 * @param playerList lista dei giocatori
 	 */
 	public void drawPlayerList(String[] playerList)
 	{		

@@ -518,7 +518,7 @@ public class RMIMessageBroker
 	/**
 	 * 
 	 * @param msg
-	 * @return
+	 * @return messaggio diviso per parametri
 	 */
 	public static String[] convertRoundConfirm(String msg)
 	{
@@ -541,7 +541,7 @@ public class RMIMessageBroker
 	/**
 	 * 
 	 * @param msg
-	 * @return
+	 * @return messaggio diviso per parametri
 	 */
 	public static String[] convertPlayerChangeRound(String msg)
 	{

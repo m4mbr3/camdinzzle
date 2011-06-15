@@ -294,7 +294,6 @@ public class ServerLogic
 	 * Controlla che il player possa accedere alla partita e se puo lo fa accedere. Puo' accedere se 
 	 * c'e' ancora posto nella partita (non se e' stato raggiunto il numero massimo di
 	 * giocatori).
-	 * @param username l'username dell'utente
 	 * @param token il token dell'utente
 	 * @return stringa di esito della richiesta
 	 */

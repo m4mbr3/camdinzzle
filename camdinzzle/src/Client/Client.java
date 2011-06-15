@@ -30,7 +30,9 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import Server.*;
-
+/**
+ * Classe contenente il main del client e la generazione dell'interfaccia grafica principale.
+ */
 public class Client extends JFrame implements WindowListener,MouseListener,ChangeListener
 {
 

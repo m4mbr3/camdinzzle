@@ -114,7 +114,7 @@ public class Vegetarian extends Dinosaur implements Serializable
 	
 	/**
 	 * Setta la carogna che c'era sulla mappa dove ora si e' posizionato il dinosauro.
-	 * @param carogna nella posizione
+	 * @param carrion carogna nella posizione
 	 */
 	public void setCarrion(Carrion carrion)
 	{
@@ -123,7 +123,7 @@ public class Vegetarian extends Dinosaur implements Serializable
 
 	/**
 	 * Setta la vegetazione che c'era sulla mappa dove ora si e' posizionato il dinosauro
-	 * @param vegetazione nella posizione
+	 * @param vegetation vegetazione nella posizione
 	 */
 	public void setVegetation(Vegetation vegetation) 
 	{

@@ -22,7 +22,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+/**
+ * Classe di gestione del frame di login.
+ */
 public class FrameLogin extends JFrame implements ActionListener,WindowListener,ChangeListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;

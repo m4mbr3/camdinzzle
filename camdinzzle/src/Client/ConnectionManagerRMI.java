@@ -21,7 +21,9 @@ import java.util.Enumeration;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
+/**
+ * Classe utilizzata per la gestione dello scambio dei messaggi e della connessione con il server via RMI.
+ */
 public class ConnectionManagerRMI implements ConnectionManager 
 {
 	/*

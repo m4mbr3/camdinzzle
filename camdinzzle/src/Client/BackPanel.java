@@ -7,6 +7,9 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+/**
+ * Pannello utilizzato per caricare lo sfondo.
+ */
 public class BackPanel extends JPanel 
 {
 	private static final long serialVersionUID = 1L;

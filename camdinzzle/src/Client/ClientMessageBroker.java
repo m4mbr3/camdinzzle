@@ -3,15 +3,14 @@ package Client;
 import java.util.ArrayList;
 
 /**
- * classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal server. Utilizzato in tutte e 
- * due i tipi di visualizzazione. I metodi che iniziano con "manage" gestiscono le stringhe dei messaggi 
- * proveniente dal ServerLogic; i metodi che iniziano con "create" creano le stringhe dei messaggi da mandare al ServerLogic
+ * Classe utilizzata per la gestione delle stringhe dei messaggi proveniente dal server. Utilizzato in tutte e 
+ * due i tipi di visualizzazione. 
  */
 public class ClientMessageBroker 
 {	
 	//Gestione messaggi in entrata
 	/**
-	 * Controlla se il messaggio � valido oppure no
+	 * Controlla se il messaggio e' valido oppure no
 	 * @param msg messaggio del server
 	 * @return true se messaggio valido, false altrimenti
 	 */
@@ -33,7 +32,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il comando di creazione utente
 	 * @param msg : messaggio di risposta del Server
-	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'è stato
+	 * @return Array contenente in prima posizione l'esito del comando e in seconda posizione l'errore se c'e' stato
 	 */
 	public static String[] manageCreateUser(String msg)
 	{
@@ -59,7 +58,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il comando di creazione della specie
 	 * @param msg : messaggio di risposta del Server
-	 * @return Array contenente in prima posizione l'esito del messaggio e se è no contiene in seconda posizione l'errore
+	 * @return Array contenente in prima posizione l'esito del messaggio e se e' no contiene in seconda posizione l'errore
 	 */
 	public static String[] manageCreateSpecies(String msg)
 	{
@@ -88,7 +87,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il comando di accesso partita
 	 * @param msg : messaggio di risposta del Server
-	 * @return  Array con la risposta nella prima cella c'è ok oppure no e se no in seconda cella c'è il motivo del no
+	 * @return  Array con la risposta nella prima cella c'e' ok oppure no e se no in seconda cella c'e' il motivo del no
 	 */
 	public static String[] manageGameAccess(String msg)
 	{
@@ -114,7 +113,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il comando di uscita partita
 	 * @param msg :messaggio di risposta del Server
-	 * @return Array con la risposta, nella prima cella c'è ok oppure no se no nella seconda c'è il motivo del no
+	 * @return Array con la risposta, nella prima cella c'e' ok oppure no se no nella seconda c'e' il motivo del no
 	 */
 	public static String[] manageGameExit(String msg)
 	{
@@ -140,7 +139,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il comando di logout
 	 * @param msg :messaggio di risposta del Server
-	 * @return Array con la risposta, nella prima cella c'è ok oppure no se no nella seconda c'è il motivo del no
+	 * @return Array con la risposta, nella prima cella c'e' ok oppure no se no nella seconda c'e' il motivo del no
 	 */
 	public static String[] manageLogout(String msg)
 	{
@@ -180,7 +179,7 @@ public class ClientMessageBroker
 	 * @param msg :messaggio di risposta del Server
 	 * @return ArrayList contenente(in ordine di posizione): x di partenza, y di partenza, numero di righe della
 	 * vista, numero di colonne della vista, elemento della prima colonna della prima riga, elemento della seconda
-	 * colonna della prima riga e cos� via
+	 * colonna della prima riga e cosi' via
 	 */
 	public static ArrayList<String> manageGeneralMap(String msg)
 	{
@@ -191,16 +190,9 @@ public class ClientMessageBroker
 			if(msg.contains(";"))
 			{
 				String[] dotAndCommaSeparator = validMessage.split(";");
-				/**
-				 * gestione prima parte del messaggio contenente la dimenzione della mappa generale
-				 */
 				String[] commaSeparator = dotAndCommaSeparator[0].split(",");
 				generalMap.add(commaSeparator[0].substring(1, 2));
 				generalMap.add(commaSeparator[1].substring(0, 1));
-				/**
-				 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista cos� da
-				 * poter iniziare il ciclo di gestione delle singole righe
-				 */
 				dotAndCommaSeparator[0] = commaSeparator[2];
 				String[] bracketSquareSeparator;
 				for (String row : dotAndCommaSeparator) 
@@ -284,25 +276,19 @@ public class ClientMessageBroker
 			ArrayList<String> dinoZoomList = new ArrayList<String>();
 			String validMessage = msg.substring(msg.indexOf(',')+1);
 			String[] dotAndCommaSeparator = validMessage.split(";");
-			/**
-			 * gestione prima parte del messaggio contenente la posizione di partenza(basso a sx), la dimenzione della vista e
-			 * la prima riga della vista
-			 */
+			
 			String[] commaSeparator = dotAndCommaSeparator[0].split(",");
 			dinoZoomList.add(commaSeparator[0].substring(1));
 			dinoZoomList.add(commaSeparator[1].substring(0, commaSeparator[1].length() - 1));
 			dinoZoomList.add(commaSeparator[2].substring(1));
 			dinoZoomList.add(commaSeparator[3].substring(0, commaSeparator[3].length() - 1));
-			/**
-			 * mette la prima riga della vista al primo posto dell'array contenente le altre righe della vista cos� da
-			 * poter iniziare il ciclo di gestione delle singole righe
-			 */
+			
 			dotAndCommaSeparator[0] = dotAndCommaSeparator[0].substring(dotAndCommaSeparator[0].lastIndexOf("\\}") + 2);
 			String[] bracketSquareSeparator;
 			for (String row : dotAndCommaSeparator) 
 			{
 				bracketSquareSeparator = row.trim().split("\\[");
-				// Ciclo che parte da uno perch� il primo carattere dell'array � uno spazio 
+				// Ciclo che parte da uno perche' il primo carattere dell'array � uno spazio 
 				for (int i = 1; i<bracketSquareSeparator.length; i++) 
 					dinoZoomList.add(bracketSquareSeparator[i].substring(0, bracketSquareSeparator[i].indexOf(']')));
 			}
@@ -352,7 +338,7 @@ public class ClientMessageBroker
 	/**
 	 * Gestisce il messaggio del movimento di un dinosauro
 	 * @param msg :messaggio di risposta del Server
-	 * @return stringa contenente l'esito del combattimento se c'� stato, altrimenti ritorna ok
+	 * @return stringa contenente l'esito del combattimento se c'e' stato, altrimenti ritorna ok
 	 */
 	public static String[] manageDinoMove(String msg)
 	{
@@ -505,7 +491,7 @@ public class ClientMessageBroker
 	 * Gestisce il messaggio della classifica dei giocatori di una partita
 	 * @param msg : messaggio di risposta del Server
 	 * @return ArrayList contenente in ordine i giocatori con il loro stato; 4 celle per ogni giocatore 
-	 * contenti(in ordine): username, nome specie, punteggio, se è in partita
+	 * contenti(in ordine): username, nome specie, punteggio, se e' in partita
 	 */
 	public static ArrayList<String> manageRanking(String msg)
 	{

@@ -3,6 +3,9 @@ package Client;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+/**
+ * Classe utlizzata per la notifica del cambio del turno in gioco.
+ */
 public class ChangeRoundThread  implements Runnable 
 {
 	
@@ -57,7 +60,7 @@ public class ChangeRoundThread  implements Runnable
 	}
 	/**
 	 * Metodo statico che ritorna lo stato del thread
-	 * @return
+	 * @return true se il thread e' in esecuzione, false altrimenti
 	 */
 	public static boolean getIsRun()
 	{

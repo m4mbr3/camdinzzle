@@ -371,7 +371,7 @@ public abstract class Dinosaur implements Serializable
 	
 	/**
 	 * Setta l'energia del dinosauro
-	 * @param energia
+	 * @param energy energia del dinosauro
 	 */
 	public void setEnergy(int energy)
 	{

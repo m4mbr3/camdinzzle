@@ -6,6 +6,11 @@ import java.util.Random;
 import javax.swing.JProgressBar;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+/**
+ * Classe di gestione della barra di caricamento iniziale del gioco.
+ */
+
 public class Loading extends JFrame
 {
 	private static final long serialVersionUID = 1L;

@@ -2,7 +2,9 @@ package Client;
 
 import java.util.ArrayList;
 import Server.ClientManagerLocal;
-
+/**
+ * Classe utilizzata per la gestione dello scambio di messaggi con il server in locale.
+ */
 public class ConnectionManagerLocal implements ConnectionManager 
 {	
 	/*

@@ -92,7 +92,7 @@ public class Species implements Serializable
 
 	/**
 	 * Assegna il punteggio alla specie.
-	 * @param punteggio
+	 * @param score score della specie
 	 */
 	public void setScore(int score) 
 	{
@@ -141,7 +141,7 @@ public class Species implements Serializable
 
 	/**
 	 * Setta l'username del giocatore.
-	 * @param username del giocatore
+	 * @param playerUsername username del giocatore
 	 */
 	public void setPlayerUsername(String playerUsername) 
 	{

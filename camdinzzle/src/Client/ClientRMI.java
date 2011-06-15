@@ -2,7 +2,10 @@ package Client;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-
+/**
+ * Classe utilizzata per istanziare un client RMI per permettere al client di ricevere la notifica del cambio del turno
+ * in partita.
+ */
 public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 {
 	private static final long serialVersionUID = 1L;

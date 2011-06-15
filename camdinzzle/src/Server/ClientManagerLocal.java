@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import Client.Client;
 import Client.ClientMessageBroker;
 import Client.ConnectionManagerLocal;
-
+/**
+ * Classe che gestisce lo scambio di messaggi con un client connesso via locale.
+ */
 public class ClientManagerLocal implements ClientManager
 {
 

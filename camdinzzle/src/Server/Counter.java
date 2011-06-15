@@ -1,7 +1,9 @@
 package Server;
 
 import java.io.Serializable;
-
+/**
+ * Classe che esegue il conteggio di conferma del turno e del tempo di un turno di gioco.
+ */
 public class Counter implements Runnable, Serializable 
 {
 	private static final long serialVersionUID = 1L;

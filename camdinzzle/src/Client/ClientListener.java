@@ -8,7 +8,10 @@ import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
+/**
+ * Classe utilizzata per ascoltare il socket di connessione col server per rilevare la presena di messaggi di risposta
+ * o il messaggio di notifica in partita.
+ */
 public class ClientListener implements Runnable 
 {
 	/*

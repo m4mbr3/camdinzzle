@@ -4,7 +4,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
+/**
+ * Classe che esegue il periodico controllo che un qualsiasi client RMI connesso si sia scollegato malamente.
+ */
 public class CheckRMIClientConnection implements Runnable 
 {
 	private boolean run;

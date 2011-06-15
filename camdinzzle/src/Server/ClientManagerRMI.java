@@ -7,7 +7,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import Client.ClientRMIInterface;
-
+/**
+ * Classe che gestisce lo scambio di messaggi e la connessione con un client connesso via RMI.
+ */
 public class ClientManagerRMI implements ClientManager 
 {
 	private String username;

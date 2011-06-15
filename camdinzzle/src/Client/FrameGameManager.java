@@ -23,7 +23,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
+/**
+ * Classe di gestione del frame di manager che permette di ottenere informazioni non in partita.
+ */
 public class FrameGameManager extends JFrame implements WindowListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
@@ -189,7 +191,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	 * Costruttore della classe FrameGameManager
 	 * @param title titolo della finestra
 	 * @param client istanza del client loggato
-	 * @is_local variabile che identifica i client in locale
+	 * @param is_local variabile che identifica i client in locale
 	 * @throws HeadlessException
 	 */
 	public FrameGameManager(String title, Client client, boolean is_local) throws HeadlessException {

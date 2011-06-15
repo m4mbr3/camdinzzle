@@ -7,7 +7,9 @@
 package Client;
 
 import java.util.ArrayList;
-
+/**
+ * Interfaccia che definisce i metodi di interazione con l'utente.
+ */
 public interface Visual 
 {
 	

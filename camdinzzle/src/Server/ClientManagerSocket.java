@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-
+/**
+ * Classe che gestisce lo scambio di messaggi e la connessione con un client connesso via socket.
+ */
 public class ClientManagerSocket implements ClientManager, Runnable {
 	/**
 	 * Oggetto Socket di connessione con il client

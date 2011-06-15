@@ -3,7 +3,9 @@ package Server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-
+/**
+ * Classe che implementa un server RMI a disposizione dei client.
+ */
 public class ServerRMI  extends UnicastRemoteObject implements ServerRMIInterface 
 {
 	private static final long serialVersionUID = 1L;

@@ -31,7 +31,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
+/**
+ * Classe di gestione del frame di gioco.
+ */
 public class FrameGame extends JFrame implements MouseListener,Visual,ActionListener, WindowListener {
 
 	private static final long serialVersionUID = 1L;

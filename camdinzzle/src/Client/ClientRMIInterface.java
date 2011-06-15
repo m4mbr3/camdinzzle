@@ -2,7 +2,9 @@ package Client;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-
+/**
+ * Interfaccia utilizzata per definire un client RMI.
+ */
 public interface ClientRMIInterface extends Remote 
 {
 	/**
