@@ -373,7 +373,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					int opt = chosenDinoImage();
 					if((opt<0)||(opt>5))
 						opt=0;
-					frameGame = new FrameGame("Isola dei Dinosauri",client, this,opt);
+					frameGame = new FrameGame("Camdinzzle",client, this,opt);
 					ChangeRoundThread.start();
 					(new Thread(new ChangeRoundThread(client, frameGame))).start();
 				}

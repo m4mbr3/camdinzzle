@@ -55,8 +55,11 @@ public class Loading extends JFrame
 		int value =0;
 		while (value<=100)
 		{
-			value = value + new Random().nextInt(10);
+			value = value + new Random().nextInt(15);
 			this.inc(value);
+			if(value <= 80)
+				progress_label.setText("Starting environment");
+			/*
 			if(value < 20 && value > 5)
 				progress_label.setText("Creating UI");
 			if(value > 20 && value < 40)
@@ -64,7 +67,7 @@ public class Loading extends JFrame
 			if(value > 40 && value < 60) 
 				progress_label.setText("Searching for update");
 			if(value > 60 && value <80)
-				progress_label.setText("Finishing start");
+				progress_label.setText("Finishing start");*/
 			if(value > 80)
 				progress_label.setText("Enjoy Camdinzzle");
 			try 

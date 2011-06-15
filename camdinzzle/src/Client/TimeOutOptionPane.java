@@ -42,9 +42,9 @@ public class TimeOutOptionPane extends JOptionPane
 	        Timer t = new Timer(27000, new ActionListener() {
 				
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e) 
+				{
 					dialog.setVisible(false);
-					
 				}
 			});
 	        t.start();
