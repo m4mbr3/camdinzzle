@@ -129,11 +129,12 @@ public abstract class Dinosaur implements Serializable
 				return true;
 			}
 			else 
-			{
 				return false;
-			}
 	}
 	
+	//@ ensures if ( energy > eEgg ) ==>  (*Creo l'uovo e lo posiziono sulla mappa*) && \result == (*All'idDino*);
+	//@			else	\result == null;
+	//@ assignable energy,idDino, 
 	/**
 	 * Crea un nuovo dinosauro nella prima cella libera vicino al dinosauro.
 	 * @return dinoId id del nuovo dinosauro
