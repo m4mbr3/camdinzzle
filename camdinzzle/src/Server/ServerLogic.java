@@ -242,6 +242,8 @@ public class ServerLogic
 	 */
 	public String addNewSpecies(String token, String name, String type) 
 	{
+		LogHelper.writeClientRequest("creaRazza --> " + token);
+		
 		try
 		{
 			if (this.isLoggedUser(token)) 
@@ -265,13 +267,20 @@ public class ServerLogic
 	
 					rank.put(name, new_specie);
 					loggedPlayers.get(token).setSpecie(new_specie);
+					LogHelper.writeServerResponse("creaRazza " + token + " --> @ok");
 					return ServerMessageBroker.createOkMessage();
 				} 
 				else
+				{
+					LogHelper.writeServerResponse("creaRazza " + token + " --> @no,@nomeRazzaOccupato");
 					return ServerMessageBroker.createErroMessage("nomeRazzaOccupato");
+				}
 			} 
 			else
+			{
+				LogHelper.writeServerResponse("creaRazza " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
 		}
 		catch(Exception ex)
 		{
@@ -509,6 +518,8 @@ public class ServerLogic
 	 */
 	public String playerList(String token)
 	{
+		LogHelper.writeClientRequest("listaGiocatori --> " + token);
+		
 		try
 		{
 			ArrayList<String> parameters = new ArrayList<String>();
@@ -526,9 +537,12 @@ public class ServerLogic
 						parameters.add(((Player)me.getValue()).getUserName());
 					}
 					
-					return ServerMessageBroker.createStandardMessage(parameters);
+					String message = ServerMessageBroker.createStandardMessage(parameters);
+					LogHelper.writeServerResponse("listaGiocatori " + token + " --> " + message);
+					return message;
 				}
 			}
+			LogHelper.writeServerResponse("listaGiocatori " + token + " --> @no,@tokenNonValido");
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 		catch(Exception ex)
@@ -545,6 +559,8 @@ public class ServerLogic
 	 */
 	public String ranking(String token)
 	{
+		LogHelper.writeClientRequest("classifica --> " + token);
+		
 		try
 		{			
 			Hashtable<String, String> alreadySpeciesRead = new Hashtable<String, String>();
@@ -595,9 +611,12 @@ public class ServerLogic
 					}	
 				}
 
-				return ServerMessageBroker.createRankingList(ranking);
+				String message = ServerMessageBroker.createRankingList(ranking);
+				LogHelper.writeServerResponse("classifica " + token + " --> " + message);
+				return message;
 			}
 			
+			LogHelper.writeServerResponse("classifica " + token + " --> @no,@tokenNonValido");
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 		catch(Exception ex)
@@ -650,6 +669,8 @@ public class ServerLogic
 	 */
 	public String generalMap(String token)
 	{
+		LogHelper.writeClientRequest("mappaGenerale --> " + token);
+		
 		try
 		{
 			ArrayList<String> map = new ArrayList<String>();
@@ -672,13 +693,21 @@ public class ServerLogic
 						}
 					}
 					
-					return ServerMessageBroker.createGeneraleMap(map);
+					String message = ServerMessageBroker.createGeneraleMap(map);
+					LogHelper.writeServerResponse("mappaGenerale " + token + " --> @ok");
+					return message;
 				}
 				else
+				{
+					LogHelper.writeServerResponse("mappaGenerale " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
 			}
 			else
+			{
+				LogHelper.writeServerResponse("mappaGenerale " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
 		}
 		catch(Exception ex)
 		{
@@ -695,6 +724,8 @@ public class ServerLogic
 	 */
 	public String dinosaursList(String token)
 	{
+		LogHelper.writeClientRequest("listaDinosauri --> " + token);
+		
 		try
 		{
 			ArrayList<String> list = new ArrayList<String>();
@@ -704,7 +735,9 @@ public class ServerLogic
 			{
 				if(loggedPlayers.get(token).getSpecie() == null)
 				{
-					return ServerMessageBroker.createStandardMessage(list);
+					String message = ServerMessageBroker.createStandardMessage(list);
+					LogHelper.writeServerResponse("listaDinosauri " + token + " --> " + message);
+					return message;
 				}
 				if(currentSession.getPlayer(token) != null)
 				{
@@ -722,13 +755,21 @@ public class ServerLogic
 						}
 					}
 					
-					return ServerMessageBroker.createStandardMessage(list);
+					String message = ServerMessageBroker.createStandardMessage(list);
+					LogHelper.writeServerResponse("listaDinosauri " + token + " --> " + message);
+					return message;
 				}
 				else
+				{
+					LogHelper.writeServerResponse("listaDinosauri " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
 			}
 			else
+			{
+				LogHelper.writeServerResponse("listaDinosauri " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
 		}
 		catch(Exception ex)
 		{
@@ -745,7 +786,9 @@ public class ServerLogic
 	 * @return stringa di esito della richiesta
 	 */
 	public String dinoZoom(String token, String dinoId)
-	{		
+	{	
+		LogHelper.writeClientRequest("vistaLocale --> " + token + ", " + dinoId);
+		
 		try
 		{
 			ArrayList<String> zoom = new ArrayList<String>();
@@ -794,16 +837,28 @@ public class ServerLogic
 									zoom.add(null);
 							}
 						}
-						return ServerMessageBroker.createDinoZoom(zoom);
+						
+						String message = ServerMessageBroker.createDinoZoom(zoom);
+						LogHelper.writeServerResponse("vistaLocale " + token + " --> " + message);
+						return message;
 					}
 					else
+					{
+						LogHelper.writeServerResponse("vistaLocale " + token + " --> @no,@idNonValido");
 						return ServerMessageBroker.createErroMessage("idNonValido");
+					}
 				}
 				else
+				{
+					LogHelper.writeServerResponse("vistaLocale " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
 			}
 			else
+			{
+				LogHelper.writeServerResponse("vistaLocale " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
 		}
 		catch(Exception ex)
 		{
@@ -820,6 +875,8 @@ public class ServerLogic
 	 */
 	public String dinoState(String token, String dinoId)
 	{
+		LogHelper.writeClientRequest("statoDinosauro --> " + token + ", " + dinoId);
+		
 		Dinosaur dino;
 		try
 		{
@@ -846,7 +903,9 @@ public class ServerLogic
 						state.add(String.valueOf(dino.getEnergy()));
 						state.add(String.valueOf(dino.getTimeOfLive()));
 						
-						return ServerMessageBroker.createDinoState(state);
+						String message = ServerMessageBroker.createDinoState(state);
+						LogHelper.writeServerResponse("statoDinosauro " + token + " --> " + message);
+						return message;
 					}
 					else
 
@@ -867,7 +926,9 @@ public class ServerLogic
 							state.add(String.valueOf(dino.getEnergy()));
 							state.add(String.valueOf(dino.getAge()));
 							
-							return ServerMessageBroker.createDinoState(state);
+							String message = ServerMessageBroker.createDinoState(state);
+							LogHelper.writeServerResponse("statoDinosauro " + token + " --> " + message);
+							return message;
 						}
 						else
 						{
@@ -924,23 +985,38 @@ public class ServerLogic
 										 state.add(String.valueOf(dino.getPosCol()));
 										 state.add(String.valueOf(dino.getDinoDimension()));
 										 
-										 return ServerMessageBroker.createDinoState(state);
+										 String message = ServerMessageBroker.createDinoState(state);
+										 LogHelper.writeServerResponse("statoDinosauro " + token + " --> " + message);
+										 return message;
 									}
 								}
 								
+								LogHelper.writeServerResponse("statoDinosauro " + token + " --> @no,@idNonValido");
 								return ServerMessageBroker.createErroMessage("idNonValido");
 							}
 							else
+							{
+								LogHelper.writeServerResponse("statoDinosauro " + token + " --> @no,@idNonValido");
 								return ServerMessageBroker.createErroMessage("idNonValido");
+							}
 						}
 					}
-					return ServerMessageBroker.createDinoState(state);
+					
+					String message = ServerMessageBroker.createDinoState(state);
+					LogHelper.writeServerResponse("statoDinosauro " + token + " --> " + message);
+					return message;
 				}
 				else
+				{
+					LogHelper.writeServerResponse("statoDinosauro " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
 			}
 			else
+			{
+				LogHelper.writeServerResponse("statoDinosauro " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
+			}
 		}
 		catch(Exception ex)
 		{
@@ -960,6 +1036,8 @@ public class ServerLogic
 	 */
 	public String dinoMove(String token, String dinoId, String rowDest, String colDest)
 	{
+		LogHelper.writeClientRequest("muoviDinosauro --> " + token + ", " + dinoId + ", " + rowDest + ", " + colDest);
+		
 		try
 		{
 			int	dinoRow = Integer.parseInt(rowDest);
@@ -1016,11 +1094,13 @@ public class ServerLogic
 														
 														Game.setCellMap(dino, dinoRow, dinoCol);
 														dino.setLocalMap();
+														LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @ok,@combattimento,v");
 														return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "v");
 													}
 													else
 													{
 														currentSession.getPlayer(token).getSpecie().killDino(dino,true);
+														LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @ok,@combattimento,p");
 														return ServerMessageBroker.createOkMessageWithTwoParameter("combattimento", "p");
 													}
 												}
@@ -1054,52 +1134,62 @@ public class ServerLogic
 													}
 													Game.setCellMap(dino, dinoRow, dinoCol);
 													dino.setLocalMap();
+													LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @ok");
 													return ServerMessageBroker.createOkMessage();
 												}
 											}
 											else
 											{
 												currentSession.getPlayer(token).getSpecie().killDino(dino,false);
+												LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@mortePerInedia");
 												return ServerMessageBroker.createErroMessage("mortePerInedia");
 											}
 										}
 										else
 										{
+											LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@destinazioneNonValida");
 											return ServerMessageBroker.createErroMessage("destinazioneNonValida");
 										}
 									}
 									else
 									{
+										LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@destinazioneNonValida");
 										return ServerMessageBroker.createErroMessage("destinazioneNonValida");
 									}
 								}
 								else
 								{
+									LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@destinazioneNonValida");
 									return ServerMessageBroker.createErroMessage("destinazioneNonValida");
 								}
 							}
 							else
 							{
+								LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@raggiuntoLimiteMosseDinosauro");
 								return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
 							}
 						}
 						else
 						{
+							LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@idNonValido");
 							return ServerMessageBroker.createErroMessage("idNonValido");
 						}
 					}
 					else
 					{
+						LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@nonIlTuoTurno");
 						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
 					}
 				}
 				else
 				{
+					LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
 				}
 			}
 			else
 			{
+				LogHelper.writeServerResponse("muoviDinosauro " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
 			}
 		}
@@ -1119,6 +1209,8 @@ public class ServerLogic
 	 */
 	public String dinoGrowUp(String token, String dinoId)
 	{	
+		LogHelper.writeClientRequest("crescitaDinosauro --> " + token + ", " + dinoId);
+		
 		try
 		{
 			if(isLoggedUser(token))						//controlla se e' loggato
@@ -1133,36 +1225,43 @@ public class ServerLogic
 							{
 								if(currentSession.getPlayer(token).getSpecie().getDino(dinoId).growUp())		//non ha abbastanza energia
 								{
+									LogHelper.writeServerResponse("crescitaDinosauro " + token + " --> @ok");
 									return ServerMessageBroker.createOkMessage();
 								}
 								else
 								{
 									currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId),false);
+									LogHelper.writeServerResponse("crescitaDinosauro " + token + " --> @no,@mortePerInedia");
 									return ServerMessageBroker.createErroMessage("mortePerInedia");
 								}
 							}
 							else
 							{
+								LogHelper.writeServerResponse("crescitaDinosauro " + token + " --> @no,@raggiuntoLimiteMosseDinosauro");
 								return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
 							}
 						}
 						else
 						{
+							LogHelper.writeServerResponse("crescitaDinosauro " + token + " --> @no,@idNonValido");
 							return ServerMessageBroker.createErroMessage("idNonValido");
 						}
 					}
 					else
 					{
+						LogHelper.writeServerResponse("crescitaDinosauro " + token + " --> @no,@nonIlTuoTurno");
 						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
 					}
 				}
 				else
 				{
+					LogHelper.writeServerResponse("crescitaDinosauro " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
 				}
 			}
 			else
 			{
+				LogHelper.writeServerResponse("crescitaDinosauro " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
 			}
 		}
@@ -1182,6 +1281,8 @@ public class ServerLogic
 	 */
 	public String dinoNewEgg(String token, String dinoId)
 	{	
+		LogHelper.writeClientRequest("deposizioneUovo --> " + token + ", " + dinoId);
+		
 		try
 		{
 			if(isLoggedUser(token))						//controlla se � loggato
@@ -1199,41 +1300,49 @@ public class ServerLogic
 									String idDino = currentSession.getPlayer(token).getSpecie().getDino(dinoId).newEgg();
 									if(idDino !=null)		//non ha abbastanza energia
 									{
+										LogHelper.writeServerResponse("deponiUovo " + token + " --> @ok," + idDino);
 										return ServerMessageBroker.createOkMessageWithOneParameter(idDino);//id dino nuovo
 									}
 									else
 									{
 										currentSession.getPlayer(token).getSpecie().killDino(currentSession.getPlayer(token).getSpecie().getDino(dinoId),false);
+										LogHelper.writeServerResponse("deponiUovo " + token + " --> @no,@mortePerInedia");
 										return ServerMessageBroker.createErroMessage("mortePerInedia");
 									}
 								}
 								else
 								{
+									LogHelper.writeServerResponse("deponiUovo " + token + " --> @no,@raggiuntoLimiteMosseDinosauro");
 									return ServerMessageBroker.createErroMessage("raggiuntoLimiteMosseDinosauro");
 								}
 							}
 							else
 							{
+								LogHelper.writeServerResponse("deponiUovo " + token + " --> @no,@raggiuntoNumeroMaxDInosauri");
 								return ServerMessageBroker.createErroMessage("raggiuntoNumeroMaxDinosauri");
 							}
 						}
 						else
 						{
+							LogHelper.writeServerResponse("deponiUovo " + token + " --> @no,@idNonValido");
 							return ServerMessageBroker.createErroMessage("idNonValido");
 						}
 					}
 					else
 					{
+						LogHelper.writeServerResponse("deponiUovo " + token + " --> @no,@nonIlTuoTurno");
 						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
 					}
 				}
 				else
 				{
+					LogHelper.writeServerResponse("deponiUovo " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
 				}
 			}
 			else
 			{
+				LogHelper.writeServerResponse("deponiUovo " + token + " --> @no,@tokenNonValido");
 				return ServerMessageBroker.createTokenNonValidoErrorMessage();
 			}
 		}
@@ -1252,6 +1361,8 @@ public class ServerLogic
 	 */
 	public String roundConfirm(String token)
 	{
+		LogHelper.writeClientRequest("creaUtente --> " + token);
+		
 		try
 		{
 			if(isLoggedUser(token))
@@ -1268,14 +1379,22 @@ public class ServerLogic
 						counter2m = new Thread(counter);
 						counter2m.start();
 						
+						LogHelper.writeServerResponse("conferaTurno " + token + " --> @ok");
 						return ServerMessageBroker.createOkMessage();
 					}
 					else
+					{
+						LogHelper.writeServerResponse("confermaTurno " + token + " --> @no,@nonIlTuoTurno");
 						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
+					}
 				}
 				else
+				{
+					LogHelper.writeServerResponse("confermaTurno " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
 			}
+			LogHelper.writeServerResponse("confermaTurno " + token + " --> @no,@tokenNonValido");
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 		catch(Exception ex)
@@ -1292,6 +1411,8 @@ public class ServerLogic
 	 */
 	public String playerRoundSwitch(String token)
 	{		
+		LogHelper.writeClientRequest("passaTurno --> " + token);
+		
 		try
 		{
 			if(isLoggedUser(token))
@@ -1310,14 +1431,22 @@ public class ServerLogic
 							counter30s.interrupt();
 						}
 						this.changeRound();
+						LogHelper.writeServerResponse("passaTurno " + token + " --> @ok");
 						return ServerMessageBroker.createOkMessage();
 					}
 					else
+					{
+						LogHelper.writeServerResponse("passaTurno " + token + " --> @no,@nonIlTuoTurno");
 						return ServerMessageBroker.createErroMessage("nonIlTuoTurno");
+					}
 				}
 				else
+				{
+					LogHelper.writeServerResponse("passaTurno " + token + " --> @no,@nonInPartita");
 					return ServerMessageBroker.createErroMessage("nonInPartita");
+				}
 			}
+			LogHelper.writeServerResponse("passaTurno " + token + " --> @no,@tokenNonValido");
 			return ServerMessageBroker.createTokenNonValidoErrorMessage();
 		}
 		catch(Exception ex)
