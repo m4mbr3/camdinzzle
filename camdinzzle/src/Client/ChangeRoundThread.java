@@ -1,5 +1,7 @@
 package Client;
 
+import java.awt.Frame;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -147,7 +149,7 @@ public class ChangeRoundThread  implements Runnable
 				}
 			}				
 		}
-		else
+		else if(chosedOption == 1)
 		{
 			response=client.getConnManager().passaTurno();
 			if (response == null)

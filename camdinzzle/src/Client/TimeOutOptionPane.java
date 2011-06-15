@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 public class TimeOutOptionPane extends JOptionPane
 {
 	private static final long serialVersionUID = 1L;
-	final static int PRESET_TIME = 28;
+	final static int PRESET_TIME = 27;
 
 	public TimeOutOptionPane() 
 	{
@@ -27,6 +27,8 @@ public class TimeOutOptionPane extends JOptionPane
 	        pane.setInitialValue(initialValue);
 	
 	        final JDialog dialog = pane.createDialog(parentComponent, title);
+	        
+	        //Thread.sleep(400);
 	        
 	        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 	        
@@ -61,10 +63,8 @@ public class TimeOutOptionPane extends JOptionPane
 	        Object selectedValue = pane.getValue();
 	        if (selectedValue.equals("uninitializedValue")) 
 	        {
-	            selectedValue = initialValue;
+	            return 2;
 	        }
-	        if (selectedValue == null)
-	            return CLOSED_OPTION;
 	        if (options == null) 
 	        {
 	            if (selectedValue instanceof Integer)
@@ -78,7 +78,7 @@ public class TimeOutOptionPane extends JOptionPane
 	        }
 	        return CLOSED_OPTION;
     	}
-    	catch(Throwable t)
+    	catch(Exception t)
     	{
     		return CLOSED_OPTION;
     	}
