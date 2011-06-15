@@ -34,7 +34,7 @@ public class TestCarnivorous extends TestCase
 		int finalEnergy = 0;
 		boolean isCarrion = false;
 		Carnivorous dino = new Carnivorous("dino - 1", 3, 4, new Species("playerSpecies", Species.getCarnType(), "player"));
-		
+		dino.setEnergy(10);
 		// mangia una carogna della mappa e controllo se aumenta energia del dinosauro
 		for(int i = 0; i < Game.maxRow; i++)
 		{
@@ -43,6 +43,10 @@ public class TestCarnivorous extends TestCase
 				if(map[i][j] instanceof Carrion)
 				{
 					finalEnergy += ((Carrion)map[i][j]).getPower() + dino.getEnergy();
+					if(finalEnergy>(dino.getDinoDimension()*1000))
+					{
+						finalEnergy=(dino.getDinoDimension()*1000);
+					}
 					dino.eat(map[i][j]);
 					isCarrion = true;
 					break;
@@ -70,6 +74,33 @@ public class TestCarnivorous extends TestCase
 				}
 			}
 			if(isVegetation)
+			{
+				break;
+			}
+		}
+		assertEquals(finalEnergy, dino.getEnergy());
+		
+		finalEnergy=0;
+		dino.setEnergy(980);
+		isCarrion = false;
+		// mangia una carogna della mappa e controllo che l'energia non superi il massimo
+		for(int i = 0; i < Game.maxRow; i++)
+		{
+			for(int j = 0; j < Game.maxCol; j++)
+			{
+				if(map[i][j] instanceof Carrion)
+				{
+					finalEnergy += ((Carrion)map[i][j]).getPower() + dino.getEnergy();
+					if(finalEnergy>(dino.getDinoDimension()*1000))
+					{
+						finalEnergy=(dino.getDinoDimension()*1000);
+					}
+					dino.eat(map[i][j]);
+					isCarrion = true;
+					break;
+				}
+			}
+			if(isCarrion)
 			{
 				break;
 			}

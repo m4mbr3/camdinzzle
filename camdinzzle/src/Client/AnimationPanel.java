@@ -19,6 +19,8 @@ public class AnimationPanel extends JPanel implements ActionListener
 	private static final long serialVersionUID = 1L;
 	private Image img;
 	private Timer timer;
+	private boolean finish=false;
+	private int count;
 	
 	public AnimationPanel(String urlImage)
 	{
@@ -35,6 +37,7 @@ public class AnimationPanel extends JPanel implements ActionListener
 		{
 			
 		}
+		count=0;
 		timer = new Timer(1, this);
 		timer.start();
 	}
@@ -43,6 +46,11 @@ public class AnimationPanel extends JPanel implements ActionListener
 	public void actionPerformed (ActionEvent ae) 
 	{
 		repaint();
+		count++;
+		if(count==5)
+		{
+			finish = true;
+		}
 	}
 	
 	protected void paintComponent(Graphics g) 
@@ -50,5 +58,10 @@ public class AnimationPanel extends JPanel implements ActionListener
 	   setOpaque(false);
 	   g.drawImage(img, 0, 0, null);
 	   super.paintComponent(g);
+	}
+	
+	public boolean getFinish()
+	{
+		return finish;
 	}
 }

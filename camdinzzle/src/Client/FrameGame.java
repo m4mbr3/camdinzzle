@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.Timer;
 
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionEvent;
@@ -256,6 +257,26 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 * Indirizzo relativo all'immagine di sfondo della lista giocatori in partita 
 	 */
 	private URL listaGiocatoriImage;
+	/*
+	 * Oggetto relativo alla gif del combattimento
+	 */
+	private JFrame fight;
+	/*
+	 * Oggetto relativo alla gif del combattimento
+	 */
+	private AnimationPanel fightAnimation;
+	/*
+	 * Oggetto relativo alla gif del mangia
+	 */
+	private JFrame eat;
+	/*
+	 * Oggetto relativo alla gif del mangia
+	 */
+	private AnimationPanel eatAnimation;
+	/*
+	 * Timer per animazione
+	 */
+	private Timer timer;
 	
 	
 	/**
@@ -269,6 +290,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		super(title);		
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setResizable(false);
+		this.setBackground(Color.black);
 		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
 		screenHeight = (int)g.getMaximumWindowBounds().getHeight();
@@ -424,7 +446,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 
 
 	@Override
-	public void actionPerformed(ActionEvent e) {}
+	public void actionPerformed(ActionEvent e) 
+	{
+		if(fight!=null)
+			fight.setVisible(false);
+		if(eat!=null)
+			eat.setVisible(false);
+		if(timer!=null)
+			timer.stop();
+	}
 
 
 	@Override
@@ -660,7 +690,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				cellClicked.setBorder(null);
 			
 			ArrayList<String> check = client.getConnManager().mappaGenerale();
-
 			if(check==null)
 			{
 				errorMessage();
@@ -709,6 +738,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 								{
 									if(check.length==3)
 									{
+										fight();
 										String result;
 										if(check[2].equals("v"))
 											result = " win!";
@@ -719,6 +749,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 									extinctionSpecies();
 									if(!flagStop)
 									{
+										eat();
 										drawMap(client.getConnManager().mappaGenerale());
 										drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
 									}
@@ -1476,5 +1507,49 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			this.drawDinoList(client.getConnManager().listaDinosauri());
 			this.drawDinoState(dinoList[0], client.getConnManager().statoDinosauro(dinoList[0]));
 		}
+	 }
+	 
+	 public void fight()
+	 {
+		 if(fight!=null)
+		 {
+			 fight.removeAll();
+			 fightAnimation = null;
+			 fight = null;
+		 }
+		 fight = new JFrame();
+		 fight.setSize(300, 102);
+		 fight.setUndecorated(true);
+		 fight.setLocation((screenWidth-300)/2, (screenHeight-102)/2);
+		 fight.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		 fightAnimation = new AnimationPanel("Images/combattimento.gif");
+		 fightAnimation.setLayout(null);
+		 fightAnimation.setSize(300, 102);
+		 fight.getContentPane().add(fightAnimation);
+		 fight.setVisible(true);
+		 timer = new Timer(4800, this);
+		 timer.start();
+	 }
+	 
+	 public void eat()
+	 {
+		 if(eat!=null)
+		 {
+			 eat.removeAll();
+			 eatAnimation = null;
+			 eat = null;
+		 }
+		 eat = new JFrame();
+		 eat.setSize(148, 102);
+		 eat.setUndecorated(true);
+		 eat.setLocation((screenWidth-148)/2, (screenHeight-102)/2);
+		 eat.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		 eatAnimation = new AnimationPanel("Images/mangia_erba.gif");
+		 eatAnimation.setLayout(null);
+		 eatAnimation.setSize(300, 102);
+		 eat.getContentPane().add(eatAnimation);
+		 eat.setVisible(true);
+		 timer = new Timer(1800, this);
+		 timer.start();
 	 }
 }

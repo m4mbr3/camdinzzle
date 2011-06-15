@@ -34,15 +34,15 @@ public class Game
 	/*
 	 * Numero massimo di celle d'acqua.
 	 */
-	private int Water = 164;
+	private int water = 164;
 	/*
 	 * Numero di carogne.
 	 */
-	private int Carrion=20;
+	private int carrion=20;
 	/*
 	 * Numero di vegetazione.
 	 */
-	private int Vegetation=512;
+	private int vegetation=512;
 	
 	private boolean permise=true;
 	/*
@@ -58,7 +58,7 @@ public class Game
 	 * Mappa di raggiungibilita'.
 	 */
 	private static int[][][][] mapReach;
-
+	private int controlWater = 0;
 	/**
 	 * Istanzia un nuovo Game.
 	 * Crea una nuova mappa se non esiste, altrimenti la carica da file e inizializza la mappa 
@@ -242,7 +242,8 @@ public class Game
 				for(int j=col; j<col+size/3; j++)
 				{
 					map[i][j] ="a";
-					Water -= 1;
+					water -= 1;
+					controlWater++;
 				}
 			
 			}
@@ -299,13 +300,16 @@ public class Game
 			for(int j=col; j<=col+ctrlOffsetCol; j++)
 			{
 				map[row][j] ="a";
-				Water -= 1;
+				water -= 1;
+				controlWater++;
 			}
 			for(int i=row+1; i<=row+ctrlOffsetRow; i++)
 			{
 				map[i][col] ="a";
 				map[i][col+ctrlOffsetCol] ="a";
-				Water -= 2;
+				water -= 2;
+				controlWater++;
+				controlWater++;
 			}
 		}
 	}
@@ -354,7 +358,8 @@ public class Game
 					for(int j=col-ctrl; j<=col+ctrl; j++)	//stampala parte sopra
 					{
 						map[i][j] ="a";
-						Water -= 1;
+						water -= 1;
+						controlWater++;
 					}
 					ctrl++;
 				}
@@ -370,7 +375,8 @@ public class Game
 					for(int j=col-ctrl; j<=col+ctrl; j++)	//stampa la parte sotto
 					{
 						map[i][j] ="a";
-						Water -= 1;
+						water -= 1;
+						controlWater++;
 					}
 				}
 				
@@ -430,12 +436,14 @@ public class Game
 				if((i==row)||(i==row+1)||(i==row+3)||(i==row+4))
 				{
 				map[i][col] ="a";
-				Water -= 1;
+				water -= 1;
+				controlWater++;
 				}
 				if((i==row+1)||(i==row+2)||(i==row+3))
 				{
 					map[i][col+1] ="a";
-					Water -= 1;
+					water -= 1;
+					controlWater++;
 				}
 				if((i==row+4)&&(size!=7))
 				{
@@ -443,7 +451,8 @@ public class Game
 					do
 						{
 						map[i][col-count] ="a";
-						Water -= 1;
+						water -= 1;
+						controlWater++;
 						count++;
 						}
 					while(count<4);	
@@ -453,13 +462,15 @@ public class Game
 					if(i==row+4)
 					{	
 					map[i][col] ="a";
-					Water -= 1;
+					water -= 1;
+					controlWater++;
 					}
 				}
 				if(i==row+5)
 				{
 					map[i][col-3] ="a";
-					Water -= 1;
+					water -= 1;
+					controlWater++;
 				}
 			}
 		}
@@ -508,12 +519,43 @@ public class Game
 		/*
 		 * creaione pozze d'acqua
 		 */
+
+		boolean flagFinish = false;
+		int sizeFinish=0;
+		int waterplus=0;
 		do
 		{
+
+			if(water==waterplus)
+			{
+				flagFinish = false;
+			}
+			int control = controlWater;
 			int row = (int)(Math.random() * (maxRow - 10) + 4); // random da 4 a 33
 			int col = (int)(Math.random() * (maxCol - 14) + 5); // random da 5 a 31
 			int size = (int)(Math.random() * 11 + 5); //random da 5 a 15
-			if(Water >= size)
+			if(water<30)
+			{
+				if(!flagFinish)
+				{
+					waterplus = water;
+					if(water%2==0)
+					{
+						size=water/2;
+						sizeFinish = size;
+					}
+					else
+					{
+						size=water/2;
+						sizeFinish = size+1;
+					}
+					flagFinish = true;
+				}
+				else
+				{
+					size = sizeFinish;
+				}
+			}
 			{
 				switch (size)
 				{
@@ -574,7 +616,7 @@ public class Game
 					}
 				}
 			}
-		}while(Water>=5);
+		}while(water>0);
 		
 		
 		
@@ -594,10 +636,10 @@ public class Game
 						 */
 						case 0:
 						{
-							if(Vegetation>0)
+							if(vegetation>0)
 							{
 								map[row][col] = new Vegetation((int) (Math.random() * 201 + 150));
-								Vegetation -= 1;
+								vegetation -= 1;
 								break;
 							}
 						}
@@ -606,16 +648,16 @@ public class Game
 						 */
 						case 1:
 						{
-							if(Carrion>0)
+							if(carrion>0)
 							{
 								map[row][col] = new Carrion((int) (Math.random() * 301 + 350));
-								Carrion -= 1;
+								carrion -= 1;
 								break;
 							}
 						}
 					}
 				}
-			}while(Vegetation>0 || Carrion>0);
+			}while(vegetation>0 || carrion>0);
 			
 	}
 

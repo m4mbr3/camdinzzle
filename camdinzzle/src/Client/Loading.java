@@ -30,7 +30,7 @@ public class Loading extends JFrame
 		ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
 		this.setIconImage(logo.getImage());
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize(602,230);
+		this.setSize(600,230);
 		this.setLocation((int)(screenSize.getWidth()-600)/2,(int)(screenSize.getHeight()-250)/2);
 		this.setLayout(null);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -76,7 +76,7 @@ public class Loading extends JFrame
 			} 
 			catch (InterruptedException e) 
 			{
-				e.printStackTrace();
+				
 			}
 		}
 		this.setVisible(false);
@@ -85,4 +85,5 @@ public class Loading extends JFrame
 	{
 		progress.setValue(value);
 	}
+
 }

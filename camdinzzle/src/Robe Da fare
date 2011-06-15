@@ -8,6 +8,9 @@
 		-controllare fra richiesta lista dinosauri e stato dinosauro che esce errore classcastexception
 		ma non viene data la riga.
 		
+		-cambiare immagine loading
+		
+		-capire quando mangia
 		
 		
 		(CHIESTO A CARDAMONE)
@@ -30,11 +33,12 @@
 		-deposizione uovo deve togliere 1500
 		-combattimento
 		
+		in specie.addDinosaur requisiti:le coordinate indicano una cella con la terra
+		
 		
 		-file di sicurezza RMI		NON è OBBLIGATORIO!!! SERVE SOLO X PASSAGGIO DI OGGETTI DINAMICI(CHE NN è IL NOSTRO CASO)
 
 		se nn ci sn aggiornamenti rilevanti nell'uml nn lo ricontrolla..
 		
 				
-		-Cambiare appena arrivano le immagini della terra e della vegetazione in ombra
 		

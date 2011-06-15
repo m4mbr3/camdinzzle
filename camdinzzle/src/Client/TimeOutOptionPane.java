@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -14,10 +15,13 @@ public class TimeOutOptionPane extends JOptionPane
 {
 	private static final long serialVersionUID = 1L;
 	final static int PRESET_TIME = 27;
-
+	private static ClassLoader cldr;
+	private static ImageIcon ok;
 	public TimeOutOptionPane() 
 	{
         super();
+        cldr = this.getClass().getClassLoader();
+        ok = new ImageIcon(cldr.getResource("Images/conferma.jpg"));
 	}
 
     public static int showTimeoutDialog(Component parentComponent, Object message, final String title, int optionType,
@@ -25,7 +29,9 @@ public class TimeOutOptionPane extends JOptionPane
     {
     	try
     	{
-	        JOptionPane pane = new JOptionPane(message, messageType, optionType, null, options, initialValue);
+
+    		
+	        JOptionPane pane = new JOptionPane(message, messageType, optionType, ok , options, initialValue);
 	         
 	        pane.setInitialValue(initialValue);
 	
