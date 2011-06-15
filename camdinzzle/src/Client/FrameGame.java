@@ -266,7 +266,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 */
 	
 	public FrameGame(String title,Client client, FrameGameManager frameGameManager, int intDino) throws HeadlessException{
-		super(title);
+		super(title);		
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setResizable(false);
 		GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -284,6 +284,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconLandDisable = new ImageIcon[2];
 		iconVegetationDisable = new ImageIcon[2];
 		ClassLoader cldr = this.getClass().getClassLoader();
+		// setta l'icona del frame
+		ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+		this.setIconImage(logo.getImage());
 		iconVegetation[0] = new ImageIcon(cldr.getResource("Images/vegetazione1.jpg"));
 		iconVegetation[1] = new ImageIcon(cldr.getResource("Images/vegetazione2.jpg"));
 		iconLand[0] = new ImageIcon(cldr.getResource("Images/terra1.jpg"));

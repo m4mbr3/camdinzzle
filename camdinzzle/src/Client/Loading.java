@@ -3,6 +3,8 @@ package Client;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Random;
+
+import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +24,10 @@ public class Loading extends JFrame
 	{
 		super("Loading");
 		//this.setResizable(false);
+		// setta l'icona del frame
+		ClassLoader cldr = this.getClass().getClassLoader();
+		ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+		this.setIconImage(logo.getImage());
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(600,255);
 		this.setLocation((int)(screenSize.getWidth()-600)/2,(int)(screenSize.getHeight()-250)/2);

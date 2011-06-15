@@ -16,6 +16,7 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -141,6 +142,11 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	 */
 	public Client(String Name) {
 		super (Name);
+		// setta l'icona del frame
+		ClassLoader cldr = this.getClass().getClassLoader();
+		ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+		this.setIconImage(logo.getImage());
+		
 		this.setResizable(false);
 		this.setVisible(true);
 		is_local = false;
@@ -252,7 +258,7 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	 */
 	public static void main(String[] args) {
 		new Loading();
-		new Client("Cliente");		
+		new Client("Client");		
 	}
 	
 	@Override

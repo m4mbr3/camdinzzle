@@ -149,6 +149,9 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		
 		//CARICAMENTO IMMAGINI SFONDO
 		cldr = this.getClass().getClassLoader();
+		// setta l'icona del frame
+		ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+		this.setIconImage(logo.getImage());
 		loginImage = cldr.getResource("Images/login.jpg");
 		newUserImage = cldr.getResource("Images/NEW_USER.jpg");
 		sendInfoImage = new ImageIcon(cldr.getResource("Images/SEND_INFO.jpg"));

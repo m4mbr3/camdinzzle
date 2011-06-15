@@ -233,6 +233,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		//INIZIO CARICAMENTO IMMAGINI
 		
 		ClassLoader cldr = this.getClass().getClassLoader();
+		// setta l'icona del frame
+		ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+		this.setIconImage(logo.getImage());
         iconChosenDino = new ImageIcon[6];
         iconChosenDino[0] = new ImageIcon(cldr.getResource("Images/carn1.jpg"));
         iconChosenDino[1] = new ImageIcon(cldr.getResource("Images/car2.jpg"));
