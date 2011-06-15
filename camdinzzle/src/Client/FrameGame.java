@@ -95,15 +95,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	/*
 	 * Array delle immagini riguardanti i vari tipi di vegetazione nella nebbia
 	 */
-	private ImageIcon iconVegetationDisable;
+	private ImageIcon[] iconVegetationDisable;
 	/*
-	 * Array delle immagini riguardanti i vari tipi di acqua nella nebbia
+	 * Oggetto riguardante l'immagine dell'acqua nella nebbia
 	 */
 	private ImageIcon iconWaterDisable;
 	/*
 	 * Array delle immagini riguardanti i vari tipi di terra nella nebbia
 	 */
-	private ImageIcon iconLandDisable;
+	private ImageIcon[] iconLandDisable;
 	/*
 	 * Oggetto riguardante l'immagine del nemico
 	 */
@@ -271,6 +271,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconVegetation = new ImageIcon[2];
 		iconLand = new ImageIcon[2];
 		iconDino = new ImageIcon[6];
+		iconLandDisable = new ImageIcon[2];
+		iconVegetationDisable = new ImageIcon[2];
 		ClassLoader cldr = this.getClass().getClassLoader();
 		iconVegetation[0] = new ImageIcon(cldr.getResource("Images/vegetazione1.jpg"));
 		iconVegetation[1] = new ImageIcon(cldr.getResource("Images/vegetazione2.jpg"));
@@ -279,9 +281,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconWater = new ImageIcon(cldr.getResource("Images/acqua.jpg"));
 		iconDark = new ImageIcon(cldr.getResource("Images/buio.jpg"));
 		iconCarrion = new ImageIcon(cldr.getResource("Images/carogna.jpg"));
-		iconLandDisable  = new ImageIcon(cldr.getResource("Images/terraDisable.jpg"));
+		iconLandDisable[0]  = new ImageIcon(cldr.getResource("Images/terra1disabilitata.jpg"));
+		iconLandDisable[1]  = new ImageIcon(cldr.getResource("Images/terra2disabilitata.jpg"));
 		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
-		iconVegetationDisable  = new ImageIcon(cldr.getResource("Images/vegeDisable.jpg"));
+		iconVegetationDisable[0]  = new ImageIcon(cldr.getResource("Images/vegetazione1disabilitata.jpg"));
+		iconVegetationDisable[1]  = new ImageIcon(cldr.getResource("Images/vegetazione2disabilitata.jpg"));
 		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));
 		iconDino[0] = new ImageIcon(cldr.getResource("Images/carn1map.jpg"));
 		iconDino[1] = new ImageIcon(cldr.getResource("Images/car2map.jpg"));
@@ -829,15 +833,17 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else if(mapList.get(i).compareTo("v")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "vegetation");
-						buttons[j][z].setIcon(iconVegetationDisable);
-						buttons[j][z].setDisabledIcon(iconVegetationDisable);
+						int random = (int)(Math.random()*2);
+						buttons[j][z].setIcon(iconVegetationDisable[random]);
+						buttons[j][z].setDisabledIcon(iconVegetationDisable[random]);
 						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("t")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "land");
-						buttons[j][z].setIcon(iconLandDisable);
-						buttons[j][z].setDisabledIcon(iconLandDisable);
+						int random = (int)(Math.random()*2);
+						buttons[j][z].setIcon(iconLandDisable[random]);
+						buttons[j][z].setDisabledIcon(iconLandDisable[random]);
 						buttons[j][z].setToolTipText(null);
 					}
 				else if(mapList.get(i).compareTo("a")==0)
@@ -850,15 +856,17 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				else if(mapList.get(i).compareTo("d")==0)
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "dinosaur");
-						buttons[j][z].setIcon(iconLandDisable);
-						buttons[j][z].setDisabledIcon(iconLandDisable);
+						int random = (int)(Math.random()*2);
+						buttons[j][z].setIcon(iconLandDisable[random]);
+						buttons[j][z].setDisabledIcon(iconLandDisable[random]);
 						buttons[j][z].setToolTipText(null);
 					}
 				else
 					{
 						buttons[j][z].setName(buttons[j][z].getName().substring(0, buttons[j][z].getName().indexOf(";")+1) + "land");
-						buttons[j][z].setIcon(iconLandDisable);
-						buttons[j][z].setDisabledIcon(iconLandDisable);
+						int random = (int)(Math.random()*2);
+						buttons[j][z].setIcon(iconLandDisable[random]);
+						buttons[j][z].setDisabledIcon(iconLandDisable[random]);
 						buttons[j][z].setToolTipText(null);
 					}
 				z++;
