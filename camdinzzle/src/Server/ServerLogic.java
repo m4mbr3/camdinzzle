@@ -1378,7 +1378,7 @@ public class ServerLogic
 						counter2m = new Thread(counter);
 						counter2m.start();
 						
-						LogHelper.writeServerResponse("conferaTurno " + token + " --> @ok");
+						LogHelper.writeServerResponse("confermaTurno " + token + " --> @ok");
 						return ServerMessageBroker.createOkMessage();
 					}
 					else

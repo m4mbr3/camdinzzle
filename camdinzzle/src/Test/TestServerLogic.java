@@ -589,12 +589,60 @@ public class TestServerLogic extends TestCase
 	
 	public void testRoundConfirm()
 	{
+		sl.add_new_user("provaUser", "pass");
+		
+		// conferma il turno non essendo loggato
+		actual = sl.roundConfirm(token);
+		assertEquals("@no,@tokenNonValido", actual);
+		
+		// conferma il turno anche se non e' in partita
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		actual = sl.roundConfirm(token);
+		assertEquals("@no,@nonInPartita", actual);
+		
+		// conferma il turno anche se non e' il suo turno e conferma il turno se e' il suo turno
+		sl.add_new_user("provaUser2", "pass");
+		sl.login("provaUser2", "pass");
+		sl.addNewSpecies(sl.getTokenFromUsername("provaUser2"), "provaUser2Specie", "c");
+		sl.gameAccess(sl.getTokenFromUsername("provaUser2"));
+		actual = sl.roundConfirm(sl.getTokenFromUsername("provaUser2"));
+		assertEquals("@ok", actual);
+		
+		sl.addNewSpecies(token, "provaUser1Specie", "c");
+		sl.gameAccess(token);
+		actual = sl.roundConfirm(token);
+		assertEquals("@no,@nonIlTuoTurno", actual);
+		
 		
 	}
 	
 	public void testPlayerRoundSwitch()
 	{
+		sl.add_new_user("provaUser", "pass");
 		
+		// passa il turno non essendo loggato
+		actual = sl.playerRoundSwitch(token);
+		assertEquals("@no,@tokenNonValido", actual);
+		
+		// passa il turno anche se non e' in partita
+		sl.login("provaUser", "pass");
+		token = sl.getTokenFromUsername("provaUser");
+		actual = sl.playerRoundSwitch(token);
+		assertEquals("@no,@nonInPartita", actual);
+		
+		// passa il turno anche se non e' il suo turno e passa il turno se e' il suo turno (due diversi giocatori)
+		sl.add_new_user("provaUser2", "pass");
+		sl.login("provaUser2", "pass");
+		sl.addNewSpecies(sl.getTokenFromUsername("provaUser2"), "provaUser2Specie", "c");
+		sl.gameAccess(sl.getTokenFromUsername("provaUser2"));
+		actual = sl.playerRoundSwitch(sl.getTokenFromUsername("provaUser2"));
+		assertEquals("@ok", actual);
+		
+		sl.addNewSpecies(token, "provaUser1Specie", "c");
+		sl.gameAccess(token);
+		actual = sl.playerRoundSwitch(token);
+		assertEquals("@no,@nonIlTuoTurno", actual);
 	}
 	
 	
