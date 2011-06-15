@@ -14,12 +14,13 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 
 public class ConnectionManagerRMI implements ConnectionManager 
 {
@@ -68,6 +69,7 @@ public class ConnectionManagerRMI implements ConnectionManager
 		changeRound = "";
 		this.token = "";
 		timelineRemoteRequest = 0;
+		this.ip = "";
 		server = (ServerRMIInterface)Naming.lookup("rmi://" + address + "/" + serverName + ":" + port);
 	}
 	
@@ -123,9 +125,9 @@ public class ConnectionManagerRMI implements ConnectionManager
 							  }
 						  }
 					}
-						
-					
-					//Registry registro = LocateRegistry.createRegistry(Integer.parseInt(port));
+				
+					Registry registro = LocateRegistry.createRegistry(Integer.parseInt(port));
+					registro.hashCode();
 					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
 					Naming.bind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 					//registro.rebind("rmi://127.0.0.1/server:1999",(Remote) new Server());
@@ -140,27 +142,31 @@ public class ConnectionManagerRMI implements ConnectionManager
 				catch (AlreadyBoundException e) 
 				{
 					System.out.println("AlreadyBoundException in login");
+					server.logout(token);
 					return null;
 				}
 				catch (AccessException e) 
 				{
 					System.out.println("AccessException in login");
+					server.logout(token);
 					return null;
 				}
 				catch (RemoteException e) 
 				{
 					System.out.println("RemoteException in login");
-					e.printStackTrace();
+					server.logout(token);
 					return null;
 				}  
 				catch (MalformedURLException e) 
 				{
 					System.out.println("MalformedURLException in login");
+					server.logout(token);
 					return null;
 				}
 				catch (SocketException e) 
 				{
 					System.out.println("SocketException in login");
+					server.logout(token);
 					return null;
 				}
 			}

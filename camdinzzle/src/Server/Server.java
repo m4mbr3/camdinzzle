@@ -379,7 +379,7 @@ public class Server implements Runnable
 				clientTableRMI.remove(username);
 				cmRMI.unregistryClient();
 				
-				System.out.println("Client RMI rimosso con successo");
+				LogHelper.writeInfo("client RMI rimosso con successo");
 			}
 		}
 		catch(Exception ex)

@@ -68,6 +68,8 @@ public class ServerLogic
 	 */
 	public ServerLogic()
 	{
+		LogHelper.writeInfo("*****RIAVVIO DEL SERVER.*****");
+		
 		File f = new File("server.ser");
 		boolean isCorrectLoadingFromFile = true;		
 		

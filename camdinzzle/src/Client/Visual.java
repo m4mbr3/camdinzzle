@@ -27,7 +27,7 @@ public interface Visual
 	 * Disegna la lista dei dinosauri del player identificati dal dinoId e con indicata l'energia,
 	 * l'età e la dimensione del dinosauro.
 	 */
-	public void drawDinoList(String[] msgDinoList);
+	public void drawDinoList(Object[] msgDinoList);
 	
 	/**
 	 * Disegna l'area relativa al tempo a disposizione del player. Gestisce sia il timeout di scelta di

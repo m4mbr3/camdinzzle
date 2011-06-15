@@ -111,7 +111,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	/*
 	 * Oggetto che ricapitola i dinosauri della propria specie
 	 */
-	private JList dinoList;
+	private JList<Object> dinoList;
 	/*
 	 * Oggetto che fa scorrere i dinosauri nella dinoList
 	 */
@@ -1034,7 +1034,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 * se il messaggio � valido stampa la lista dei dinosauri
 	 * quando viene cliccato un dinosauro viene aggiornato il campo stato dinosauro
 	 */
-	public void drawDinoList(String[] msgDinoList) 
+	public void drawDinoList(Object[] msgDinoList) 
 	{
 		if(msgDinoList!=null)
 		{
@@ -1047,7 +1047,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					dinoList = null;
 					dinoListScroll=null;
 				}
-				dinoList = new JList(msgDinoList);
+				dinoList = new JList<Object>(msgDinoList);
 				dinoList.setVisibleRowCount(visibleRowCountDinoList);
 				dinoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				dinoList.addListSelectionListener(new ListSelectionListener() {
@@ -1365,7 +1365,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	  * messaggio di errore con l'Arrey di stringhe ricevuta dal server
 	  * @param msg
 	  */
-	 public void errorMessageServer(String[] msg)
+	 public void errorMessageServer(Object[] msg)
 	 {
 		 JOptionPane.showMessageDialog(this, msg,"Error",JOptionPane.ERROR_MESSAGE,error);
 	 }

@@ -114,14 +114,14 @@ public class Textual implements Visual
 	 * @param msg Messaggio del ServerLogic
 	 */
 	@Override
-	public void drawDinoList(String[] msgDinoList) 
+	public void drawDinoList(Object[] msgDinoList) 
 	{
 //		if(ClientMessageBroker.checkMessage(msg))
 		{
 //			String[] dinoList = ClientMessageBroker.manageDinoList(msg);
 			System.out.println("Dinosaurs list:\n");
 			
-			for (String dino : msgDinoList) 
+			for (Object dino : msgDinoList) 
 			{
 				System.out.println("	" + dino +"\n");
 			}
