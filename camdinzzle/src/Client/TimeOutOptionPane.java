@@ -1,9 +1,12 @@
 package Client;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 /**
  * Classe utilizzata per la visuzlizzazione del pannello di conferma del turno.
  */
@@ -31,8 +34,22 @@ public class TimeOutOptionPane extends JOptionPane
 	        //Thread.sleep(400);
 	        
 	        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+	        dialog.setTitle("You have 30 seconds for confirm your round");
 	        
 	        pane.selectInitialValue();
+	        
+	        
+	        Timer t = new Timer(27000, new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dialog.setVisible(false);
+					
+				}
+			});
+	        t.start();
+	        
+	        /*
 	        new Thread() 
 	        {
 	            public void run() 
@@ -57,7 +74,7 @@ public class TimeOutOptionPane extends JOptionPane
 	                	
 	                }
 	            }
-	        }.start();
+	        }.start();*/
 	        dialog.setVisible(true);
 	
 	        Object selectedValue = pane.getValue();
