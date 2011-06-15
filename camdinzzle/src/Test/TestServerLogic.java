@@ -23,13 +23,14 @@ public class TestServerLogic extends TestCase
 	
 	public void setUp()
 	{
+		File f = new File("server.ser");
+		f.delete();
 		sl = new ServerLogic();
 	}
 	
 	public void tearDown()
 	{
-		File f = new File("server.ser");
-		f.delete();
+		
 	}
 	
 	public void testAddNewUser()

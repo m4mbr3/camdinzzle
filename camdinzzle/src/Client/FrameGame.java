@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -130,6 +131,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 */
 	private JFrame listaGiocatori;
 	/*
+	 * Panel che mette lo sfondo nella lista dei giocatori in partita
+	 */
+	private BackPanel listaGiocatoriPanel;
+	/*
 	 * Titolo del frame listaGiocatori
 	 */
 	private JLabel titoloGiocatori;
@@ -245,7 +250,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 * Oggetto relativo all'immagine di Messaggio operazione Confermata
 	 */
 	private ImageIcon ok;
-
+	/*
+	 * Indirizzo relativo all'immagine di sfondo della lista giocatori in partita 
+	 */
+	private URL listaGiocatoriImage;
 	
 	
 	/**
@@ -295,6 +303,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconDino[5] = new ImageIcon(cldr.getResource("Images/veg3map.jpg"));
         error = new ImageIcon(cldr.getResource("Images/errore.jpg"));
         ok = new ImageIcon(cldr.getResource("Images/conferma.jpg"));
+        listaGiocatoriImage = cldr.getResource("Images/fondo_playerList.jpg");
 
 		//FINE CARICAMENTO IMMAGINI
 		
@@ -329,7 +338,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		panelControl.validate();
 		panelControlUp.setOpaque(false);
 		panelControlDown.setOpaque(false);
-		panelControl.setBackground(cldr.getResource("Images/fondo_gioco.jpg"));
+		if(screenHeight>700)
+			panelControl.setBackground(cldr.getResource("Images/fondo_gioco.jpg"));
+		else
+			panelControl.setBackground(cldr.getResource("Images/fondo_gioco_640.jpg"));
 		panelControl.add(panelControlUp, BorderLayout.NORTH);
 		panelControl.add(panelControlDown, BorderLayout.SOUTH);
 		commandButtons = new JPanel();
@@ -1271,33 +1283,38 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		{
 			if(!msgPlayerList[0].equals("no"))
 			{	
-				if(listaGiocatori==null)
-				{
-					listaGiocatori = new JFrame("List of Players");
-				}
-				else
+				if(listaGiocatori!=null)
 				{
 					listaGiocatori.removeAll();
 					postiGiocatori = null;
 					titoloGiocatori = null;
+					listaGiocatoriPanel = null;
 					pannelloGiocatori = null;
+					listaGiocatori = null;
 				}
-				listaGiocatori.setLayout(new BorderLayout());
+				listaGiocatori = new JFrame("List of Players");
+				listaGiocatoriPanel = new BackPanel();
+				listaGiocatoriPanel.setBackground(listaGiocatoriImage);
+				listaGiocatoriPanel.setLayout(new BorderLayout());
 				listaGiocatori.setVisible(true);
-				listaGiocatori.setSize(300, 600);
-				listaGiocatori.setLocation((screenWidth-300)/2,(int)(screenHeight-600)/2);
+				listaGiocatori.setSize(210, 621);
+				listaGiocatori.setLocation((screenWidth-210)/2,(int)(screenHeight-600)/2);
 				titoloGiocatori = new JLabel("<html><h2>Players of this Game:</h2></html>");
-				listaGiocatori.add(titoloGiocatori, BorderLayout.NORTH);
-				titoloGiocatori.setSize(300,20);
+				listaGiocatoriPanel.add(titoloGiocatori, BorderLayout.NORTH);
+				titoloGiocatori.setSize(210,20);
 				postiGiocatori = new JLabel[8];
 				pannelloGiocatori = new JPanel();
-				listaGiocatori.add(pannelloGiocatori,BorderLayout.CENTER);
+				pannelloGiocatori.setOpaque(false);
+				listaGiocatoriPanel.add(pannelloGiocatori,BorderLayout.CENTER);
 				pannelloGiocatori.setLayout(new GridLayout(8,1));
+				listaGiocatori.add(listaGiocatoriPanel);
 				
 				for (int i=1; i < msgPlayerList.length; i++)
 				{
 					postiGiocatori[i-1] = new JLabel();
 					postiGiocatori[i-1].setText(msgPlayerList[i]);
+					postiGiocatori[i-1].setOpaque(false);
+					postiGiocatori[i-1].setText("<html><h3>&nbsp;&nbsp;"+i+"-  " + msgPlayerList[i] + "</h3></html>");
 					pannelloGiocatori.add(postiGiocatori[i-1]);
 				}	
 				

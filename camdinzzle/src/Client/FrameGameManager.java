@@ -137,6 +137,10 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	 */
 	private JPanel pannelloGiocatori;
 	/*
+	 * Panel che mette lo sfondo nella lista dei giocatori in partita
+	 */
+	private BackPanel listaGiocatoriPanel;
+	/*
 	 * Posti della lista dei giocatori per la stampa dell'username
 	 */
 	private JLabel[] postiGiocatori;
@@ -176,6 +180,11 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 	 * Immagine che indica un'operazione corretta
 	 */
 	private ImageIcon ok;
+	/*
+	 * Indirizzo relativo all'immagine di sfondo della lista giocatori in partita 
+	 */
+	private URL listaGiocatoriImage;
+	
 	/**
 	 * Costruttore della classe FrameGameManager
 	 * @param title titolo della finestra
@@ -239,6 +248,7 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
         creaRazzaFrameImage = cldr.getResource("Images/create_new_species.jpg");
         error = new ImageIcon(cldr.getResource("Images/errore.jpg"));
         ok = new ImageIcon(cldr.getResource("Images/conferma.jpg"));
+        listaGiocatoriImage = cldr.getResource("Images/fondo_playerList.jpg");
 
 		//FINE CARICAMENTO IMMAGINI
 		
@@ -387,27 +397,41 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				JOptionPane.showMessageDialog(this,"No players in game", "Lista Giocatori", JOptionPane.INFORMATION_MESSAGE,ok);
 			}
 			else if (response[0].compareTo("listaGiocatori")==0)
-			{
-				
+			{	
+				if(listaGiocatori!=null)
+				{
+					listaGiocatori.removeAll();
+					postiGiocatori = null;
+					titoloGiocatori = null;
+					listaGiocatoriPanel = null;
+					pannelloGiocatori = null;
+				}
 				listaGiocatori = new JFrame("List of Players");
-				listaGiocatori.setLayout(new BorderLayout());
+				listaGiocatoriPanel = new BackPanel();
+				listaGiocatoriPanel.setBackground(listaGiocatoriImage);
+				listaGiocatoriPanel.setLayout(new BorderLayout());
 				listaGiocatori.setVisible(true);
-				listaGiocatori.setSize(300, 600);
-				listaGiocatori.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-600)/2);
-				titoloGiocatori = new JLabel("Players of this Game:");
-				listaGiocatori.add(titoloGiocatori, BorderLayout.NORTH);
-				titoloGiocatori.setSize(300,20);
+				listaGiocatori.setSize(210, 621);
+				listaGiocatori.setLocation(((int)(screenSize.getWidth())-210)/2,(int)((int)(screenSize.getHeight())-600)/2);
+				titoloGiocatori = new JLabel("<html><h2>Players of this Game:</h2></html>");
+				listaGiocatoriPanel.add(titoloGiocatori, BorderLayout.NORTH);
+				titoloGiocatori.setSize(210,20);
 				postiGiocatori = new JLabel[8];
 				pannelloGiocatori = new JPanel();
-				listaGiocatori.add(pannelloGiocatori,BorderLayout.CENTER);
+				pannelloGiocatori.setOpaque(false);
+				listaGiocatoriPanel.add(pannelloGiocatori,BorderLayout.CENTER);
 				pannelloGiocatori.setLayout(new GridLayout(8,1));
+				listaGiocatori.add(listaGiocatoriPanel);
 				
 				for (int i=1; i < response.length; i++)
 				{
 					postiGiocatori[i-1] = new JLabel();
-					postiGiocatori[i-1].setText(response[i]);
+					postiGiocatori[i-1].setText("<html><h3>&nbsp;&nbsp;"+i+"-  " + response[i] + "</h3></html>");
+					postiGiocatori[i-1].setOpaque(false);
 					pannelloGiocatori.add(postiGiocatori[i-1]);
 				}	
+				
+				
 				listaGiocatori.repaint();
 			}
 			else if (response[0].compareTo("no")==0)
