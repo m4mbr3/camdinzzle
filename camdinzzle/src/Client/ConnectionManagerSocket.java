@@ -112,8 +112,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 		String retStr = String.copyValueOf(writerSuccess.toCharArray());
 		mm.setMessage("");
 		
-		System.out.println(retStr);
-		
 		return retStr;
 	}
 	
@@ -138,7 +136,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 				this.username = username;
 			}
 		}	
-		System.out.println(retStr);
 		
 		return retStr;
 	}
@@ -158,8 +155,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
-			
-			System.out.println(retStr);
 			
 			return retStr;
 		}
@@ -183,8 +178,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			return retStr;		
 		}
 		else
@@ -206,8 +199,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
-			
-			System.out.println(retStr);
 			
 			return retStr;
 		}
@@ -231,8 +222,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			return ClientMessageBroker.managePlayerList(retStr);
 		}
 		else
@@ -255,8 +244,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			return ClientMessageBroker.manageRanking(retStr);
 		}
 		else
@@ -278,8 +265,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
-			
-			System.out.println(retStr);
 			
 			clientListener.stop();
 			
@@ -305,8 +290,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			return ClientMessageBroker.manageGeneralMap(retStr);
 		}
 		else
@@ -328,8 +311,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
-			
-			System.out.println(retStr);
 			
 			return ClientMessageBroker.manageDinoList(retStr);
 		}
@@ -353,8 +334,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			return ClientMessageBroker.manageDinoZoom(retStr);
 		}
 		else
@@ -377,8 +356,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			return ClientMessageBroker.manageDinoState(retStr);
 		}
 		else
@@ -400,8 +377,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
-			
-			System.out.println(retStr);
 			
 			mm.setMessage("");
 			
@@ -427,8 +402,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			mm.setMessage("");
 			
 			return ClientMessageBroker.manageDinoGrowUp(retStr);
@@ -452,8 +425,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 				
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
-			
-			System.out.println(retStr);
 			
 			mm.setMessage("");
 
@@ -479,8 +450,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
 			
-			System.out.println(retStr);
-			
 			mm.setMessage("");
 			
 			return ClientMessageBroker.manageRoundConfirm(retStr);
@@ -504,8 +473,6 @@ public class ConnectionManagerSocket implements ConnectionManager
 			
 			String retStr = String.copyValueOf(writerSuccess.toCharArray());
 			mm.setMessage("");
-			
-			System.out.println(retStr);
 			
 			mm.setMessage("");				
 			

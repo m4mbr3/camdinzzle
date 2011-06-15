@@ -23,11 +23,6 @@ import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
-/**
- * @author Andrea
- *
- */
 public class FrameLogin extends JFrame implements ActionListener,WindowListener,ChangeListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
@@ -239,7 +234,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	public void windowClosed(WindowEvent arg0) 
 	{
 		if(!is_local){
-			System.out.println("Exit clicked");
 			client.setConnManager(null);
 			client.setVisible(true);
 			this.setVisible(false);
@@ -255,7 +249,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 	public void windowClosing(WindowEvent arg0) 
 	{
 		if(!is_local){
-			System.out.println("Exit clicked");
 			client.setConnManager(null);
 			client.setVisible(true);
 			this.setVisible(false);
@@ -358,7 +351,6 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 		}
 		if (arg0.getComponent().equals(exit) && !is_local)
 		{
-			System.out.println("Exit clicked");
 			client.setConnManager(null);
 			client.setVisible(true);
 			this.setVisible(false);

@@ -143,38 +143,32 @@ public class ConnectionManagerRMI implements ConnectionManager
 					
 					Naming.rebind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);
 					//Naming.bind("rmi://" + address + "/" + username + ":1999",(Remote) client);
-					System.out.println("Client RMI Avviato!");
 					// per andare sulla stessa macchina:
 					// ip = "127.0.0.1";
 					server.notifyLogin(username, ip);
 				}
 				catch (AlreadyBoundException e) 
 				{
-					System.out.println("AlreadyBoundException in login");
 					server.logout(token);
 					return null;
 				}
 				catch (AccessException e) 
 				{
-					System.out.println("AccessException in login");
 					server.logout(token);
 					return null;
 				}
 				catch (RemoteException e) 
 				{
-					System.out.println("RemoteException in login");
 					server.logout(token);
 					return null;
 				}  
 				catch (MalformedURLException e) 
 				{
-					System.out.println("MalformedURLException in login");
 					server.logout(token);
 					return null;
 				}
 				catch (SocketException e) 
 				{
-					System.out.println("SocketException in login");
 					server.logout(token);
 					return null;
 				}

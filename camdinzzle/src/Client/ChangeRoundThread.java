@@ -102,7 +102,7 @@ public class ChangeRoundThread  implements Runnable
 			}
 			catch(InterruptedException e)
 			{
-				System.out.println("ERROR: " + e.getMessage());
+				
 			}
 		}
 		is_run = true;
@@ -153,7 +153,7 @@ public class ChangeRoundThread  implements Runnable
 			}
 			else if(response[0].equals("ok"))
 			{
-				System.out.println("Turno passato");
+				
 			}
 			else if (response[0].equals("no"))
 			{

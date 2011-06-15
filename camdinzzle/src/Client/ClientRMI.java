@@ -37,7 +37,6 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRMIInterface
 		if(isInGame)
 			if(ClientMessageBroker.manageChangeRound(msg) != null)
 			{
-				System.out.println("--> CAMBIO TURNO: " + msg);
 				cmRMI.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
 				return true;
 			}

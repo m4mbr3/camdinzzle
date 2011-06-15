@@ -58,9 +58,7 @@ public class ClientListener implements Runnable
 		timelineServerNull = 0;
 		run = true;
 		reader_on_socket = new BufferedReader( new InputStreamReader(this.connection_with_server.getInputStream()));
-		System.out.println("<<CONN MANAGER>>--STARTING THREAD " );
 		(new Thread(this)).start();
-		System.out.println("<<CONN MANAGER>>--THREAD STARTED");
 	}
 	/**
 	 * Metodo che stoppa il thread di ascolto sul socket
@@ -124,9 +122,7 @@ public class ClientListener implements Runnable
 	public void changeRoundNotify(String msg)
 	{
 		if(ClientMessageBroker.manageChangeRound(msg) != null)
-		{
-			System.out.println("--> CAMBIO TURNO: " + msg);
-			
+		{			
 			cms.setChangeRound(ClientMessageBroker.manageChangeRound(msg));
 		}
 	}

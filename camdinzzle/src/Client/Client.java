@@ -304,7 +304,7 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 		{
 			if((rmi.isSelected()==false)&&(socket.isSelected()==false))
 			{
-				System.out.println("You Can't Go Next!!!");
+				
 			}
 			else
 			{
@@ -314,7 +314,6 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 					try{
 						this.connManager = new ConnectionManagerRMI(address.getText(),port.getText(),server_value.getText());
 						login = new FrameLogin("Login",this,is_local);
-						System.out.println("Server scaricato!!");
 					}
 					catch(MalformedURLException e)
 					{

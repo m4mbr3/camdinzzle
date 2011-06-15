@@ -361,7 +361,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					frameGame = new FrameGame("Isola dei Dinosauri",client, this,opt);
 					ChangeRoundThread.start();
 					(new Thread(new ChangeRoundThread(client, frameGame))).start();
-					System.out.println("changeRoundThread--> partito");
 				}
 				else if (response[0].compareTo("no")==0)
 				{
@@ -500,7 +499,6 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 			 String type = null;
 			 if(Vege.isSelected()) type = new String("e");
 			 else  type = new String("c");
-			 System.out.println("sonoprima");
 			 String newRace = client.getConnManager().creaRazza(razza_valore.getText(), type);
 			 if(newRace != null)
 			 {
