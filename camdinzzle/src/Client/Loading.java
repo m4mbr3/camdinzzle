@@ -61,7 +61,7 @@ public class Loading extends JFrame
 				progress_label.setText("Enjoy Camdinzzle");
 			try 
 			{
-				Thread.sleep(500);
+				Thread.sleep(350);
 			} 
 			catch (InterruptedException e) 
 			{

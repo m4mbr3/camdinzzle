@@ -109,9 +109,10 @@ public abstract class Dinosaur implements Serializable
 		setLocalMap();
 	}
 	
-	//@	ensures if (requires dimension < 5 && energy > energyMax/2) ==> dimension == dimension + 1 && energyMax == dimension*1000 && \result == true;
-	//@ 		else ==> \result == false
-	//@ assignable energy, dimension, energyMax;
+	/*@ensures if (requires dimension < 5 && energy > energyMax/2) ==> dimension == dimension + 1 && energyMax == dimension*1000 && \result == true;
+	  @ 		else ==> \result == false
+	  @ assignable energy, dimension, energyMax;
+	  @*/
 	/**
 	 * Controlla che la dimensione non sia gia' massima (=5).
 	 * Controlla che abbia abbanstanza energia per crescere, cresce , toglie l'energia necessaria, aumenta l'energia massima
@@ -132,9 +133,10 @@ public abstract class Dinosaur implements Serializable
 				return false;
 	}
 	
-	//@ ensures if ( energy > eEgg ) ==>  (*Creo l'uovo e lo posiziono sulla mappa*) && \result == (*All'idDino*);
-	//@			else	\result == null;
-	//@ assignable energy,idDino, 
+	
+	//@ensures (\exists int energy; energy != 0; energy > eEgg)  ==> ( (*Creo l'uovo e lo posiziono sulla mappa*) && \result = (* All'idDino *));
+	//		|| \result = null;
+	/*@ assignable energy; @*/
 	/**
 	 * Crea un nuovo dinosauro nella prima cella libera vicino al dinosauro.
 	 * @return dinoId id del nuovo dinosauro
