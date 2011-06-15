@@ -23,7 +23,7 @@ public class Loading extends JFrame
 		super("Loading");
 		//this.setResizable(false);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize(600,250);
+		this.setSize(600,255);
 		this.setLocation((int)(screenSize.getWidth()-600)/2,(int)(screenSize.getHeight()-250)/2);
 		this.setLayout(null);
 		progress_label = new JLabel("Init Camdinzzle");
