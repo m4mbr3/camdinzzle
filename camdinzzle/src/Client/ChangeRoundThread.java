@@ -1,7 +1,5 @@
 package Client;
 
-import java.awt.Frame;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -91,7 +89,7 @@ public class ChangeRoundThread  implements Runnable
 				else
 				{
 					frameGame.upDateFrameGame();
-					int response = TimeOutOptionPane.showTimeoutDialog(new JFrame(), "Vuoi utilizzare il turno?", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
+					int response = TimeOutOptionPane.showTimeoutDialog(new JFrame(), "You want to use your round? You have 30 seconds to choose.", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
 					optionpaneClicked(response);
 					client.getConnManager().setChangeRound("");					
 				}
