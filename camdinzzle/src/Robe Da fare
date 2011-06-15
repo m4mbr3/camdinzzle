@@ -2,6 +2,8 @@
 		
 		LOGICA
 		-cancellare server.ser e poi ricrearlo
+		-server controllare logout RMI
+		-controllare coordinate mappa
 		
 		GRAFICA	
 		

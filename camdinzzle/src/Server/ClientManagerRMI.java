@@ -44,7 +44,12 @@ public class ClientManagerRMI implements ClientManager
 				LogHelper.writeError("client RMI non raggiungibile.");
 				sendCounter++;
 			}
-		}while((!isSend) && (sendCounter < 1));
+			catch (Exception e)
+			{
+				
+			}
+		}while((!isSend) && (sendCounter < 2));
+
 		if(isSend)
 		{
 			return true;
