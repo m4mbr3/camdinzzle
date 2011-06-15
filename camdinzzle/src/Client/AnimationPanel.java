@@ -10,12 +10,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
+/**
+ * Classe utilizzat per l'animazione di introduzione del gioco.
+ */
 public class AnimationPanel extends JPanel implements ActionListener
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Image img;
 	private Timer timer;
