@@ -125,8 +125,17 @@ public class ConnectionManagerRMI implements ConnectionManager
 							  }
 						  }
 					}
-				
-					Registry registro = LocateRegistry.createRegistry(Integer.parseInt(port));
+					Registry registro;
+					try
+					{
+						registro = LocateRegistry.createRegistry(Integer.parseInt(port));
+						
+					}
+					catch(Exception e)
+					{
+						registro = LocateRegistry.getRegistry(Integer.parseInt(port));
+						
+					}
 					registro.hashCode();
 					//Naming.bind("rmi://127.0.0.1/" + username + ":1999",(Remote) client);
 					Naming.bind("rmi://127.0.0.1/" + username + ":" + port,(Remote) client);

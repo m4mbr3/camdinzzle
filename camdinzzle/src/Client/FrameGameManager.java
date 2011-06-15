@@ -472,21 +472,25 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 				    "Exit Question",
 				    JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE,ok);
 			if (ritorno == 0){
-				String[] response = ClientMessageBroker.manageLogout(client.getConnManager().logout());
-				if(response[0].compareTo("ok")==0)
+				String check = client.getConnManager().logout();
+				if(check!=null)
 				{
-					this.setVisible(false);
-					if(!is_local)
-					client.setVisible(true);
-					else{
-						client.getLogin().setVisible(true);
-						client.validate();
+					String[] response = ClientMessageBroker.manageLogout(check);
+					if(response[0].compareTo("ok")==0)
+					{
+						this.setVisible(false);
+						if(!is_local)
+						client.setVisible(true);
+						else{
+							client.getLogin().setVisible(true);
+							client.validate();
+						}
+						
 					}
-					
-				}
-				if(response[0].compareTo("no")==0)
-				{
-					JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE,error);
+					if(response[0].compareTo("no")==0)
+					{
+						JOptionPane.showMessageDialog(this,"You have an incorrect token!!!", "Logout Error", JOptionPane.ERROR_MESSAGE,error);
+					}
 				}
 			}
 		}
