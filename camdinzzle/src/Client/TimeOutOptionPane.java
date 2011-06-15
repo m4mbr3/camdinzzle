@@ -34,7 +34,7 @@ public class TimeOutOptionPane extends JOptionPane
 	        //Thread.sleep(400);
 	        
 	        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-	        dialog.setTitle("You have 30 seconds for confirm your round");
+	        dialog.setTitle("You have 30 seconds for confirm round");
 	        
 	        pane.selectInitialValue();
 	        

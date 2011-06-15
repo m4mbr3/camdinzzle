@@ -1485,7 +1485,7 @@ public class ServerLogic
 		}
 		catch(Exception ex)
 		{
-			LogHelper.writeError("spedizione messaggio notifica in partita fallito.");
+			LogHelper.writeInfo("uscita dalla partita client.");
 		}
 	}
 	
