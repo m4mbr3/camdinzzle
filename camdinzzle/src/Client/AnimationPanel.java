@@ -13,6 +13,7 @@ import javax.swing.Timer;
 /**
  * Classe utilizzat per l'animazione di introduzione del gioco.
  */
+
 public class AnimationPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
@@ -50,5 +51,4 @@ public class AnimationPanel extends JPanel implements ActionListener
 	   g.drawImage(img, 0, 0, null);
 	   super.paintComponent(g);
 	}
-
 }

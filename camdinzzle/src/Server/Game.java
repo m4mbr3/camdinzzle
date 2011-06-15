@@ -575,6 +575,9 @@ public class Game
 				}
 			}
 		}while(Water>=5);
+		
+		
+		
 		/*
 		 * crea vegetazione e carogne
 		 */

@@ -121,16 +121,16 @@ public abstract class Dinosaur implements Serializable
 	 */
 	public boolean growUp()
 	{
-			if(energy > (energyMax/2) && (dimension < 5))
-			{
-				energy = energy - energyMax/2;
-				dimension = dimension + 1;
-				energyMax = dimension * 1000;
-				setActionTake(true);
-				return true;
-			}
-			else 
-				return false;
+		if(energy > (energyMax/2) && (dimension < 5))
+		{
+			energy = energy - energyMax/2;
+			dimension = dimension + 1;
+			energyMax = dimension * 1000;
+			setActionTake(true);
+			return true;
+		}
+		else 
+			return false;
 	}
 	
 	
