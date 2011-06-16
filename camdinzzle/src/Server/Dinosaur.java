@@ -291,7 +291,7 @@ public abstract class Dinosaur implements Serializable
 	{
 		localMap = Game.getLocalMap(posRow, posCol, dimension);		
 	}
-	
+	//@ensurres localMap
 	/**
 	 * Ritorna la mappa locale del dinosauro.
 	 * @return matrice contenente la vista locale del dinosauro
@@ -301,12 +301,13 @@ public abstract class Dinosaur implements Serializable
 		setLocalMap();
 		 return localMap;
 	}
-	
-	public String toString()
+	//@ensures \result = "d";
+	public /*@ pure @*/ String toString()
 	{
 		return "d";
 	}
-	
+	//@requires distMax>0;
+	//@ensures this.distMax = distMax;
 	/**
 	 * Setta la distanza massima percorribile dal dinosauro.
 	 * @param distMax distanza massima percorribile
@@ -316,15 +317,17 @@ public abstract class Dinosaur implements Serializable
 		this.distMax = distMax;
 	}
 	
+	//@ensures \return == this.distMax;
 	/**
 	 * Ritorna la distanza massima percorribile dal dinosauro.
 	 * @return int distanza massima percorribile da un dinosauro
 	 */
-	public int getDistMax()
+	public /*@ pure @*/ int getDistMax()
 	{
 		return distMax;
 	}
-	
+	//@requires moveTake != null;
+	//@ensures this.moveTake == moveTake;
 	/**
 	 * Setta la variabile moveTake.
 	 * @param moveTake valore da assegnare a moveTake
@@ -334,15 +337,17 @@ public abstract class Dinosaur implements Serializable
 		this.moveTake = moveTake;
 	}
 	
+	//@ensures \return = this.moveTake;
 	/**
 	 * Ritorna la variabile moveTake.
 	 * @return variabile moveTake
 	 */
-	public boolean getMoveTake() 
+	public /*@ pure @*/ boolean getMoveTake() 
 	{
 		return moveTake;
 	}
-	
+	//@ requires actionTake != null;
+	//@ ensures this.actionTake == actionTake;
 	/**
 	 * Setta la variabile actionTake.
 	 * @param actionTake valore da assegnare a actionTake
@@ -351,25 +356,28 @@ public abstract class Dinosaur implements Serializable
 	{
 		this.actionTake = actionTake;
 	}
-	
+	//@ ensures \return == this.actionTake;
 	/**
 	 * Ritorna la variabile actionTake
 	 * @return valore di actionTake
 	 */
-	public boolean getActionTake() 
+	public /*@ pure @*/ boolean getActionTake()	 
 	{
 		return actionTake;
 	}
 	
+	//@ ensures \return == this.nameSpecie ;
 	/**
 	 * Ritorna il riferimento alla specie del dinosauro.
 	 * @return specie del dinosauro
 	 */
-	public Species getSpecie()
+	public /*@ pure @*/ Species getSpecie()
 	{
 		return nameSpecie;
 	}
 	
+	//@requires energy > 0;
+	//@ensures this.energy == energy;
 	/**
 	 * Setta l'energia del dinosauro
 	 * @param energy energia del dinosauro
