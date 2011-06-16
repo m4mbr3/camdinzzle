@@ -49,7 +49,7 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 	/*
 	 * Cotentitore di tutti gli oggetti riguardanti la scelta della connessione 
 	 */
-	private JPanel panel;
+	private BackPanel panel;
 	/*
 	 * Variabile contenente le dimensioni dello schermo
 	 */
@@ -146,7 +146,6 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 		ClassLoader cldr = this.getClass().getClassLoader();
 		ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
 		this.setIconImage(logo.getImage());
-		
 		this.setResizable(false);
 		this.setVisible(true);
 		is_local = false;
@@ -166,7 +165,8 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 		socket = new JRadioButton("socket");
 		camdinzzle = new JLabel("<html> <h3>Camdinzzle Project v1.0</h3>");
 		choice = new JLabel("Select the method of connection to ServerLogic:");
-		panel = new JPanel();
+		panel = new BackPanel();
+		panel.setBackground(cldr.getResource("Images/fondo_connessione.jpg"));
 		exit.setSize(150,40);
 		nome_server.setSize(90,20);
 		server_value.setSize(160, 20);
@@ -210,6 +210,9 @@ public class Client extends JFrame implements WindowListener,MouseListener,Chang
 		address.setEditable(true);
 		port_label.setEnabled(true);
 		address_label.setEnabled(true);
+		rmi.setOpaque(false);
+		socket.setOpaque(false);
+		enable_port.setOpaque(false);
 		radiogroup.add(rmi);
 		radiogroup.add(socket);
 		panel.add(exit);

@@ -111,7 +111,6 @@ public abstract class Dinosaur implements Serializable
 	
 	/*@ensures (* if (requires dimension < 5  &&  energy > energyMax/2)*) ==> (dimension == dimension + 1 && energyMax == dimension*1000 && \result == true);
   	  @ 		|| !(*Se invece è no*) ==> \result == false
-	  @ assignable energy, dimension, energyMax;
 	  @*/
 	/**
 	 * Controlla che la dimensione non sia gia' massima (=5).
