@@ -277,7 +277,14 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 * Timer per animazione
 	 */
 	private Timer timer;
-	
+	/*
+	 * Energia del dinosauro
+	 */
+	private int energyDino;
+	/*
+	 * Tipo dinosauro
+	 */
+	private String dinosaursType;
 	
 	/**
 	 * Costruttore di FrameGame
@@ -749,9 +756,13 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 									extinctionSpecies();
 									if(!flagStop)
 									{
-										eat();
+										String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
+										if(energyDino<Integer.parseInt(dinoState[6])&&(dinosaursType.equals("Vegetarian")))
+										{
+											eat();
+										}
 										drawMap(client.getConnManager().mappaGenerale());
-										drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+										drawDinoState(dinoId, dinoState);
 									}
 								}
 								else
@@ -788,10 +799,12 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			{
 				String[] idDino = arg0.getComponent().getName().split(";");
 				dinoId = idDino[1];
-				drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+				String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
+				drawDinoState(dinoId, dinoState);
 				if(((String)arg0.getComponent().getName()).contains(nameSpecie))
 				{
 					cellClicked = (JButton)arg0.getComponent();
+					energyDino = Integer.parseInt(dinoState[6]);
 					for(int i=0; i<2; i++)
 					{
 						commandDinoButton[i].setEnabled(true);	
@@ -1261,9 +1274,15 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 			if(!msgDinoState[0].equals("no"))
 			{
 				if(msgDinoState[2].equals("c"))
+				{
 					msgDinoState[2]="Carnivorous";
+					dinosaursType = "Carnivorous";
+				}
 				else
+				{
 					msgDinoState[2]="Vegetarian";
+					dinosaursType = "Vegetarian";
+				}
 				String newMsgDinoState="";
 				
 				newMsgDinoState += "Dinosaur's state " + dinoId + "\n   of player " + msgDinoState[0] + ":\n";
