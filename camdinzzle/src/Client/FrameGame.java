@@ -469,12 +469,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	{
 		if(fight!=null)
 			fight.setVisible(false);
-		if(eatVege!=null)
-			eatVege.setVisible(false);
-		if(eatCarn!=null)
-			eatCarn.setVisible(false);
-		if(timer!=null)
-			timer.stop();
 	}
 
 
@@ -1599,7 +1593,18 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 eatAnimationVege.setSize(148, 102);
 		 eatVege.getContentPane().add(eatAnimationVege);
 		 eatVege.setVisible(true);
-		 timer = new Timer(1800, this);
+		 timer = new Timer(1800,  new ActionListener() 
+		 {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					if(eatVege!=null)
+						eatVege.setVisible(false);
+					if(timer!=null)
+						timer.stop();
+				}
+			});
 		 timer.start();
 	 }
 	 
@@ -1621,7 +1626,18 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 eatAnimationCarn.setSize(148, 102);
 		 eatCarn.getContentPane().add(eatAnimationCarn);
 		 eatCarn.setVisible(true);
-		 timer = new Timer(1800, this);
+		 timer = new Timer(1800, new ActionListener() 
+		 {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(eatCarn!=null)
+					eatCarn.setVisible(false);
+				if(timer!=null)
+					timer.stop();
+			}
+		});
 		 timer.start();
 	 }
 

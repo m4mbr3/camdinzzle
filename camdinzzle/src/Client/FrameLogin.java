@@ -380,6 +380,7 @@ public class FrameLogin extends JFrame implements ActionListener,WindowListener,
 						panel.remove(send_newUser);
 						panel.add(this.new_user);
 						panel.remove(back);
+						panel.setBackground(loginImage);
 						panel.add(send);
 						this.add(panel);
 					}
