@@ -178,7 +178,7 @@ public class Species implements Serializable
 	//@requires posRig >= 0 && posRig <= 39 && posCol >= 0 && posRig <= 39 && ((Game.getCell[posRig][posCol] instanceof String) == true )&& (Game.getCell[posRig][posCol].equals("T")==true) ;
 	//@ensures (* if  speciesType == type.Carnivoruous *) ==> \return dino == new Carnivorous(dinoId,posRig,posCol,Species);
 	//@		   !(* else *) ==> \return == new Vegetarian(dinoID, posRig, posCol, Species);
-	//@assignable Game.setCellMap(dino,posRig,posCol)
+	
 	/**
 	 * Crea un nuovo dinosauro, lo aggiunge alla lista dei dinosauri della specie e lo inserisce 
 	 * nella mappa generale.
@@ -276,16 +276,17 @@ public class Species implements Serializable
 		return speciesType;
 	}
 
-	
+	//@ensures \result  == this.name;
 	/**
 	 * Ritorna il nome della specie.
 	 * @return nome della specie
 	 */
-	public String getName() 
+	public /*@ pure @*/ String getName() 
 	{
 		return name;
 	}
-
+	//@requires name != null;
+	//@ensures this.name == name;
 	/**
 	 * Setta il nome della specie.
 	 * @param name nome della specie
@@ -294,7 +295,7 @@ public class Species implements Serializable
 	{
 		this.name = name;
 	}
-	
+	//@ensures (*Una mappa al buio*)
 	/**
 	 * Crea la mappa generale del giocatore tutta a buio.
 	 */
@@ -310,7 +311,7 @@ public class Species implements Serializable
 			}
 		}		
 	}
-	
+	//@ ensures (* Fornisce una mappa Con presenti le viste locali dell'utente *)
 	/**
 	 * Aggiorna la mappa generale del giocatore (buio) inserendo la vista dei dinosauri in gioco.
 	 */
@@ -356,21 +357,19 @@ public class Species implements Serializable
 				}
 				k++;
 			}
-			
-			
 		}
 	}
 	
+	//@requires \result  == this.map
 	/**
 	 * Ritorna la mappa generale della specie con celle visibili solo quelle gia' visitate.
 	 * @return mappa generale
 	 */
-	public Object[][] getPlayerMap()
+	public /*@ pure @*/Object[][] getPlayerMap()
 	{
 		return map;
 	}
-	
-	public void stampa()
+	public /*@ pure @*/ void stampa()
 	{
 
 		for(int i=0; i<Game.maxRow; i++)
@@ -385,7 +384,6 @@ public class Species implements Serializable
 	
 	//@ requires dinoId != null && fightlose != null;
 	//@	ensures fightlose == false ==> Game.getCell(dinoId.getPosRow(),dinoId.getPosCol()).equals(dinoId) == false;
-	//@ assignable Game.getCell(dinoId.getPosRow(),dinoId.getPosCol())
 	/**
 	 * Setta la cella del dinosauro dove si trovava con quello che c'era prima di esso, 
 	 * ed elimina il dinosauro.
@@ -430,7 +428,7 @@ public class Species implements Serializable
 		}
 		myDinosaurs.remove(dinoId.getDinoId());
 	}
-	
+	//@requires row>=0 && col >=0 && msg != null;
 	/**
 	 * Imposta una cella della mappa generale del giocatore con la stringa in msg e nella posizione row, col
 	 * @param msg stringa da settare
@@ -441,28 +439,30 @@ public class Species implements Serializable
 	{
 		map[row][col] = msg;
 	}
-	
+	//@ensures ((*if*) && dinoNumber<maxDino ) ==> \result == true;
+	//@			|| ((*else*)&& !(dinoNumber<maxDino)) ==> \result ==false;
 	/**
 	 * Controlla se il numero massimo di dinosauri e' stato raggiunto.
 	 * @return true se il numero massimo di dinosauri e' stato raggiunto, false altrimenti
 	 */
-	public boolean checkDinoNumber()
+	public /*@ pure @*/ boolean checkDinoNumber()
 	{
 		if(dinoNumber<maxDino)
 			return true;
 		else
 			return false;
 	}
-	
+	//@ensures \result == this.maxDino
 	/**
 	 * Ritorna il numero massimo di dinosauri
 	 * @return numero massimo
 	 */
-	public int getMaxDino()
+	public /*@ pure @*/ int getMaxDino()
 	{
 		return maxDino;
 	}
-	
+	//@requires myDinosaurs != null
+	//@ensures \result == \nothing
 	/**
 	 * Setta la tabella dei dinosauri
 	 */
@@ -470,8 +470,8 @@ public class Species implements Serializable
 	{
 		this.myDinosaurs = myDinosaurs;
 	}
-	
-	public Hashtable<String, Dinosaur> getMyDinosaurs()
+	//@ ensures \result == this.myDinosaurs 
+	public  /*@ pure @*/ Hashtable<String, Dinosaur> getMyDinosaurs()
 	{
 		return myDinosaurs;
 	}
