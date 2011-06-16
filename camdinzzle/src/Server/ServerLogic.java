@@ -1362,7 +1362,7 @@ public class ServerLogic
 	 */
 	public String roundConfirm(String token)
 	{
-		LogHelper.writeClientRequest("creaUtente --> " + token);
+		LogHelper.writeClientRequest("confermaTurno --> " + token);
 		
 		try
 		{

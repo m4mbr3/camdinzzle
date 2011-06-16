@@ -390,7 +390,7 @@ public class Species implements Serializable
 	 * Setta la cella del dinosauro dove si trovava con quello che c'era prima di esso, 
 	 * ed elimina il dinosauro.
 	 * @param dinoId id del dinosauro
-	 * @param fight indica se la morte e' avvenuta dopo la sconfitta in combattimento
+	 * @param fightlose indica se la morte e' avvenuta dopo la sconfitta in combattimento
 	 */
 	public void killDino(Dinosaur dinoId, boolean fightlose)
 	{
