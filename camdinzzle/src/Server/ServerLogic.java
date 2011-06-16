@@ -980,7 +980,10 @@ public class ServerLogic
 									{
 										 state.add(((Player)me.getValue()).getUserName());
 										 state.add(((Player)me.getValue()).getSpecie().getName());
-										 state.add(((Player)me.getValue()).getSpecie().getType().toString());
+										 if(state.add(((Player)me.getValue()).getSpecie().getType().toString()))
+											state.add("e");
+										 else
+										 	state.add("c");
 										 state.add(String.valueOf(dino.getPosRow()));
 										 state.add(String.valueOf(dino.getPosCol()));
 										 state.add(String.valueOf(dino.getDinoDimension()));

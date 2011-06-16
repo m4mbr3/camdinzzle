@@ -266,13 +266,21 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 */
 	private AnimationPanel fightAnimation;
 	/*
-	 * Oggetto relativo alla gif del mangia
+	 * Oggetto relativo alla gif del mangia vegetazione
 	 */
-	private JFrame eat;
+	private JFrame eatVege;
+	/*
+	 * Oggetto relativo alla gif del mangia carogna
+	 */
+	private JFrame eatCarn;
 	/*
 	 * Oggetto relativo alla gif del mangia
 	 */
-	private AnimationPanel eatAnimation;
+	private AnimationPanel eatAnimationCarn;
+	/*
+	 * Oggetto relativo alla gif del mangia
+	 */
+	private AnimationPanel eatAnimationVege;
 	/*
 	 * Timer per animazione
 	 */
@@ -328,7 +336,6 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		iconWaterDisable  = new ImageIcon(cldr.getResource("Images/acquaDisable.jpg"));
 		iconVegetationDisable[0]  = new ImageIcon(cldr.getResource("Images/vegetazione1disabilitata.jpg"));
 		iconVegetationDisable[1]  = new ImageIcon(cldr.getResource("Images/vegetazione2disabilitata.jpg"));
-		iconDinoEnemy = new ImageIcon(cldr.getResource("Images/brontosauro.jpg"));
 		iconDino[0] = new ImageIcon(cldr.getResource("Images/carn1map.jpg"));
 		iconDino[1] = new ImageIcon(cldr.getResource("Images/car2map.jpg"));
 		iconDino[2] = new ImageIcon(cldr.getResource("Images/car3map.jpg"));
@@ -342,6 +349,9 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		//FINE CARICAMENTO IMMAGINI
 		
 		iconDinoPlayer = iconDino[intDino];
+		if(intDino==5)
+			intDino=-1;
+		iconDinoEnemy = iconDino[intDino+1];
 
 		this.setVisible(true);
 		this.setLocation(0,0);
@@ -459,8 +469,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	{
 		if(fight!=null)
 			fight.setVisible(false);
-		if(eat!=null)
-			eat.setVisible(false);
+		if(eatVege!=null)
+			eatVege.setVisible(false);
+		if(eatCarn!=null)
+			eatCarn.setVisible(false);
 		if(timer!=null)
 			timer.stop();
 	}
@@ -758,15 +770,18 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 									if(!flagStop)
 									{
 										String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
-										if(energyDino<Integer.parseInt(dinoState[6]))
+										if(dinoState.length>6)
 										{
-											if(dinosaursType.equals("Vegetarian"))
+											if(energyDino<Integer.parseInt(dinoState[6]))
 											{
-												eatVeg();
-											}
-											else
-											{
-												eatCarn();
+												if(dinosaursType.equals("Vegetarian"))
+												{
+													eatVeg();
+												}
+												else
+												{
+													eatCarn();
+												}
 											}
 										}
 										drawMap(client.getConnManager().mappaGenerale());
@@ -1568,44 +1583,44 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	 
 	 public void eatVeg()
 	 {
-		 if(eat!=null)
+		 if(eatVege!=null)
 		 {
-			 eat.removeAll();
-			 eatAnimation = null;
-			 eat = null;
+			 eatVege.removeAll();
+			 eatAnimationVege = null;
+			 eatVege = null;
 		 }
-		 eat = new JFrame();
-		 eat.setSize(148, 102);
-		 eat.setUndecorated(true);
-		 eat.setLocation((screenWidth-148)/2, (screenHeight-102)/2);
-		 eat.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		 eatAnimation = new AnimationPanel("Images/mangia_erba.gif");
-		 eatAnimation.setLayout(null);
-		 eatAnimation.setSize(300, 102);
-		 eat.getContentPane().add(eatAnimation);
-		 eat.setVisible(true);
+		 eatVege = new JFrame();
+		 eatVege.setSize(148, 102);
+		 eatVege.setUndecorated(true);
+		 eatVege.setLocation((screenWidth-148)/2, (screenHeight-102)/2);
+		 eatVege.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		 eatAnimationVege = new AnimationPanel("Images/mangia_erba.gif");
+		 eatAnimationVege.setLayout(null);
+		 eatAnimationVege.setSize(148, 102);
+		 eatVege.getContentPane().add(eatAnimationVege);
+		 eatVege.setVisible(true);
 		 timer = new Timer(1800, this);
 		 timer.start();
 	 }
 	 
 	 public void eatCarn()
 	 {
-		 if(eat!=null)
+		 if(eatCarn!=null)
 		 {
-			 eat.removeAll();
-			 eatAnimation = null;
-			 eat = null;
+			 eatCarn.removeAll();
+			 eatAnimationCarn = null;
+			 eatCarn = null;
 		 }
-		 eat = new JFrame();
-		 eat.setSize(148, 102);
-		 eat.setUndecorated(true);
-		 eat.setLocation((screenWidth-148)/2, (screenHeight-102)/2);
-		 eat.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		 eatAnimation = new AnimationPanel("Images/mangia_osso.gif");
-		 eatAnimation.setLayout(null);
-		 eatAnimation.setSize(300, 102);
-		 eat.getContentPane().add(eatAnimation);
-		 eat.setVisible(true);
+		 eatCarn = new JFrame();
+		 eatCarn.setSize(148, 102);
+		 eatCarn.setUndecorated(true);
+		 eatCarn.setLocation((screenWidth-148)/2, (screenHeight-102)/2);
+		 eatCarn.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		 eatAnimationCarn = new AnimationPanel("Images/mangia_osso.gif");
+		 eatAnimationCarn.setLayout(null);
+		 eatAnimationCarn.setSize(148, 102);
+		 eatCarn.getContentPane().add(eatAnimationCarn);
+		 eatCarn.setVisible(true);
 		 timer = new Timer(1800, this);
 		 timer.start();
 	 }
