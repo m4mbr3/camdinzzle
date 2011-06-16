@@ -147,7 +147,7 @@ public class Species implements Serializable
 	{
 		this.playerUsername = playerUsername;
 	}
-
+	//@ ensures this.dinoNumber == \old (this.dinoNumber) + 1;
 	/**
 	 * Sggiunge uno al numero di dinosauri della specie. Utilizzato per l'id progressivo dei 
 	 * dinosauri della specie.
@@ -155,29 +155,28 @@ public class Species implements Serializable
 	public void addDinoNumber()
 	{
 		dinoNumber += 1;
-		return;
 	}
-	
+	//@ ensures \result == this.dinoNumber;
 	/**
 	 * Ritorna il numero di dinosauri creati.
 	 */
-	public int getDinoNumber()
+	public /*@ pure @*/ int getDinoNumber()
 	{
 		return dinoNumber;
 	}
-	
+	//@ ensures \result == this.myDinosaurs.get(dinoId);
 	/**
 	 * Ritorna il riferimento al dinosauro richiesto.
 	 * @param dinoId ID del dinosauro
 	 * @return riferimento al dinosauro se esiste un dinosauro avente come id dinoId, null altrimenti
 	 */
-	public Dinosaur getDino(String dinoId)
+	public /*@ pure @*/ Dinosaur getDino(String dinoId)
 	{
 		return myDinosaurs.get(dinoId);
 	}
 	//@requires posRig >= 0 && posRig <= 39 && posCol >= 0 && posRig <= 39 && ((Game.getCell[posRig][posCol] instanceof String) == true )&& (Game.getCell[posRig][posCol].equals("T")==true) ;
-	//@ensures (* if  speciesType == type.Carnivoruous *) ==> \return dino == new Carnivorous(dinoId,posRig,posCol,Species);
-	//@		   !(* else *) ==> \return == new Vegetarian(dinoID, posRig, posCol, Species);
+	//@ensures ((* if *) &&  speciesType == type.Carnivoruous ) ==> \return dino == new Carnivorous(dinoId,posRig,posCol,Species);
+	//@		   ((* else *) &&  !speciesType == type.Carnivoruous )==> \return == new Vegetarian(dinoID, posRig, posCol, Species);
 	
 	/**
 	 * Crea un nuovo dinosauro, lo aggiunge alla lista dei dinosauri della specie e lo inserisce 
@@ -201,12 +200,13 @@ public class Species implements Serializable
 		
 		return dino;
 	}
-	
+	//@ensures ((* if *) && this.myDinosaurs.size()>0) ==> \return == (* Lista dei dino della specie *);
+	//@			|| ((*else*) && this.myDinosaurs.size()<0) ==> \return == null; 
 	/**
 	 * Ritorna la lista dei dinosauri della specie.
 	 * @return iteratore con la lista dei dinosauri
 	 */
-	public Iterator<Map.Entry<String, Dinosaur>> getDinosaurs()
+	public /*@ pure @*/ Iterator<Map.Entry<String, Dinosaur>> getDinosaurs()
 	{
 		if(myDinosaurs.size() > 0)
 		{
@@ -218,6 +218,8 @@ public class Species implements Serializable
 			return null;
 	}
 	
+	//@ ensure ((* if *) && myDinosaurs.size()>0)  ==> \result == true;
+	//@ || (*else*) && myDinosaurs.size()<0 ) ==> \result == false;
 	/**
 	 * Controlla se ci sono dinosauri della specie.
 	 * @return true se esistono dinosauri della specie, false altrimenti
@@ -236,7 +238,7 @@ public class Species implements Serializable
 	/**
 	 * Aggiorna stato di ogni dinosauro della specie.
 	 */
-	public void upDateDinosaurStatus()
+	public /*@ pure @*/ void upDateDinosaurStatus()
 	{
 		Set<Map.Entry<String, Dinosaur>> set = myDinosaurs.entrySet();
 		Iterator<Map.Entry<String, Dinosaur>> iter = set.iterator();
@@ -267,11 +269,12 @@ public class Species implements Serializable
 		return type.Vegetarian;
 	}
 	
+	//@ensures \result == this.speciesType;
 	/**
 	 * Ritorna il type della specie.
 	 * @return tipo della specie
 	 */
-	public type getType()
+	public /*@ pure @*/ type getType()
 	{
 		return speciesType;
 	}
