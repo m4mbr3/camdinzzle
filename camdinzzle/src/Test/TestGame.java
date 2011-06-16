@@ -60,7 +60,7 @@ public class TestGame extends TestCase
 			}
 		}
 		System.out.println(land + ", " + vegetation + ", " + carrion + ", " + water);
-		//assertEquals(320, water);
+		assertEquals(320, water);
 		assertEquals(20, carrion);
 		assertEquals(512, vegetation);
 	}

@@ -271,10 +271,10 @@ public class Game
 		else
 		{
 			if(size==14)
-				{
-					ctrlOffsetRow = 4;
-					ctrlOffsetCol = 5;
-				}
+			{
+				ctrlOffsetRow = 4;
+				ctrlOffsetCol = 5;
+			}
 			else
 			{
 				ctrlOffsetRow = 4;
@@ -353,7 +353,7 @@ public class Game
 			boolean espansione=true, riduzione=true; //attiva e disattiva l'espansione e la riduzione delle celle stampate
 			for(int i=row-ctrlOffset+1; i<=row+ctrlOffset-1; i++)
 			{
-				if((ctrl<ctrlOffset)&&espansione)//entra se � sopra al punto centrale
+				if((ctrl<ctrlOffset)&&espansione)//entra se e' sopra al punto centrale
 				{
 					for(int j=col-ctrl; j<=col+ctrl; j++)	//stampala parte sopra
 					{
@@ -450,21 +450,12 @@ public class Game
 					int count = 1;
 					do
 						{
-						map[i][col-count] ="a";
-						water -= 1;
-						controlWater++;
-						count++;
+							map[i][col-count] ="a";
+							water -= 1;
+							controlWater++;
+							count++;
 						}
 					while(count<4);	
-				}
-				else
-				{
-					if(i==row+4)
-					{	
-					map[i][col] ="a";
-					water -= 1;
-					controlWater++;
-					}
 				}
 				if(i==row+5)
 				{

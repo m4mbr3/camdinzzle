@@ -1,12 +1,26 @@
 package Client;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URL;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import javax.swing.border.Border;
+
 
 /**
  * Classe utlizzata per la notifica del cambio del turno in gioco.
  */
-public class ChangeRoundThread  implements Runnable 
+public class ChangeRoundThread implements Runnable, MouseListener , ActionListener
 {
 	
 	private static final long serialVersionUID = 1L;
@@ -33,6 +47,43 @@ public class ChangeRoundThread  implements Runnable
 	 */
 	private boolean is_my_turn;
 	
+	/*
+	 * Frame della conferma turno
+	 */
+	private JFrame changeRoundFrame;
+	/*
+	 * Bottone per la conferma turno
+	 */
+	private JButton yes;
+	/*
+	 * Bottone per rifiutare il turno
+	 */
+	private JButton no;
+	/*
+	 * controllo risposta utente
+	 */
+	private int response = 2;
+	/*
+	 * Variabile che contiene le dimensioni dello schermo
+	 */
+	private Dimension screenSize;
+	/*
+	 * Timer per la finestra cambio turno
+	 */
+	private Timer timer;
+	/*
+	 * Sfondo cambia turno
+	 */
+	private BackPanel changeRoundPanel;
+	/*
+	 * URL immagine sfondo cambia turno
+	 */
+	private URL changeRoundImageURL;
+	/*
+	 * Scritta per cambia turno
+	 */
+	private JLabel changeRoundText;
+	
 	/**
 	 * Costruttore della classe ChangeRoundThread che inizializza le variabili legandole alle variabili
 	 * del client corrente e al suo scherma di gioco
@@ -44,6 +95,15 @@ public class ChangeRoundThread  implements Runnable
 		this.client = client;
 		this.frameGame = frameGame;
 		this.is_my_turn=false;
+		
+		no = new JButton("no");
+		yes = new JButton("yes");
+		no.addMouseListener(this);
+		yes.addMouseListener(this);
+		
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		ClassLoader cldr = this.getClass().getClassLoader();
+		changeRoundImageURL = cldr.getResource("Images/sfondo_cambia_turno.jpg");
 	}
 	
 	public static void start()
@@ -92,16 +152,50 @@ public class ChangeRoundThread  implements Runnable
 				else
 				{
 					frameGame.upDateFrameGame();
-					//int response = frameGame.showTimeoutDialog(frameGame, "You want to use your round? You have 30 seconds to choose.", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
-					int response = 2;
-					FrameLogin prova = new FrameLogin();
-					prova.setAlwaysOnTop(true);
-					prova.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-					prova.setUndecorated(true);
-					prova.setSize(330, 330);
-					prova.setVisible(true);
+					//int response = frameGame.showTimeoutDialog(frameGame, "Do you want to use your round? You have 30 seconds to choose.", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
+					if(changeRoundFrame!=null)
+					{
+						changeRoundFrame.removeAll();
+						changeRoundFrame=null;
+					}
 					
-					optionpaneClicked(response);
+					
+					changeRoundFrame = new JFrame();
+					changeRoundFrame.setAlwaysOnTop(true);
+					changeRoundFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+					changeRoundFrame.setUndecorated(true);
+					changeRoundFrame.setResizable(false);
+					changeRoundFrame.setSize(230, 150);
+					changeRoundFrame.setVisible(true);
+					changeRoundFrame.setLocation((int)(screenSize.getWidth()-330)/2,(int)(screenSize.getHeight()-330)/2);
+					changeRoundFrame.setLayout(null);
+					yes.setVisible(true);
+					no.setVisible(true);
+					yes.setSize(80, 30);
+					no.setSize(80, 30);
+					yes.setLocation(23, 100);
+					no.setLocation(127, 100);
+					changeRoundPanel=new BackPanel();
+					changeRoundPanel.setBackground(changeRoundImageURL);
+					changeRoundPanel.setVisible(true);
+					changeRoundPanel.setSize(230,150);
+					changeRoundPanel.setLayout(null);
+					
+					changeRoundText = new JLabel("<html>Do you want to use your round?<br /> You have 30 seconds to choose.</html>");
+					changeRoundText.setSize(210, 70);
+					changeRoundText.setLocation(10, 10);
+					changeRoundText.setVisible(true);
+					
+					changeRoundPanel.add(changeRoundText);
+					changeRoundPanel.add(yes);
+					changeRoundPanel.add(no);
+					changeRoundFrame.add(changeRoundPanel);
+					changeRoundFrame.repaint();
+					
+					timer = new Timer(27000, this);
+					timer.start();
+					
+					frameGame.setEnabled(false);
 					//client.getConnManager().setChangeRound("");					
 				}
 				//client.getConnManager().setChangeRound("");
@@ -156,7 +250,8 @@ public class ChangeRoundThread  implements Runnable
 				else{
 					JOptionPane.showMessageDialog(new JFrame(),"You have an incorrect token!!!", "Turn Error", JOptionPane.ERROR_MESSAGE);
 				}
-			}				
+			}
+			this.response=2;
 		}
 		else if(chosedOption == 1)
 		{
@@ -185,6 +280,65 @@ public class ChangeRoundThread  implements Runnable
 				}
 			}
 			
+		}
+		this.response=2;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) 
+	{
+		if(arg0.getComponent().equals(yes))
+		{
+			response = 0;
+			changeRoundFrame.dispose();
+			timer.stop();
+			frameGame.setEnabled(true);
+			optionpaneClicked(response);
+		}
+		if(arg0.getComponent().equals(no))
+		{
+			response = 1;
+			changeRoundFrame.dispose();
+			timer.stop();
+			frameGame.setEnabled(true);
+			optionpaneClicked(response);
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) 
+	{
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) 
+	{
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) 
+	{
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) 
+	{
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		if(changeRoundFrame!=null)
+		{
+			changeRoundFrame.setVisible(false);
+		}
+		if(timer!=null)
+		{
+			timer.stop();
 		}
 	}
 }
