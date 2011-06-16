@@ -108,7 +108,7 @@ public abstract class Dinosaur implements Serializable
 		moveTake=false;
 		setLocalMap();
 	}
-	
+
 	/*@ensures (* if (requires dimension < 5  &&  energy > energyMax/2)*) ==> (dimension == dimension + 1 && energyMax == dimension*1000 && \result == true);
   	  @ 		|| !(*Se invece è no*) ==> \result == false
 	  @*/

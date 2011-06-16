@@ -520,28 +520,25 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[0]))
 		{
-			if(arg0.getComponent().isEnabled())
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
+			String[] growUpDino = client.getConnManager().cresciDinosauro(dinoId);
+			if(growUpDino==null)
 			{
-				if(cellClicked!=null)
-					cellClicked.setBorder(null);
-				
-				String[] growUpDino = client.getConnManager().cresciDinosauro(dinoId);
-				if(growUpDino==null)
+				errorMessage();
+			}
+			else
+			{
+				if(growUpDino[0].equals("no"))
 				{
-					errorMessage();
+					errorMessageServer(growUpDino);
+					extinctionSpecies();
 				}
 				else
 				{
-					if(growUpDino[0].equals("no"))
-					{
-						errorMessageServer(growUpDino);
-						extinctionSpecies();
-					}
-					else
-					{
-						drawDinoState(dinoId,client.getConnManager().statoDinosauro(dinoId));
-						upDateFrameGame();
-					}
+					drawDinoState(dinoId,client.getConnManager().statoDinosauro(dinoId));
+					upDateFrameGame();
 				}
 			}
 		}
@@ -554,30 +551,26 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent().equals(commandDinoButton[1]))
 		{
-			if(arg0.getComponent().isEnabled())
+			if(cellClicked!=null)
+				cellClicked.setBorder(null);
+			
+			String[] newEgg = client.getConnManager().deponiUovo(dinoId);
+			if(newEgg==null)
 			{
-				if(cellClicked!=null)
-					cellClicked.setBorder(null);
-				
-				String[] newEgg = client.getConnManager().deponiUovo(dinoId);
-				if(newEgg==null)
+				errorMessage();
+			}
+			else
+			{
+				if(newEgg[0].equals("no"))
 				{
-					errorMessage();
+					errorMessageServer(newEgg);
+					extinctionSpecies();
 				}
 				else
 				{
-					if(newEgg[0].equals("no"))
-					{
-						errorMessageServer(newEgg);
-						extinctionSpecies();
-					}
-					else
-					{
-						upDateFrameGame();
-					}
+					upDateFrameGame();
 				}
 			}
-
 		}
 		
 		/*CLASSIFICA
@@ -728,114 +721,110 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 */
 		if(arg0.getComponent() instanceof JButton)
 		{
-			if(arg0.getComponent().isEnabled())
-				//TODO controllare movimento carnivoro
+			if(flag==1)
 			{
-				if(flag==1)
+				String nameCell = arg0.getComponent().getName();
+				if(nameCell.contains(";"))
 				{
-					String nameCell = arg0.getComponent().getName();
-					if(nameCell.contains(";"))
+					if(!((String)arg0.getComponent().getName()).contains(nameSpecie))
 					{
-						if(!((String)arg0.getComponent().getName()).contains(nameSpecie))
+						String[] option = {"yes","no"};
+						int opt = JOptionPane.showOptionDialog(panel, "Would you move "+ dinoId, "Dinosaur move", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ok, option, "yes");
+						cellClicked.setBorder(null);
+						if(opt==0)
 						{
-							String[] option = {"yes","no"};
-							int opt = JOptionPane.showOptionDialog(panel, "Would you move "+ dinoId, "Dinosaur move", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ok, option, "yes");
-							cellClicked.setBorder(null);
-							if(opt==0)
+							String[] nameDest = nameCell.split(";");
+							String[] newNameDest = nameDest[0].split(",");
+							String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
+							if(check==null)
 							{
-								String[] nameDest = nameCell.split(";");
-								String[] newNameDest = nameDest[0].split(",");
-								String[] check = client.getConnManager().muoviDinosauro(dinoId, newNameDest[0], newNameDest[1]);
-								if(check==null)
+								errorMessage();
+							}
+							else
+							{
+								if(!check[0].equals("no"))
 								{
-									errorMessage();
+									if(check.length==3)
+									{
+										fight();
+										String result;
+										if(check[2].equals("v"))
+											result = " win!";
+										else
+											result = " lose!";
+										JOptionPane.showMessageDialog(panel, "Fight" + result, "Fight result", JOptionPane.INFORMATION_MESSAGE, ok);
+									}
+									extinctionSpecies();
+									if(!flagStop)
+									{
+										String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
+										if(energyDino<Integer.parseInt(dinoState[6]))
+										{
+											if(dinosaursType.equals("Vegetarian"))
+											{
+												eatVeg();
+											}
+											else
+											{
+												eatCarn();
+											}
+										}
+										drawMap(client.getConnManager().mappaGenerale());
+										drawDinoState(dinoId, dinoState);
+									}
 								}
 								else
 								{
-									if(!check[0].equals("no"))
-									{
-										if(check.length==3)
-										{
-											fight();
-											String result;
-											if(check[2].equals("v"))
-												result = " win!";
-											else
-												result = " lose!";
-											JOptionPane.showMessageDialog(panel, "Fight" + result, "Fight result", JOptionPane.INFORMATION_MESSAGE, ok);
-										}
-										extinctionSpecies();
-										if(!flagStop)
-										{
-											String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
-											if(energyDino<Integer.parseInt(dinoState[6]))
-											{
-												if(dinosaursType.equals("Vegetarian"))
-												{
-													eatVeg();
-												}
-												else
-												{
-													eatCarn();
-												}
-											}
-											drawMap(client.getConnManager().mappaGenerale());
-											drawDinoState(dinoId, dinoState);
-										}
-									}
-									else
-									{
-										errorMessageServer(check);
-										extinctionSpecies();
-									}
+									errorMessageServer(check);
+									extinctionSpecies();
 								}
 							}
 						}
-						else
-						{
-							if(cellClicked!=null)
-								cellClicked.setBorder(null);
-							String[] idDino = arg0.getComponent().getName().split(";");
-							dinoId = idDino[1];
-							drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
-							if(((String)arg0.getComponent().getName()).contains(nameSpecie))
-							{
-								cellClicked = (JButton)arg0.getComponent();
-								for(int i=0; i<2; i++)
-								{
-									commandDinoButton[i].setEnabled(true);	
-								}
-								((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
-								flag=1;
-							}
-						}
-							
 					}
-					flag=0;
-				}
-				else if(((String)arg0.getComponent().getName()).contains("-"))
-				{
-					String[] idDino = arg0.getComponent().getName().split(";");
-					dinoId = idDino[1];
-					String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
-					drawDinoState(dinoId, dinoState);
-					if(((String)arg0.getComponent().getName()).contains(nameSpecie))
+					else
 					{
-						cellClicked = (JButton)arg0.getComponent();
-						energyDino = Integer.parseInt(dinoState[6]);
-						for(int i=0; i<2; i++)
+						if(cellClicked!=null)
+							cellClicked.setBorder(null);
+						String[] idDino = arg0.getComponent().getName().split(";");
+						dinoId = idDino[1];
+						drawDinoState(dinoId, client.getConnManager().statoDinosauro(dinoId));
+						if(((String)arg0.getComponent().getName()).contains(nameSpecie))
 						{
-							commandDinoButton[i].setEnabled(true);	
+							cellClicked = (JButton)arg0.getComponent();
+							for(int i=0; i<2; i++)
+							{
+								commandDinoButton[i].setEnabled(true);	
+							}
+							((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
+							flag=1;
 						}
-						((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
-						flag=1;
 					}
+						
 				}
-				else
+				flag=0;
+			}
+			else if(((String)arg0.getComponent().getName()).contains("-"))
+			{
+				String[] idDino = arg0.getComponent().getName().split(";");
+				dinoId = idDino[1];
+				String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
+				drawDinoState(dinoId, dinoState);
+				if(((String)arg0.getComponent().getName()).contains(nameSpecie))
 				{
-					if(cellClicked!=null)
-						cellClicked.setBorder(null);
+					cellClicked = (JButton)arg0.getComponent();
+					energyDino = Integer.parseInt(dinoState[6]);
+					for(int i=0; i<2; i++)
+					{
+						commandDinoButton[i].setEnabled(true);	
+					}
+					((JButton)arg0.getComponent()).setBorder(BorderFactory.createLineBorder(Color.blue,2));
+					flag=1;
 				}
+			}
+			else
+			{
+				if(cellClicked!=null)
+					cellClicked.setBorder(null);
 			}
 		}
 	}
