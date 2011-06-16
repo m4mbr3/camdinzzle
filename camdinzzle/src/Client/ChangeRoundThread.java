@@ -92,7 +92,7 @@ public class ChangeRoundThread  implements Runnable
 				else
 				{
 					frameGame.upDateFrameGame();
-					int response = TimeOutOptionPane.showTimeoutDialog(new JFrame(), "You want to use your round? You have 30 seconds to choose.", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
+					int response = frameGame.showTimeoutDialog(frameGame, "You want to use your round? You have 30 seconds to choose.", "", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new Object[]{"yes", "no"}, "no");
 					optionpaneClicked(response);
 					//client.getConnManager().setChangeRound("");					
 				}

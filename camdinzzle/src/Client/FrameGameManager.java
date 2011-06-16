@@ -335,6 +335,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 		{
 			//Frame con i campi per la creazione della razza
 			creaRazzaFrame = new JFrame("Create new Species");
+			ClassLoader cldr = this.getClass().getClassLoader();
+			ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+			creaRazzaFrame.setIconImage(logo.getImage());
 			creaRazzaFrame.setLocation((int)(screenSize.getWidth()-300)/2,(int)(screenSize.getHeight()-200)/2);
 			creaRazzaFrame.setLayout(null);
 			creaRazzaFrame.setVisible(true);
@@ -412,6 +415,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					pannelloGiocatori = null;
 				}
 				listaGiocatori = new JFrame("List of Players");
+				ClassLoader cldr = this.getClass().getClassLoader();
+				ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+				listaGiocatori.setIconImage(logo.getImage());
 				listaGiocatoriPanel = new BackPanel();
 				listaGiocatoriPanel.setBackground(listaGiocatoriImage);
 				listaGiocatoriPanel.setLayout(new BorderLayout());
@@ -454,6 +460,9 @@ public class FrameGameManager extends JFrame implements WindowListener, MouseLis
 					if(ranking==null)
 					{
 						ranking = new JFrame("Classifica");
+						ClassLoader cldr = this.getClass().getClassLoader();
+						ImageIcon logo = new ImageIcon(cldr.getResource("Images/icona.png"));
+						ranking.setIconImage(logo.getImage());
 						ranking2 = new JScrollPane();
 					}
 					else
