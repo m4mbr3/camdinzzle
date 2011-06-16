@@ -2,7 +2,6 @@ package Client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -14,15 +13,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -772,9 +768,16 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 										if(!flagStop)
 										{
 											String[] dinoState = client.getConnManager().statoDinosauro(dinoId);
-											if(energyDino<Integer.parseInt(dinoState[6])&&(dinosaursType.equals("Vegetarian")))
+											if(energyDino<Integer.parseInt(dinoState[6]))
 											{
-												eat();
+												if(dinosaursType.equals("Vegetarian"))
+												{
+													eatVeg();
+												}
+												else
+												{
+													eatCarn();
+												}
 											}
 											drawMap(client.getConnManager().mappaGenerale());
 											drawDinoState(dinoId, dinoState);
@@ -1574,7 +1577,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 timer.start();
 	 }
 	 
-	 public void eat()
+	 public void eatVeg()
 	 {
 		 if(eat!=null)
 		 {
@@ -1596,126 +1599,26 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		 timer.start();
 	 }
 	 
-	 public int showTimeoutDialog(Component parentComponent, Object message, final String title, int optionType,
-	            int messageType, Object[] options, final Object initialValue) 
-	    {
-	    	try
-	    	{
-	    		/*String[] option = {"yes","no"};
-	    		int response = JOptionPane.showOptionDialog(panel, "Would you move "+ dinoId, "Dinosaur move", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, ok, option, "yes");
-	    		/*/
-	    		
-	    		
-	    		final JOptionPane pane = new JOptionPane(message, messageType, optionType, ok , options, initialValue);
-		        
-	    		final JDialog dialog = new JDialog();
-	    		dialog.setContentPane(pane);
-	    		
-		        pane.setInitialValue(initialValue);
-		        
-		        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		        dialog.setTitle("Round confirm");
-		        
-		        pane.selectInitialValue();
-		        
-		        
-		        
-		        pane.addPropertyChangeListener(
-		        	    new PropertyChangeListener() {
-		        	    	@Override
-		        	        public void propertyChange(PropertyChangeEvent e) {
-		        	            String prop = e.getPropertyName();
+	 public void eatCarn()
+	 {
+		 if(eat!=null)
+		 {
+			 eat.removeAll();
+			 eatAnimation = null;
+			 eat = null;
+		 }
+		 eat = new JFrame();
+		 eat.setSize(148, 102);
+		 eat.setUndecorated(true);
+		 eat.setLocation((screenWidth-148)/2, (screenHeight-102)/2);
+		 eat.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		 eatAnimation = new AnimationPanel("Images/mangia_osso.gif");
+		 eatAnimation.setLayout(null);
+		 eatAnimation.setSize(300, 102);
+		 eat.getContentPane().add(eatAnimation);
+		 eat.setVisible(true);
+		 timer = new Timer(1800, this);
+		 timer.start();
+	 }
 
-		        	            if (dialog.isVisible() 
-		        	             && (e.getSource() == pane)
-		        	             && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
-		        	                //If you were going to check something
-		        	                //before closing the window, you'd do
-		        	                //it here.
-		        	                dialog.setVisible(false);
-		        	            }
-		        	        }
-		        	    });
-		        dialog.pack();
-		        
-		        
-		        
-		        
-		        //final JFrame dialog = new JFrame();
-		       // dialog.add(pane);
-		        //dialog.setAlwaysOnTop(true);
-		        
-		        //Thread.sleep(400);
-		        
-		       
-		        Timer t = new Timer(27000, new ActionListener() {
-		        	
-					@Override
-					public void actionPerformed(ActionEvent e) 
-					{
-						//JDesktopPane prova = JOptionPane.getDesktopPaneForComponent(JOptionPane.getRootFrame());
-						//JOptionPane.getRootFrame().dispose();
-						if(dialog.isVisible())
-							dialog.setVisible(false);
-					}
-				});
-		        t.start();
-		        
-		       
-		        /*
-		        new Thread() 
-		        {
-		            public void run() 
-		            {
-		                try 
-		                {
-		                    for (int i=PRESET_TIME; i>=0; i--)
-		                    {
-		                        Thread.sleep(980);
-		                        if (dialog.isVisible() && i<300) 
-		                        {
-		                            dialog.setTitle("Hai " + i + " secondi per confermare");
-		                        }
-		                    }
-		                    if (dialog.isVisible()) 
-		                    {
-		                        dialog.setVisible(false);
-		                    }
-		                }
-		                catch (Throwable t) 
-		                {
-		                	
-		                }
-		            }
-		        }.start();*/
-		        
-		        dialog.setVisible(true);
-		
-		        Object selectedValue = pane.getValue();
-		        if (selectedValue.equals("uninitializedValue")) 
-		        {
-		        	//t.stop();
-		            return 2;
-		        }
-		        if (options == null) 
-		        {
-		            if (selectedValue instanceof Integer)
-		                return ((Integer) selectedValue).intValue();
-		            return JOptionPane.CLOSED_OPTION;
-		        }
-		        for (int counter = 0, maxCounter = options.length; counter < maxCounter; counter++)
-		        {
-		            if (options[counter].equals(selectedValue))
-		            {
-		            	//t.stop();
-		                return counter;
-		            }
-		        }
-		        return JOptionPane.CLOSED_OPTION;
-	    	}
-	    	catch(Exception t)
-	    	{
-	    		return JOptionPane.CLOSED_OPTION;
-	    	}
-	    }
 }
