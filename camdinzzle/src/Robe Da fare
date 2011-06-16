@@ -7,7 +7,6 @@
 		-controllare fra richiesta lista dinosauri e stato dinosauro che esce errore classcastexception
 		ma non viene data la riga.
 		
-		-cambiare immagine loading
 		
 		
 		(CHIESTO A CARDAMONE)
@@ -25,12 +24,7 @@
 					le parti + interessanti
 		
 		-da testare la classifica che alla fine sia in ordine.
-		-numero di casella di acqua, numero di caselle di vegetazione, numero di caselle di terra,
-		numero di caselle carogna
-		-deposizione uovo deve togliere 1500
-		-combattimento
 		
-		in specie.addDinosaur requisiti:le coordinate indicano una cella con la terra
 		
 		
 		-file di sicurezza RMI		NON è OBBLIGATORIO!!! SERVE SOLO X PASSAGGIO DI OGGETTI DINAMICI(CHE NN è IL NOSTRO CASO)

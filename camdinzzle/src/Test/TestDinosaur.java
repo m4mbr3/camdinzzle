@@ -3,6 +3,7 @@ package Test;
 import java.io.File;
 
 import Server.Carnivorous;
+import Server.Game;
 import Server.Species;
 import Server.Vegetarian;
 import junit.framework.TestCase;
@@ -13,12 +14,16 @@ public class TestDinosaur extends TestCase
 	private Carnivorous dinoCarn;
 	private Species veg;
 	private Species carn;
+	private Game game;
 	
 	public void setUp()
 	{
 		File f = new File("server.ser");
-		f.delete();
+		if(f.exists())
+			f.delete();
 		
+		game = new Game(null);
+		game.getFirstPlayer();
 		veg = new Species("veg", Species.getVegType(), "player");
 		carn = new Species("carn", Species.getCarnType(), "player");
 		dinoVeg = new Vegetarian("veg - 1", 5, 5, veg);
