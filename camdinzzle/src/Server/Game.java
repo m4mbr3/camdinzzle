@@ -447,7 +447,7 @@ public class Game
 				}
 				if((i==row+4)&&(size!=7))
 				{
-					int count = 0;
+					int count = 1;
 					do
 						{
 						map[i][col-count] ="a";
@@ -530,7 +530,7 @@ public class Game
 			{
 				flagFinish = false;
 			}
-			//int control = controlWater;
+			int control = controlWater;
 			int row = (int)(Math.random() * (maxRow - 10) + 4); // random da 4 a 33
 			int col = (int)(Math.random() * (maxCol - 14) + 5); // random da 5 a 31
 			int size = (int)(Math.random() * 11 + 5); //random da 5 a 15

@@ -1596,11 +1596,11 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 	    		/*/
 	    		
 	    		
-	    		
 	    		final JOptionPane pane = new JOptionPane(message, messageType, optionType, ok , options, initialValue);
-		         
-	    		final JDialog dialog = new JDialog(this, "cizo", true);
+		        
+	    		final JDialog dialog = new JDialog();
 	    		dialog.setContentPane(pane);
+	    		
 		        pane.setInitialValue(initialValue);
 		        
 		        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -1627,6 +1627,10 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		        	        }
 		        	    });
 		        dialog.pack();
+		        
+		        
+		        
+		        
 		        //final JFrame dialog = new JFrame();
 		       // dialog.add(pane);
 		        //dialog.setAlwaysOnTop(true);
@@ -1641,7 +1645,8 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 					{
 						//JDesktopPane prova = JOptionPane.getDesktopPaneForComponent(JOptionPane.getRootFrame());
 						//JOptionPane.getRootFrame().dispose();
-						dialog.setVisible(false);
+						if(dialog.isVisible())
+							dialog.setVisible(false);
 					}
 				});
 		        t.start();
