@@ -175,9 +175,10 @@ public class Species implements Serializable
 	{
 		return myDinosaurs.get(dinoId);
 	}
-	//@requires posRig >= 0 && posRig <= 39 && posCol >= 0 && posRig <= 39;
-	//@ensures
-	//@assignable
+	//@requires posRig >= 0 && posRig <= 39 && posCol >= 0 && posRig <= 39 && ((Game.getCell[posRig][posCol] instanceof String) == true )&& (Game.getCell[posRig][posCol].equals("T")==true) ;
+	//@ensures (* if  speciesType == type.Carnivoruous *) ==> \return dino == new Carnivorous(dinoId,posRig,posCol,Species);
+	//@		   !(* else *) ==> \return == new Vegetarian(dinoID, posRig, posCol, Species);
+	//@assignable Game.setCellMap(dino,posRig,posCol)
 	/**
 	 * Crea un nuovo dinosauro, lo aggiunge alla lista dei dinosauri della specie e lo inserisce 
 	 * nella mappa generale.
@@ -189,14 +190,10 @@ public class Species implements Serializable
 		String dinoId = this.name + " - " + getDinoNumber();
 		
 		if(speciesType == type.Carnivorous) //Control the type of species
-		{
 			dino = new Carnivorous(dinoId, posRig, posCol, this);
-
-		}
 		else
-		{
 			dino = new Vegetarian(dinoId, posRig, posCol, this);
-		}
+
 
 		myDinosaurs.put(dinoId.toString(), dino);
 		Game.setCellMap(dino, posRig, posCol);
@@ -386,15 +383,18 @@ public class Species implements Serializable
 		}
 	}
 	
+	//@ requires dinoId != null && fightlose != null;
+	//@	ensures fightlose == false ==> Game.getCell(dinoId.getPosRow(),dinoId.getPosCol()).equals(dinoId) == false;
+	//@ assignable Game.getCell(dinoId.getPosRow(),dinoId.getPosCol())
 	/**
 	 * Setta la cella del dinosauro dove si trovava con quello che c'era prima di esso, 
 	 * ed elimina il dinosauro.
 	 * @param dinoId id del dinosauro
 	 * @param fight indica se la morte e' avvenuta dopo la sconfitta in combattimento
 	 */
-	public void killDino(Dinosaur dinoId, boolean fight)
+	public void killDino(Dinosaur dinoId, boolean fightlose)
 	{
-		if(!fight)
+		if(!fightlose)
 		{
 				if(speciesType==type.Carnivorous)
 				{

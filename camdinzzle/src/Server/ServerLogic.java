@@ -178,9 +178,9 @@ public class ServerLogic
 	}
 
 	//@ requires username != null && password != null (*Il controllo dei caratteri speciali deve essere già eseguito*);
-	//@ ensures if (players.countainsKey(username) == true && players.get(username).getPassword() == password ) 
+	//@ ensures (*if (players.countainsKey(username) == true && players.get(username).getPassword() == password )*) 
 	//@									==>  token == generateToken(username,System.nanoTime()) && \result == ServerMessageBroker.createOkMessageWithOneParameter(token);  
-	//@ 		else  					\return == ServerMessageBroker.createErroMessage("autenticazioneFallita");
+	//@ 		||     !(*else*)==>  			\return == ServerMessageBroker.createErroMessage("autenticazioneFallita");
 	//@ assignable LoggedPlayers.put(token, players.get(username));
 	//@ signals (Exception ex) \return == "@no";
 	/**
@@ -225,11 +225,12 @@ public class ServerLogic
 		}
 	}
 	//@ requires token != null && name != null && (type == 'c' || type == 'e')
-	//@	ensures if (!isLoggedUser(token)) ==> \result == ServerMessageBroker.createTokenNonValidoErrorMessage();
-	//@			if (* la specie dell'utente non esiste e non c'è nessun'altra specie con quel nome *) ==> creo la specie && \return == ServerMessageBroker.createOkMessage();   
-	//@			else ==> ServerMessageBroker.createErroMessage("nomeRazzaOccupato");
+	//@	ensures !(*if (!isLoggedUser(token))*) ==> \result == ServerMessageBroker.createTokenNonValidoErrorMessage();
+	//@			(*if la specie dell'utente non esiste e non c'è nessun'altra specie con quel nome *) ==> creo la specie && \return == ServerMessageBroker.createOkMessage();   
+	//@			||(*else if la specie dell'utente esiste già *) ==> \return == "@no";
+	//@ 		||(*else*) ==> ServerMessageBroker.createErroMessage("nomeRazzaOccupato");
 	//@			
-	//@			else if (* la specie dell'utente esiste già *) ==> \return == "@no";
+	//@			
 	//@	assignable rank.put(name, new_specie);
 	//@ assignable loggedPlayers.get(token).setSpecie(new_specie);				
 	//@ signals (Exception e) ServerMessageBroker.createTokenNonValidoErrorMessage();
