@@ -1124,6 +1124,7 @@ public class ServerLogic
 														if(Game.getCell(dinoRow, dinoCol) instanceof Carrion)
 														{
 															((Carnivorous)dino).eat(Game.getCell(dinoRow, dinoCol));						//quindi mangia
+															((Carrion)Game.getCell(dinoRow, dinoCol)).setPower(((Carrion)Game.getCell(dinoRow, dinoCol)).getMaxPower());
 															currentSession.repositionCarrion(dinoRow, dinoCol);																					//riposiziona carogna
 														}
 														else if(Game.getCell(dinoRow, dinoCol) instanceof Vegetation)
@@ -1669,7 +1670,7 @@ public class ServerLogic
 						{
 							if(((Vegetarian)current).getCarrion() != null)
 							{
-								if(((Vegetarian)current).getCarrion().getMaxPower()- ((Vegetarian)current).getCarrion().getMaxPower() / 10 > 0)
+								if((((Vegetarian)current).getCarrion().getMaxPower()- (((Vegetarian)current).getCarrion().getMaxPower() / 10)) > 0)
 								{
 									((Vegetarian)current).getCarrion().rebirth();
 								}
@@ -1711,7 +1712,7 @@ public class ServerLogic
 					}
 					else if(current instanceof Carrion)
 					{
-						if(((Carrion)current).getPower() - ((Carrion)current).getMaxPower() / 10 > 0)
+						if((((Carrion)current).getPower() - (((Carrion)current).getMaxPower() / 10)) > 0)
 						{
 							((Food)current).rebirth();
 						}

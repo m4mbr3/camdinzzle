@@ -64,7 +64,8 @@ public class Vegetation implements Food, Serializable
 	 * Setta l'energia massima della vegetazione.
 	 * @param maxPower energia massima
 	 */
-	public void setMaxPower(int maxPower) {
+	public void setMaxPower(int maxPower) 
+	{
 		this.maxPower = maxPower;
 	}
 	

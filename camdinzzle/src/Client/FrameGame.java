@@ -360,6 +360,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 		panelControlDown.setVisible(true);
 		panel.setBorder(null);
 		panel.setPreferredSize(new Dimension(screenWidth-widthControlPanel, screenHeight));
+		panel.setLocation(0, 0);
 		panelControl.setPreferredSize(new Dimension(widthControlPanel, screenHeight));
 		panelControlUp.setSize(new Dimension(widthControlPanel, screenHeight/14*5));
 		panelControlDown.setSize(new Dimension(widthControlPanel, screenHeight/14*9));
