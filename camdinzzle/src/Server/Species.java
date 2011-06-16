@@ -15,15 +15,17 @@ public class Species implements Serializable
 	/*
 	 * Nome della specie.
 	 */
-	private String name;
+	//@public invariant name != null;
+	private /*@spec_public@*/ String name;
+	//@
 	/*
 	 * Turni mancanti alla estizione.
 	 */
-	private int timeOfLive;
+	private /*@spec_public@*/ int timeOfLive;
 	/*
 	 * Tabella dei dinosauri in gioco.
 	 */
-	private Hashtable<String, Dinosaur> myDinosaurs;
+	private /*@ spec_public @*/ Hashtable<String, Dinosaur> myDinosaurs;
 	/*
 	 * Razza di dinosauri: Carnivoro o Vegetariano.
 	 */
@@ -31,27 +33,29 @@ public class Species implements Serializable
 	/*
 	 * Razza della specie.
 	 */
-	private type speciesType;
+	private /*@spec_public@*/ type speciesType;
 	/*
 	 * Numero di dinosauri creati.
 	 */
-	private int  dinoNumber;
+	private /*@spec_public@*/int  dinoNumber;
 	/*
 	 * Mappa della specie con celle visibili solo quelle gia' visitate.
 	 */
-	private Object[][] map;
+	private /*@ spec_public @*/ Object[][] map;
 	/*
 	 * Punteggio della specie.
 	 */
-	private int score;
+	private /*@ spec_public @*/ int score;
 	/*
 	 * Username del giocatore possessore della specie.
 	 */
-	private String playerUsername;
+	private /*@spec_public@*/ String playerUsername;
 	/*
 	 * Limite massimo di dinosauri in gioco.
 	 */
 	private final int maxDino=8;
+	//@ requires name != null && speciesType != null && username != null;
+	//@ ensures (*Tutte Le variabili vengono instanziate e inizializzate*)
 	
 	/**
 	 * Crea una nuova specie, setta il nome e il tipo, imposta timeOfLive a 120, crea un nuovo dinosauro e chiama startMap e l'updateMap
@@ -81,15 +85,16 @@ public class Species implements Serializable
 		startMap();
 		updateMap();
 	}
-	
+	//@ ensures \result == score;
 	/**
 	 * Ritorna il punteggio della specie.
 	 * @return punteggio della specie
 	 */
-	public int getScore() {
+	public /*@ pure @*/ int getScore() {
 		return score;
 	}
-
+	//@ requires score >= 0;
+	//@ ensures this.score == score;
 	/**
 	 * Assegna il punteggio alla specie.
 	 * @param score score della specie
@@ -98,7 +103,7 @@ public class Species implements Serializable
 	{
 		this.score = score;
 	}
-	
+	//@ensure this.timeOfLive == (\old (TimeOfLive)) -1 ;
 	/**
 	 * Sottrae uno al tempo di vita della specie.
 	 */
@@ -106,16 +111,16 @@ public class Species implements Serializable
 	{
 		timeOfLive -= 1;
 	}
-	
+	//@ ensures \result == this.timeOfLive;
 	/**
 	 * Ritorna il tempo di vita della specie.
 	 * @return tempo di vita della specie
 	 */
-	public int getTimeOfLive()
+	public /*@ pure @*/ int getTimeOfLive()
 	{
 		return timeOfLive;
 	}
-	
+	//@ ensures score == (\old (score)) +1;
 	/**
 	 * Incrementa il punteggio della specie.
 	 */
@@ -129,16 +134,17 @@ public class Species implements Serializable
 			score = score + 1 + ((Dinosaur)me.getValue()).getDinoDimension();
 		}
 	}
-	
+	//@ensure \result == this.playerUsername; 
 	/**
 	 * Restituisce l'username del giocatore a cui appartiene la specie.
 	 * @return username del giocatore
 	 */
-	public String getPlayerUsername() 
+	public /*@ pure @*/  String getPlayerUsername() 
 	{
 		return playerUsername;
 	}
-
+	//@requires playerUsername != null;
+	//@ ensures this.playerUsername == playerUsername;
 	/**
 	 * Setta l'username del giocatore.
 	 * @param playerUsername username del giocatore
