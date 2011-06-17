@@ -981,7 +981,7 @@ public class ServerLogic
 									{
 										 state.add(((Player)me.getValue()).getUserName());
 										 state.add(((Player)me.getValue()).getSpecie().getName());
-										 if(state.add(((Player)me.getValue()).getSpecie().getType().toString()))
+										 if((((Player)me.getValue()).getSpecie().getType().toString().equals("Vegetarian")))
 											state.add("e");
 										 else
 										 	state.add("c");

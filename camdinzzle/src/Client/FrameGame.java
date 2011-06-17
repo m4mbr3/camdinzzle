@@ -1313,7 +1313,7 @@ public class FrameGame extends JFrame implements MouseListener,Visual,ActionList
 				newMsgDinoState += "	dimension: " + msgDinoState[5] + "\n";
 				
 				// Se il dinosauro appartiene al giocatore allora ci sono delle informazioni aggiuntive
-				if(msgDinoState.length > 6)
+				if(msgDinoState.length > 7)
 				{
 					newMsgDinoState += "	energy: " + msgDinoState[6] + "\n";
 					newMsgDinoState += "	round lived: " + msgDinoState[7] + "\n";
