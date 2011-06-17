@@ -21,6 +21,7 @@ import java.util.Set;
 
 public class ServerLogic 
 {
+	
 	/*
 	 * Utilizzato per mandare il messaggio di cambio del turno ai client.
 	 */
@@ -138,10 +139,10 @@ public class ServerLogic
 	}
 
 	//@ requires username != null && password != null (*Il controllo  dei caratteri speciali deve essere già eseguito*);
-	//@ ensures if username != 
-	//@							(\forall String i; i != null; players.conatinKey(i) == true)  ==> \result == "@ok";
-	//@ 		else  \result == "@no,@usernameOccupato";
-	//@ assignable players.put(username)
+	//@ ensures ((*if*)&& username != 
+	//@							(\forall String i; i != null; players.conatinKey(i) == true))  ==> \result == "@ok";
+	//@ 		|| ((*else*) && !username !=(\forall String i; i != null; players.conatinKey(i) == true))
+	//@					==>		\result == "@no,@usernameOccupato";
 	//@ signals (Excetpion ex) \result == "@no";
 	
 	/**

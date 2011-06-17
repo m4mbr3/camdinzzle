@@ -12,75 +12,104 @@ public abstract class Dinosaur implements Serializable
 	//mentre devolve la definizione delle differenze alle classi che la implementano
 	
 	private static final long serialVersionUID = 1L;
+	//@public invariant dinoId != null;
 	/*
 	 * Identificatore del dinosauro.
 	 */
-	private String dinoId;
+	private /*@spec_public@*/ String dinoId;
+	//@public invariant age >0;
 	/*
 	 * Eta' massima del dinosauro.
 	 */
-	private int age;
+	private /*@spec_public@*/ int age;
+	//@public invariant nameSpecie != null;
 	/*
 	 * Specie del dinosauro.
 	 */
-	protected Species nameSpecie;
+	protected /*@spec_public@*/ Species nameSpecie;
+	//@public invariant energy>0;
 	/*
 	 * Energia del dinosauro.
 	 */
-	protected int energy;
+	protected /*@spec_public@*/  int energy;
+	
+	//@public invariant dimension >=1 && dimension <=5;
 	/*
 	 * Dimensione del dinosauro.
 	 */
-	private int dimension;
+	private /*@spec_public@*/int dimension;
+	//@public invariant energyMax > 0;
 	/*
 	 * Energia massima che il dinosauro puo' accumulare.
 	 */
-	protected int energyMax;
+	protected /*@spec_public @*/ int energyMax;
+	//@public invariant eEgg == 1500
 	/*
 	 * Energia per creare un nuovo dinosauro.
 	 */
-	private final int eEgg = 1500;
+	private /*@ spec_public @*/ final int eEgg = 1500;
+	
+	//@public inviariant posRow>=0 && posRow<=40;
 	/*
 	 * Riga della posizione del dinosauro.
 	 */
-	protected int posRow;
+	protected /*@spec_public@*/int posRow;
+	//@public invariant posCol>=0 && posCol<=40;
 	/*
 	 * Colonna della posizione del dinosauro.
 	 */
-	protected int posCol;
+	protected /*@ spec_public @*/ int posCol;
+	
+	//@public inviariant localMap != null;
 	/*
 	 * Vista locale del dinosauro.
 	 */
-	private Object[][] localMap;
+	private /*@spec_public @*/ Object[][] localMap;
+	
+	//@public invariant distMax >0;
 	/*
 	 * Distanza massima che puo' percorrere il dinosauro.
 	 */
-	private int distMax;
+	private /*@ spec_public @*/int distMax;
+	
+	//@public invariant moveTake != null;
 	/*
 	 * Check per movimento gia' effettuato.
 	 */
-	private boolean moveTake=false;
+	private /*@spec_public@*/ boolean moveTake=false;
+	
+	//@public invariant actionTake != null; 
 	/*
 	 * Check per azione nel turno gia' effettuata.
 	 */
-	private boolean actionTake=false;
+	private /*@spec_public@*/ boolean actionTake=false;
+	
+	//@public invariant timeOfLiva >=0; 
 	/*
 	 * Numero di turni gia' vissuti dal dinosauro.
 	 */
-	private int timeOfLive;
+	private /*@spec_public@*/ int timeOfLive;
 	
+	//@requires cell != null;
+	//@ensures (* aggiunge l'energia al dinosauro cn un tetto  che è dato dall'energia max*)
 	/**
 	 * Controlla cosa c'e' nella cella e aggiunge l'energia al dinosauro senza superare la massima 
 	 * energia possibile.
 	 * @param cell cella di destinazione della mappa
 	 */
 	public abstract void eat(Object cell);
+	
+	//@requires dino != null;
+	//@ensures (* calcola l'energia dei due dino coinvolti nel combattimento e torna true se ha vinto *) 
 	/**
 	 * Calcola l'energia dei due dinosauri coninvolti nel combattimento.
 	 * @param dino riferimento al dinosauro dell'avversario
 	 * @return true se il dinosauro ha vinto il combattimento, false altrimenti
 	 */
 	public abstract boolean fight(Object dino);
+	//@ requires  rowDest > 0 && rowCol > 0;
+	//@ ensures (energy = \old(energy)-(EnergyMax/2))> 0 ==> (this.posRow == rowDest && this.posCol == colDest && this.setLocalMap() && this.updateMap() 
+	//@ && setMoveTake(true)&& \return == true)
 	/**
 	 * Risetta la cella di partenza con la carogna o vegetazione se c'erano, calcola l'energia per spostarsi e in caso positivo setta
 	 * la posizione del dinosauro, aggiorna la mappa locale, aggiorna la mappa della specie e setta il moveTake a true
