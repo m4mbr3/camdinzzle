@@ -11,6 +11,9 @@ import java.util.Set;
  */
 public class Species implements Serializable
 {
+	//OVERVIEW: Rappresenta la specie dell'utente e ne contiene tutti i dinosauri 
+	
+	
 	private static final long serialVersionUID = 1L;
 	
 	

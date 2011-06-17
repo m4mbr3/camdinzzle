@@ -8,6 +8,9 @@ import java.io.Serializable;
 
 public abstract class Dinosaur implements Serializable
 {
+	//OVERVIEW: Rappresenta il Dinosauro e ingloba le caratteristiche comuni tra Erbivori e Carnivori
+	//mentre devolve la definizione delle differenze alle classi che la implementano
+	
 	private static final long serialVersionUID = 1L;
 	/*
 	 * Identificatore del dinosauro.
@@ -86,6 +89,9 @@ public abstract class Dinosaur implements Serializable
 	 * @return true se il dinosauro ha abbastanza energia per muoversi, false altrimenti
 	 */
 	public abstract boolean move(int rowDest, int colDest);
+	
+	//@ requires dinoId != null && posRow >=0 && posRow<=39 && posCol >=0 && posCol<=39 && nameSpecie != null;
+	//@ ensures (* Istanzia ed inizializza tutte le variabili legate la Dinosaur*);
 	/**
 	 * Crea un nuovo dinosauro con eta' = (30±20%), dimensione = 1 ed energia = 1000.
 	 * @param dinoId id del dinosauro da creare
@@ -133,9 +139,8 @@ public abstract class Dinosaur implements Serializable
 	}
 	
 	
-	//@ensures (\exists int energy; energy != 0; energy > eEgg)  ==> ( (*Creo l'uovo e lo posiziono sulla mappa*) && \result = (* All'idDino *));
-	//		|| !(*ritorno null*) ==> \result = null;
-	/*@ assignable energy; @*/
+	//@ensures (\exists int energy; energy > 0; energy > this.eEgg)  ==> ( (*Creo l'uovo e lo posiziono sulla mappa*) && \result = (* All'idDino *));
+	//		|| !(\exists int energy; energy > 0; energy > this.eEgg) ==> \result = null;
 	/**
 	 * Crea un nuovo dinosauro nella prima cella libera vicino al dinosauro.
 	 * @return dinoId id del nuovo dinosauro
@@ -182,24 +187,25 @@ public abstract class Dinosaur implements Serializable
 			return idDino;
 		}
 	}
-	
+	//@ensures \result == this.nameSpecie.getType();
 	/**
 	 * Ritorna il tipo della specie del dinosauro.
 	 * @return speciesType tipo della specie
 	 */
-	public Species.type getType()
+	public /*@pure@*/ Species.type getType()
 	{
 		return nameSpecie.getType();
 	}
+	//@ensures \result == this.dinoId;
 	/**
 	 * Ritorna l'id del dinosauro.
 	 * @return dinoId id del dinosauro
 	 */
-	public String getDinoId()
+	public /*@pure@*/ String getDinoId()
 	{
 		return dinoId;
 	}
-	
+	//@ensures this.timeOfLive == \old(this.timeOfLive)+1 && this.age == \old(this.age)-1;
 	/**
 	 * Aggiorna lo stato del dinosauro. Sottrae un anno di vita a quelli rimanenti al dinosauro, 
 	 * aggiunge uno ai turni vissuti dal dinosauro e risetta a false moveTake e ActionTake.
@@ -211,79 +217,79 @@ public abstract class Dinosaur implements Serializable
 		setMoveTake(false);
 		setActionTake(false);
 	}
-	
+	//@ensures \result == this.dimension;
 	/**
 	 * Ritorna la dimensione dinosauro.
 	 * @return int dimensione del dinosauro
 	 */
-	public int getDinoDimension()
+	public/*@ pure @*/ int getDinoDimension()
 	{
 		return dimension;
 	}
-	
+	//@ensures \result == this.posRow;
 	/**
 	 * Ritorna la riga della posizione del dinosauro.
 	 * @return int riga della posizione del dinosauro
 	 */
-	public int getPosRow()
+	public /*@ pure @ */ int getPosRow()
 	{
 		return posRow;
 	}
-
+	//@ensures \result == this.posCol;
 	/**
 	 * Ritorna la colonna della posizione del dinosauro.
 	 * @return int colonna della posizione del dinosauro
 	 */
-	public int getPosCol()
+	public /*@ pure @*/ int getPosCol()
 	{
 		return posCol;
 	}
-	
+	//@ensures \result = this.energy;
 	/**
 	 * Ritorna l'energia dinosauro.
 	 * @return int energia del dinosauro
 	 */
-	public int getEnergy()
+	public /*@ pure @*/ int getEnergy()
 	{
 		return energy;
 	}
-	
+	//@ensures \result = this.age;
 	/**
 	 * Ritorna turni di vita mancanti al dinosauro prima di morire.
 	 * @return int turni di vita mancanti ad un dinosauro
 	 */
-	public int getAge()
+	public /*@ pure @*/ int getAge()
 	{
 		return age;
 	}
-	
+	//@ensures \result = this.timeOfLive;
 	/**
 	 * Ritorna i turni vissuti dal dinosauro.
 	 * @return int turni vissuti dal dinosauro
 	 */
-	public int getTimeOfLive()
+	public /*@ pure @*/ int getTimeOfLive()
 	{
 		return timeOfLive;
 	}
-	
+	//@ensures \result == localMap.length;
 	/**
 	 * Ritorna il numero di righe della vista locale.
 	 * @return  int numero di righe della vista locale
 	 */
-	public int getSizeRowLocalMap()
+	public /*@ pure @*/int getSizeRowLocalMap()
 	{		
 		return localMap.length;
 	}
-	
+	//@ensures \result == this.localMap[0].length;
 	/**
 	 * Ritorna il numero di colonne della vista locale.
 	 * @return int numero di colonne della vista locale
 	 */
-	public int getSizeColLocalMap()
+	public /*@ pure @*/ int getSizeColLocalMap()
 	{
 		return localMap[0].length;
 	}
-	
+	//@ensures this.localMap = Game.getLocalMap(this.posRow, this.posCol, dimension);
 	/**
 	 * Setta la vista locale del dinosauro.
 	 */
@@ -291,7 +297,7 @@ public abstract class Dinosaur implements Serializable
 	{
 		localMap = Game.getLocalMap(posRow, posCol, dimension);		
 	}
-	//@ensurres localMap
+	//@ensures \return =localMap;
 	/**
 	 * Ritorna la mappa locale del dinosauro.
 	 * @return matrice contenente la vista locale del dinosauro
