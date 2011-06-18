@@ -50,7 +50,7 @@ public class ClientManagerRMI implements ClientManager
 			{
 				
 			}
-		}while((!isSend) && (sendCounter < 2));
+		}while((!isSend) && (sendCounter < 1));
 
 		if(isSend)
 		{
